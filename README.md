@@ -11,14 +11,12 @@
 📍 Berlin, Germany
 
 ---
-
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=manoj-malviya-96&show_icons=true&theme=swift)
 
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=manoj-malviya-96&theme=swift)
 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=manoj-malviya-96&layout=compact&theme=swift)
 ---
-
 ## Table of Contents
 
 - [Who Am I](#who-am-i)
@@ -299,9 +297,3 @@ _I also write about performance, clean code, science and other stuff!_
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?logo=linkedin&style=for-the-badge)](https://linkedin.com/in/manojmalviya)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Visit-purple?style=for-the-badge)](https://manojmalviya.com)
 </div>
-
-
-
-
-
-
