@@ -11,11 +11,7 @@
 📍 Berlin, Germany
 
 ---
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=manoj-malviya-96&show_icons=true&theme=swift)
-
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=manoj-malviya-96&theme=swift)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=manoj-malviya-96&layout=compact&theme=swift)
 ---
 ## Table of Contents
 
