@@ -3,12 +3,12 @@
 **Senior Software Engineer** | Building systems that are correct, fast, and maintainable
 
 [![Email](https://img.shields.io/badge/✉️-malviyamanoj1896@gmail.com-red)](mailto:malviyamanoj1896@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github)](https://github.com/manojmalviya)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?logo=linkedin)](https://linkedin.com/in/manojmalviya)
-[![Scholar](https://img.shields.io/badge/Google_Scholar-Publications-4285F4?logo=google-scholar)](https://scholar.google.com/citations?user=yourID)
-[![Portfolio](https://img.shields.io/badge/🌐-Portfolio-purple)](https://manojmalviya.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github)](https://github.com/manoj-malviya-96)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?logo=linkedin)](https://linkedin.com/in/manoj-malviya-)
+[![Scholar](https://img.shields.io/badge/Google_Scholar-Publications-4285F4?logo=google-scholar)](https://scholar.google.com/citations?user=0oMXOy0AAAAJ)
+[![Portfolio](https://img.shields.io/badge/🌐-Portfolio-purple)](https://manoj-malviya-96.github.io/)
 
-📍 Berlin, Germany
+📍 Berlin, Germany 
 
 ---
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=manoj-malviya-96&theme=swift)
@@ -17,11 +17,9 @@
 
 - [Who Am I](#who-am-i)
 - [How I Work](#how-i-work)
-- [Current Work](#current-work)
-- [Past Work](#past-work)
+- [Current Work](#work-experience)
 - [Tech Stack](#tech-stack)
 - [Selected Projects](#selected-projects)
-- [Achievements](#achievements)
 - [Technical Writing](#technical-writing)
 - [Education](#education)
 - [Impact & Contributions](#impact--contributions)
@@ -65,8 +63,11 @@ graph TD
     E -.->|Achieves| H[MAINTAINABLE]
     
     style F fill:#90EE90
+    style F color:#FFFFFF
     style G fill:#87CEEB
+    style G color:#FFFFFF
     style H fill:#FFB6C1
+    style H color:#FFFFFF
 ```
 [![Code Philosophy](https://img.shields.io/badge/Code-Philosophy-white?style=flat-square)](./learn/philosophy.md)
 
