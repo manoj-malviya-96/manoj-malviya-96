@@ -1,21 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable experimental Turbopack for faster development builds
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
-
-  // Optimize compilation and bundling
-  swcMinify: true,
-
   // Reduce memory usage and improve performance
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {

@@ -281,8 +281,6 @@ export function WorkEx() {
                                     key={skill.name}
                                     className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow group"
                                 >
-                                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                                    {/*@ts-expect-error */}
                                     {Icon && <Icon className="w-4 h-4 icon-glow" />}
                                     <span className="text-sm">{skill.name}</span>
                                 </div>
