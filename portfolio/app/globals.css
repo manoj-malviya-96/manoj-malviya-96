@@ -3,281 +3,280 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-size: 16px;
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-  --muted: rgba(236, 236, 240, 0.69);
-  --muted-foreground: rgba(0, 0, 0, 0.6);
-  --border: rgba(0, 0, 0, 0.1);
-  --radius: 0.625rem;
+    --font-size: 16px;
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+    --muted: rgba(236, 236, 240, 0.69);
+    --muted-foreground: rgba(0, 0, 0, 0.6);
+    --border: rgba(0, 0, 0, 0.1);
+    --radius: 0.625rem;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --muted: #1a1a1a;
-  --muted-foreground: rgba(255, 255, 255, 0.7);
-  --border: #333333;
+    --background: #0a0a0a;
+    --foreground: #ffffff;
+    --muted: #1a1a1a;
+    --muted-foreground: rgba(255, 255, 255, 0.7);
+    --border: #333333;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --radius-lg: var(--radius);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --radius-lg: var(--radius);
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+    * {
+        @apply border-border;
+    }
 
-  body {
-    @apply bg-background text-foreground;
-  }
+    body {
+        @apply bg-background text-foreground;
+    }
 }
 
 /**
  * Base typography
  */
 @layer base {
-  :where(
+    :where(
     :not(:has([class*=" text-"]), :not(:has([class^="text-"])))
   ) {
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
 
-    h2 {
-      font-size: 1.25rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
 
-    h3 {
-      font-size: 1.125rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
+        h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
 
-    h4, p, label, button, input {
-      font-size: 1rem;
-      font-weight: 400;
-      line-height: 1.5;
-    }
+        h4, p, label, button, input {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
 
-    label, button {
-      font-weight: 500;
+        label, button {
+            font-weight: 500;
+        }
     }
-  }
 }
 
 html {
-  font-size: var(--font-size);
+    font-size: var(--font-size);
 }
 
 /* Gradient text utilities */
 .gradient-text {
-  @apply bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent;
-  background-size: 200% auto;
-  animation: gradientShift 8s ease infinite;
+    @apply bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: gradientShift 8s ease-in-out infinite;
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .dark .gradient-text {
-  @apply bg-gradient-to-br from-white via-gray-500 to-white bg-clip-text text-transparent;
-  background-size: 200% auto;
+    @apply bg-gradient-to-r from-white via-white/10 to-white bg-clip-text text-transparent;
+    background-size: 200% auto;
 }
 
 :root:not(.dark) .gradient-text {
-  @apply bg-gradient-to-br from-black via-gray-600 to-black bg-clip-text text-transparent;
-  background-size: 200% auto;
+    @apply bg-gradient-to-r from-black via-white/10 to-black bg-clip-text text-transparent;
+    background-size: 200% auto;
 }
 
 /* Light-based glow effects */
 .glow-subtle {
-  @apply transition-all duration-300 ease-out;
+    @apply transition-all duration-300 ease-out;
 }
 
 .dark .glow-subtle:hover {
-  @apply shadow-[0_0_20px_rgba(255,255,255,0.1),0_0_40px_rgba(255,255,255,0.05)] shadow-inner;
-  box-shadow:
-    0 0 20px rgba(255, 255, 255, 0.1),
+    @apply shadow-[0_0_20px_rgba(255,255,255,0.1),0_0_40px_rgba(255,255,255,0.05)] shadow-inner;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1),
     0 0 40px rgba(255, 255, 255, 0.05),
     inset 0 0 20px rgba(255, 255, 255, 0.03);
 }
 
 :root:not(.dark) .glow-subtle:hover {
-  box-shadow:
-    0 0 20px rgba(0, 0, 0, 0.08),
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08),
     0 0 40px rgba(0, 0, 0, 0.04),
     inset 0 0 20px rgba(0, 0, 0, 0.02);
 }
 
 .glow-accent {
-  @apply transition-all duration-300 ease-out;
+    @apply transition-all duration-300 ease-out;
 }
 
 .dark .glow-accent:hover {
-  @apply -translate-y-0.5;
-  box-shadow:
-    0 0 30px rgba(255, 255, 255, 0.15),
+    @apply -translate-y-0.5;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15),
     0 0 60px rgba(255, 255, 255, 0.08),
     0 8px 32px rgba(255, 255, 255, 0.12);
 }
 
 :root:not(.dark) .glow-accent:hover {
-  @apply -translate-y-0.5;
-  box-shadow:
-    0 0 30px rgba(0, 0, 0, 0.12),
+    @apply -translate-y-0.5;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.12),
     0 0 60px rgba(0, 0, 0, 0.06),
     0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* Pulse glow for current items */
 @keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-  }
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    }
 }
 
 .dark .pulse-glow {
-  @apply animate-pulse;
-  animation: pulseGlow 2s ease-in-out infinite;
+    @apply animate-pulse;
+    animation: pulseGlow 2s ease-in-out infinite;
 }
 
 :root:not(.dark) .pulse-glow {
-  @apply animate-pulse;
-  animation: pulseGlow 2s ease-in-out infinite;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    @apply animate-pulse;
+    animation: pulseGlow 2s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
 /* Card glow on hover */
 .card-glow {
-  @apply relative transition-all duration-300 ease-out;
+    @apply relative transition-all duration-300 ease-out;
 }
 
 .card-glow::before {
-  @apply content-[''] absolute inset-0 rounded-[inherit] p-px opacity-0 transition-opacity duration-300;
-  background: linear-gradient(135deg, transparent, transparent);
-  -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+    @apply content-[''] absolute inset-0 rounded-[inherit] p-px opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, transparent, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
 }
 
 .dark .card-glow:hover::before {
-  @apply opacity-100;
-  background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.3),
-          rgba(255, 255, 255, 0.1)
-  );
+    @apply opacity-100;
+    background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.3),
+            rgba(255, 255, 255, 0.1)
+    );
 }
 
 :root:not(.dark) .card-glow:hover::before {
-  @apply opacity-100;
-  background: linear-gradient(
-          135deg,
-          rgba(0, 0, 0, 0.2),
-          rgba(0, 0, 0, 0.05)
-  );
+    @apply opacity-100;
+    background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.05)
+    );
 }
 
 /* Timeline dot glow */
 .timeline-dot {
-  @apply relative;
+    @apply relative;
 }
 
 .timeline-dot::after {
-  @apply content-[''] absolute -inset-1 rounded-full opacity-0 transition-opacity duration-300;
-  background: radial-gradient(
-          circle,
-          currentColor 0%,
-          transparent 70%
-  );
+    @apply content-[''] absolute -inset-1 rounded-full opacity-0 transition-opacity duration-300;
+    background: radial-gradient(
+            circle,
+            currentColor 0%,
+            transparent 70%
+    );
 }
 
 .timeline-dot:hover::after {
-  @apply opacity-30;
+    @apply opacity-30;
 }
 
 /* Fluid animations */
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite;
 }
 
 .animate-fadeIn {
-  @apply animate-none;
-  animation: fadeIn 0.6s ease-out forwards;
+    @apply animate-none;
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .shimmer {
-  @apply bg-gradient-to-r from-transparent via-white/10 to-transparent;
-  background-size: 1000px 100%;
-  animation: shimmer 3s infinite;
+    @apply bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
 }
 
 /* Icon glow on hover */
 .icon-glow {
-  @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+    @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
 .dark .icon-glow:hover {
-  @apply scale-110;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    @apply scale-110;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
 :root:not(.dark) .icon-glow:hover {
-  @apply scale-110;
-  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+    @apply scale-110;
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
 }
 
 /* Smooth transitions */
 button,
 a,
 input {
-  @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+    @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
 }

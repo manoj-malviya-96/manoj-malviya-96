@@ -1,12 +1,25 @@
-import { useState, memo, ReactNode } from 'react';
-import { Calendar, MapPin, Github, FileText, Award, TrendingUp, LucideIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './dialog';
+import {memo, ReactNode, useState} from 'react';
+import {Award, Calendar, FileText, Github, LucideIcon, MapPin, TrendingUp} from 'lucide-react';
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from './atoms/dialog';
 import {
-    SiTypescript, SiPython, SiCplusplus, SiRust, SiJavascript,
-    SiReact, SiNextdotjs, SiTailwindcss, SiNodedotjs,
-    SiPostgresql, SiMongodb, SiRedis, SiDocker, SiGit, SiAmazon, SiFigma
+    SiAmazon,
+    SiCplusplus,
+    SiDocker,
+    SiFigma,
+    SiGit,
+    SiJavascript,
+    SiMongodb,
+    SiNextdotjs,
+    SiNodedotjs,
+    SiPostgresql,
+    SiPython,
+    SiReact,
+    SiRedis,
+    SiRust,
+    SiTailwindcss,
+    SiTypescript
 } from 'react-icons/si';
-import type { IconType } from "react-icons";
+import type {IconType} from "react-icons";
 
 // Types
 type Experience = {
@@ -125,26 +138,26 @@ const METRICS = [
         icon: Github,
         title: 'GitHub',
         stats: [
-            { value: '2,847', label: 'Commits' },
-            { value: '42', label: 'Repos' },
-            { value: '1,284', label: 'Stars' },
-            { value: '342', label: 'Followers' },
+            {value: '2,847', label: 'Commits'},
+            {value: '42', label: 'Repos'},
+            {value: '1,284', label: 'Stars'},
+            {value: '342', label: 'Followers'},
         ],
     },
     {
         icon: FileText,
         title: 'Research',
         stats: [
-            { value: '7', label: 'Publications' },
-            { value: '124', label: 'Citations' },
+            {value: '7', label: 'Publications'},
+            {value: '124', label: 'Citations'},
         ],
     },
     {
         icon: TrendingUp,
         title: 'Impact',
         stats: [
-            { value: '15', label: 'Projects' },
-            { value: '10k+', label: 'Users Reached' },
+            {value: '15', label: 'Projects'},
+            {value: '10k+', label: 'Users Reached'},
         ],
     },
 ];
@@ -157,39 +170,44 @@ const getContentMargin = (cfg: TimelineConfig) =>
     cfg.logoSize + cfg.gap;
 
 // Base components
-const Logo = memo<{ text: string; size: number }>(function Logo({ text, size }) {
+const Logo = memo<{ text: string; size: number }>(function Logo({text, size}) {
     return (
         <div
             className="absolute left-0 top-0 rounded-lg bg-background border border-border flex items-center justify-center text-lg font-bold"
-            style={{ width: size, height: size }}
+            style={{width: size, height: size}}
         >
             {text}
         </div>
     );
 });
 
-const Badge = memo<{ children: ReactNode; active?: boolean }>(function Badge({ children, active }) {
+const Badge = memo<{ children: ReactNode; active?: boolean }>(function Badge({children, active}) {
     return (
-        <span className={`px-2 py-1 rounded-md text-xs whitespace-nowrap ${active ? 'bg-foreground text-background' : 'bg-muted'}`}>
+        <span
+            className={`px-2 py-1 rounded-md text-xs whitespace-nowrap ${active ? 'bg-foreground text-background' : 'bg-muted'}`}>
             {children}
         </span>
     );
 });
 
-const IconText = memo<{ icon: LucideIcon; children: ReactNode }>(function IconText({ icon: Icon, children }) {
+const IconText = memo<{ icon: LucideIcon; children: ReactNode }>(function IconText({icon: Icon, children}) {
     return (
         <span className="flex items-center gap-1">
-            <Icon className="w-3 h-3" />
+            <Icon className="w-3 h-3"/>
             {children}
         </span>
     );
 });
 
-const Card = memo<{ icon: LucideIcon; title: string; children: ReactNode }>(function Card({ icon: Icon, title, children }) {
+const Card = memo<{ icon: LucideIcon; title: string; children: ReactNode }>(function Card({
+                                                                                              icon: Icon,
+                                                                                              title,
+                                                                                              children
+                                                                                          }) {
     return (
         <div className="bg-muted rounded-xl p-5 glow-subtle card-glow">
             <div className="flex items-center gap-2 mb-4">
-                <Icon className="w-4 h-4 icon-glow" />
+                <Icon className="w-4 h-4 icon-glow"/>
                 <h3 className="text-sm uppercase tracking-wider">{title}</h3>
             </div>
             {children}
@@ -197,11 +215,11 @@ const Card = memo<{ icon: LucideIcon; title: string; children: ReactNode }>(func
     );
 });
 
-const TechBadge = memo<{ name: string }>(function TechBadge({ name }) {
+const TechBadge = memo<{ name: string }>(function TechBadge({name}) {
     const Icon = TECH_ICONS[name];
     return (
         <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow">
-            {Icon && <Icon className="w-4 h-4 icon-glow" />}
+            {Icon && <Icon className="w-4 h-4 icon-glow"/>}
             <span className="text-sm">{name}</span>
         </div>
     );
@@ -212,12 +230,12 @@ const ExperienceCard = memo<{
     experience: Experience;
     logoSize: number;
     margin: number;
-}>(function ExperienceCard({ experience: exp, logoSize, margin }) {
+}>(function ExperienceCard({experience: exp, logoSize, margin}) {
     return (
         <div className="relative">
-            <Logo text={exp.logo} size={logoSize} />
+            <Logo text={exp.logo} size={logoSize}/>
 
-            <div style={{ marginLeft: margin }}>
+            <div style={{marginLeft: margin}}>
                 <div className="flex items-start justify-between mb-2 gap-4">
                     <div>
                         <h3 className="text-xl">{exp.title}</h3>
@@ -257,24 +275,24 @@ function Timeline<T>({
 
     return (
         <div className="relative">
-            <div className="absolute top-0 bottom-0 w-0.5 bg-border" style={{ left: offset }} />
+            <div className="absolute top-0 bottom-0 w-0.5 bg-border" style={{left: offset}}/>
 
             {items.map((item, i) => {
                 const active = isActive(item);
                 const Container = onSelect ? 'button' : 'div';
-                const props = onSelect ? { onClick: () => onSelect(item) } : {};
+                const props = onSelect ? {onClick: () => onSelect(item)} : {};
 
                 return (
                     <div key={i} className={i < items.length - 1 ? 'pb-8' : ''}>
                         <div
                             className={`absolute w-2 h-2 rounded-full ${active ? 'bg-foreground animate-pulse pulse-glow' : 'bg-muted-foreground'}`}
-                            style={{ left: offset, top: 24 }}
+                            style={{left: offset, top: 24}}
                         />
 
                         <Container
                             {...props}
                             className={`${onSelect ? 'text-left' : ''} bg-muted rounded-xl p-5 glow-accent card-glow`}
-                            style={{ marginLeft: getContentMargin(config) }}
+                            style={{marginLeft: getContentMargin(config)}}
                         >
                             {children(item)}
                         </Container>
@@ -286,7 +304,7 @@ function Timeline<T>({
 }
 
 // Metric Grid Component
-const MetricGrid = memo<{ stats: Array<{ value: string; label: string }> }>(function MetricGrid({ stats }) {
+const MetricGrid = memo<{ stats: Array<{ value: string; label: string }> }>(function MetricGrid({stats}) {
     return (
         <div className="grid grid-cols-2 gap-3">
             {stats.map(s => (
@@ -305,7 +323,7 @@ const MetricsSection = memo(function MetricsSection() {
         <div className="space-y-4">
             {METRICS.map(m => (
                 <Card key={m.title} icon={m.icon} title={m.title}>
-                    <MetricGrid stats={m.stats} />
+                    <MetricGrid stats={m.stats}/>
                 </Card>
             ))}
         </div>
@@ -319,7 +337,7 @@ const TechStack = memo(function TechStack() {
             <h3 className="text-2xl gradient-text mb-4">Tech Stack</h3>
             <div className="flex flex-wrap gap-3">
                 {TECH_STACK.map(name => (
-                    <TechBadge key={name} name={name} />
+                    <TechBadge key={name} name={name}/>
                 ))}
             </div>
         </div>
@@ -327,7 +345,7 @@ const TechStack = memo(function TechStack() {
 });
 
 // Detail Modal Component
-const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(function DetailModal({ exp, onClose }) {
+const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(function DetailModal({exp, onClose}) {
     if (!exp) return null;
 
     return (
@@ -355,7 +373,7 @@ const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(functi
                         <ul className="space-y-2">
                             {exp.achievements.map((a, i) => (
                                 <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                                    <Award className="w-4 h-4 mt-0.5 text-foreground shrink-0" />
+                                    <Award className="w-4 h-4 mt-0.5 text-foreground shrink-0"/>
                                     <span>{a}</span>
                                 </li>
                             ))}
@@ -408,11 +426,11 @@ export function WorkEx() {
                         </Timeline>
                     </div>
 
-                    <MetricsSection />
+                    <MetricsSection/>
                 </div>
 
-                <TechStack />
-                <DetailModal exp={selected} onClose={() => setSelected(null)} />
+                <TechStack/>
+                <DetailModal exp={selected} onClose={() => setSelected(null)}/>
             </div>
         </div>
     );

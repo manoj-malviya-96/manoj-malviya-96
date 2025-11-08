@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { WorkEx } from '@/components/WorkEx';
-import { Showcase } from '@/components/Showcase';
-import { Footer } from '@/components/footer';
-import { Home as HomeIcon, Briefcase, FolderOpen, Sun, Moon, Search } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/dialog';
-import {Input} from "@/components/Input";
-import {Home} from "@/components/Home";
+import {useEffect, useState} from 'react';
+import {WorkEx} from '@/components/WorkEx';
+import {Showcase} from '@/components/Showcase';
+import {Footer} from '@/components/footer';
+import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
+import {Dialog, DialogContent} from '@/components/atoms/dialog';
+import {Input} from "@/components/atoms/Input";
+import {Home} from "@/components/home";
 
 export default function Main() {
     const [activeSection, setActiveSection] = useState('home');
@@ -49,16 +49,16 @@ export default function Main() {
     };
 
     const navItems = [
-        { id: 'home', label: 'Main', icon: HomeIcon },
-        { id: 'workex', label: 'Experience', icon: Briefcase },
-        { id: 'showcase', label: 'Showcase', icon: FolderOpen },
+        {id: 'home', label: 'Main', icon: HomeIcon},
+        {id: 'workex', label: 'Experience', icon: Briefcase},
+        {id: 'showcase', label: 'Showcase', icon: FolderOpen},
     ];
 
     const scrollToSection = (sectionId: string) => {
         setActiveSection(sectionId);
         const element = document.getElementById(sectionId);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({behavior: 'smooth'});
         }
     };
 
@@ -66,7 +66,8 @@ export default function Main() {
         <div className="min-h-screen bg-background text-foreground">
             {/* Floating Navigation - Top for desktop, Bottom for mobile */}
             <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-4 md:top-6">
-                <div className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
+                <div
+                    className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
                     <div className="flex items-center gap-2">
                         {navItems.map((item) => (
                             <button
@@ -78,19 +79,19 @@ export default function Main() {
                                         : 'hover:bg-accent glow-subtle'
                                 }`}
                             >
-                                <item.icon className={`w-4 h-4 ${activeSection !== item.id ? 'icon-glow' : ''}`} />
+                                <item.icon className={`w-4 h-4 ${activeSection !== item.id ? 'icon-glow' : ''}`}/>
                                 <span className="hidden sm:inline text-sm">{item.label}</span>
                             </button>
                         ))}
 
-                        <div className="w-px h-6 bg-border mx-1" />
+                        <div className="w-px h-6 bg-border mx-1"/>
 
                         <button
                             onClick={() => setSearchOpen(true)}
                             className="p-2 rounded-full hover:bg-accent glow-subtle"
                             aria-label="Search"
                         >
-                            <Search className="w-4 h-4 icon-glow" />
+                            <Search className="w-4 h-4 icon-glow"/>
                         </button>
 
                         <button
@@ -98,7 +99,7 @@ export default function Main() {
                             className="p-2 rounded-full hover:bg-accent glow-subtle"
                             aria-label="Toggle theme"
                         >
-                            {isDark ? <Sun className="w-4 h-4 icon-glow" /> : <Moon className="w-4 h-4 icon-glow" />}
+                            {isDark ? <Sun className="w-4 h-4 icon-glow"/> : <Moon className="w-4 h-4 icon-glow"/>}
                         </button>
                     </div>
                 </div>
@@ -106,7 +107,8 @@ export default function Main() {
 
             {/* Mobile Bottom Navigation */}
             <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:hidden">
-                <div className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
+                <div
+                    className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
                     <div className="flex items-center gap-1">
                         {navItems.map((item) => (
                             <button
@@ -119,7 +121,7 @@ export default function Main() {
                                 }`}
                                 aria-label={item.label}
                             >
-                                <item.icon className={`w-4 h-4 ${activeSection !== item.id ? 'icon-glow' : ''}`} />
+                                <item.icon className={`w-4 h-4 ${activeSection !== item.id ? 'icon-glow' : ''}`}/>
                             </button>
                         ))}
                     </div>
@@ -132,22 +134,22 @@ export default function Main() {
                     <Home/>
                 </section>
                 <section id="workex" className="min-h-screen">
-                    <WorkEx />
+                    <WorkEx/>
                 </section>
                 <section id="showcase" className="min-h-screen">
-                    <Showcase />
+                    <Showcase/>
                 </section>
             </div>
 
             {/* Footer */}
-            <Footer />
+            <Footer/>
 
             {/* Global Search */}
             <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
                 <DialogContent className="bg-background border-border max-w-2xl p-0 rounded-2xl">
                     <div className="p-4">
                         <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"/>
                             <Input
                                 type="text"
                                 placeholder="Search everything... (Cmd/Ctrl + K)"

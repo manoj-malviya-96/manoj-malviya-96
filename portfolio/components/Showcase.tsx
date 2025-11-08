@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Search, ExternalLink, FileText, BookOpen, Code } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/dialog';
-import {Input} from "@/components/Input";
+import {useState} from 'react';
+import {BookOpen, Code, ExternalLink, FileText, Search} from 'lucide-react';
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/atoms/dialog';
+import {Input} from "@/components/atoms/Input";
 
 
 interface ShowcaseItem {
@@ -143,7 +143,7 @@ export function Showcase() {
                 <div className="mb-6 space-y-3">
                     {/* Search */}
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"/>
                         <Input
                             type="text"
                             placeholder="Search projects and blogs..."
@@ -173,7 +173,7 @@ export function Showcase() {
                                     : 'bg-muted hover:bg-accent'
                             }`}
                         >
-                            <Code className="w-3.5 h-3.5" />
+                            <Code className="w-3.5 h-3.5"/>
                             Projects
                         </button>
                         <button
@@ -184,10 +184,10 @@ export function Showcase() {
                                     : 'bg-muted hover:bg-accent'
                             }`}
                         >
-                            <BookOpen className="w-3.5 h-3.5" />
+                            <BookOpen className="w-3.5 h-3.5"/>
                             Blogs
                         </button>
-                        <span className="w-px bg-border" />
+                        <span className="w-px bg-border"/>
                         {categories.slice(1).map((category) => (
                             <button
                                 key={category}
@@ -223,7 +223,8 @@ export function Showcase() {
                                         alt={item.title}
                                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20 transition-all duration-500 group-hover:from-black/90 group-hover:via-black/40" />
+                                    <div
+                                        className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20 transition-all duration-500 group-hover:from-black/90 group-hover:via-black/40"/>
                                 </div>
                             )}
 
@@ -232,9 +233,9 @@ export function Showcase() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-2">
                                         {item.type === 'project' ? (
-                                            <Code className="w-4 h-4 icon-glow" />
+                                            <Code className="w-4 h-4 icon-glow"/>
                                         ) : (
-                                            <BookOpen className="w-4 h-4 icon-glow" />
+                                            <BookOpen className="w-4 h-4 icon-glow"/>
                                         )}
                                         <span className="text-xs uppercase tracking-wider opacity-90">
                       {item.category}
@@ -275,7 +276,8 @@ export function Showcase() {
 
                 {/* Project Detail Modal */}
                 <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
-                    <DialogContent className="bg-background text-foreground max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl">
+                    <DialogContent
+                        className="bg-background text-foreground max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl">
                         {selectedItem && (
                             <>
                                 <DialogHeader>
@@ -310,7 +312,8 @@ export function Showcase() {
                                             <h3 className="text-xl mb-2">Key Features</h3>
                                             <ul className="space-y-2">
                                                 {selectedItem.features.map((feature, index) => (
-                                                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                                                    <li key={index}
+                                                        className="flex items-start gap-2 text-muted-foreground">
                                                         <span className="text-foreground mt-1">•</span>
                                                         <span>{feature}</span>
                                                     </li>
@@ -327,7 +330,7 @@ export function Showcase() {
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-xl transition-all glow-on-hover"
                                             >
-                                                <ExternalLink className="w-4 h-4" />
+                                                <ExternalLink className="w-4 h-4"/>
                                                 <span>View Project</span>
                                             </a>
                                         )}
@@ -338,7 +341,7 @@ export function Showcase() {
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-5 py-2.5 bg-muted text-foreground rounded-xl transition-all glow-on-hover"
                                             >
-                                                <FileText className="w-4 h-4" />
+                                                <FileText className="w-4 h-4"/>
                                                 <span>Read Paper</span>
                                             </a>
                                         )}
