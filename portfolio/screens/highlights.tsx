@@ -1,130 +1,17 @@
 import {useState} from 'react';
 import {Award, Calendar, Github, MapPin, TrendingUp} from 'lucide-react';
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
-import {
-    SiAmazon,
-    SiCplusplus,
-    SiDocker,
-    SiFigma,
-    SiGit,
-    SiJavascript,
-    SiMongodb,
-    SiNextdotjs,
-    SiNodedotjs,
-    SiPostgresql,
-    SiPython,
-    SiReact,
-    SiRedis,
-    SiRust,
-    SiTailwindcss,
-    SiTypescript
-} from 'react-icons/si';
 import type {IconType} from 'react-icons';
-import Badge from '@/components/Badge';
+import {Badge} from '@/components/Badge';
 import IconText from '@/components/IconText';
 import Card from '@/components/Card';
 import {DEFAULT_TIMELINE_CONFIG, Timeline} from '@/components/Timeline';
+import {TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
+import ScreenContainer from '@/components/ScreenContainer';
 
 // Types
-type Experience = {
-    title: string;
-    company: string;
-    logo: string;
-    location: string;
-    period: string;
-    current: boolean;
-    description: string;
-    achievements: string[];
-    technologies: string[];
-};
 
 const CONFIG = DEFAULT_TIMELINE_CONFIG;
-
-const EXPERIENCES: Experience[] = [
-    {
-        title: 'Senior Software Engineer',
-        company: 'Formlabs',
-        logo: 'F',
-        location: 'Boston, MA',
-        period: 'Oct 2023 - Present',
-        current: true,
-        description: 'Leading development of advanced CAD and simulation tools for 3D printing, focusing on optimization algorithms and real-time visualization.',
-        achievements: [
-            'Built optimization algorithms reducing print time by 30%',
-            'Led team of 4 engineers on simulation engine rewrite',
-            'Implemented real-time preview system using WebGL',
-            'Reduced memory usage by 40% through algorithm improvements',
-        ],
-        technologies: ['TypeScript', 'React', 'WebGL', 'C++', 'Python'],
-    },
-    {
-        title: 'R&D Software Engineer',
-        company: 'Formlabs',
-        logo: 'F',
-        location: 'Boston, MA',
-        period: 'Jan 2020 - Oct 2023',
-        current: false,
-        description: 'Developed physics simulation engines and optimization algorithms for additive manufacturing.',
-        achievements: [
-            'Created MESHA - mesh generation toolkit used by 1000+ engineers',
-            'Published 3 research papers on topology optimization',
-            'Improved simulation accuracy by 25%',
-        ],
-        technologies: ['Python', 'C++', 'React', 'Node.js'],
-    },
-    {
-        title: 'Graduate Researcher',
-        company: 'Penn State University',
-        logo: 'PSU',
-        location: 'State College, PA',
-        period: 'Aug 2018 - Dec 2019',
-        current: false,
-        description: 'Research in computational physics and material science simulations.',
-        achievements: [
-            'Developed novel FEA algorithms for composite materials',
-            'Published 2 papers in peer-reviewed journals',
-        ],
-        technologies: ['Python', 'MATLAB', 'C++'],
-    },
-    {
-        title: 'Software Engineering Intern',
-        company: 'Autodesk',
-        logo: 'A',
-        location: 'San Francisco, CA',
-        period: 'Summer 2018',
-        current: false,
-        description: 'Worked on CAD rendering pipeline optimization.',
-        achievements: [
-            'Improved render performance by 40% using GPU acceleration',
-        ],
-        technologies: ['C++', 'CUDA', 'OpenGL'],
-    },
-];
-
-const TECH_ICONS: Record<string, IconType> = {
-    TypeScript: SiTypescript,
-    JavaScript: SiJavascript,
-    Python: SiPython,
-    'C++': SiCplusplus,
-    Rust: SiRust,
-    React: SiReact,
-    'Next.js': SiNextdotjs,
-    Tailwind: SiTailwindcss,
-    'Node.js': SiNodedotjs,
-    PostgreSQL: SiPostgresql,
-    MongoDB: SiMongodb,
-    Redis: SiRedis,
-    Docker: SiDocker,
-    Git: SiGit,
-    AWS: SiAmazon,
-    Figma: SiFigma,
-};
-
-const TECH_STACK = [
-    'TypeScript', 'Python', 'C++', 'Rust', 'React', 'Next.js',
-    'Tailwind', 'Node.js', 'PostgreSQL', 'MongoDB', 'Redis',
-    'Docker', 'Git', 'AWS', 'Figma'
-];
 
 const METRICS = [
     {
@@ -174,20 +61,33 @@ function MetricsSection() {
     );
 }
 
+// TechBadge component
+function TechBadge({name}: { name: string }) {
+    const Icon = TECH_STACK[name] as IconType | undefined;
+    return (
+        <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow">
+            {Icon && <Icon className="w-4 h-4 icon-glow"/>}
+            <span className="text-sm">{name}</span>
+        </div>
+    );
+}
+
 // Tech Stack Component
 function TechStackList() {
     return (
         <div className="mt-8">
             <h3 className="text-2xl mb-4">Tech Stack</h3>
             <div className="flex flex-wrap gap-3">
-                {TECH_STACK.map(name => <TechBadge key={name} name={name}/>)}
+                {Object.keys(TECH_STACK).map(name => (
+                    <TechBadge key={name} name={name}/>
+                ))}
             </div>
         </div>
     );
 }
 
 // Detail Modal Component
-function DetailModal({exp, onClose}: { exp: Experience | null; onClose: () => void }) {
+function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () => void }) {
     if (!exp) return null;
     return (
         <Dialog open onOpenChange={onClose}>
@@ -228,7 +128,7 @@ function DetailModal({exp, onClose}: { exp: Experience | null; onClose: () => vo
 
 // Experience Card Component
 function ExperienceCard({experience: exp, logoSize, margin}: {
-    experience: Experience;
+    experience: WorkExperience;
     logoSize: number;
     margin: number
 }) {
@@ -258,43 +158,29 @@ function ExperienceCard({experience: exp, logoSize, margin}: {
     );
 }
 
-// TechBadge component reintroduced so TECH_ICONS is used
-function TechBadge({name}: { name: string }) {
-    const Icon = TECH_ICONS[name];
-    return (
-        <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow">
-            {Icon && <Icon className="w-4 h-4 icon-glow"/>}
-            <span className="text-sm">{name}</span>
-        </div>
-    );
-}
-
 // Entry Component
 export default function Highlights() {
-    const [selected, setSelected] = useState<Experience | null>(null);
+    const [selected, setSelected] = useState<WorkExperience | null>(null);
     const margin = CONFIG.logoSize + CONFIG.gap;
     return (
-        <div className="py-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-                <div className="mb-10">
-                    <h2 className="text-6xl sm:text-7xl uppercase tracking-tight">Experience</h2>
-                    <p className="text-muted-foreground">Building innovative solutions across simulation, CAD, and web
-                        technologies</p>
+        <ScreenContainer
+            title="Experience"
+            subtitle="Building innovative solutions across simulation, CAD, and web technologies"
+            titleClassName="uppercase"
+        >
+            <h3 className="text-2xl mb-4">Work History</h3>
+            <div className="grid lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                    <Timeline items={WORK_EXPERIENCES} isActive={e => e.current} onSelect={setSelected}>
+                        {exp => <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>}
+                    </Timeline>
                 </div>
-                <h3 className="text-2xl mb-4">Work History</h3>
-                <div className="grid lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2">
-                        <Timeline items={EXPERIENCES} isActive={e => e.current} onSelect={setSelected}>
-                            {exp => <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>}
-                        </Timeline>
-                    </div>
-                    <div className="flex flex-col">
-                        <MetricsSection/>
-                        <TechStackList/>
-                    </div>
+                <div className="flex flex-col">
+                    <MetricsSection/>
+                    <TechStackList/>
                 </div>
-                <DetailModal exp={selected} onClose={() => setSelected(null)}/>
             </div>
-        </div>
+            <DetailModal exp={selected} onClose={() => setSelected(null)}/>
+        </ScreenContainer>
     );
 }

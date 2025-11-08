@@ -1,5 +1,6 @@
 import {ReactNode} from 'react';
 import {PROFILE, SOCIAL_LINKS, SocialLink} from '@/core/data';
+import ScreenContainer from '@/components/ScreenContainer';
 
 
 interface ExternalLinkProps {
@@ -33,10 +34,6 @@ const ProfileSection = () => (
         <h1 className="text-3xl sm:text-5xl lg:text-6xl gradient-text leading-[0.9] tracking-tight w-full">
             {PROFILE.quote}
         </h1>
-        <p className="text-6xl">{PROFILE.name}</p>
-        <p className="text-lg sm:text-xl text-muted-foreground italic">
-            {PROFILE.tagline}
-        </p>
         <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {PROFILE.bio}
         </p>
@@ -68,12 +65,17 @@ const RoleSection = () => (
 
 export default function Home() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl w-full text-center space-y-8 animate-fadeIn">
+        <ScreenContainer
+            title={PROFILE.name}
+            subtitle={PROFILE.tagline}
+            headerAlign="center"
+            gradientTitle
+        >
+            <div className="max-w-4xl mx-auto text-center space-y-8 animate-fadeIn">
                 <ProfileSection/>
                 <SocialLinksSection/>
                 <RoleSection/>
             </div>
-        </div>
+        </ScreenContainer>
     );
 }
