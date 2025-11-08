@@ -1,38 +1,17 @@
 import {useState} from 'react';
-import {Award, Calendar, Github, MapPin, TrendingUp} from 'lucide-react';
+import {Award, Calendar, MapPin} from 'lucide-react';
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
 import type {IconType} from 'react-icons';
 import {Badge} from '@/components/Badge';
 import IconText from '@/components/IconText';
 import Card from '@/components/Card';
 import {DEFAULT_TIMELINE_CONFIG, Timeline} from '@/components/Timeline';
-import {TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
+import {METRICS, TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
 import ScreenContainer from '@/components/ScreenContainer';
 
 // Types
 
 const CONFIG = DEFAULT_TIMELINE_CONFIG;
-
-const METRICS = [
-    {
-        icon: Github,
-        title: 'GitHub',
-        stats: [
-            {value: '2,847', label: 'Commits'},
-            {value: '42', label: 'Repos'},
-            {value: '1,284', label: 'Stars'},
-            {value: '342', label: 'Followers'},
-        ],
-    },
-    {
-        icon: TrendingUp,
-        title: 'Impact',
-        stats: [
-            {value: '15', label: 'Projects'},
-            {value: '10k+', label: 'Users Reached'},
-        ],
-    },
-];
 
 // Metric Grid Component
 function MetricGrid({stats}: { stats: Array<{ value: string; label: string }> }) {

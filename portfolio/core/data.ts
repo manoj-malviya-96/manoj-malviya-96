@@ -1,4 +1,5 @@
-import {Github, Globe, Linkedin, Mail, Twitter} from "lucide-react";
+import type {LucideIcon} from 'lucide-react';
+import {Github, Globe, Linkedin, Mail, TrendingUp, Twitter} from "lucide-react";
 import {ComponentType} from "react";
 import type {IconType} from "react-icons";
 import {
@@ -154,6 +155,39 @@ export const TECH_STACK: Record<string, IconType> = {
     AWS: SiAmazon,
     Figma: SiFigma,
 };
+
+// Metrics types & data
+export interface MetricStat {
+    value: string;
+    label: string
+}
+
+export interface Metric {
+    icon: LucideIcon;
+    title: string;
+    stats: MetricStat[]
+}
+
+export const METRICS: Metric[] = [
+    {
+        icon: Github,
+        title: 'GitHub',
+        stats: [
+            {value: '2,847', label: 'Commits'},
+            {value: '42', label: 'Repos'},
+            {value: '1,284', label: 'Stars'},
+            {value: '342', label: 'Followers'},
+        ],
+    },
+    {
+        icon: TrendingUp,
+        title: 'Impact',
+        stats: [
+            {value: '15', label: 'Projects'},
+            {value: '10k+', label: 'Users Reached'},
+        ],
+    },
+];
 
 // Showcase data
 export interface ShowcaseItem {

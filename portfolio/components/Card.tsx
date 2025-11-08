@@ -11,8 +11,12 @@ export interface CardProps {
 
 export default function Card({icon: Icon, title, children, className = ''}: CardProps) {
     return (
-        <div className={`bg-muted rounded-xl p-5 glow-subtle card-glow ${className}`}>\n <div
-            className="flex items-center gap-2 mb-4">\n <Icon className="w-4 h-4 icon-glow"/>\n <h3
-            className="text-sm uppercase tracking-wider">{title}</h3>\n </div>\n {children}\n </div>
+        <div className={`bg-muted rounded-xl p-5 glow-subtle card-glow ${className}`}>
+            <div className="flex items-center gap-2 mb-4">
+                <Icon className="w-4 h-4 icon-glow"/>
+                <h3 className="text-sm uppercase tracking-wider">{title}</h3>
+            </div>
+            {children}
+        </div>
     );
 }
