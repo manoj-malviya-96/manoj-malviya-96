@@ -1,29 +1,10 @@
-import {ArrowUpRight, Github, Linkedin, Mail, Twitter} from 'lucide-react';
-
+import {ArrowUpRight} from 'lucide-react';
 import Link from '@/components/Link';
+import {FOOTER_DATA} from "@/core/data";
 
-const FOOTER_DATA = {
-    social: [
-        {icon: Github, href: 'https://github.com/yourusername', label: 'GitHub'},
-        {icon: Linkedin, href: 'https://linkedin.com/in/yourusername', label: 'LinkedIn'},
-        {icon: Twitter, href: 'https://twitter.com/yourusername', label: 'Twitter'},
-        {icon: Mail, href: 'mailto:your.email@example.com', label: 'Email'},
-    ] as const,
-    quickLinks: [
-        {label: 'Work Experience', href: '#workex'},
-        {label: 'Projects & Blogs', href: '#showcase'},
-        {label: 'Resume PDF', href: '#'},
-        {label: 'Contact', href: '#contact'},
-    ] as const,
-    profile: {
-        name: 'Manoj Malviya',
-        tagline: 'Product Builder & Tinkerer crafting innovative solutions in simulation, CAD, and web technologies.',
-        email: 'your.email@example.com',
-    } as const,
-} as const;
 
 export default function Footer() {
-    const {social, quickLinks, profile} = FOOTER_DATA;
+    const {social, quickLinks, profile} = FOOTER_DATA
 
     return (
         <footer className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
