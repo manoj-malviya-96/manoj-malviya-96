@@ -1,6 +1,5 @@
 import {ReactNode} from 'react';
-import {PROFILE, SOCIAL_LINKS} from '@/core/data';
-import type {SocialLink} from '@/core/types';
+import {PROFILE, SOCIAL_LINKS, SocialLink} from '@/core/data';
 
 
 interface ExternalLinkProps {
