@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {BookOpen, Code, ExternalLink, FileText, Search} from 'lucide-react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/atoms/dialog';
-import {Input} from "@/components/atoms/Input";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
+import {Input} from "@/components/Input";
 
 
 interface ShowcaseItem {

@@ -1,16 +1,6 @@
-import {ArrowUpRight, Github, Linkedin, LucideIcon, Mail, Twitter} from 'lucide-react';
-import {memo, ReactNode} from 'react';
+import {ArrowUpRight, Github, Linkedin, Mail, Twitter} from 'lucide-react';
 
-type SocialLink = {
-    icon: LucideIcon;
-    href: string;
-    label: string;
-};
-
-type QuickLink = {
-    label: string;
-    href: string;
-};
+import Link from '@/components/Link';
 
 const FOOTER_DATA = {
     social: [
@@ -31,17 +21,6 @@ const FOOTER_DATA = {
         email: 'your.email@example.com',
     } as const,
 } as const;
-
-const Link = memo<{ href: string; children: ReactNode; className?: string; external?: boolean }>(
-    function Link({href, children, className, external}) {
-        const props = external ? {target: '_blank', rel: 'noopener noreferrer'} : {};
-        return (
-            <a href={href} className={className} {...props}>
-                {children}
-            </a>
-        );
-    }
-);
 
 export default function Footer() {
     const {social, quickLinks, profile} = FOOTER_DATA;
@@ -91,6 +70,7 @@ export default function Footer() {
                                     href={href}
                                     external
                                     className="p-2.5 bg-background rounded-lg glow-subtle"
+                                    label={label}
                                 >
                                     <Icon className="w-4 h-4 icon-glow" aria-label={label}/>
                                 </Link>

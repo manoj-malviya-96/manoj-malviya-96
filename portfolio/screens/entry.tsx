@@ -5,8 +5,8 @@ import Showcase from '@/screens/showcase';
 import Footer from '@/screens/footer';
 import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
-import {Dialog, DialogContent} from '@/components/atoms/dialog';
-import {Input} from '@/components/atoms/Input';
+import {Dialog, DialogContent} from '@/components/dialog';
+import {Input} from '@/components/Input';
 
 
 type SectionId = 'home' | 'workex' | 'showcase';

@@ -1,6 +1,6 @@
-import {memo, ReactNode, useState} from 'react';
-import {Award, Calendar, FileText, Github, LucideIcon, MapPin, TrendingUp} from 'lucide-react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from '../components/atoms/dialog';
+import {useState} from 'react';
+import {Award, Calendar, Github, MapPin, TrendingUp} from 'lucide-react';
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
 import {
     SiAmazon,
     SiCplusplus,
@@ -19,7 +19,11 @@ import {
     SiTailwindcss,
     SiTypescript
 } from 'react-icons/si';
-import type {IconType} from "react-icons";
+import type {IconType} from 'react-icons';
+import Badge from '@/components/Badge';
+import IconText from '@/components/IconText';
+import Card from '@/components/Card';
+import {DEFAULT_TIMELINE_CONFIG, Timeline} from '@/components/Timeline';
 
 // Types
 type Experience = {
@@ -34,18 +38,7 @@ type Experience = {
     technologies: string[];
 };
 
-type TimelineConfig = {
-    dotSize: number;
-    logoSize: number;
-    gap: number;
-};
-
-// Constants
-const CONFIG: TimelineConfig = {
-    dotSize: 8,
-    logoSize: 48,
-    gap: 16,
-};
+const CONFIG = DEFAULT_TIMELINE_CONFIG;
 
 const EXPERIENCES: Experience[] = [
     {
@@ -145,14 +138,6 @@ const METRICS = [
         ],
     },
     {
-        icon: FileText,
-        title: 'Research',
-        stats: [
-            {value: '7', label: 'Publications'},
-            {value: '124', label: 'Citations'},
-        ],
-    },
-    {
         icon: TrendingUp,
         title: 'Impact',
         stats: [
@@ -162,149 +147,8 @@ const METRICS = [
     },
 ];
 
-// Utility functions
-const getTimelineOffset = (cfg: TimelineConfig) =>
-    (cfg.logoSize - cfg.dotSize) / 2;
-
-const getContentMargin = (cfg: TimelineConfig) =>
-    cfg.logoSize + cfg.gap;
-
-// Base components
-const Logo = memo<{ text: string; size: number }>(function Logo({text, size}) {
-    return (
-        <div
-            className="absolute left-0 top-0 rounded-lg bg-background border border-border flex items-center justify-center text-lg font-bold"
-            style={{width: size, height: size}}
-        >
-            {text}
-        </div>
-    );
-});
-
-const Badge = memo<{ children: ReactNode; active?: boolean }>(function Badge({children, active}) {
-    return (
-        <span
-            className={`px-2 py-1 rounded-md text-xs whitespace-nowrap ${active ? 'bg-foreground text-background' : 'bg-muted'}`}>
-            {children}
-        </span>
-    );
-});
-
-const IconText = memo<{ icon: LucideIcon; children: ReactNode }>(function IconText({icon: Icon, children}) {
-    return (
-        <span className="flex items-center gap-1">
-            <Icon className="w-3 h-3"/>
-            {children}
-        </span>
-    );
-});
-
-const Card = memo<{ icon: LucideIcon; title: string; children: ReactNode }>(function Card({
-                                                                                              icon: Icon,
-                                                                                              title,
-                                                                                              children
-                                                                                          }) {
-    return (
-        <div className="bg-muted rounded-xl p-5 glow-subtle card-glow">
-            <div className="flex items-center gap-2 mb-4">
-                <Icon className="w-4 h-4 icon-glow"/>
-                <h3 className="text-sm uppercase tracking-wider">{title}</h3>
-            </div>
-            {children}
-        </div>
-    );
-});
-
-const TechBadge = memo<{ name: string }>(function TechBadge({name}) {
-    const Icon = TECH_ICONS[name];
-    return (
-        <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow">
-            {Icon && <Icon className="w-4 h-4 icon-glow"/>}
-            <span className="text-sm">{name}</span>
-        </div>
-    );
-});
-
-// Experience Card Component
-const ExperienceCard = memo<{
-    experience: Experience;
-    logoSize: number;
-    margin: number;
-}>(function ExperienceCard({experience: exp, logoSize, margin}) {
-    return (
-        <div className="relative">
-            <Logo text={exp.logo} size={logoSize}/>
-
-            <div style={{marginLeft: margin}}>
-                <div className="flex items-start justify-between mb-2 gap-4">
-                    <div>
-                        <h3 className="text-xl">{exp.title}</h3>
-                        <p className="text-foreground text-sm">{exp.company}</p>
-                    </div>
-                    {exp.current && <Badge active>Current</Badge>}
-                </div>
-
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 flex-wrap">
-                    <IconText icon={Calendar}>{exp.period}</IconText>
-                    <IconText icon={MapPin}>{exp.location}</IconText>
-                </div>
-
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                    {exp.description}
-                </p>
-            </div>
-        </div>
-    );
-});
-
-// Timeline Component
-function Timeline<T>({
-                         items,
-                         children,
-                         isActive = () => false,
-                         onSelect,
-                         config = CONFIG,
-                     }: {
-    items: T[];
-    children: (item: T) => ReactNode;
-    isActive?: (item: T) => boolean;
-    onSelect?: (item: T) => void;
-    config?: TimelineConfig;
-}) {
-    const offset = getTimelineOffset(config);
-
-    return (
-        <div className="relative">
-            <div className="absolute top-0 bottom-0 w-0.5 bg-border" style={{left: offset}}/>
-
-            {items.map((item, i) => {
-                const active = isActive(item);
-                const Container = onSelect ? 'button' : 'div';
-                const props = onSelect ? {onClick: () => onSelect(item)} : {};
-
-                return (
-                    <div key={i} className={i < items.length - 1 ? 'pb-8' : ''}>
-                        <div
-                            className={`absolute w-2 h-2 rounded-full ${active ? 'bg-foreground animate-pulse pulse-glow' : 'bg-muted-foreground'}`}
-                            style={{left: offset, top: 24}}
-                        />
-
-                        <Container
-                            {...props}
-                            className={`${onSelect ? 'text-left' : ''} bg-muted rounded-xl p-5 glow-accent card-glow`}
-                            style={{marginLeft: getContentMargin(config)}}
-                        >
-                            {children(item)}
-                        </Container>
-                    </div>
-                );
-            })}
-        </div>
-    );
-}
-
 // Metric Grid Component
-const MetricGrid = memo<{ stats: Array<{ value: string; label: string }> }>(function MetricGrid({stats}) {
+function MetricGrid({stats}: { stats: Array<{ value: string; label: string }> }) {
     return (
         <div className="grid grid-cols-2 gap-3">
             {stats.map(s => (
@@ -315,10 +159,10 @@ const MetricGrid = memo<{ stats: Array<{ value: string; label: string }> }>(func
             ))}
         </div>
     );
-});
+}
 
 // Metrics Section Component
-const MetricsSection = memo(function MetricsSection() {
+function MetricsSection() {
     return (
         <div className="space-y-4">
             {METRICS.map(m => (
@@ -328,46 +172,37 @@ const MetricsSection = memo(function MetricsSection() {
             ))}
         </div>
     );
-});
+}
 
 // Tech Stack Component
-const TechStack = memo(function TechStack() {
+function TechStackList() {
     return (
         <div className="mt-8">
             <h3 className="text-2xl mb-4">Tech Stack</h3>
             <div className="flex flex-wrap gap-3">
-                {TECH_STACK.map(name => (
-                    <TechBadge key={name} name={name}/>
-                ))}
+                {TECH_STACK.map(name => <TechBadge key={name} name={name}/>)}
             </div>
         </div>
     );
-});
+}
 
 // Detail Modal Component
-const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(function DetailModal({exp, onClose}) {
+function DetailModal({exp, onClose}: { exp: Experience | null; onClose: () => void }) {
     if (!exp) return null;
-
     return (
         <Dialog open onOpenChange={onClose}>
             <DialogContent className="bg-background border-border max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl">
                 <DialogHeader>
                     <DialogTitle className="text-3xl mb-2">{exp.title}</DialogTitle>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span>{exp.company}</span>
-                        <span>•</span>
-                        <span>{exp.location}</span>
-                        <span>•</span>
-                        <span>{exp.period}</span>
+                        <span>{exp.company}</span><span>•</span><span>{exp.location}</span><span>•</span><span>{exp.period}</span>
                     </div>
                 </DialogHeader>
-
                 <div className="space-y-6 mt-6">
                     <div>
                         <h3 className="text-lg mb-2">About the Role</h3>
                         <p className="text-muted-foreground leading-relaxed">{exp.description}</p>
                     </div>
-
                     <div>
                         <h3 className="text-lg mb-3">Key Achievements</h3>
                         <ul className="space-y-2">
@@ -379,56 +214,83 @@ const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(functi
                             ))}
                         </ul>
                     </div>
-
                     <div>
                         <h3 className="text-lg mb-3">Technologies Used</h3>
                         <div className="flex flex-wrap gap-2">
-                            {exp.technologies.map(t => (
-                                <Badge key={t}>{t}</Badge>
-                            ))}
+                            {exp.technologies.map(t => <Badge key={t}>{t}</Badge>)}
                         </div>
                     </div>
                 </div>
             </DialogContent>
         </Dialog>
     );
-});
+}
+
+// Experience Card Component
+function ExperienceCard({experience: exp, logoSize, margin}: {
+    experience: Experience;
+    logoSize: number;
+    margin: number
+}) {
+    return (
+        <div className="relative">
+            <div
+                className="absolute left-0 top-0 rounded-lg bg-background border border-border flex items-center justify-center text-lg font-bold"
+                style={{width: logoSize, height: logoSize}}
+            >
+                {exp.logo}
+            </div>
+            <div style={{marginLeft: margin}}>
+                <div className="flex items-start justify-between mb-2 gap-4">
+                    <div>
+                        <h3 className="text-xl">{exp.title}</h3>
+                        <p className="text-foreground text-sm">{exp.company}</p>
+                    </div>
+                    {exp.current && <Badge active>Current</Badge>}
+                </div>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 flex-wrap">
+                    <IconText icon={Calendar}>{exp.period}</IconText>
+                    <IconText icon={MapPin}>{exp.location}</IconText>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{exp.description}</p>
+            </div>
+        </div>
+    );
+}
+
+// TechBadge component reintroduced so TECH_ICONS is used
+function TechBadge({name}: { name: string }) {
+    const Icon = TECH_ICONS[name];
+    return (
+        <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg glow-subtle card-glow">
+            {Icon && <Icon className="w-4 h-4 icon-glow"/>}
+            <span className="text-sm">{name}</span>
+        </div>
+    );
+}
 
 // Entry Component
 export default function Highlights() {
     const [selected, setSelected] = useState<Experience | null>(null);
-    const margin = getContentMargin(CONFIG);
-
+    const margin = CONFIG.logoSize + CONFIG.gap;
     return (
         <div className="py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="mb-10">
                     <h2 className="text-6xl sm:text-7xl uppercase tracking-tight">Experience</h2>
-                    <p className="text-muted-foreground">
-                        Building innovative solutions across simulation, CAD, and web technologies
-                    </p>
+                    <p className="text-muted-foreground">Building innovative solutions across simulation, CAD, and web
+                        technologies</p>
                 </div>
-
                 <h3 className="text-2xl mb-4">Work History</h3>
                 <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
-                        <Timeline
-                            items={EXPERIENCES}
-                            isActive={e => e.current}
-                            onSelect={setSelected}
-                        >
-                            {exp => (
-                                <ExperienceCard
-                                    experience={exp}
-                                    logoSize={CONFIG.logoSize}
-                                    margin={margin}
-                                />
-                            )}
+                        <Timeline items={EXPERIENCES} isActive={e => e.current} onSelect={setSelected}>
+                            {exp => <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>}
                         </Timeline>
                     </div>
                     <div className="flex flex-col">
                         <MetricsSection/>
-                        <TechStack/>
+                        <TechStackList/>
                     </div>
                 </div>
                 <DetailModal exp={selected} onClose={() => setSelected(null)}/>
