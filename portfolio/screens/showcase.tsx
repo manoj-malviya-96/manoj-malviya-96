@@ -20,7 +20,7 @@ interface ShowcaseItem {
     readTime?: string;
 }
 
-export function Showcase() {
+export default function Showcase() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedType, setSelectedType] = useState<'all' | 'project' | 'blog'>('all');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');

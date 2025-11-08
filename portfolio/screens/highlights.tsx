@@ -1,6 +1,6 @@
 import {memo, ReactNode, useState} from 'react';
 import {Award, Calendar, FileText, Github, LucideIcon, MapPin, TrendingUp} from 'lucide-react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from './atoms/dialog';
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from '../components/atoms/dialog';
 import {
     SiAmazon,
     SiCplusplus,
@@ -334,7 +334,7 @@ const MetricsSection = memo(function MetricsSection() {
 const TechStack = memo(function TechStack() {
     return (
         <div className="mt-8">
-            <h3 className="text-2xl gradient-text mb-4">Tech Stack</h3>
+            <h3 className="text-2xl mb-4">Tech Stack</h3>
             <div className="flex flex-wrap gap-3">
                 {TECH_STACK.map(name => (
                     <TechBadge key={name} name={name}/>
@@ -394,8 +394,8 @@ const DetailModal = memo<{ exp: Experience | null; onClose: () => void }>(functi
     );
 });
 
-// Main Component
-export function WorkEx() {
+// Entry Component
+export default function Highlights() {
     const [selected, setSelected] = useState<Experience | null>(null);
     const margin = getContentMargin(CONFIG);
 
@@ -409,6 +409,7 @@ export function WorkEx() {
                     </p>
                 </div>
 
+                <h3 className="text-2xl mb-4">Work History</h3>
                 <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
                         <Timeline
@@ -425,11 +426,11 @@ export function WorkEx() {
                             )}
                         </Timeline>
                     </div>
-
-                    <MetricsSection/>
+                    <div className="flex flex-col">
+                        <MetricsSection/>
+                        <TechStack/>
+                    </div>
                 </div>
-
-                <TechStack/>
                 <DetailModal exp={selected} onClose={() => setSelected(null)}/>
             </div>
         </div>

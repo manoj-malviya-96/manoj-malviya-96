@@ -1,5 +1,5 @@
-import Main from '@/components/Main';
+import Entry from '@/screens/entry';
 
 export default function App() {
-  return <Main/>;
+    return <Entry/>;
 }

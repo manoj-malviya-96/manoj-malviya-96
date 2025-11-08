@@ -1,5 +1,5 @@
-import { Github, Linkedin, Mail, Twitter, ArrowUpRight, LucideIcon } from 'lucide-react';
-import { memo, useMemo, ReactNode } from 'react';
+import {ArrowUpRight, Github, Linkedin, LucideIcon, Mail, Twitter} from 'lucide-react';
+import {memo, ReactNode} from 'react';
 
 type SocialLink = {
     icon: LucideIcon;
@@ -14,16 +14,16 @@ type QuickLink = {
 
 const FOOTER_DATA = {
     social: [
-        { icon: Github, href: 'https://github.com/yourusername', label: 'GitHub' },
-        { icon: Linkedin, href: 'https://linkedin.com/in/yourusername', label: 'LinkedIn' },
-        { icon: Twitter, href: 'https://twitter.com/yourusername', label: 'Twitter' },
-        { icon: Mail, href: 'mailto:your.email@example.com', label: 'Email' },
+        {icon: Github, href: 'https://github.com/yourusername', label: 'GitHub'},
+        {icon: Linkedin, href: 'https://linkedin.com/in/yourusername', label: 'LinkedIn'},
+        {icon: Twitter, href: 'https://twitter.com/yourusername', label: 'Twitter'},
+        {icon: Mail, href: 'mailto:your.email@example.com', label: 'Email'},
     ] as const,
     quickLinks: [
-        { label: 'Work Experience', href: '#workex' },
-        { label: 'Projects & Blogs', href: '#showcase' },
-        { label: 'Resume PDF', href: '#' },
-        { label: 'Contact', href: '#contact' },
+        {label: 'Work Experience', href: '#workex'},
+        {label: 'Projects & Blogs', href: '#showcase'},
+        {label: 'Resume PDF', href: '#'},
+        {label: 'Contact', href: '#contact'},
     ] as const,
     profile: {
         name: 'Manoj Malviya',
@@ -33,8 +33,8 @@ const FOOTER_DATA = {
 } as const;
 
 const Link = memo<{ href: string; children: ReactNode; className?: string; external?: boolean }>(
-    function Link({ href, children, className, external }) {
-        const props = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+    function Link({href, children, className, external}) {
+        const props = external ? {target: '_blank', rel: 'noopener noreferrer'} : {};
         return (
             <a href={href} className={className} {...props}>
                 {children}
@@ -43,8 +43,8 @@ const Link = memo<{ href: string; children: ReactNode; className?: string; exter
     }
 );
 
-export function Footer() {
-    const { social, quickLinks, profile } = FOOTER_DATA;
+export default function Footer() {
+    const {social, quickLinks, profile} = FOOTER_DATA;
 
     return (
         <footer className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
@@ -59,7 +59,7 @@ export function Footer() {
                             href={`mailto:${profile.email}`}
                             className="inline-flex items-center gap-1.5 text-sm text-foreground hover:text-muted-foreground transition-all"
                         >
-                            Get in touch <ArrowUpRight className="w-3.5 h-3.5" />
+                            Get in touch <ArrowUpRight className="w-3.5 h-3.5"/>
                         </Link>
                     </div>
 
@@ -85,21 +85,22 @@ export function Footer() {
                             Follow my work and connect with me
                         </p>
                         <div className="flex flex-wrap gap-2">
-                            {social.map(({ icon: Icon, href, label }) => (
+                            {social.map(({icon: Icon, href, label}) => (
                                 <Link
                                     key={label}
                                     href={href}
                                     external
                                     className="p-2.5 bg-background rounded-lg glow-subtle"
                                 >
-                                    <Icon className="w-4 h-4 icon-glow" aria-label={label} />
+                                    <Icon className="w-4 h-4 icon-glow" aria-label={label}/>
                                 </Link>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div
+                    className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
                     <p className="text-muted-foreground text-sm">
                         &copy; 2025 Manoj Malviya. All rights reserved.
                     </p>
