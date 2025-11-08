@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { WorkEx } from '@/components/WorkEx';
 import { Showcase } from '@/components/Showcase';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/footer';
 import { Home as HomeIcon, Briefcase, FolderOpen, Sun, Moon, Search } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/dialog';
 import {Input} from "@/components/Input";
