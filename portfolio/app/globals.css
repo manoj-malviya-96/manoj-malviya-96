@@ -3,7 +3,9 @@
 /* Static design tokens */
 @theme static {
     --color-light: oklch(0.98 0.003 115.93);
-    --color-dark: oklch(0.182 0 89.876);
+    --color-dark: oklch(0.15 0 89.876);
+    --color-muted: oklch(0.647 0 89.876 / 0.4);
+
     --color-brand-light: oklch(0.656 0.178 301.931 / 0.8);
     --color-brand-dark: oklch(0.457 0.15 301.931 / 0.8);
     --color-success: oklch(0.857 0.289 142.573 / 0.7);
@@ -14,112 +16,17 @@
     --animate-ripple: ripple 1s var(--ease-default);
 }
 
-/* Map commonly-used semantic variables to the static tokens */
-:root {
-    --background: var(--color-light);
-    --foreground: var(--color-dark);
-    --muted: oklch(0.95 0.01 115); /* simplified blend */
-    --muted-foreground: oklch(0.45 0 89 / 0.7);
-    --border: oklch(0.85 0 89 / 0.25);
-}
-
 /* Base styles */
 @layer base {
     html {
-        font-size: 16px;
+        @apply scroll-smooth;
     }
 
     body {
-        background-color: var(--background);
-        color: var(--foreground);
+        @apply bg-dark text-light font-sans leading-relaxed;
     }
 }
 
-/* Minimal utilities bound to the static tokens */
-@layer utilities {
-    .bg-light {
-        background-color: var(--color-light);
-    }
-
-    .bg-dark {
-        background-color: var(--color-dark);
-    }
-
-    .text-light {
-        color: var(--color-light);
-    }
-
-    .text-dark {
-        color: var(--color-dark);
-    }
-
-    .text-foreground {
-        color: var(--foreground);
-    }
-
-    .text-background {
-        color: var(--background);
-    }
-
-    .bg-background {
-        background-color: var(--background);
-    }
-
-    .bg-foreground {
-        background-color: var(--foreground);
-    }
-
-    .text-muted-foreground {
-        color: var(--muted-foreground);
-    }
-
-    .bg-muted {
-        background-color: var(--muted);
-    }
-
-    .bg-border {
-        background-color: var(--border);
-    }
-
-    .border-border {
-        border-color: var(--border);
-    }
-}
-
-/* Typography defaults when no Tailwind text-* overrides are present */
-@layer base {
-    :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        h3 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        h4, p, label, button, input {
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-        }
-
-        label, button {
-            font-weight: 500;
-        }
-    }
-}
-
-/* Subtle effects (explicit CSS to avoid parser issues with @apply in pseudo elements) */
 .glow-subtle {
     transition: all 300ms var(--ease-default);
 }
@@ -219,3 +126,4 @@
     transform: scale(1.1);
     filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
 }
+

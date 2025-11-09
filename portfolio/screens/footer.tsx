@@ -5,7 +5,6 @@ import {FOOTER_DATA} from "@/core/data";
 
 export default function Footer() {
     const {social, quickLinks, profile} = FOOTER_DATA
-
     return (
         <footer className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">

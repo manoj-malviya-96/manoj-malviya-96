@@ -121,10 +121,8 @@ export default function Entry() {
             {/* Sections */}
             <div>
                 <ScreenContainer
-                    ref={homeRef}
                     id="home"
-                    title="Entry"
-                    subtitle="Building products & experiences"
+                    ref={homeRef}
                     headerAlign="center"
                     className="bg-dark text-light"
                 >
@@ -135,7 +133,6 @@ export default function Entry() {
                     id="workex"
                     title="Experience"
                     subtitle="Roles, impact, and technologies"
-                    titleClassName="uppercase"
                     className="bg-light text-dark"
                 >
                     <Highlights/>
@@ -145,7 +142,6 @@ export default function Entry() {
                     id="showcase"
                     title="Projects & Blogs"
                     subtitle="Exploring ideas through code and writing"
-                    className="bg-dark text-light"
                 >
                     <Showcase/>
                 </ScreenContainer>

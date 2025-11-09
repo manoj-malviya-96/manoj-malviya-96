@@ -26,24 +26,19 @@ export const ScreenContainer = forwardRef<HTMLElement, ScreenContainerProps>(fun
     const headerAlignClass = headerAlign === 'center' ? 'text-center' : undefined;
 
     return (
-        <section ref={ref} id={id} className={cn('py-20 px-4 sm:px-6 lg:px-8', className)}>
-            <div className={cn('max-w-6xl mx-auto')}>
-                {(title || subtitle) && (
-                    <div className={cn('mb-10', headerAlign === 'center' && 'text-center')}>
-                        {title && (
-                            <h2 className={cn('text-6xl sm:text-7xl tracking-tight mb-2', headerAlignClass, titleClassName)}>
-                                {title}
-                            </h2>
-                        )}
-
-                        {subtitle && (
-                            <p className={cn('text-muted-foreground', headerAlignClass, subtitleClassName)}>{subtitle}</p>
-                        )}
-                    </div>
-                )}
-
-                {children}
-            </div>
+        <section ref={ref} id={id}
+                 className={cn('py-20 px-4 sm:px-6 lg:px-8',
+                     'min-h-screen flex flex-col justify-center',
+                     className)}>
+            {title && (
+                <h2 className={cn('text-6xl sm:text-7xl tracking-tight mb-2 w-full', headerAlignClass, titleClassName)}>
+                    {title}
+                </h2>
+            )}
+            {subtitle && (
+                <p className={cn('text-muted-foreground', headerAlignClass, subtitleClassName)}>{subtitle}</p>
+            )}
+            {children}
         </section>
     );
 });

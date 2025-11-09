@@ -25,7 +25,7 @@ export function NavBar<T extends string>({
     return (
         <nav className="fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 max-w-xl px-2">
             <div
-                className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle shadow-lg">
+                className=" backdrop-blur-xl rounded-full px-4 py-2 bg-muted glow-subtle shadow-lg">
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1 px-2 border-r-2">
                         {items.map(item => {
