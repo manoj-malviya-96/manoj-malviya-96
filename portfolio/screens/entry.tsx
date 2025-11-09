@@ -7,7 +7,7 @@ import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
 import {Input} from '@/components/Input';
 import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
-import {BottomNav, type NavItem as BottomNavItem} from '@/components/BottomNav';
+import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
 
 
 type SectionId = 'home' | 'workex' | 'showcase';
@@ -167,7 +167,7 @@ export default function Entry() {
             <Footer/>
 
             {/* Unified Bottom Navigation */}
-            <BottomNav
+            <NavBar
                 items={navItems as BottomNavItem<SectionId>[]}
                 activeId={activeSection}
                 onNavigate={scrollToSection}

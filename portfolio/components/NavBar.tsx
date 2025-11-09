@@ -8,7 +8,7 @@ export type NavItem<T extends string> = {
     icon: React.ComponentType<{ className?: string }>;
 };
 
-interface BottomNavProps<T extends string> {
+interface NavBarProps<T extends string> {
     items: NavItem<T>[];
     activeId: T;
     onNavigate: (id: T) => void;
@@ -20,17 +20,17 @@ interface BottomNavProps<T extends string> {
     LightIcon: React.ComponentType<{ className?: string }>;
 }
 
-export function BottomNav<T extends string>({
-                                                items,
-                                                activeId,
-                                                onNavigate,
-                                                onOpenSearch,
-                                                onToggleTheme,
-                                                isDark,
-                                                SearchIcon,
-                                                DarkIcon,
-                                                LightIcon,
-                                            }: BottomNavProps<T>) {
+export function NavBar<T extends string>({
+                                             items,
+                                             activeId,
+                                             onNavigate,
+                                             onOpenSearch,
+                                             onToggleTheme,
+                                             isDark,
+                                             SearchIcon,
+                                             DarkIcon,
+                                             LightIcon,
+                                         }: NavBarProps<T>) {
     return (
         <nav className="fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 max-w-xl px-2">
             <div
