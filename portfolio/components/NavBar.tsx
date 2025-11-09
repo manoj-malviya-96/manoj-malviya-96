@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import {cn} from '@/components/utils';
-import {Moon, Search, Sun} from "lucide-react";
+import {Search} from "lucide-react";
 
 export type NavItem<T extends string> = {
     id: T;
@@ -14,8 +14,6 @@ interface NavBarProps<T extends string> {
     activeId: T;
     onNavigate: (id: T) => void;
     onOpenSearch: () => void;
-    onToggleTheme: () => void;
-    isDark: boolean;
 }
 
 export function NavBar<T extends string>({
@@ -23,8 +21,6 @@ export function NavBar<T extends string>({
                                              activeId,
                                              onNavigate,
                                              onOpenSearch,
-                                             onToggleTheme,
-                                             isDark,
                                          }: NavBarProps<T>) {
     return (
         <nav className="fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 max-w-xl px-2">
@@ -59,18 +55,9 @@ export function NavBar<T extends string>({
                         >
                             <Search className="w-5 h-5 icon-glow"/>
                         </button>
-                        <button
-                            onClick={onToggleTheme}
-                            aria-label="Toggle theme"
-                            className="p-3 rounded-full hover:bg-accent glow-subtle transition-colors"
-                        >
-                            {isDark ? <Moon className="w-5 h-5 icon-glow"/> :
-                                <Sun className="w-5 h-5 icon-glow"/>}
-                        </button>
                     </div>
                 </div>
             </div>
         </nav>
     );
 }
-

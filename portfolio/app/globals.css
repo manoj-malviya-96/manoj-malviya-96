@@ -1,51 +1,94 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+/* Static design tokens */
+@theme static {
+    --color-light: oklch(0.98 0.003 115.93);
+    --color-dark: oklch(0.182 0 89.876);
+    --color-brand-light: oklch(0.656 0.178 301.931 / 0.8);
+    --color-brand-dark: oklch(0.457 0.15 301.931 / 0.8);
+    --color-success: oklch(0.857 0.289 142.573 / 0.7);
+    --color-danger: oklch(0.665 0.222 23.32 / 0.7);
+    --radius-default: 0.5rem;
+    --spacing-default: 0.47rem;
+    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --animate-ripple: ripple 1s var(--ease-default);
+}
 
+/* Map commonly-used semantic variables to the static tokens */
 :root {
-    --font-size: 16px;
-    --background: #ffffff;
-    --foreground: #1a1a1a;
-    --muted: rgba(236, 236, 240, 0.69);
-    --muted-foreground: rgba(0, 0, 0, 0.6);
-    --border: rgba(0, 0, 0, 0.1);
-    --radius: 0.625rem;
+    --background: var(--color-light);
+    --foreground: var(--color-dark);
+    --muted: oklch(0.95 0.01 115); /* simplified blend */
+    --muted-foreground: oklch(0.45 0 89 / 0.7);
+    --border: oklch(0.85 0 89 / 0.25);
 }
 
-.dark {
-    --background: #0a0a0a;
-    --foreground: #ffffff;
-    --muted: #1a1a1a;
-    --muted-foreground: rgba(255, 255, 255, 0.7);
-    --border: #333333;
-}
-
-@theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-border: var(--border);
-    --radius-lg: var(--radius);
-}
-
+/* Base styles */
 @layer base {
-    * {
-        @apply border-border;
+    html {
+        font-size: 16px;
     }
 
     body {
-        @apply bg-background text-foreground;
+        background-color: var(--background);
+        color: var(--foreground);
     }
 }
 
-/**
- * Base typography
- */
+/* Minimal utilities bound to the static tokens */
+@layer utilities {
+    .bg-light {
+        background-color: var(--color-light);
+    }
+
+    .bg-dark {
+        background-color: var(--color-dark);
+    }
+
+    .text-light {
+        color: var(--color-light);
+    }
+
+    .text-dark {
+        color: var(--color-dark);
+    }
+
+    .text-foreground {
+        color: var(--foreground);
+    }
+
+    .text-background {
+        color: var(--background);
+    }
+
+    .bg-background {
+        background-color: var(--background);
+    }
+
+    .bg-foreground {
+        background-color: var(--foreground);
+    }
+
+    .text-muted-foreground {
+        color: var(--muted-foreground);
+    }
+
+    .bg-muted {
+        background-color: var(--muted);
+    }
+
+    .bg-border {
+        background-color: var(--border);
+    }
+
+    .border-border {
+        border-color: var(--border);
+    }
+}
+
+/* Typography defaults when no Tailwind text-* overrides are present */
 @layer base {
-    :where(
-    :not(:has([class*=" text-"]), :not(:has([class^="text-"])))
-  ) {
+    :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
         h1 {
             font-size: 1.5rem;
             font-weight: 500;
@@ -76,148 +119,80 @@
     }
 }
 
-html {
-    font-size: var(--font-size);
-}
-
-/* Gradient text utilities */
-.gradient-text {
-    @apply bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent;
-    background-size: 200% auto;
-    animation: gradientShift 8s ease-in-out infinite;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-.dark .gradient-text {
-    @apply bg-gradient-to-r from-white via-white/10 to-white bg-clip-text text-transparent;
-    background-size: 200% auto;
-}
-
-:root:not(.dark) .gradient-text {
-    @apply bg-gradient-to-r from-black via-white/10 to-black bg-clip-text text-transparent;
-    background-size: 200% auto;
-}
-
-/* Light-based glow effects */
+/* Subtle effects (explicit CSS to avoid parser issues with @apply in pseudo elements) */
 .glow-subtle {
-    @apply transition-all duration-300 ease-out;
+    transition: all 300ms var(--ease-default);
 }
 
-.dark .glow-subtle:hover {
-    @apply shadow-[0_0_20px_rgba(255,255,255,0.1),0_0_40px_rgba(255,255,255,0.05)] shadow-inner;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1),
-    0 0 40px rgba(255, 255, 255, 0.05),
-    inset 0 0 20px rgba(255, 255, 255, 0.03);
-}
-
-:root:not(.dark) .glow-subtle:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08),
-    0 0 40px rgba(0, 0, 0, 0.04),
-    inset 0 0 20px rgba(0, 0, 0, 0.02);
+.glow-subtle:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.10), 0 0 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(0, 0, 0, 0.03);
 }
 
 .glow-accent {
-    @apply transition-all duration-300 ease-out;
+    transition: all 300ms var(--ease-default);
+    transform: translateZ(0);
 }
 
-.dark .glow-accent:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15),
-    0 0 60px rgba(255, 255, 255, 0.08),
-    0 8px 32px rgba(255, 255, 255, 0.12);
+.glow-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15), 0 0 60px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
-:root:not(.dark) .glow-accent:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.12),
-    0 0 60px rgba(0, 0, 0, 0.06),
-    0 8px 32px rgba(0, 0, 0, 0.08);
-}
-
-/* Pulse glow for current items */
 @keyframes pulseGlow {
     0%, 100% {
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
     50% {
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
     }
 }
 
-.dark .pulse-glow {
-    @apply animate-pulse;
-    animation: pulseGlow 2s ease-in-out infinite;
+.pulse-glow {
+    animation: pulseGlow 2s var(--ease-default) infinite;
 }
 
-:root:not(.dark) .pulse-glow {
-    @apply animate-pulse;
-    animation: pulseGlow 2s ease-in-out infinite;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Card glow on hover */
 .card-glow {
-    @apply relative transition-all duration-300 ease-out;
+    position: relative;
+    transition: all 300ms var(--ease-default);
 }
 
 .card-glow::before {
-    @apply content-[''] absolute inset-0 rounded-[inherit] p-px opacity-0 transition-opacity duration-300;
-    background: linear-gradient(135deg, transparent, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    transition: opacity 300ms var(--ease-default);
+    background-image: linear-gradient(135deg, transparent 0%, transparent 100%);
 }
 
-.dark .card-glow:hover::before {
-    @apply opacity-100;
-    background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.3),
-            rgba(255, 255, 255, 0.1)
-    );
+.card-glow:hover::before {
+    opacity: 1;
+    background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.08) 100%);
 }
 
-:root:not(.dark) .card-glow:hover::before {
-    @apply opacity-100;
-    background: linear-gradient(
-            135deg,
-            rgba(0, 0, 0, 0.2),
-            rgba(0, 0, 0, 0.05)
-    );
-}
-
-/* Timeline dot glow */
 .timeline-dot {
-    @apply relative;
+    position: relative;
 }
 
 .timeline-dot::after {
-    @apply content-[''] absolute -inset-1 rounded-full opacity-0 transition-opacity duration-300;
-    background: radial-gradient(
-            circle,
-            currentColor 0%,
-            transparent 70%
-    );
+    content: '';
+    position: absolute;
+    inset: -0.25rem;
+    border-radius: 9999px;
+    opacity: 0;
+    transition: opacity 300ms var(--ease-default);
+    background-image: radial-gradient(circle at center, currentColor 0%, transparent 70%);
 }
 
 .timeline-dot:hover::after {
-    @apply opacity-30;
+    opacity: 0.3;
 }
 
-/* Fluid animations */
 @keyframes float {
-    0%,
-    100% {
-        transform: translateY(0px);
+    0%, 100% {
+        transform: translateY(0);
     }
     50% {
         transform: translateY(-10px);
@@ -235,48 +210,12 @@ html {
     }
 }
 
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-}
-
-.animate-float {
-    animation: float 3s ease-in-out infinite;
-}
-
-.animate-fadeIn {
-    @apply animate-none;
-    animation: fadeIn 0.6s ease-out forwards;
-}
-
-.shimmer {
-    @apply bg-gradient-to-r from-transparent via-white/10 to-transparent;
-    background-size: 1000px 100%;
-    animation: shimmer 3s infinite;
-}
-
-/* Icon glow on hover */
+/* Additional utility for icon scaling and glow */
 .icon-glow {
-    @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+    transition: transform 300ms var(--ease-default), filter 300ms var(--ease-default);
 }
 
-.dark .icon-glow:hover {
-    @apply scale-110;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-}
-
-:root:not(.dark) .icon-glow:hover {
-    @apply scale-110;
-    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
-}
-
-/* Smooth transitions */
-button,
-a,
-input {
-    @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+.icon-glow:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
 }

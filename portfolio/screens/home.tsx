@@ -32,7 +32,7 @@ export default function Home() {
     return (
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fadeIn">
             <div className="space-y-6">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl gradient-text leading-[0.9] tracking-tight w-full">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl leading-[0.9] tracking-tight w-full">
                     {PROFILE.quote}
                 </h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">

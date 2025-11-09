@@ -7,7 +7,7 @@ import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Search} from 'lucide-react';
 import {Input} from '@/components/Input';
 import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
-import {NavBar, type NavItem as NavBarItem} from '@/components/NavBar';
+import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
 import ScreenContainer from '@/components/ScreenContainer';
 
 
@@ -19,40 +19,6 @@ type NavItem = {
     label: string;
     icon: React.ComponentType<{ className?: string }>;
 };
-
-// Hook: theme management (keeps DOM access inside the hook)
-function useTheme(defaultPref = true) {
-    // compute initial theme synchronously (safe in client components)
-    const getInitial = () => {
-        try {
-            const saved = localStorage.getItem('theme');
-            const prefersDark = typeof window !== 'undefined' && window.matchMedia
-                ? window.matchMedia('(prefers-color-scheme: dark)').matches
-                : false;
-            return saved === 'dark' || (saved === null && prefersDark) || defaultPref;
-        } catch {
-            return defaultPref;
-        }
-    };
-
-    const [isDark, setIsDark] = useState<boolean>(getInitial);
-
-    // apply class and persist whenever isDark changes
-    useEffect(() => {
-        try {
-            document.documentElement.classList.toggle('dark', isDark);
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        } catch {
-            // ignore storage/dom errors
-        }
-    }, [isDark]);
-
-    const toggleTheme = useCallback(() => {
-        setIsDark((prev) => !prev);
-    }, []);
-
-    return {isDark, toggleTheme, setIsDark};
-}
 
 // Hook: global keyboard shortcuts (keeps window listeners inside the hook)
 function useGlobalShortcuts(onOpenSearch: () => void, onCloseSearch: () => void) {
@@ -126,7 +92,6 @@ export default function Entry() {
     }), [homeRef, workexRef, showcaseRef]);
 
     const [activeSection, setActiveSection] = useState<SectionId>('home');
-    const {isDark, toggleTheme} = useTheme(true);
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -158,7 +123,10 @@ export default function Entry() {
                 <ScreenContainer
                     ref={homeRef}
                     id="home"
+                    title="Entry"
+                    subtitle="Building products & experiences"
                     headerAlign="center"
+                    className="bg-dark text-light"
                 >
                     <Home/>
                 </ScreenContainer>
@@ -168,6 +136,7 @@ export default function Entry() {
                     title="Experience"
                     subtitle="Roles, impact, and technologies"
                     titleClassName="uppercase"
+                    className="bg-light text-dark"
                 >
                     <Highlights/>
                 </ScreenContainer>
@@ -176,6 +145,7 @@ export default function Entry() {
                     id="showcase"
                     title="Projects & Blogs"
                     subtitle="Exploring ideas through code and writing"
+                    className="bg-dark text-light"
                 >
                     <Showcase/>
                 </ScreenContainer>
@@ -183,12 +153,10 @@ export default function Entry() {
             <Footer/>
 
             <NavBar
-                items={navItems as NavBarItem<SectionId>[]}
+                items={navItems as BottomNavItem<SectionId>[]}
                 activeId={activeSection}
                 onNavigate={scrollToSection}
                 onOpenSearch={() => setSearchOpen(true)}
-                onToggleTheme={toggleTheme}
-                isDark={isDark}
             />
 
             {/* Global Search Drawer */}
