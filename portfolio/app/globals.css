@@ -17,6 +17,7 @@
     --animate-ripple: ripple 1s var(--ease-default);
 }
 
+
 /* Base styles */
 @layer base {
     html {
@@ -110,7 +111,7 @@
     }
 
     .icon {
-        @apply w-8 h-8 rounded-full;
+        @apply w-8 h-8 lg:w-5 lg:h-5 rounded-full;
     }
 
     /* Additional utility for icon scaling and glow */
