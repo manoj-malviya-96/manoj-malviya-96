@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Award, Calendar, MapPin} from 'lucide-react';
-import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
+import {Drawer, DrawerContent} from '@/components/drawer';
 import type {IconType} from 'react-icons';
 import {Badge} from '@/components/Badge';
 import IconText from '@/components/IconText';
@@ -69,10 +69,7 @@ function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () =
     if (!exp) return null;
     return (
         <Drawer open onOpenChange={(o) => !o && onClose()}>
-            <DrawerContent>
-                <DrawerHeader>
-                    <DrawerTitle className="text-3xl mb-2">{exp.title}</DrawerTitle>
-                </DrawerHeader>
+            <DrawerContent title={exp.title}>
                 <div className="space-y-6 mt-2">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span>{exp.company}</span><span>•</span><span>{exp.location}</span><span>•</span><span>{exp.period}</span>

@@ -25,11 +25,14 @@ export function NavBar<T extends string>({
                                              onOpenSearch,
                                              theme = 'light',
                                          }: NavBarProps<T>) {
-    const activeClasses = theme === 'dark' ? 'bg-light text-dark' : 'bg-dark text-light';
-    const containerClasses = 'h-fit fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 backdrop-blur-xl rounded-full bg-muted shadow-lg px-4 py-2';
 
+    const activeClasses = theme === 'dark' ? 'bg-light text-dark' : 'bg-dark text-light';
+
+    const containerClasses = cn('h-fit fixed top-4 left-1/2 -translate-x-1/2 z-50 ',
+        'flex items-center gap-1 backdrop-blur-xl rounded-full bg-muted shadow-lg transition-colors duration-300')
+    const containerThemeClasses = theme === 'dark' ? 'bg-light/20 text-light' : 'bg-dark/20 text-dark';
     return (
-        <nav role="navigation" aria-label="Primary" className={cn(containerClasses)}>
+        <nav role="navigation" aria-label="Primary" className={cn(containerClasses, containerThemeClasses)}>
             {items.map(item => {
                 const active = item.id === activeId;
                 return (
@@ -48,18 +51,18 @@ export function NavBar<T extends string>({
                             active ? activeClasses : 'hover:bg-muted glow-subtle'
                         )}
                     >
-                        <item.icon className={cn('w-5 h-5', !active && 'icon-glow')}/>
+                        <item.icon className={cn('icon', !active && 'icon-glow')}/>
                         <span className="px-2 hidden lg:inline-block">{item.label}</span>
                     </ScrollLink>
                 );
             })}
-            <span className="h-8 w-0.5 bg-muted "/>
+            <span className="h-8 w-0.5 bg-muted ml-4 "/>
             <button
                 onClick={onOpenSearch}
                 aria-label="Open search"
                 className="p-3 rounded-full hover:bg-muted glow-subtle transition-colors"
             >
-                <Search className="w-5 h-5 icon-glow"/>
+                <Search className="icon icon-glow"/>
             </button>
         </nav>
     );

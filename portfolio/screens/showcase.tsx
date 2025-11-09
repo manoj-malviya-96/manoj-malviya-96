@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react';
 import {BookOpen, Code, ExternalLink, FileText} from 'lucide-react';
-import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
+import {Drawer, DrawerContent} from '@/components/drawer';
 import {SearchField} from '@/components/SearchField';
 import {FilterToggle} from '@/components/FilterToggle';
 import {MediaTile} from '@/components/MediaTile';
@@ -94,12 +94,9 @@ export default function Showcase() {
             )}
 
             <Drawer open={!!selectedItem} onOpenChange={(o) => !o && setSelectedItem(null)}>
-                <DrawerContent>
+                <DrawerContent title={selectedItem?.title || ''}>
                     {selectedItem && (
                         <>
-                            <DrawerHeader>
-                                <DrawerTitle className="text-3xl mb-4">{selectedItem.title}</DrawerTitle>
-                            </DrawerHeader>
                             <div className="space-y-6">
                                 <div className="flex flex-wrap gap-2">
                                     {selectedItem.tags.map(tag => (

@@ -36,23 +36,21 @@ export function Timeline<T>({
 
             {items.map((item, i) => {
                 const active = isActive(item);
-                const Container: any = onSelect ? 'button' : 'div';
                 const props = onSelect ? {onClick: () => onSelect(item)} : {};
 
                 return (
                     <div key={i} className={i < items.length - 1 ? 'pb-8' : ''}>
                         <div
-                            className={`absolute w-2 h-2 rounded-full ${active ? 'bg-foreground animate-pulse pulse-glow' : 'bg-muted-foreground'}`}
+                            className={`absolute w-2 h-2 rounded-full ${active ? 'bg-dark' : 'bg-muted'}`}
                             style={{left: offset, top: 24}}
                         />
-
-                        <Container
+                        <div
                             {...props}
                             className={`${onSelect ? 'text-left' : ''} bg-muted rounded-xl p-5 glow-accent card-glow`}
                             style={{marginLeft: getContentMargin(config)}}
                         >
                             {children(item)}
-                        </Container>
+                        </div>
                     </div>
                 );
             })}

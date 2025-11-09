@@ -4,12 +4,12 @@ import Highlights from '@/screens/highlights';
 import Showcase from '@/screens/showcase';
 import Footer from '@/screens/footer';
 import Home from '@/screens/home';
-import {Briefcase, FolderOpen, Home as HomeIcon, Search} from 'lucide-react';
+import {Briefcase, FolderOpen, Home as HomeIcon} from 'lucide-react';
 import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
 import ScreenContainer from '@/components/ScreenContainer';
 import {Element, scroller} from 'react-scroll';
 import {Input} from '@/components/Input';
-import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
+import {Drawer, DrawerContent} from '@/components/drawer';
 
 
 type SearchModalProps = {
@@ -22,23 +22,15 @@ function SearchModal({open, onOpenChange, onGoTo}: SearchModalProps) {
     const [query, setQuery] = useState('');
     return (
         <Drawer open={open} onOpenChange={onOpenChange}>
-            <DrawerContent>
-                <DrawerHeader>
-                    <DrawerTitle className="text-xl">Quick Search</DrawerTitle>
-                </DrawerHeader>
-                <div className="p-0">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"/>
-                        <Input
-                            type="text"
-                            placeholder="Search everything... (Cmd/Ctrl + K)"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg w-full"
-                            autoFocus
-                        />
-                    </div>
-                </div>
+            <DrawerContent className="p-8 dark border-none" title="Quick Search">
+                <Input
+                    type="text"
+                    placeholder="Search everything... (Cmd/Ctrl + K)"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg w-full"
+                    autoFocus
+                />
                 {query && (
                     <div className="pt-4 max-h-96 overflow-y-auto">
                         <p className="text-sm text-muted-foreground mb-2">Quick actions</p>
@@ -73,7 +65,7 @@ function SearchModal({open, onOpenChange, onGoTo}: SearchModalProps) {
 
 export default function Entry() {
     // Static section meta (no hooks inside)
-    const SECTIONS = useMemo(() => [
+    const allSections = useMemo(() => [
         {
             id: 'home' as const,
             label: 'Entry',
@@ -104,20 +96,20 @@ export default function Entry() {
         },
     ], []);
 
-    type SectionId = typeof SECTIONS[number]['id'];
+    type SectionId = typeof allSections[number]['id'];
 
     const [activeSection, setActiveSection] = useState<SectionId>('home');
     const [searchOpen, setSearchOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            {SECTIONS.map(section => (
+            {allSections.map(section => (
                 <Element key={section.id} name={section.id}>
                     <ScreenContainer
                         title={section.title}
                         subtitle={section.subtitle}
                         headerAlign={section.headerAlign}
-                        className={section.theme === 'dark' ? 'bg-dark text-light' : 'bg-light text-dark'}
+                        className={section.theme}
                     >
                         {section.component}
                     </ScreenContainer>
@@ -125,9 +117,9 @@ export default function Entry() {
             ))}
             <Footer/>
             <NavBar
-                items={SECTIONS.map(s => ({id: s.id, label: s.label, icon: s.icon})) as BottomNavItem<SectionId>[]}
+                items={allSections.map(s => ({id: s.id, label: s.label, icon: s.icon})) as BottomNavItem<SectionId>[]}
                 activeId={activeSection}
-                theme={SECTIONS.find(s => s.id === activeSection)?.theme || 'light'}
+                theme={allSections.find(s => s.id === activeSection)?.theme || 'light'}
                 onNavigate={(id) => setActiveSection(id)}
                 onOpenSearch={() => setSearchOpen(true)}
             />
@@ -136,7 +128,7 @@ export default function Entry() {
                 open={searchOpen}
                 onOpenChange={setSearchOpen}
                 onGoTo={(id) => {
-                    scroller.scrollTo(id, {duration: 600, smooth: 'easeInOutQuart', offset: -40});
+                    scroller.scrollTo(id, {duration: 300, smooth: 'easeInOutQuart', offset: -40});
                     setActiveSection(id as SectionId);
                 }}
             />

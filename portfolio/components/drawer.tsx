@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import * as DrawerPrimitive from 'vaul';
+import {Drawer as DrawerPrimitive} from "vaul";
 import {cn} from '@/components/utils';
 
 // Root component
@@ -8,8 +8,12 @@ export function Drawer(props: React.ComponentProps<typeof DrawerPrimitive.Root>)
     return <DrawerPrimitive.Root data-slot="drawer" {...props}/>;
 }
 
-// Content (renders portal + overlay + content panel)
-export function DrawerContent({className, children, ...props}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+export function DrawerContent({
+                                  title,
+                                  className,
+                                  children,
+                                  ...props
+                              }: React.ComponentProps<typeof DrawerPrimitive.Content> & { title: string }) {
     return (
         <DrawerPrimitive.Portal>
             <DrawerPrimitive.Overlay
@@ -27,20 +31,16 @@ export function DrawerContent({className, children, ...props}: React.ComponentPr
                 )}
                 {...props}
             >
-                <div className="mx-auto w-full max-w-xl">
-                    {children}
-                </div>
+                <DrawerPrimitive.Title>
+                    {title}
+                </DrawerPrimitive.Title>
+                {children}
             </DrawerPrimitive.Content>
         </DrawerPrimitive.Portal>
     );
 }
 
-// Header wrapper
-export function DrawerHeader({className, ...props}: React.HTMLAttributes<HTMLDivElement>) {
-    return <div data-slot="drawer-header" className={cn('mb-4', className)} {...props}/>;
-}
 
-// Title component (simple heading element for styling)
 export function DrawerTitle({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) {
     return (
         <h2
@@ -50,8 +50,4 @@ export function DrawerTitle({className, ...props}: React.HTMLAttributes<HTMLHead
         />
     );
 }
-
-// Re-export primitives if needed
-export const DrawerPortal = DrawerPrimitive.Portal;
-export const DrawerOverlay = DrawerPrimitive.Overlay;
 
