@@ -27,7 +27,16 @@
     body {
         @apply bg-dark text-light font-sans leading-relaxed;
     }
+
+    .light {
+        @apply bg-light text-dark;
+    }
+
+    .dark {
+        @apply bg-dark text-light;
+    }
 }
+
 
 @layer components {
     .glow-subtle {

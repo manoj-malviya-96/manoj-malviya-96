@@ -2,7 +2,6 @@ import React, {forwardRef, ReactNode} from 'react';
 import {cn} from '@/components/utils';
 
 interface ScreenContainerProps {
-    id: string;
     title?: string;
     subtitle?: string;
     children: ReactNode;
@@ -14,7 +13,7 @@ interface ScreenContainerProps {
 
 // Minimal screen wrapper: fixed width, spacing, semantic section & heading.
 export const ScreenContainer = forwardRef<HTMLElement, ScreenContainerProps>(function ScreenContainer({
-                                                                                                          id,
+
                                                                                                           title,
                                                                                                           subtitle,
                                                                                                           children,
@@ -26,9 +25,9 @@ export const ScreenContainer = forwardRef<HTMLElement, ScreenContainerProps>(fun
     const headerAlignClass = headerAlign === 'center' ? 'text-center' : undefined;
 
     return (
-        <section ref={ref} id={id}
+        <section ref={ref}
                  className={cn('py-20 px-4 sm:px-6 lg:px-8',
-                     'min-h-screen flex flex-col justify-center',
+                     'min-h-[85vh] flex flex-col justify-center',
                      className)}>
             {title && (
                 <h2 className={cn('text-6xl sm:text-7xl tracking-tight mb-2 w-full', headerAlignClass, titleClassName)}>

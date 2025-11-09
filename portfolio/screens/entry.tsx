@@ -1,209 +1,146 @@
 "use client";
-import React, {RefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Highlights from '@/screens/highlights';
 import Showcase from '@/screens/showcase';
 import Footer from '@/screens/footer';
 import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Search} from 'lucide-react';
-import {Input} from '@/components/Input';
-import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
 import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
 import ScreenContainer from '@/components/ScreenContainer';
+import {Element, scroller} from 'react-scroll';
+import {Input} from '@/components/Input';
+import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
 
 
-type SectionId = 'home' | 'workex' | 'showcase';
-
-// Note: NavItem deliberately does NOT include refs to avoid reading refs during render
-type NavItem = {
-    id: SectionId;
-    label: string;
-    icon: React.ComponentType<{ className?: string }>;
+type SearchModalProps = {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    onGoTo: (id: string) => void;
 };
 
-// Hook: global keyboard shortcuts (keeps window listeners inside the hook)
-function useGlobalShortcuts(onOpenSearch: () => void, onCloseSearch: () => void) {
-    useEffect(() => {
-        const handle = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                onOpenSearch();
-            }
-            if (e.key === 'Escape') onCloseSearch();
-        };
-
-        window.addEventListener('keydown', handle);
-        return () => window.removeEventListener('keydown', handle);
-    }, [onOpenSearch, onCloseSearch]);
-}
-
-// Hook: observe sections and update active id using IntersectionObserver
-function useSectionObserver(
-    sectionRefs: Record<SectionId, RefObject<HTMLElement | null>>,
-    onChange: (id: SectionId) => void,
-) {
-    useEffect(() => {
-        const entriesMap = new Map<string, number>();
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                // pick the entry with highest intersectionRatio
-                entries.forEach((entry) => {
-                    if (!entry.target) return;
-                    entriesMap.set((entry.target as HTMLElement).id, entry.intersectionRatio);
-                });
-
-                let best: { id: SectionId; ratio: number } | null = null;
-                for (const [id, ratio] of entriesMap) {
-                    if (!best || ratio > best.ratio) {
-                        best = {id: id as SectionId, ratio};
-                    }
-                }
-
-                if (best && best.ratio > 0.2) {
-                    onChange(best.id);
-                }
-            },
-            {
-                // fire early for sections that are somewhat visible
-                threshold: [0, 0.2, 0.5, 0.75, 1],
-                root: null,
-                rootMargin: '-40% 0px -40% 0px',
-            },
-        );
-
-        Object.values(sectionRefs).forEach((ref) => {
-            if (ref && ref.current) observer.observe(ref.current);
-        });
-
-        return () => observer.disconnect();
-    }, [sectionRefs, onChange]);
+function SearchModal({open, onOpenChange, onGoTo}: SearchModalProps) {
+    const [query, setQuery] = useState('');
+    return (
+        <Drawer open={open} onOpenChange={onOpenChange}>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle className="text-xl">Quick Search</DrawerTitle>
+                </DrawerHeader>
+                <div className="p-0">
+                    <div className="relative">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"/>
+                        <Input
+                            type="text"
+                            placeholder="Search everything... (Cmd/Ctrl + K)"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg w-full"
+                            autoFocus
+                        />
+                    </div>
+                </div>
+                {query && (
+                    <div className="pt-4 max-h-96 overflow-y-auto">
+                        <p className="text-sm text-muted-foreground mb-2">Quick actions</p>
+                        <div className="space-y-2">
+                            <button
+                                onClick={() => {
+                                    onGoTo('workex');
+                                    onOpenChange(false);
+                                    setQuery('');
+                                }}
+                                className="w-full text-left px-4 py-3 rounded-xl bg-muted hover:bg-accent transition-all"
+                            >
+                                <p className="text-sm">Go to Work Experience</p>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    onGoTo('showcase');
+                                    onOpenChange(false);
+                                    setQuery('');
+                                }}
+                                className="w-full text-left px-4 py-3 rounded-xl bg-muted hover:bg-accent transition-all"
+                            >
+                                <p className="text-sm">Go to Showcase</p>
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </DrawerContent>
+        </Drawer>
+    );
 }
 
 export default function Entry() {
-    // stable refs for sections
-    const homeRef = useRef<HTMLElement | null>(null);
-    const workexRef = useRef<HTMLElement | null>(null);
-    const showcaseRef = useRef<HTMLElement | null>(null);
-
-    const sectionRefs = useMemo(() => ({
-        home: homeRef,
-        workex: workexRef,
-        showcase: showcaseRef,
-    }), [homeRef, workexRef, showcaseRef]);
-
-    const [activeSection, setActiveSection] = useState<SectionId>('home');
-
-    const [searchOpen, setSearchOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-
-    // keyboard shortcuts
-    useGlobalShortcuts(() => setSearchOpen(true), () => setSearchOpen(false));
-
-    // observe which section is currently visible (updates activeSection)
-    useSectionObserver(sectionRefs, (id) => setActiveSection(id));
-
-    const navItems: NavItem[] = useMemo(() => [
-        {id: 'home', label: 'Entry', icon: HomeIcon},
-        {id: 'workex', label: 'Experience', icon: Briefcase},
-        {id: 'showcase', label: 'Showcase', icon: FolderOpen},
+    // Static section meta (no hooks inside)
+    const SECTIONS = useMemo(() => [
+        {
+            id: 'home' as const,
+            label: 'Entry',
+            icon: HomeIcon,
+            headerAlign: 'center' as const,
+            theme: 'dark' as const,
+            component: <Home/>
+        },
+        {
+            id: 'workex' as const,
+            label: 'Experience' as const,
+            icon: Briefcase,
+            title: 'Experience',
+            subtitle: 'Roles, impact, and technologies',
+            headerAlign: 'left' as const,
+            theme: 'light' as const,
+            component: <Highlights/>
+        },
+        {
+            id: 'showcase' as const,
+            label: 'Showcase',
+            icon: FolderOpen,
+            title: 'Projects & Blogs',
+            subtitle: 'Exploring ideas through code and writing',
+            headerAlign: 'left' as const,
+            theme: 'dark' as const,
+            component: <Showcase/>
+        },
     ], []);
 
-    const scrollToSection = useCallback((sectionId: SectionId) => {
-        setActiveSection(sectionId);
-        const ref = sectionRefs[sectionId];
-        if (ref && ref.current) {
-            ref.current.scrollIntoView({behavior: 'smooth'});
-        }
-    }, [sectionRefs]);
+    type SectionId = typeof SECTIONS[number]['id'];
+
+    const [activeSection, setActiveSection] = useState<SectionId>('home');
+    const [searchOpen, setSearchOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            {/* Sections */}
-            <div>
-                <ScreenContainer
-                    id="home"
-                    ref={homeRef}
-                    headerAlign="center"
-                    className="bg-dark text-light"
-                >
-                    <Home/>
-                </ScreenContainer>
-                <ScreenContainer
-                    ref={workexRef}
-                    id="workex"
-                    title="Experience"
-                    subtitle="Roles, impact, and technologies"
-                    className="bg-light text-dark"
-                >
-                    <Highlights/>
-                </ScreenContainer>
-                <ScreenContainer
-                    ref={showcaseRef}
-                    id="showcase"
-                    title="Projects & Blogs"
-                    subtitle="Exploring ideas through code and writing"
-                >
-                    <Showcase/>
-                </ScreenContainer>
-            </div>
+            {SECTIONS.map(section => (
+                <Element key={section.id} name={section.id}>
+                    <ScreenContainer
+                        title={section.title}
+                        subtitle={section.subtitle}
+                        headerAlign={section.headerAlign}
+                        className={section.theme === 'dark' ? 'bg-dark text-light' : 'bg-light text-dark'}
+                    >
+                        {section.component}
+                    </ScreenContainer>
+                </Element>
+            ))}
             <Footer/>
-
             <NavBar
-                items={navItems as BottomNavItem<SectionId>[]}
+                items={SECTIONS.map(s => ({id: s.id, label: s.label, icon: s.icon})) as BottomNavItem<SectionId>[]}
                 activeId={activeSection}
-                onNavigate={scrollToSection}
+                theme={SECTIONS.find(s => s.id === activeSection)?.theme || 'light'}
+                onNavigate={(id) => setActiveSection(id)}
                 onOpenSearch={() => setSearchOpen(true)}
             />
 
-            {/* Global Search Drawer */}
-            <Drawer open={searchOpen} onOpenChange={setSearchOpen}>
-                <DrawerContent>
-                    <DrawerHeader>
-                        <DrawerTitle className="text-xl">Quick Search</DrawerTitle>
-                    </DrawerHeader>
-                    <div className="p-0">
-                        <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"/>
-                            <Input
-                                type="text"
-                                placeholder="Search everything... (Cmd/Ctrl + K)"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg w-full"
-                                autoFocus
-                            />
-                        </div>
-                    </div>
+            <SearchModal
+                open={searchOpen}
+                onOpenChange={setSearchOpen}
+                onGoTo={(id) => {
+                    scroller.scrollTo(id, {duration: 600, smooth: 'easeInOutQuart', offset: -40});
+                    setActiveSection(id as SectionId);
+                }}
+            />
 
-                    {searchQuery && (
-                        <div className="pt-4 max-h-96 overflow-y-auto">
-                            <p className="text-sm text-muted-foreground mb-2">Quick actions</p>
-                            <div className="space-y-2">
-                                <button
-                                    onClick={() => {
-                                        scrollToSection('workex');
-                                        setSearchOpen(false);
-                                        setSearchQuery('');
-                                    }}
-                                    className="w-full text-left px-4 py-3 rounded-xl bg-muted hover:bg-accent transition-all"
-                                >
-                                    <p className="text-sm">Go to Work Experience</p>
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        scrollToSection('showcase');
-                                        setSearchOpen(false);
-                                        setSearchQuery('');
-                                    }}
-                                    className="w-full text-left px-4 py-3 rounded-xl bg-muted hover:bg-accent transition-all"
-                                >
-                                    <p className="text-sm">Go to Showcase</p>
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </DrawerContent>
-            </Drawer>
         </div>
     );
 }
