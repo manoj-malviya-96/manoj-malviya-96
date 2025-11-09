@@ -5,8 +5,8 @@ import Showcase from '@/screens/showcase';
 import Footer from '@/screens/footer';
 import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
-import {Dialog, DialogContent} from '@/components/dialog';
 import {Input} from '@/components/Input';
+import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
 
 
 type SectionId = 'home' | 'workex' | 'showcase';
@@ -251,10 +251,13 @@ export default function Entry() {
 
             <Footer/>
 
-            {/* Global Search Dialog */}
-            <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-                <DialogContent className="bg-background border-border max-w-2xl p-0 rounded-2xl">
-                    <div className="p-4">
+            {/* Global Search Drawer */}
+            <Drawer open={searchOpen} onOpenChange={setSearchOpen}>
+                <DrawerContent>
+                    <DrawerHeader>
+                        <DrawerTitle className="text-xl">Quick Search</DrawerTitle>
+                    </DrawerHeader>
+                    <div className="p-0">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"/>
                             <Input
@@ -262,14 +265,14 @@ export default function Entry() {
                                 placeholder="Search everything... (Cmd/Ctrl + K)"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg"
+                                className="pl-12 bg-muted border-0 rounded-xl h-12 text-lg w-full"
                                 autoFocus
                             />
                         </div>
                     </div>
 
                     {searchQuery && (
-                        <div className="px-4 pb-4 max-h-96 overflow-y-auto">
+                        <div className="pt-4 max-h-96 overflow-y-auto">
                             <p className="text-sm text-muted-foreground mb-2">Quick actions</p>
                             <div className="space-y-2">
                                 <button
@@ -295,8 +298,8 @@ export default function Entry() {
                             </div>
                         </div>
                     )}
-                </DialogContent>
-            </Dialog>
+                </DrawerContent>
+            </Drawer>
         </div>
     );
 }

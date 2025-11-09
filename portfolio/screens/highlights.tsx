@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Award, Calendar, MapPin} from 'lucide-react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
+import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
 import type {IconType} from 'react-icons';
 import {Badge} from '@/components/Badge';
 import IconText from '@/components/IconText';
@@ -69,15 +69,15 @@ function TechStackList() {
 function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () => void }) {
     if (!exp) return null;
     return (
-        <Dialog open onOpenChange={onClose}>
-            <DialogContent className="bg-background border-border max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl">
-                <DialogHeader>
-                    <DialogTitle className="text-3xl mb-2">{exp.title}</DialogTitle>
+        <Drawer open onOpenChange={(o) => !o && onClose()}>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle className="text-3xl mb-2">{exp.title}</DrawerTitle>
+                </DrawerHeader>
+                <div className="space-y-6 mt-2">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span>{exp.company}</span><span>•</span><span>{exp.location}</span><span>•</span><span>{exp.period}</span>
                     </div>
-                </DialogHeader>
-                <div className="space-y-6 mt-6">
                     <div>
                         <h3 className="text-lg mb-2">About the Role</h3>
                         <p className="text-muted-foreground leading-relaxed">{exp.description}</p>
@@ -100,8 +100,8 @@ function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () =
                         </div>
                     </div>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </DrawerContent>
+        </Drawer>
     );
 }
 

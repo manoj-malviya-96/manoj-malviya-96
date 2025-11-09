@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react';
 import {BookOpen, Code, ExternalLink, FileText} from 'lucide-react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/dialog';
+import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
 import {SearchField} from '@/components/SearchField';
 import {FilterToggle} from '@/components/FilterToggle';
 import {MediaTile} from '@/components/MediaTile';
@@ -98,20 +98,17 @@ export default function Showcase() {
                 </div>
             )}
 
-            <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
-                <DialogContent
-                    className="bg-background text-foreground max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl">
+            <Drawer open={!!selectedItem} onOpenChange={(o) => !o && setSelectedItem(null)}>
+                <DrawerContent>
                     {selectedItem && (
                         <>
-                            <DialogHeader>
-                                <DialogTitle
-                                    className="text-3xl text-foreground mb-4">{selectedItem.title}</DialogTitle>
-                            </DialogHeader>
+                            <DrawerHeader>
+                                <DrawerTitle className="text-3xl mb-4">{selectedItem.title}</DrawerTitle>
+                            </DrawerHeader>
                             <div className="space-y-6">
                                 <div className="flex flex-wrap gap-2">
                                     {selectedItem.tags.map(tag => (
-                                        <span key={tag}
-                                              className="px-3 py-1 bg-muted rounded-full text-sm">{tag}</span>
+                                        <span key={tag} className="px-3 py-1 bg-muted rounded-full text-sm">{tag}</span>
                                     ))}
                                 </div>
                                 {selectedItem.detailedDescription && (
@@ -125,8 +122,7 @@ export default function Showcase() {
                                         <h3 className="text-xl mb-2">Key Features</h3>
                                         <ul className="space-y-2">
                                             {selectedItem.features.map((feature, i) => (
-                                                <li key={i}
-                                                    className="flex items-start gap-2 text-muted-foreground">
+                                                <li key={i} className="flex items-start gap-2 text-muted-foreground">
                                                     <span className="text-foreground mt-1">•</span>
                                                     <span>{feature}</span>
                                                 </li>
@@ -161,8 +157,8 @@ export default function Showcase() {
                             </div>
                         </>
                     )}
-                </DialogContent>
-            </Dialog>
+                </DrawerContent>
+            </Drawer>
         </ScreenContainer>
     );
 }

@@ -136,7 +136,6 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
 ] as const as WorkExperience[];
 
 
-export type TechIcon = IconType;
 export const TECH_STACK: Record<string, IconType> = {
     TypeScript: SiTypescript,
     JavaScript: SiJavascript,
