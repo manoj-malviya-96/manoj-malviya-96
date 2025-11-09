@@ -7,6 +7,7 @@ import Home from '@/screens/home';
 import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
 import {Input} from '@/components/Input';
 import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
+import {BottomNav, type NavItem as BottomNavItem} from '@/components/BottomNav';
 
 
 type SectionId = 'home' | 'workex' | 'showcase';
@@ -111,81 +112,6 @@ function useSectionObserver(
     }, [sectionRefs, onChange]);
 }
 
-function FloatingNav({items, activeId, onNavigate, onOpenSearch, onToggleTheme, isDark}: {
-    items: NavItem[];
-    activeId: SectionId;
-    onNavigate: (id: SectionId) => void;
-    onOpenSearch: () => void;
-    onToggleTheme: () => void;
-    isDark: boolean;
-}) {
-    return (
-        <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-4 md:top-6">
-            <div className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
-                <div className="flex items-center gap-2">
-                    {items.map((item) => (
-                        <button
-                            key={item.id}
-                            onClick={() => onNavigate(item.id)}
-                            className={`px-4 py-2 rounded-full transition-all flex items-center gap-2 ${
-                                activeId === item.id ? 'bg-foreground text-background pulse-glow' : 'hover:bg-accent glow-subtle'
-                            }`}
-                        >
-                            <item.icon className={`w-4 h-4 ${activeId !== item.id ? 'icon-glow' : ''}`}/>
-                            <span className="hidden sm:inline text-sm">{item.label}</span>
-                        </button>
-                    ))}
-
-                    <div className="w-px h-6 bg-border mx-1"/>
-
-                    <button
-                        onClick={onOpenSearch}
-                        className="p-2 rounded-full hover:bg-accent glow-subtle"
-                        aria-label="Search"
-                    >
-                        <Search className="w-4 h-4 icon-glow"/>
-                    </button>
-
-                    <button
-                        onClick={onToggleTheme}
-                        className="p-2 rounded-full hover:bg-accent glow-subtle"
-                        aria-label="Toggle theme"
-                    >
-                        {isDark ? <Moon className="w-4 h-4 icon-glow"/> : <Sun className="w-4 h-4 icon-glow"/>}
-                    </button>
-                </div>
-            </div>
-        </nav>
-    );
-}
-
-function MobileNav({items, activeId, onNavigate}: {
-    items: NavItem[];
-    activeId: SectionId;
-    onNavigate: (id: SectionId) => void
-}) {
-    return (
-        <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:hidden">
-            <div className="bg-muted/80 backdrop-blur-xl rounded-full px-4 py-2 border border-border/30 glow-subtle">
-                <div className="flex items-center gap-1">
-                    {items.map((item) => (
-                        <button
-                            key={item.id}
-                            onClick={() => onNavigate(item.id)}
-                            className={`p-3 rounded-full transition-all ${
-                                activeId === item.id ? 'bg-foreground text-background pulse-glow' : 'hover:bg-accent glow-subtle'
-                            }`}
-                            aria-label={item.label}
-                        >
-                            <item.icon className={`w-4 h-4 ${activeId !== item.id ? 'icon-glow' : ''}`}/>
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </nav>
-    );
-}
-
 export default function Entry() {
     // stable refs for sections
     const homeRef = useRef<HTMLElement | null>(null);
@@ -226,17 +152,7 @@ export default function Entry() {
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            <FloatingNav
-                items={navItems}
-                activeId={activeSection}
-                onNavigate={scrollToSection}
-                onOpenSearch={() => setSearchOpen(true)}
-                onToggleTheme={toggleTheme}
-                isDark={isDark}
-            />
-
-            <MobileNav items={navItems} activeId={activeSection} onNavigate={scrollToSection}/>
-
+            {/* Sections */}
             <div>
                 <section id="home" ref={homeRef} className="min-h-screen flex items-center justify-center">
                     <Home/>
@@ -248,8 +164,20 @@ export default function Entry() {
                     <Showcase/>
                 </section>
             </div>
-
             <Footer/>
+
+            {/* Unified Bottom Navigation */}
+            <BottomNav
+                items={navItems as BottomNavItem<SectionId>[]}
+                activeId={activeSection}
+                onNavigate={scrollToSection}
+                onOpenSearch={() => setSearchOpen(true)}
+                onToggleTheme={toggleTheme}
+                isDark={isDark}
+                SearchIcon={Search}
+                DarkIcon={Moon}
+                LightIcon={Sun}
+            />
 
             {/* Global Search Drawer */}
             <Drawer open={searchOpen} onOpenChange={setSearchOpen}>
