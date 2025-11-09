@@ -6,7 +6,7 @@ import {FOOTER_DATA} from "@/core/data";
 export default function Footer() {
     const {social, quickLinks, profile} = FOOTER_DATA
     return (
-        <footer className="content-width bg-muted py-12 px-4 sm:px-6 lg:px-8">
+        <footer className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <h3 className="text-lg mb-3">{profile.name}</h3>

@@ -27,7 +27,7 @@ export const ScreenContainer = forwardRef<HTMLElement, ScreenContainerProps>(fun
 
     return (
         <section ref={ref} id={id}
-                 className={cn('content-width py-20 px-4 sm:px-6 lg:px-8',
+                 className={cn('py-20 px-4 sm:px-6 lg:px-8',
                      'min-h-screen flex flex-col justify-center',
                      className)}>
             {title && (

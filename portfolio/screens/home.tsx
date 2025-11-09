@@ -30,15 +30,13 @@ function ExternalLink({
 
 export default function Home() {
     return (
-        <div className="content-width text-center space-y-8 animate-fadeIn">
-            <div className="space-y-6">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl leading-[0.9] tracking-tight w-full">
-                    {PROFILE.quote}
-                </h1>
-                <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    {PROFILE.bio}
-                </p>
-            </div>
+        <div className="text-center space-y-8 animate-fadeIn">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl leading-[0.9] gradient-text tracking-tight w-full">
+                {PROFILE.quote}
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                {PROFILE.bio}
+            </p>
             <div className="flex justify-center gap-2 pt-4">
                 {SOCIAL_LINKS.map(({icon: Icon, href, label}: SocialLink) => (
                     <ExternalLink
@@ -51,11 +49,9 @@ export default function Home() {
                     </ExternalLink>
                 ))}
             </div>
-            <div className="pt-8">
-                <p className="text-sm text-muted-foreground">
-                    Currently {PROFILE.role} @ <span className="text-foreground">{PROFILE.company}</span>
-                </p>
-            </div>
+            <p className="text-sm text-muted-foreground pt-8">
+                Currently {PROFILE.role} @ <span className="text-foreground">{PROFILE.company}</span>
+            </p>
         </div>
     );
 }

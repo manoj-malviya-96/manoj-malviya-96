@@ -23,41 +23,39 @@ export function NavBar<T extends string>({
                                              onOpenSearch,
                                          }: NavBarProps<T>) {
     return (
-        <nav className="fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 max-w-xl px-2">
-            <div
-                className=" backdrop-blur-xl rounded-full px-4 py-2 bg-muted glow-subtle shadow-lg">
-                <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1 px-2 border-r-2">
-                        {items.map(item => {
-                            const active = item.id === activeId;
-                            return (
-                                <button
-                                    key={item.id}
-                                    onClick={() => onNavigate(item.id)}
-                                    aria-label={item.label}
-                                    aria-current={active ? 'page' : undefined}
-                                    className={cn(
-                                        'group relative p-3 rounded-full transition-all flex items-center justify-center',
-                                        active ? 'bg-foreground text-background pulse-glow' : 'hover:bg-accent glow-subtle'
-                                    )}
-                                >
-                                    <item.icon className={cn('w-5 h-5', !active && 'icon-glow')}/>
-                                    <span className="px-2 sm:hidden">{item.label}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <button
-                            onClick={onOpenSearch}
-                            aria-label="Open search"
-                            className="p-3 rounded-full hover:bg-accent glow-subtle transition-colors"
-                        >
-                            <Search className="w-5 h-5 icon-glow"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <nav
+            role="navigation"
+            aria-label="Primary"
+            className={cn(
+                'fixed bottom-8 md:top-8 left-1/2 -translate-x-1/2 z-50 h-fit flex flex-row gap-8',
+                'flex items-center gap-1 backdrop-blur-xl rounded-full bg-muted drop-shadow-lg'
+            )}
+        >
+            {items.map(item => {
+                const active = item.id === activeId;
+                return (
+                    <button
+                        key={item.id}
+                        onClick={() => onNavigate(item.id)}
+                        aria-label={item.label}
+                        aria-current={active ? 'page' : undefined}
+                        className={cn(
+                            'rounded-full flex items-center justify-center transition-all py-2 px-4',
+                            active ? 'bg-light text-dark' : 'hover:bg-accent glow-subtle'
+                        )}
+                    >
+                        <item.icon className={cn('icon', !active && 'icon-glow')}/>
+                        <span className="px-2 hidden lg:inline-block">{item.label}</span>
+                    </button>
+                );
+            })}
+            <button
+                onClick={onOpenSearch}
+                aria-label="Open search"
+                className={cn("px-4 border-l-2 border-muted hover:bg-accent glow-subtle transition-colors")}
+            >
+                <Search className="icon icon-glow"/>
+            </button>
         </nav>
     );
 }
