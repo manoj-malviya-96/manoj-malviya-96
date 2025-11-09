@@ -4,10 +4,11 @@ import Highlights from '@/screens/highlights';
 import Showcase from '@/screens/showcase';
 import Footer from '@/screens/footer';
 import Home from '@/screens/home';
-import {Briefcase, FolderOpen, Home as HomeIcon, Moon, Search, Sun} from 'lucide-react';
+import {Briefcase, FolderOpen, Home as HomeIcon, Search} from 'lucide-react';
 import {Input} from '@/components/Input';
 import {Drawer, DrawerContent, DrawerHeader, DrawerTitle} from '@/components/drawer';
-import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
+import {NavBar, type NavItem as NavBarItem} from '@/components/NavBar';
+import ScreenContainer from '@/components/ScreenContainer';
 
 
 type SectionId = 'home' | 'workex' | 'showcase';
@@ -154,29 +155,40 @@ export default function Entry() {
         <div className="min-h-screen bg-background text-foreground">
             {/* Sections */}
             <div>
-                <section id="home" ref={homeRef} className="min-h-screen flex items-center justify-center">
+                <ScreenContainer
+                    ref={homeRef}
+                    id="home"
+                    headerAlign="center"
+                >
                     <Home/>
-                </section>
-                <section id="workex" ref={workexRef} className="min-h-screen">
+                </ScreenContainer>
+                <ScreenContainer
+                    ref={workexRef}
+                    id="workex"
+                    title="Experience"
+                    subtitle="Roles, impact, and technologies"
+                    titleClassName="uppercase"
+                >
                     <Highlights/>
-                </section>
-                <section id="showcase" ref={showcaseRef} className="min-h-screen">
+                </ScreenContainer>
+                <ScreenContainer
+                    ref={showcaseRef}
+                    id="showcase"
+                    title="Projects & Blogs"
+                    subtitle="Exploring ideas through code and writing"
+                >
                     <Showcase/>
-                </section>
+                </ScreenContainer>
             </div>
             <Footer/>
 
-            {/* Unified Bottom Navigation */}
             <NavBar
-                items={navItems as BottomNavItem<SectionId>[]}
+                items={navItems as NavBarItem<SectionId>[]}
                 activeId={activeSection}
                 onNavigate={scrollToSection}
                 onOpenSearch={() => setSearchOpen(true)}
                 onToggleTheme={toggleTheme}
                 isDark={isDark}
-                SearchIcon={Search}
-                DarkIcon={Moon}
-                LightIcon={Sun}
             />
 
             {/* Global Search Drawer */}

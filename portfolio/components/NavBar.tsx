@@ -1,6 +1,7 @@
 'use client';
 import * as React from 'react';
 import {cn} from '@/components/utils';
+import {Moon, Search, Sun} from "lucide-react";
 
 export type NavItem<T extends string> = {
     id: T;
@@ -15,9 +16,6 @@ interface NavBarProps<T extends string> {
     onOpenSearch: () => void;
     onToggleTheme: () => void;
     isDark: boolean;
-    SearchIcon: React.ComponentType<{ className?: string }>;
-    DarkIcon: React.ComponentType<{ className?: string }>;
-    LightIcon: React.ComponentType<{ className?: string }>;
 }
 
 export function NavBar<T extends string>({
@@ -27,9 +25,6 @@ export function NavBar<T extends string>({
                                              onOpenSearch,
                                              onToggleTheme,
                                              isDark,
-                                             SearchIcon,
-                                             DarkIcon,
-                                             LightIcon,
                                          }: NavBarProps<T>) {
     return (
         <nav className="fixed bottom-4 md:top-4 left-1/2 -translate-x-1/2 z-50 max-w-xl px-2">
@@ -62,15 +57,15 @@ export function NavBar<T extends string>({
                             aria-label="Open search"
                             className="p-3 rounded-full hover:bg-accent glow-subtle transition-colors"
                         >
-                            <SearchIcon className="w-5 h-5 icon-glow"/>
+                            <Search className="w-5 h-5 icon-glow"/>
                         </button>
                         <button
                             onClick={onToggleTheme}
                             aria-label="Toggle theme"
                             className="p-3 rounded-full hover:bg-accent glow-subtle transition-colors"
                         >
-                            {isDark ? <DarkIcon className="w-5 h-5 icon-glow"/> :
-                                <LightIcon className="w-5 h-5 icon-glow"/>}
+                            {isDark ? <Moon className="w-5 h-5 icon-glow"/> :
+                                <Sun className="w-5 h-5 icon-glow"/>}
                         </button>
                     </div>
                 </div>

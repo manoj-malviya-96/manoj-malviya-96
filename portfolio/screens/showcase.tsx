@@ -5,7 +5,6 @@ import {SearchField} from '@/components/SearchField';
 import {FilterToggle} from '@/components/FilterToggle';
 import {MediaTile} from '@/components/MediaTile';
 import {SHOWCASE_ITEMS, type ShowcaseItem} from '@/core/data';
-import ScreenContainer from '@/components/ScreenContainer';
 
 
 export default function Showcase() {
@@ -37,11 +36,7 @@ export default function Showcase() {
     }, []);
 
     return (
-        <ScreenContainer
-            title="Projects & Blogs"
-            subtitle="Exploring ideas through code and writing"
-            gradientTitle
-        >
+        <>
             {/* Search and Filters */}
             <div className="mb-6 space-y-3">
                 <SearchField
@@ -159,6 +154,6 @@ export default function Showcase() {
                     )}
                 </DrawerContent>
             </Drawer>
-        </ScreenContainer>
+        </>
     );
 }

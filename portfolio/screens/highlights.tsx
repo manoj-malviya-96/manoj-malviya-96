@@ -7,7 +7,6 @@ import IconText from '@/components/IconText';
 import Card from '@/components/Card';
 import {DEFAULT_TIMELINE_CONFIG, Timeline} from '@/components/Timeline';
 import {METRICS, TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
-import ScreenContainer from '@/components/ScreenContainer';
 
 // Types
 
@@ -142,11 +141,7 @@ export default function Highlights() {
     const [selected, setSelected] = useState<WorkExperience | null>(null);
     const margin = CONFIG.logoSize + CONFIG.gap;
     return (
-        <ScreenContainer
-            title="Experience"
-            subtitle="Building innovative solutions across simulation, CAD, and web technologies"
-            titleClassName="uppercase"
-        >
+        <>
             <h3 className="text-2xl mb-4">Work History</h3>
             <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
@@ -160,6 +155,6 @@ export default function Highlights() {
                 </div>
             </div>
             <DetailModal exp={selected} onClose={() => setSelected(null)}/>
-        </ScreenContainer>
+        </>
     );
 }
