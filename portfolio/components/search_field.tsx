@@ -8,7 +8,7 @@ export type SearchFieldProps = {
     className?: string;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'placeholder' | 'className'>;
 
-export function SearchField({value, onChange, placeholder = 'Search...', className = '', ...rest}: SearchFieldProps) {
+export function Search_field({value, onChange, placeholder = 'Search...', className = '', ...rest}: SearchFieldProps) {
     return (
         <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"/>
@@ -24,5 +24,5 @@ export function SearchField({value, onChange, placeholder = 'Search...', classNa
     );
 }
 
-export default SearchField;
+export default Search_field;
 

@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import {memo} from 'react';
 import {cn} from '@/components/utils';
 import {Search} from "lucide-react";
 import {Link as ScrollLink} from 'react-scroll';
@@ -18,19 +19,19 @@ interface NavBarProps<T extends string> {
     theme?: 'light' | 'dark';
 }
 
-export function NavBar<T extends string>({
-                                             items,
-                                             activeId,
-                                             onNavigate,
-                                             onOpenSearch,
-                                             theme = 'light',
-                                         }: NavBarProps<T>) {
+function _NavBar<T extends string>({
+                                       items,
+                                       activeId,
+                                       onNavigate,
+                                       onOpenSearch,
+                                       theme = 'light',
+                                   }: NavBarProps<T>) {
 
-    const activeClasses = theme === 'dark' ? 'bg-light text-dark' : 'bg-dark text-light';
+    const activeClasses = theme === 'dark' ? 'bg-light/20 text-light' : 'bg-dark/20 text-dark';
 
-    const containerClasses = cn('h-fit fixed top-4 left-1/2 -translate-x-1/2 z-50 ',
-        'flex items-center gap-1 backdrop-blur-xl rounded-full bg-muted shadow-lg transition-colors duration-300')
-    const containerThemeClasses = theme === 'dark' ? 'bg-light/20 text-light' : 'bg-dark/20 text-dark';
+    const containerClasses = cn('h-fit w-1/3 -translate-x-1/2 left-1/2 rounded-2xl fixed top-4',
+        'flex justify-center px-4 py-2 items-center gap-0 backdrop-blur-xl transition-colors duration-300');
+    const containerThemeClasses = theme === 'dark' ? 'bg-light/10 text-light' : 'bg-dark/10 text-dark';
     return (
         <nav role="navigation" aria-label="Primary" className={cn(containerClasses, containerThemeClasses)}>
             {items.map(item => {
@@ -47,23 +48,27 @@ export function NavBar<T extends string>({
                         aria-label={item.label}
                         aria-current={active ? 'page' : undefined}
                         className={cn(
-                            'cursor-pointer p-3 rounded-full flex items-center justify-center transition-all',
-                            active ? activeClasses : 'hover:bg-muted glow-subtle'
+                            'cursor-pointer rounded-full px-4 py-1 flex gap-2 text-sm items-center justify-center transition-all',
+                            active && activeClasses
                         )}
                     >
                         <item.icon className={cn('icon', !active && 'icon-glow')}/>
-                        <span className="px-2 hidden lg:inline-block">{item.label}</span>
+                        <span className="hidden lg:inline-block">{item.label}</span>
                     </ScrollLink>
                 );
             })}
-            <span className="h-8 w-0.5 bg-muted ml-4 "/>
             <button
                 onClick={onOpenSearch}
                 aria-label="Open search"
-                className="p-3 rounded-full hover:bg-muted glow-subtle transition-colors"
+                className="ml-auto rounded-full glow-subtle transition-colors"
             >
                 <Search className="icon icon-glow"/>
             </button>
         </nav>
     );
 }
+
+
+_NavBar.displayName = 'NavBarBase';
+
+export default memo(_NavBar);

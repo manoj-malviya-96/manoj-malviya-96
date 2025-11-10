@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
+import React, {memo, ReactNode} from 'react';
 
-export function Badge({children, active = false, className = ''}: {
+function _Badge({children, active = false, className = ''}: {
     children: ReactNode;
     active?: boolean;
     className?: string
@@ -13,5 +13,5 @@ export function Badge({children, active = false, className = ''}: {
     );
 }
 
-export default Badge;
-
+_Badge.displayName = "Badge"
+export default memo(_Badge);

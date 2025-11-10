@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import React, {memo, ReactNode} from 'react';
 
 export type TimelineConfig = {
     dotSize: number;
@@ -15,19 +15,21 @@ export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
 const getTimelineOffset = (cfg: TimelineConfig) => (cfg.logoSize - cfg.dotSize) / 2;
 const getContentMargin = (cfg: TimelineConfig) => cfg.logoSize + cfg.gap;
 
-export function Timeline<T>({
-                                items,
-                                children,
-                                isActive = () => false,
-                                onSelect,
-                                config = DEFAULT_TIMELINE_CONFIG,
-                            }: {
+export interface TimelineProps<T> {
     items: T[];
     children: (item: T) => ReactNode;
     isActive?: (item: T) => boolean;
     onSelect?: (item: T) => void;
     config?: TimelineConfig;
-}) {
+}
+
+function _TimelineBase<T>({
+                              items,
+                              children,
+                              isActive = () => false,
+                              onSelect,
+                              config = DEFAULT_TIMELINE_CONFIG,
+                          }: TimelineProps<T>) {
     const offset = getTimelineOffset(config);
 
     return (
@@ -36,7 +38,6 @@ export function Timeline<T>({
 
             {items.map((item, i) => {
                 const active = isActive(item);
-                const props = onSelect ? {onClick: () => onSelect(item)} : {};
 
                 return (
                     <div key={i} className={i < items.length - 1 ? 'pb-8' : ''}>
@@ -45,7 +46,7 @@ export function Timeline<T>({
                             style={{left: offset, top: 24}}
                         />
                         <div
-                            {...props}
+                            onClick={onSelect ? () => onSelect(item) : undefined}
                             className={`${onSelect ? 'text-left' : ''} bg-muted rounded-xl p-5 glow-accent card-glow`}
                             style={{marginLeft: getContentMargin(config)}}
                         >
@@ -58,5 +59,8 @@ export function Timeline<T>({
     );
 }
 
-export default Timeline;
+
+_TimelineBase.displayName = 'Timeline';
+
+export default memo(_TimelineBase) as typeof _TimelineBase;
 

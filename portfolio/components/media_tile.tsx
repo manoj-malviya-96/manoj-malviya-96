@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import React, {memo, ReactNode} from 'react';
 import Image from 'next/image';
 import {cn} from '@/components/utils';
 
@@ -14,17 +14,17 @@ export type MediaTileProps = {
     onClick?: () => void;
 };
 
-export function MediaTile({
-                              title,
-                              subtitle,
-                              category,
-                              icon,
-                              dateOrRead,
-                              image,
-                              tags = [],
-                              highlight = false,
-                              onClick
-                          }: MediaTileProps) {
+function MediaTileBase({
+                           title,
+                           subtitle,
+                           category,
+                           icon,
+                           dateOrRead,
+                           image,
+                           tags = [],
+                           highlight = false,
+                           onClick
+                       }: MediaTileProps) {
     return (
         <div
             className={cn(
@@ -39,6 +39,7 @@ export function MediaTile({
                         src={image}
                         alt={title}
                         fill
+                        loading="lazy"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                         priority={false}
@@ -78,4 +79,24 @@ export function MediaTile({
     );
 }
 
-export default MediaTile;
+function shallowEqualTags(a: string[] = [], b: string[] = []) {
+    if (a === b) return true;
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+    return true;
+}
+
+function areEqual(prev: MediaTileProps, next: MediaTileProps) {
+    return prev.title === next.title &&
+        prev.subtitle === next.subtitle &&
+        prev.category === next.category &&
+        prev.dateOrRead === next.dateOrRead &&
+        prev.image === next.image &&
+        shallowEqualTags(prev.tags || [], next.tags || []) &&
+        prev.highlight === next.highlight &&
+        prev.onClick === next.onClick; // ignore icon ref for stability
+}
+
+export const Media_tile = memo(MediaTileBase, areEqual);
+
+export default Media_tile;

@@ -1,4 +1,4 @@
-import {ButtonHTMLAttributes, ReactNode} from 'react';
+import React, {ButtonHTMLAttributes, memo, ReactNode} from 'react';
 import type {LucideIcon} from 'lucide-react';
 
 export type FilterToggleProps = {
@@ -9,14 +9,14 @@ export type FilterToggleProps = {
     className?: string;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'>;
 
-export function FilterToggle({
-                                 active = false,
-                                 variant = 'primary',
-                                 icon: Icon,
-                                 children,
-                                 className = '',
-                                 ...rest
-                             }: FilterToggleProps) {
+function _FilterToggle({
+                           active = false,
+                           variant = 'primary',
+                           icon: Icon,
+                           children,
+                           className = '',
+                           ...rest
+                       }: FilterToggleProps) {
     const base = 'px-3 py-1.5 rounded-lg text-sm transition-all inline-flex items-center gap-1.5';
     const classes = variant === 'primary'
         ? active
@@ -28,11 +28,12 @@ export function FilterToggle({
 
     return (
         <button {...rest} className={`${base} ${classes} ${className}`}>
-            {Icon && <Icon className="w-3.5 h-3.5"/>}
+            {Icon && <Icon className="icon"/>}
             {children}
         </button>
     );
 }
 
-export default FilterToggle;
 
+_FilterToggle.displayName = 'FilterToggle';
+export default memo(_FilterToggle);

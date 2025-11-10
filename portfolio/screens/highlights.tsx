@@ -1,16 +1,13 @@
-import {useState} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {Award, Calendar, MapPin} from 'lucide-react';
 import {Drawer, DrawerContent} from '@/components/drawer';
 import type {IconType} from 'react-icons';
-import {Badge} from '@/components/Badge';
-import IconText from '@/components/IconText';
-import Card from '@/components/Card';
-import {DEFAULT_TIMELINE_CONFIG, Timeline} from '@/components/Timeline';
+import Badge from '@/components/badge';
+import IconText from '@/components/icon_text';
+import Card from '@/components/card';
+import Timeline, {DEFAULT_TIMELINE_CONFIG as CONFIG} from '@/components/timeline';
 import {METRICS, TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
 
-// Types
-
-const CONFIG = DEFAULT_TIMELINE_CONFIG;
 
 // Metric Grid Component
 function MetricGrid({stats}: { stats: Array<{ value: string; label: string }> }) {
@@ -52,11 +49,12 @@ function TechBadge({name}: { name: string }) {
 
 // Tech Stack Component
 function TechStackList() {
+    const names = useMemo(() => Object.keys(TECH_STACK), []);
     return (
         <div className="mt-8">
             <h3 className="text-2xl mb-4">Tech Stack</h3>
             <div className="flex flex-wrap gap-3">
-                {Object.keys(TECH_STACK).map(name => (
+                {names.map(name => (
                     <TechBadge key={name} name={name}/>
                 ))}
             </div>
@@ -102,7 +100,7 @@ function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () =
 }
 
 // Experience Card Component
-function ExperienceCard({experience: exp, logoSize, margin}: {
+const ExperienceCard = memo(function ExperienceCard({experience: exp, logoSize, margin}: {
     experience: WorkExperience;
     logoSize: number;
     margin: number
@@ -131,19 +129,28 @@ function ExperienceCard({experience: exp, logoSize, margin}: {
             </div>
         </div>
     );
-}
+});
 
 // Entry Component
 export default function Highlights() {
     const [selected, setSelected] = useState<WorkExperience | null>(null);
-    const margin = CONFIG.logoSize + CONFIG.gap;
+    const margin = useMemo(() => CONFIG.logoSize + CONFIG.gap, []);
+    const onSelect = useCallback((exp: WorkExperience) => setSelected(exp), []);
+    const renderExp = useCallback((exp: WorkExperience) => (
+        <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>
+    ), [margin]);
+
     return (
         <>
             <h3 className="text-2xl mb-4">Work History</h3>
             <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                    <Timeline items={WORK_EXPERIENCES} isActive={e => e.current} onSelect={setSelected}>
-                        {exp => <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>}
+                    <Timeline
+                        items={WORK_EXPERIENCES}
+                        isActive={(e) => e.current}
+                        onSelect={onSelect}
+                    >
+                        {renderExp}
                     </Timeline>
                 </div>
                 <div className="flex flex-col">

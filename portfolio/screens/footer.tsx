@@ -1,5 +1,5 @@
 import {ArrowUpRight} from 'lucide-react';
-import Link from '@/components/Link';
+import Link from '@/components/link';
 import {FOOTER_DATA} from "@/core/data";
 
 
@@ -8,7 +8,7 @@ export default function Footer() {
     return (
         <footer className="bg-muted py-12 px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
-                <div>
+                <span>
                     <h3 className="text-lg mb-3">{profile.name}</h3>
                     <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                         {profile.tagline}
@@ -19,9 +19,9 @@ export default function Footer() {
                     >
                         Get in touch <ArrowUpRight className="w-3.5 h-3.5"/>
                     </Link>
-                </div>
+                </span>
 
-                <div>
+                <span>
                     <h3 className="text-lg mb-3">Quick Links</h3>
                     <ul className="space-y-1.5">
                         {quickLinks.map((link) => (
@@ -35,9 +35,9 @@ export default function Footer() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </span>
 
-                <div>
+                <span>
                     <h3 className="text-lg mb-3">Connect</h3>
                     <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                         Follow my work and connect with me
@@ -55,7 +55,7 @@ export default function Footer() {
                             </Link>
                         ))}
                     </div>
-                </div>
+                </span>
             </div>
             <div
                 className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">

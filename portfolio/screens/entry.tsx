@@ -1,16 +1,18 @@
 "use client";
-import React, {useMemo, useState} from 'react';
-import Highlights from '@/screens/highlights';
-import Showcase from '@/screens/showcase';
-import Footer from '@/screens/footer';
-import Home from '@/screens/home';
+import React, {useCallback, useMemo, useState} from 'react';
+import dynamic from 'next/dynamic';
 import {Briefcase, FolderOpen, Home as HomeIcon} from 'lucide-react';
-import {NavBar, type NavItem as BottomNavItem} from '@/components/NavBar';
-import ScreenContainer from '@/components/ScreenContainer';
+import NavBar, {type NavItem as BottomNavItem} from '@/components/nav_bar';
+import Screen_container from '@/components/screen_container';
 import {Element, scroller} from 'react-scroll';
-import {Input} from '@/components/Input';
 import {Drawer, DrawerContent} from '@/components/drawer';
+import TextInput from "@/components/text_input";
 
+// Code-split larger sections (avoid SSR if not needed for LCP)
+const Highlights = dynamic(() => import('@/screens/highlights'), {ssr: false});
+const Showcase = dynamic(() => import('@/screens/showcase'), {ssr: false});
+const Footer = dynamic(() => import('@/screens/footer'), {ssr: false});
+const Home = dynamic(() => import('@/screens/home'), {ssr: true});
 
 type SearchModalProps = {
     open: boolean;
@@ -23,7 +25,7 @@ function SearchModal({open, onOpenChange, onGoTo}: SearchModalProps) {
     return (
         <Drawer open={open} onOpenChange={onOpenChange}>
             <DrawerContent className="p-8 dark border-none" title="Quick Search">
-                <Input
+                <TextInput
                     type="text"
                     placeholder="Search everything... (Cmd/Ctrl + K)"
                     value={query}
@@ -101,27 +103,38 @@ export default function Entry() {
     const [activeSection, setActiveSection] = useState<SectionId>('home');
     const [searchOpen, setSearchOpen] = useState(false);
 
+    // Stable callbacks
+    const onNavigate = useCallback((id: string) => setActiveSection(id as SectionId), []);
+    const onOpenSearch = useCallback(() => setSearchOpen(true), []);
+
+    const navItems = useMemo(() => allSections.map(s => ({
+        id: s.id,
+        label: s.label,
+        icon: s.icon
+    })) as BottomNavItem<SectionId>[], [allSections]);
+    const activeTheme = useMemo(() => allSections.find(s => s.id === activeSection)?.theme || 'light', [allSections, activeSection]);
+
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <>
             {allSections.map(section => (
                 <Element key={section.id} name={section.id}>
-                    <ScreenContainer
+                    <Screen_container
                         title={section.title}
                         subtitle={section.subtitle}
                         headerAlign={section.headerAlign}
                         className={section.theme}
                     >
                         {section.component}
-                    </ScreenContainer>
+                    </Screen_container>
                 </Element>
             ))}
             <Footer/>
             <NavBar
-                items={allSections.map(s => ({id: s.id, label: s.label, icon: s.icon})) as BottomNavItem<SectionId>[]}
+                items={navItems}
                 activeId={activeSection}
-                theme={allSections.find(s => s.id === activeSection)?.theme || 'light'}
-                onNavigate={(id) => setActiveSection(id)}
-                onOpenSearch={() => setSearchOpen(true)}
+                theme={activeTheme}
+                onNavigate={onNavigate}
+                onOpenSearch={onOpenSearch}
             />
 
             <SearchModal
@@ -132,7 +145,6 @@ export default function Entry() {
                     setActiveSection(id as SectionId);
                 }}
             />
-
-        </div>
+        </>
     );
 }

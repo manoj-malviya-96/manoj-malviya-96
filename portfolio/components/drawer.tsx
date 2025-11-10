@@ -40,14 +40,3 @@ export function DrawerContent({
     );
 }
 
-
-export function DrawerTitle({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) {
-    return (
-        <h2
-            data-slot="drawer-title"
-            className={cn('text-foreground font-semibold tracking-tight', className)}
-            {...props}
-        />
-    );
-}
-

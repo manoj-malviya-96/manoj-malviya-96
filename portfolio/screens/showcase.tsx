@@ -1,31 +1,33 @@
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useDeferredValue, useMemo, useState} from 'react';
 import {BookOpen, Code, ExternalLink, FileText} from 'lucide-react';
 import {Drawer, DrawerContent} from '@/components/drawer';
-import {SearchField} from '@/components/SearchField';
-import {FilterToggle} from '@/components/FilterToggle';
-import {MediaTile} from '@/components/MediaTile';
+import {Search_field} from '@/components/search_field';
+import FilterToggle from '@/components/filter_toggle';
+import {Media_tile} from '@/components/media_tile';
 import {SHOWCASE_ITEMS, type ShowcaseItem} from '@/core/data';
 
 
 export default function Showcase() {
     const [searchQuery, setSearchQuery] = useState('');
+    const deferredQuery = useDeferredValue(searchQuery); // smoother typing
     const [selectedType, setSelectedType] = useState<'all' | 'project' | 'blog'>('all');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [selectedItem, setSelectedItem] = useState<ShowcaseItem | null>(null);
 
+    // immutable dataset reference
     const items: ShowcaseItem[] = useMemo(() => SHOWCASE_ITEMS, []);
 
     const categories = useMemo(() => ['all', ...Array.from(new Set(items.map(item => item.category)))], [items]);
 
     const filteredItems = useMemo(() => items.filter(item => {
-        const q = searchQuery.toLowerCase();
-        const matchesSearch = item.title.toLowerCase().includes(q)
+        const q = deferredQuery.toLowerCase();
+        const matchesSearch = !q || item.title.toLowerCase().includes(q)
             || item.description.toLowerCase().includes(q)
             || item.tags.some(tag => tag.toLowerCase().includes(q));
         const matchesType = selectedType === 'all' || item.type === selectedType;
         const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
         return matchesSearch && matchesType && matchesCategory;
-    }), [items, searchQuery, selectedType, selectedCategory]);
+    }), [items, deferredQuery, selectedType, selectedCategory]);
 
     const handleTileClick = useCallback((item: ShowcaseItem) => {
         if (item.type === 'project') {
@@ -35,11 +37,17 @@ export default function Showcase() {
         }
     }, []);
 
+    // Precompute highlight pattern
+    const renderedTiles = useMemo(() => filteredItems.map((item, index) => ({
+        item,
+        highlight: index % 5 === 0
+    })), [filteredItems]);
+
     return (
         <>
             {/* Search and Filters */}
             <div className="mb-6 space-y-3">
-                <SearchField
+                <Search_field
                     value={searchQuery}
                     onChange={setSearchQuery}
                     placeholder="Search projects and blogs..."
@@ -70,8 +78,8 @@ export default function Showcase() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {filteredItems.map((item, index) => (
-                    <MediaTile
+                {renderedTiles.map(({item, highlight}) => (
+                    <Media_tile
                         key={item.id}
                         title={item.title}
                         subtitle={item.description}
@@ -81,7 +89,7 @@ export default function Showcase() {
                         dateOrRead={item.type === 'blog' ? item.readTime : item.date}
                         image={item.image}
                         tags={item.tags}
-                        highlight={index % 5 === 0}
+                        highlight={highlight}
                         onClick={() => handleTileClick(item)}
                     />
                 ))}
