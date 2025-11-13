@@ -21,14 +21,16 @@ const nextConfig: NextConfig = {
 
     // Optimize images
     images: {
-        formats: ['image/avif', 'image/webp'],
         minimumCacheTTL: 60,
-        // Proper remotePatterns configuration for Unsplash
+        // Allows any hostname
         remotePatterns: [
             {
                 protocol: 'https',
                 hostname: 'images.unsplash.com',
-                pathname: '**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'i.pinimg.com',
             },
         ],
     },

@@ -4,7 +4,7 @@
 @theme static {
     --color-light: oklch(0.98 0.003 115.93);
     --color-dark: oklch(0.15 0 89.876);
-    --color-muted: oklch(0.647 0 89.876 / 0.4);
+    --color-muted: oklch(0.596 0 89.876 / 0.3);
 
     --color-brand-light: oklch(0.656 0.178 301.931 / 0.8);
     --color-brand-dark: oklch(0.457 0.15 301.931 / 0.8);

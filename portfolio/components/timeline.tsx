@@ -1,55 +1,67 @@
-import React, {memo, ReactNode} from 'react';
-
+import React, { memo, ReactNode } from "react";
+import { cn } from "@/components/utils";
 
 interface TimelineProps<T> {
-    items: T[];
-    renderLogo: (item: T, isCurrent: boolean) => ReactNode;
-    renderCard: (item: T) => ReactNode;
-    isToday?: (item: T) => boolean;
+  items: T[];
+  renderLogo: (item: T, isCurrent: boolean) => ReactNode;
+  renderCard: (item: T) => ReactNode;
+  isToday?: (item: T) => boolean;
+  className?: string;
 }
 
-function TimelineBase<T>({items, renderLogo, renderCard, isToday = () => false}: TimelineProps<T>) {
-    return (
-        <div className="relative">
-            {items.map((item, index) => {
-                const today = isToday(item);
-                const isLast = index === items.length - 1;
+function _Timeline<T>({
+  items,
+  renderLogo,
+  renderCard,
+  isToday = () => false,
+  className = "",
+}: TimelineProps<T>) {
+  return (
+    <div className={cn("relative space-y-0", className)}>
+      {items.map((item, index) => {
+        const isCurrent = isToday(item);
+        const isLast = index === items.length - 1;
 
-                return (
-                    <div key={index} className="relative flex gap-6 group">
-                        <div className="relative flex flex-col items-center">
-                            <div
-                                className={`
-                  rounded-full bg-white shadow-lg flex items-center justify-center
-                  transition-all duration-300 z-10
-                  ${today ? 'w-16 h-16 ring-4 ring-offset-2 scale-110' : 'w-12 h-12 hover:scale-105'}
-                `}
-                            >
-                                {renderLogo(item, today)}
-                            </div>
+        return (
+          <div key={index} className="relative flex gap-6 group">
+            {/* Timeline dot with glow effect */}
+            <div className="relative flex flex-col items-center">
+              <div
+                className={cn(
+                  "w-12 h-12 hover:scale-105 rounded-full bg-light shadow-lg flex items-center justify-center",
+                  "transition-all duration-300 ease-[var(--ease-default)] z-10 timeline-dot",
+                  isCurrent ? "glow-accent" : " glow-subtle",
+                )}
+              >
+                {renderLogo(item, isCurrent)}
+              </div>
 
-                            {!isLast && (
-                                <div
-                                    className="absolute top-16 bottom-0 w-0.5 bg-gradient-to-b from-slate-300 to-transparent"/>
-                            )}
-                        </div>
+              {/* Timeline line */}
+              {!isLast && (
+                <div className="absolute top-16 bottom-0 w-0.5 bg-gradient-to-b from-muted to-transparent" />
+              )}
+            </div>
 
-                        <div className={`flex-1 ${!isLast ? 'pb-12' : ''}`}>
-                            <div
-                                className={`
-                  bg-white rounded-2xl shadow-sm border border-slate-200
-                  transition-all duration-300
-                  ${today ? 'shadow-xl scale-105 border-slate-300' : 'hover:shadow-md hover:border-slate-300'}
-                `}
-                            >
-                                {renderCard(item)}
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
-    );
+            {/* Timeline card */}
+            <div className={cn("flex-1", !isLast && "pb-12")}>
+              <div
+                className={cn(
+                  "bg-light rounded-xl border border-muted card-glow",
+                  "transition-all duration-300 ease-in-out",
+                  isCurrent
+                    ? "scale-105 glow-accent"
+                    : "hover:shadow-md glow-subtle",
+                )}
+              >
+                {renderCard(item)}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
-export default memo(TimelineBase) as typeof TimelineBase;
+_Timeline.displayName = "Timeline";
+export default memo(_Timeline) as typeof _Timeline;

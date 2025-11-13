@@ -127,7 +127,7 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
     {
         title: 'Software Engineering Intern',
         company: 'Autodesk',
-        logo: 'A',
+        logo: 'https://i.pinimg.com/280x280_RS/2d/7d/49/2d7d493ed0a26446a4d243d0009a537f.jpg',
         location: 'San Francisco, CA',
         period: 'Summer 2018',
         current: false,

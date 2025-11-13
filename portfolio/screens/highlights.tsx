@@ -99,15 +99,17 @@ function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () =
     );
 }
 
-const CompanyLogo = ({src, alt, size}: { src: string; alt: string; size: number }) => (
-    <Image
-        src={src}
-        alt={alt}
-        className="object-cover"
-        width={size}
-        height={size}
-    />
-);
+const CompanyLogo = ({src, alt, size}: { src: string; alt: string; size: number }) => {
+    return (
+        <Image
+            src={src}
+            alt={alt}
+            className="object-cover rounded-full overflow-hidden"
+            width={size}
+            height={size}
+        />
+    );
+};
 
 
 const CurrentBadge = () => (
@@ -178,7 +180,6 @@ const WorkExperienceCard = ({experience}: { experience: WorkExperience }) => {
 export default function Highlights() {
     const [selected, setSelected] = useState<WorkExperience | null>(null);
     const onSelect = useCallback((exp: WorkExperience) => setSelected(exp), []);
-
     return (
         <>
             <h3 className="text-2xl mb-4">Work History</h3>
@@ -187,11 +188,11 @@ export default function Highlights() {
                     <Timeline
                         items={WORK_EXPERIENCES}
                         isToday={(exp) => exp.isCurrent}
-                        renderLogo={(exp, isCurrent) => (
+                        renderLogo={(exp) => (
                             <CompanyLogo
                                 src={exp.logo}
                                 alt={exp.company}
-                                size={isCurrent ? 80 : 56}
+                                size={56}
                             />
                         )}
                         renderCard={(exp) => <WorkExperienceCard experience={exp}/>}
