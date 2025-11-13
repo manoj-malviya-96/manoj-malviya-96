@@ -71,6 +71,7 @@ export type WorkExperience = {
     description: string;
     achievements: string[];
     technologies: string[];
+    isCurrent: boolean;
 };
 
 
@@ -78,7 +79,7 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
     {
         title: 'Senior Software Engineer',
         company: 'Formlabs',
-        logo: 'F',
+        logo: 'https://i.pinimg.com/280x280_RS/2d/7d/49/2d7d493ed0a26446a4d243d0009a537f.jpg',
         location: 'Boston, MA',
         period: 'Oct 2023 - Present',
         current: true,
@@ -90,11 +91,12 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
             'Reduced memory usage by 40% through algorithm improvements',
         ],
         technologies: ['TypeScript', 'React', 'WebGL', 'C++', 'Python'],
+        isCurrent: true,
     },
     {
         title: 'R&D Software Engineer',
         company: 'Formlabs',
-        logo: 'F',
+        logo: 'https://i.pinimg.com/280x280_RS/2d/7d/49/2d7d493ed0a26446a4d243d0009a537f.jpg',
         location: 'Boston, MA',
         period: 'Jan 2020 - Oct 2023',
         current: false,
@@ -105,11 +107,12 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
             'Improved simulation accuracy by 25%',
         ],
         technologies: ['Python', 'C++', 'React', 'Node.js'],
+        isCurrent: false
     },
     {
         title: 'Graduate Researcher',
         company: 'Penn State University',
-        logo: 'PSU',
+        logo: 'https://i.pinimg.com/280x280_RS/2d/7d/49/2d7d493ed0a26446a4d243d0009a537f.jpg',
         location: 'State College, PA',
         period: 'Aug 2018 - Dec 2019',
         current: false,
@@ -119,6 +122,7 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
             'Published 2 papers in peer-reviewed journals',
         ],
         technologies: ['Python', 'MATLAB', 'C++'],
+        isCurrent: false
     },
     {
         title: 'Software Engineering Intern',
@@ -132,6 +136,7 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
             'Improved render performance by 40% using GPU acceleration',
         ],
         technologies: ['C++', 'CUDA', 'OpenGL'],
+        isCurrent: false
     },
 ] as const as WorkExperience[];
 

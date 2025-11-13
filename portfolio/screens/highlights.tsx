@@ -1,12 +1,12 @@
-import React, {memo, useCallback, useMemo, useState} from 'react';
-import {Award, Calendar, MapPin} from 'lucide-react';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Award, Briefcase, MapPin} from 'lucide-react';
 import {Drawer, DrawerContent} from '@/components/drawer';
 import type {IconType} from 'react-icons';
 import Badge from '@/components/badge';
-import IconText from '@/components/icon_text';
 import Card from '@/components/card';
-import Timeline, {DEFAULT_TIMELINE_CONFIG as CONFIG} from '@/components/timeline';
+import Timeline from '@/components/timeline';
 import {METRICS, TECH_STACK, WORK_EXPERIENCES, type WorkExperience} from '@/core/data';
+import Image from "next/image";
 
 
 // Metric Grid Component
@@ -99,46 +99,85 @@ function DetailModal({exp, onClose}: { exp: WorkExperience | null; onClose: () =
     );
 }
 
-// Experience Card Component
-const ExperienceCard = memo(function ExperienceCard({experience: exp, logoSize, margin}: {
-    experience: WorkExperience;
-    logoSize: number;
-    margin: number
-}) {
+const CompanyLogo = ({src, alt, size}: { src: string; alt: string; size: number }) => (
+    <Image
+        src={src}
+        alt={alt}
+        className="object-cover"
+        width={size}
+        height={size}
+    />
+);
+
+
+const CurrentBadge = () => (
+    <span
+        className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
+    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>
+    Current
+  </span>
+);
+
+const WorkExperienceCard = ({experience}: { experience: WorkExperience }) => {
+    const {title, company, location, period, current, description, achievements, technologies} = experience;
+
     return (
-        <div className="relative">
-            <div
-                className="absolute left-0 top-0 rounded-lg bg-background border border-border flex items-center justify-center text-lg font-bold"
-                style={{width: logoSize, height: logoSize}}
-            >
-                {exp.logo}
-            </div>
-            <div style={{marginLeft: margin}}>
-                <div className="flex items-start justify-between mb-2 gap-4">
-                    <div>
-                        <h3 className="text-xl">{exp.title}</h3>
-                        <p className="text-foreground text-sm">{exp.company}</p>
+        <div className="p-6">
+            <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+                        {current && <CurrentBadge/>}
                     </div>
-                    {exp.current && <Badge active>Current</Badge>}
+                    <div className="flex items-center gap-3 text-slate-600 text-sm">
+                        <div className="flex items-center gap-1.5">
+                            <Briefcase size={14}/>
+                            <span className="font-medium">{company}</span>
+                        </div>
+                        <span className="text-slate-400">•</span>
+                        <div className="flex items-center gap-1.5">
+                            <MapPin size={14}/>
+                            <span>{location}</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 flex-wrap">
-                    <IconText icon={Calendar}>{exp.period}</IconText>
-                    <IconText icon={MapPin}>{exp.location}</IconText>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{exp.description}</p>
+                <span className="text-sm text-slate-500 font-medium whitespace-nowrap ml-4">{period}</span>
             </div>
+
+            <p className="text-slate-700 text-sm leading-relaxed mb-4">{description}</p>
+
+            {achievements.length > 0 && (
+                <div className="mb-4">
+                    <h4 className="text-sm font-semibold text-slate-900 mb-2">Key Achievements</h4>
+                    <ul className="space-y-1.5">
+                        {achievements.map((achievement, i) => (
+                            <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
+                                <span className="text-blue-500 mt-1">•</span>
+                                <span className="flex-1">{achievement}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {technologies.length > 0 && (
+                <div>
+                    <h4 className="text-sm font-semibold text-slate-900 mb-2">Technologies</h4>
+                    <div className="flex flex-wrap gap-2">
+                        {technologies.map((tech, i) => (
+                            <Badge key={i}>{tech}</Badge>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
-});
+};
 
 // Entry Component
 export default function Highlights() {
     const [selected, setSelected] = useState<WorkExperience | null>(null);
-    const margin = useMemo(() => CONFIG.logoSize + CONFIG.gap, []);
     const onSelect = useCallback((exp: WorkExperience) => setSelected(exp), []);
-    const renderExp = useCallback((exp: WorkExperience) => (
-        <ExperienceCard experience={exp} logoSize={CONFIG.logoSize} margin={margin}/>
-    ), [margin]);
 
     return (
         <>
@@ -147,11 +186,16 @@ export default function Highlights() {
                 <div className="lg:col-span-2">
                     <Timeline
                         items={WORK_EXPERIENCES}
-                        isActive={(e) => e.current}
-                        onSelect={onSelect}
-                    >
-                        {renderExp}
-                    </Timeline>
+                        isToday={(exp) => exp.isCurrent}
+                        renderLogo={(exp, isCurrent) => (
+                            <CompanyLogo
+                                src={exp.logo}
+                                alt={exp.company}
+                                size={isCurrent ? 80 : 56}
+                            />
+                        )}
+                        renderCard={(exp) => <WorkExperienceCard experience={exp}/>}
+                    />
                 </div>
                 <div className="flex flex-col">
                     <MetricsSection/>
