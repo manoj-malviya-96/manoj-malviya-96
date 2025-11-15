@@ -1,16 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAward,
   faBriefcase,
+  faCalendar,
   faLocation,
 } from "@fortawesome/free-solid-svg-icons";
-import { Drawer, DrawerContent } from "@/components/drawer";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Badge from "@/components/badge";
 import Card from "@/components/card";
 import Timeline from "@/components/timeline";
-import { Parallax } from "@/components/parallax";
 import {
   METRICS,
   TECH_STACK,
@@ -20,19 +18,12 @@ import {
 import Image from "next/image";
 
 // Metric Grid Component
-function MetricGrid({
-  stats,
-}: {
-  stats: Array<{ value: string; label: string }>;
-}) {
+
+function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
-      {stats.map((s) => (
-        <div key={s.label}>
-          <div className="text-2xl">{s.value}</div>
-          <div className="text-xs text-muted-foreground">{s.label}</div>
-        </div>
-      ))}
+    <div key={label}>
+      <div className="text-2xl">{value}</div>
+      <div className="text-xs ">{label}</div>
     </div>
   );
 }
@@ -43,7 +34,19 @@ function MetricsSection() {
     <div className="space-y-4">
       {METRICS.map((m) => (
         <Card key={m.title} icon={m.icon} title={m.title}>
-          <MetricGrid stats={m.stats} />
+          {m.highlightStat && (
+            <div className="flex flex-row items-center gap-4 mb-4 border-b border-muted pb-4">
+              <span className="text-6xl font-bold">
+                {m.highlightStat.value}
+              </span>
+              <span className="text-sm ">{m.highlightStat.label}</span>
+            </div>
+          )}
+          <div className="grid grid-cols-4 gap-3">
+            {m.stats.map((s) => (
+              <Stat key={s.label} value={s.value} label={s.label} />
+            ))}
+          </div>
         </Card>
       ))}
     </div>
@@ -76,63 +79,6 @@ function TechStackList() {
   );
 }
 
-// Detail Modal Component
-function DetailModal({
-  exp,
-  onClose,
-}: {
-  exp: WorkExperience | null;
-  onClose: () => void;
-}) {
-  if (!exp) return null;
-  return (
-    <Drawer open onOpenChange={(o) => !o && onClose()}>
-      <DrawerContent title={exp.title}>
-        <div className="space-y-6 mt-2">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>{exp.company}</span>
-            <span>•</span>
-            <span>{exp.location}</span>
-            <span>•</span>
-            <span>{exp.period}</span>
-          </div>
-          <div>
-            <h3 className="text-lg mb-2">About the Role</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              {exp.description}
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg mb-3">Key Achievements</h3>
-            <ul className="space-y-2">
-              {exp.achievements.map((a, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2 text-muted-foreground"
-                >
-                  <FontAwesomeIcon
-                    icon={faAward}
-                    className="w-4 h-4 mt-0.5 text-foreground shrink-0"
-                  />
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg mb-3">Technologies Used</h3>
-            <div className="flex flex-wrap gap-2">
-              {exp.technologies.map((t) => (
-                <Badge key={t}>{t}</Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </DrawerContent>
-    </Drawer>
-  );
-}
-
 const CompanyLogo = ({
   src,
   alt,
@@ -153,13 +99,6 @@ const CompanyLogo = ({
   );
 };
 
-const CurrentBadge = () => (
-  <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
-    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-    Current
-  </span>
-);
-
 const WorkExperienceCard = ({ experience }: { experience: WorkExperience }) => {
   const {
     title,
@@ -168,99 +107,79 @@ const WorkExperienceCard = ({ experience }: { experience: WorkExperience }) => {
     period,
     current,
     description,
-    achievements,
     technologies,
   } = experience;
 
+  const renderTitleAndBadge = useCallback(() => {
+    return (
+      <span className="flex items-center gap-2">
+        <h3 className="text-xl font-bold ">{title}</h3>
+        {current && <Badge className="bg-success">Current</Badge>}
+      </span>
+    );
+  }, [title, current]);
+
+  const renderTechnologies = useCallback(() => {
+    return (
+      <div className="flex flex-wrap gap-2 ">
+        {technologies.map((tech, i) => (
+          <Badge key={i}>
+            {tech in TECH_STACK ? (
+              <FontAwesomeIcon icon={TECH_STACK[tech]} />
+            ) : (
+              tech
+            )}
+          </Badge>
+        ))}
+      </div>
+    );
+  }, [technologies]);
+
   return (
-    <div className="p-6">
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-            {current && <CurrentBadge />}
-          </div>
-          <div className="flex items-center gap-3 text-slate-600 text-sm">
-            <div className="flex items-center gap-1.5">
-              <FontAwesomeIcon icon={faBriefcase} />
-              <span className="font-medium">{company}</span>
-            </div>
-            <span className="text-slate-400">•</span>
-            <div className="flex items-center gap-1.5">
-              <FontAwesomeIcon icon={faLocation} />
-              <span>{location}</span>
-            </div>
-          </div>
-        </div>
-        <span className="text-sm text-slate-500 font-medium whitespace-nowrap ml-4">
+    <div className="p-6 flex flex-col cursor-pointer gap-4 bg-light rounded-3xl">
+      <div className="flex flex-row justify-between items-center">
+        {renderTitleAndBadge()}
+        <span className="col-span-1 align-right text-sm opacity-70 text-ellipsis">
+          <FontAwesomeIcon icon={faCalendar} />
           {period}
         </span>
       </div>
-
-      <p className="text-slate-700 text-sm leading-relaxed mb-4">
-        {description}
-      </p>
-
-      {achievements.length > 0 && (
-        <div className="mb-4">
-          <h4 className="text-sm font-semibold text-slate-900 mb-2">
-            Key Achievements
-          </h4>
-          <ul className="space-y-1.5">
-            {achievements.map((achievement, i) => (
-              <li
-                key={i}
-                className="text-sm text-slate-600 flex items-start gap-2"
-              >
-                <span className="text-blue-500 mt-1">•</span>
-                <span className="flex-1">{achievement}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {technologies.length > 0 && (
-        <div>
-          <h4 className="text-sm font-semibold text-slate-900 mb-2">
-            Technologies
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {technologies.map((tech, i) => (
-              <Badge key={i}>{tech}</Badge>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="text-sm opacity-70 flex flex-row gap-4 text-ellipsis">
+        <span>
+          <FontAwesomeIcon icon={faBriefcase} /> {company}
+        </span>
+        <span>
+          <FontAwesomeIcon icon={faLocation} /> {location}
+        </span>
+      </div>
+      <span className="flex flex-col gap-2 ">
+        <p className="text-sm leading-relaxed text-ellipsis">{description}</p>
+        {renderTechnologies()}
+      </span>
     </div>
   );
 };
 
 // Entry Component
 export default function Highlights() {
-  const [selected, setSelected] = useState<WorkExperience | null>(null);
+  // const router = useRouter();
   return (
     <>
-      <Parallax speed={0.2}>
-        <h3 className="text-2xl mb-4">Work History</h3>
-      </Parallax>
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Parallax speed={0.3} className="lg:col-span-2">
-          <Timeline
-            items={WORK_EXPERIENCES}
-            isToday={(exp) => exp.isCurrent}
-            renderLogo={(exp) => (
-              <CompanyLogo src={exp.logo} alt={exp.company} size={56} />
-            )}
-            renderCard={(exp) => <WorkExperienceCard experience={exp} />}
-          />
-        </Parallax>
-        <Parallax speed={0.4} className="flex flex-col">
-          <MetricsSection />
-          <TechStackList />
-        </Parallax>
+      <h3 className="text-2xl py-4">Work History</h3>
+
+      <div className="grid lg:grid-cols-3 gap-8">
+        <Timeline
+          items={WORK_EXPERIENCES}
+          isToday={(exp) => exp.isCurrent}
+          renderLogo={(exp) => (
+            <CompanyLogo src={exp.logo} alt={exp.company} size={56} />
+          )}
+          className="col-span-3"
+          renderCard={(exp) => <WorkExperienceCard experience={exp} />}
+        />
+        <MetricsSection />
+        <TechStackList />
       </div>
-      <DetailModal exp={selected} onClose={() => setSelected(null)} />
     </>
   );
 }

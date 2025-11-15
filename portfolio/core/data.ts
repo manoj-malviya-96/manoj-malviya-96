@@ -181,6 +181,7 @@ export interface Metric {
   icon: IconDefinition;
   title: string;
   stats: MetricStat[];
+  highlightStat?: MetricStat;
 }
 
 export const METRICS: Metric[] = [
@@ -188,11 +189,11 @@ export const METRICS: Metric[] = [
     icon: faGithub,
     title: "GitHub",
     stats: [
-      { value: "2,847", label: "Commits" },
       { value: "42", label: "Repos" },
       { value: "1,284", label: "Stars" },
       { value: "342", label: "Followers" },
     ],
+    highlightStat: { value: "2,847", label: "Commits" },
   },
   {
     icon: faChartLine,

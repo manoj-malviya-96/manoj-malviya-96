@@ -33,7 +33,7 @@ const ScreenContainerBase = forwardRef<HTMLElement, ScreenContainerProps>(
         ref={ref}
         className={cn(
           "py-20 px-4 sm:px-6 lg:px-8",
-          "min-h-[85vh] flex flex-col justify-center",
+          "min-h-[88vh] flex flex-col justify-center",
           className,
         )}
       >
