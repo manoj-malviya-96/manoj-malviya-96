@@ -38,9 +38,9 @@ Senior Software Engineer with 7+ years building high-performance systems across 
 - Hardware-software integration
 
 **What I Deliver**:
-- ⚡ Performance: 150x speed improvements, 60% latency reductions
+- ⚡ Performance: speed improvements, latency reductions
 - 🎯 Reliability: Type-safe systems with observable failures
-- 🚀 Impact: 20% cost reduction, 15% NPS improvement, millions of users served
+- 🚀 Impact: Cost reduction, NPS improvement, millions of users served
 - 👨‍🏫 Leadership: Mentoring, setting standards, driving technical excellence
 
 ---
