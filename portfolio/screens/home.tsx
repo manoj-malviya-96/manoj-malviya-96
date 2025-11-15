@@ -25,7 +25,7 @@ function ExternalLink({ href, label, className, children }: ExternalLinkProps) {
 export default function Home() {
   return (
     <div className="text-center space-y-8 animate-fadeIn">
-      <h1 className="text-3xl sm:text-5xl lg:text-6xl leading-[0.9] gradient-text tracking-tight w-full">
+      <h1 className="text-3xl sm:text-5xl lg:text-6xl gradient-text tracking-tight w-full">
         {PROFILE.quote}
       </h1>
       <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
