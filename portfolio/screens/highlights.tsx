@@ -35,14 +35,14 @@ function MetricsSection() {
       {METRICS.map((m) => (
         <Card key={m.title} icon={m.icon} title={m.title}>
           {m.highlightStat && (
-            <div className="flex flex-row items-center gap-4 mb-4 border-b border-muted pb-4">
+            <div className="flex flex-row items-center gap-4 mb-4">
               <span className="text-6xl font-bold">
                 {m.highlightStat.value}
               </span>
               <span className="text-sm ">{m.highlightStat.label}</span>
             </div>
           )}
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 lg:grid-cols-4 gap-3">
             {m.stats.map((s) => (
               <Stat key={s.label} value={s.value} label={s.label} />
             ))}
@@ -165,16 +165,18 @@ export default function Highlights() {
   // const router = useRouter();
   return (
     <>
-      <h3 className="text-2xl py-4">Work History</h3>
-
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <h3 className="text-2xl py-4">
+          <FontAwesomeIcon icon={faBriefcase} />
+          Work History
+        </h3>
         <Timeline
           items={WORK_EXPERIENCES}
           isToday={(exp) => exp.isCurrent}
           renderLogo={(exp) => (
             <CompanyLogo src={exp.logo} alt={exp.company} size={56} />
           )}
-          className="col-span-3"
+          className="lg:col-span-3"
           renderCard={(exp) => <WorkExperienceCard experience={exp} />}
         />
         <MetricsSection />
