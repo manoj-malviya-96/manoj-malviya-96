@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Icon from "@/components/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export type SearchFieldProps = {
@@ -21,7 +21,7 @@ export function Search_field({
 }: SearchFieldProps) {
   return (
     <div className="relative">
-      <FontAwesomeIcon
+      <Icon
         icon={faSearch}
         className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
       />

@@ -1,6 +1,6 @@
 import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Icon from "@/components/icon";
 import { cn } from "@/components/utils";
 
 function _IconTextBase({
@@ -14,7 +14,7 @@ function _IconTextBase({
 }) {
   return (
     <span className={cn("`flex items-center gap-1", className)}>
-      <FontAwesomeIcon icon={icon} className="icon" />
+      <Icon icon={icon} className="icon" />
       {children}
     </span>
   );

@@ -1,7 +1,7 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Icon from "@/components/icon";
 import { faArrowDownShortWide } from "@fortawesome/free-solid-svg-icons";
 import Link from "@/components/link";
-import { FOOTER_DATA } from "@/core/data";
+import { FOOTER_DATA } from "@/core/profile";
 
 export default function Footer() {
   const { social, quickLinks, profile } = FOOTER_DATA;
@@ -18,10 +18,7 @@ export default function Footer() {
             className="inline-flex items-center gap-1.5 text-sm text-foreground hover:text-muted-foreground transition-all"
           >
             Get in touch{" "}
-            <FontAwesomeIcon
-              icon={faArrowDownShortWide}
-              className="w-3.5 h-3.5"
-            />
+            <Icon icon={faArrowDownShortWide} className="w-3.5 h-3.5" />
           </Link>
         </span>
 
@@ -55,7 +52,7 @@ export default function Footer() {
                 className="p-2.5 bg-background rounded-lg glow-subtle"
                 label={label}
               >
-                <FontAwesomeIcon
+                <Icon
                   icon={icon}
                   className="w-4 h-4 icon-glow"
                   aria-label={label}

@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Icon from "@/components/icon";
 
 export type FilterToggleProps = {
   active?: boolean;
@@ -31,7 +31,7 @@ function _FilterToggle({
 
   return (
     <button {...rest} className={`${base} ${classes} ${className}`}>
-      {icon && <FontAwesomeIcon icon={icon} className="icon" />}
+      {icon && <Icon icon={icon} className="icon" />}
       {children}
     </button>
   );

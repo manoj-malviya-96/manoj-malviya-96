@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Add empty turbopack config to silence webpack warning
+  turbopack: {},
+
   // Reduce memory usage and improve performance
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {

@@ -1,17 +1,11 @@
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBook,
-  faCode,
-  faExternalLinkAlt,
-  faFileAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import Icon from "@/components/icon";
+import { faBook, faCode, faExternalLinkAlt, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { Drawer, DrawerContent } from "@/components/drawer";
 import { Search_field } from "@/components/search_field";
 import FilterToggle from "@/components/filter_toggle";
 import { Media_tile } from "@/components/media_tile";
-import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/core/data";
-import { Parallax } from "@/components/parallax";
+import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/core/showcase";
 
 export default function Showcase() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -69,83 +63,73 @@ export default function Showcase() {
   return (
     <>
       {/* Search and Filters */}
-      <Parallax speed={0.2}>
-        <div className="mb-6 space-y-3">
-          <Search_field
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Search projects and blogs..."
-          />
-          <div className="flex flex-wrap gap-2">
+      <div className="mb-6 space-y-3">
+        <Search_field
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="Search projects and blogs..."
+        />
+        <div className="flex flex-wrap gap-2">
+          <FilterToggle
+            active={selectedType === "all"}
+            onClick={() => setSelectedType("all")}
+          >
+            All
+          </FilterToggle>
+          <FilterToggle
+            active={selectedType === "project"}
+            onClick={() => setSelectedType("project")}
+            icon={faCode}
+          >
+            Projects
+          </FilterToggle>
+          <FilterToggle
+            active={selectedType === "blog"}
+            onClick={() => setSelectedType("blog")}
+            icon={faBook}
+          >
+            Blogs
+          </FilterToggle>
+          <span className="w-px bg-border" />
+          {categories.slice(1).map((category) => (
             <FilterToggle
-              active={selectedType === "all"}
-              onClick={() => setSelectedType("all")}
-            >
-              All
-            </FilterToggle>
-            <FilterToggle
-              active={selectedType === "project"}
-              onClick={() => setSelectedType("project")}
-              icon={faCode}
-            >
-              Projects
-            </FilterToggle>
-            <FilterToggle
-              active={selectedType === "blog"}
-              onClick={() => setSelectedType("blog")}
-              icon={faBook}
-            >
-              Blogs
-            </FilterToggle>
-            <span className="w-px bg-border" />
-            {categories.slice(1).map((category) => (
-              <FilterToggle
-                key={category}
-                variant="accent"
-                active={selectedCategory === category}
-                onClick={() =>
-                  setSelectedCategory(
-                    category === selectedCategory ? "all" : category,
-                  )
-                }
-              >
-                {category}
-              </FilterToggle>
-            ))}
-          </div>
-        </div>
-      </Parallax>
-
-      <Parallax speed={0.3}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {renderedTiles.map(({ item, highlight }) => (
-            <Media_tile
-              key={item.id}
-              title={item.title}
-              subtitle={item.description}
-              category={item.category}
-              icon={
-                item.type === "project" ? (
-                  <FontAwesomeIcon
-                    icon={faCode}
-                    className="w-4 h-4 icon-glow"
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faBook}
-                    className="w-4 h-4 icon-glow"
-                  />
+              key={category}
+              variant="accent"
+              active={selectedCategory === category}
+              onClick={() =>
+                setSelectedCategory(
+                  category === selectedCategory ? "all" : category,
                 )
               }
-              dateOrRead={item.type === "blog" ? item.readTime : item.date}
-              image={item.image}
-              tags={item.tags}
-              highlight={highlight}
-              onClick={() => handleTileClick(item)}
-            />
+            >
+              {category}
+            </FilterToggle>
           ))}
         </div>
-      </Parallax>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {renderedTiles.map(({ item, highlight }) => (
+          <Media_tile
+            key={item.id}
+            title={item.title}
+            subtitle={item.description}
+            category={item.category}
+            icon={
+              item.type === "project" ? (
+                <Icon icon={faCode} className="w-4 h-4 icon-glow" />
+              ) : (
+                <Icon icon={faBook} className="w-4 h-4 icon-glow" />
+              )
+            }
+            dateOrRead={item.type === "blog" ? item.readTime : item.date}
+            image={item.image}
+            tags={item.tags}
+            highlight={highlight}
+            onClick={() => handleTileClick(item)}
+          />
+        ))}
+      </div>
 
       {filteredItems.length === 0 && (
         <div className="text-center py-12">
@@ -205,10 +189,7 @@ export default function Showcase() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-xl transition-all glow-on-hover"
                     >
-                      <FontAwesomeIcon
-                        icon={faExternalLinkAlt}
-                        className="w-4 h-4"
-                      />
+                      <Icon icon={faExternalLinkAlt} className="w-4 h-4" />
                       <span>View Project</span>
                     </a>
                   )}
@@ -219,7 +200,7 @@ export default function Showcase() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-5 py-2.5 bg-muted text-foreground rounded-xl transition-all glow-on-hover"
                     >
-                      <FontAwesomeIcon icon={faFileAlt} className="w-4 h-4" />
+                      <Icon icon={faFileAlt} className="w-4 h-4" />
                       <span>Read Paper</span>
                     </a>
                   )}

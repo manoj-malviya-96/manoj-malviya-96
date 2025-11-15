@@ -1,8 +1,7 @@
 "use client";
 import { ReactNode } from "react";
-import { PROFILE, SOCIAL_LINKS, SocialLink } from "@/core/data";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Parallax } from "@/components/parallax";
+import { PROFILE, SOCIAL_LINKS, SocialLink } from "@/core/profile";
+import Icon from "@/components/icon";
 
 interface ExternalLinkProps {
   href: string;
@@ -28,39 +27,31 @@ function ExternalLink({ href, label, className, children }: ExternalLinkProps) {
 export default function Home() {
   return (
     <div className="text-center space-y-8 animate-fadeIn">
-      <Parallax speed={0.3}>
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl gradient-text tracking-tight w-full">
-          {PROFILE.quote}
-        </h1>
-      </Parallax>
+      <h1 className="text-3xl sm:text-5xl lg:text-6xl gradient-text tracking-tight w-full">
+        {PROFILE.quote}
+      </h1>
 
-      <Parallax speed={0.5}>
-        <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          {PROFILE.bio}
-        </p>
-      </Parallax>
+      <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+        {PROFILE.bio}
+      </p>
 
-      <Parallax speed={0.7}>
-        <div className="flex justify-center gap-2 pt-4">
-          {SOCIAL_LINKS.map(({ icon, href, label }: SocialLink) => (
-            <ExternalLink
-              key={label}
-              href={href}
-              label={label}
-              className="p-3 rounded-lg glow-accent group"
-            >
-              <FontAwesomeIcon icon={icon} className="w-5 h-5 icon-glow" />
-            </ExternalLink>
-          ))}
-        </div>
-      </Parallax>
+      <div className="flex justify-center gap-2 pt-4">
+        {SOCIAL_LINKS.map(({ icon, href, label }: SocialLink) => (
+          <ExternalLink
+            key={label}
+            href={href}
+            label={label}
+            className="p-3 rounded-lg glow-accent group"
+          >
+            <Icon icon={icon} className="w-5 h-5 icon-glow" />
+          </ExternalLink>
+        ))}
+      </div>
 
-      <Parallax speed={0.4}>
-        <p className="text-sm text-muted-foreground pt-8">
-          Currently {PROFILE.role} @{" "}
-          <span className="text-foreground">{PROFILE.company}</span>
-        </p>
-      </Parallax>
+      <p className="text-sm text-muted-foreground pt-8">
+        Currently {PROFILE.role} @{" "}
+        <span className="text-foreground">{PROFILE.company}</span>
+      </p>
     </div>
   );
 }
