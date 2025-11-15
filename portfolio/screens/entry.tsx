@@ -1,7 +1,11 @@
 "use client";
 import React, { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { Briefcase, FolderOpen, Home as HomeIcon } from "lucide-react";
+import {
+  faBriefcase,
+  faFolder,
+  faHome,
+} from "@fortawesome/free-solid-svg-icons";
 import NavBar, { type NavItem as BottomNavItem } from "@/components/nav_bar";
 import ScreenContainer from "@/components/screen_container";
 import { Element, scroller } from "react-scroll";
@@ -75,7 +79,7 @@ export default function Entry() {
       {
         id: "home" as const,
         label: "Entry",
-        icon: HomeIcon,
+        icon: faHome,
         headerAlign: "center" as const,
         theme: "dark" as const,
         component: <Home />,
@@ -83,7 +87,7 @@ export default function Entry() {
       {
         id: "workex" as const,
         label: "Experience" as const,
-        icon: Briefcase,
+        icon: faBriefcase,
         title: "Experience",
         subtitle: "Roles, impact, and technologies",
         headerAlign: "left" as const,
@@ -93,7 +97,7 @@ export default function Entry() {
       {
         id: "showcase" as const,
         label: "Showcase",
-        icon: FolderOpen,
+        icon: faFolder,
         title: "Projects & Blogs",
         subtitle: "Exploring ideas through code and writing",
         headerAlign: "left" as const,

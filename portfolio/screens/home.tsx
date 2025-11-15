@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { PROFILE, SOCIAL_LINKS, SocialLink } from "@/core/data";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ExternalLinkProps {
   href: string;
@@ -32,14 +33,14 @@ export default function Home() {
         {PROFILE.bio}
       </p>
       <div className="flex justify-center gap-2 pt-4">
-        {SOCIAL_LINKS.map(({ icon: Icon, href, label }: SocialLink) => (
+        {SOCIAL_LINKS.map(({ icon, href, label }: SocialLink) => (
           <ExternalLink
             key={label}
             href={href}
             label={label}
             className="p-3 rounded-lg glow-accent group"
           >
-            <Icon className="w-5 h-5 icon-glow" />
+            <FontAwesomeIcon icon={icon} className="w-5 h-5 icon-glow" />
           </ExternalLink>
         ))}
       </div>

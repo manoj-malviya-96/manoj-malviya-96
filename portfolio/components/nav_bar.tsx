@@ -2,13 +2,15 @@
 import * as React from "react";
 import { memo } from "react";
 import { cn } from "@/components/utils";
-import { Search, Settings } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Link as ScrollLink } from "react-scroll";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export type NavItem<T extends string> = {
   id: T;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: IconDefinition;
 };
 
 interface NavBarProps<T extends string> {
@@ -59,7 +61,10 @@ function _NavBar<T extends string>({
               active && activeClasses,
             )}
           >
-            <item.icon className={cn("icon", !active && "icon-glow")} />
+            <FontAwesomeIcon
+              icon={item.icon}
+              className={cn("icon", !active && "icon-glow")}
+            />
             <span className="hidden lg:inline-block">{item.label}</span>
           </ScrollLink>
         );
@@ -71,13 +76,13 @@ function _NavBar<T extends string>({
           aria-label="Open search"
           className="glow-subtle transition-colors group"
         >
-          <Search className="icon icon-glow" />
+          <FontAwesomeIcon icon={faSearch} className="icon icon-glow" />
         </button>
         <button
           aria-label="Open search"
           className="glow-subtle transition-colors group"
         >
-          <Settings className="icon icon-glow" />
+          <FontAwesomeIcon icon={faCog} className="icon icon-glow" />
         </button>
       </span>
     </nav>
