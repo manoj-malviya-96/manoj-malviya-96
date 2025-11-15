@@ -11,6 +11,7 @@ import { Search_field } from "@/components/search_field";
 import FilterToggle from "@/components/filter_toggle";
 import { Media_tile } from "@/components/media_tile";
 import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/core/data";
+import { Parallax } from "@/components/parallax";
 
 export default function Showcase() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,73 +69,83 @@ export default function Showcase() {
   return (
     <>
       {/* Search and Filters */}
-      <div className="mb-6 space-y-3">
-        <Search_field
-          value={searchQuery}
-          onChange={setSearchQuery}
-          placeholder="Search projects and blogs..."
-        />
-        <div className="flex flex-wrap gap-2">
-          <FilterToggle
-            active={selectedType === "all"}
-            onClick={() => setSelectedType("all")}
-          >
-            All
-          </FilterToggle>
-          <FilterToggle
-            active={selectedType === "project"}
-            onClick={() => setSelectedType("project")}
-            icon={faCode}
-          >
-            Projects
-          </FilterToggle>
-          <FilterToggle
-            active={selectedType === "blog"}
-            onClick={() => setSelectedType("blog")}
-            icon={faBook}
-          >
-            Blogs
-          </FilterToggle>
-          <span className="w-px bg-border" />
-          {categories.slice(1).map((category) => (
+      <Parallax speed={0.2}>
+        <div className="mb-6 space-y-3">
+          <Search_field
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search projects and blogs..."
+          />
+          <div className="flex flex-wrap gap-2">
             <FilterToggle
-              key={category}
-              variant="accent"
-              active={selectedCategory === category}
-              onClick={() =>
-                setSelectedCategory(
-                  category === selectedCategory ? "all" : category,
+              active={selectedType === "all"}
+              onClick={() => setSelectedType("all")}
+            >
+              All
+            </FilterToggle>
+            <FilterToggle
+              active={selectedType === "project"}
+              onClick={() => setSelectedType("project")}
+              icon={faCode}
+            >
+              Projects
+            </FilterToggle>
+            <FilterToggle
+              active={selectedType === "blog"}
+              onClick={() => setSelectedType("blog")}
+              icon={faBook}
+            >
+              Blogs
+            </FilterToggle>
+            <span className="w-px bg-border" />
+            {categories.slice(1).map((category) => (
+              <FilterToggle
+                key={category}
+                variant="accent"
+                active={selectedCategory === category}
+                onClick={() =>
+                  setSelectedCategory(
+                    category === selectedCategory ? "all" : category,
+                  )
+                }
+              >
+                {category}
+              </FilterToggle>
+            ))}
+          </div>
+        </div>
+      </Parallax>
+
+      <Parallax speed={0.3}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {renderedTiles.map(({ item, highlight }) => (
+            <Media_tile
+              key={item.id}
+              title={item.title}
+              subtitle={item.description}
+              category={item.category}
+              icon={
+                item.type === "project" ? (
+                  <FontAwesomeIcon
+                    icon={faCode}
+                    className="w-4 h-4 icon-glow"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faBook}
+                    className="w-4 h-4 icon-glow"
+                  />
                 )
               }
-            >
-              {category}
-            </FilterToggle>
+              dateOrRead={item.type === "blog" ? item.readTime : item.date}
+              image={item.image}
+              tags={item.tags}
+              highlight={highlight}
+              onClick={() => handleTileClick(item)}
+            />
           ))}
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {renderedTiles.map(({ item, highlight }) => (
-          <Media_tile
-            key={item.id}
-            title={item.title}
-            subtitle={item.description}
-            category={item.category}
-            icon={
-              item.type === "project" ? (
-                <FontAwesomeIcon icon={faCode} className="w-4 h-4 icon-glow" />
-              ) : (
-                <FontAwesomeIcon icon={faBook} className="w-4 h-4 icon-glow" />
-              )
-            }
-            dateOrRead={item.type === "blog" ? item.readTime : item.date}
-            image={item.image}
-            tags={item.tags}
-            highlight={highlight}
-            onClick={() => handleTileClick(item)}
-          />
-        ))}
-      </div>
+      </Parallax>
 
       {filteredItems.length === 0 && (
         <div className="text-center py-12">

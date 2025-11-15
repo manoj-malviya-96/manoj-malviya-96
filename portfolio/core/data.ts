@@ -29,7 +29,11 @@ export interface SocialLink {
 }
 
 export const SOCIAL_LINKS = [
-  { icon: faGithub, href: "https://github.com/yourusername", label: "GitHub" },
+  {
+    icon: faGithub,
+    href: "https://github.com/manoj-malviya-96",
+    label: "GitHub",
+  },
   {
     icon: faLinkedin,
     href: "https://linkedin.com/in/yourusername",

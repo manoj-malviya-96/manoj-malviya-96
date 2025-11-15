@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAward,
@@ -10,6 +10,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Badge from "@/components/badge";
 import Card from "@/components/card";
 import Timeline from "@/components/timeline";
+import { Parallax } from "@/components/parallax";
 import {
   METRICS,
   TECH_STACK,
@@ -238,12 +239,13 @@ const WorkExperienceCard = ({ experience }: { experience: WorkExperience }) => {
 // Entry Component
 export default function Highlights() {
   const [selected, setSelected] = useState<WorkExperience | null>(null);
-  const onSelect = useCallback((exp: WorkExperience) => setSelected(exp), []);
   return (
     <>
-      <h3 className="text-2xl mb-4">Work History</h3>
+      <Parallax speed={0.2}>
+        <h3 className="text-2xl mb-4">Work History</h3>
+      </Parallax>
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        <Parallax speed={0.3} className="lg:col-span-2">
           <Timeline
             items={WORK_EXPERIENCES}
             isToday={(exp) => exp.isCurrent}
@@ -252,11 +254,11 @@ export default function Highlights() {
             )}
             renderCard={(exp) => <WorkExperienceCard experience={exp} />}
           />
-        </div>
-        <div className="flex flex-col">
+        </Parallax>
+        <Parallax speed={0.4} className="flex flex-col">
           <MetricsSection />
           <TechStackList />
-        </div>
+        </Parallax>
       </div>
       <DetailModal exp={selected} onClose={() => setSelected(null)} />
     </>

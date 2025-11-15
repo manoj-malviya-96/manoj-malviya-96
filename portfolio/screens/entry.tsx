@@ -11,7 +11,8 @@ import ScreenContainer from "@/components/screen_container";
 import { Element, scroller } from "react-scroll";
 import { Drawer, DrawerContent } from "@/components/drawer";
 import TextInput from "@/components/text_input";
-import { cn } from "@/components/utils"; // Code-split larger sections (avoid SSR if not needed for LCP)
+import { cn } from "@/components/utils";
+import { Parallax } from "@/components/parallax"; // Code-split larger sections (avoid SSR if not needed for LCP)
 
 // Code-split larger sections (avoid SSR if not needed for LCP)
 const Highlights = dynamic(() => import("@/screens/highlights"), {
@@ -136,7 +137,7 @@ export default function Entry() {
 
   return (
     <>
-      {allSections.map((section) => (
+      {allSections.map((section, idx) => (
         <Element key={section.id} name={section.id}>
           <ScreenContainer
             title={section.title}
@@ -149,7 +150,13 @@ export default function Entry() {
                 : "",
             )}
           >
-            {section.component}
+            <Parallax
+              speed={0.25 + idx * 0.1}
+              direction={idx % 2 === 0 ? "up" : "down"}
+              disableBelow={640}
+            >
+              {section.component}
+            </Parallax>
           </ScreenContainer>
         </Element>
       ))}
