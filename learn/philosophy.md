@@ -9,16 +9,17 @@ Three Purposes I have when I wrote code -
 **MAINTAINABLE** _Code evolves without degrading quality_
 
 ![Architecture](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=200&fit=crop)
-### Rule 1 - Compose Small, Readable Pieces [Foundation]
+### Step 1 - Modular and Intent Oriented [FOUNDATION]
 _Build with small, focused functions that do one thing well._
 - Write functions with single responsibilities
+- No functions / features exists for specularity - everything should have purpose.
 - Use descriptive names that reveal intent
 - Limit nesting to 2-3 levels
 - Favor composition over inheritance
 - Minimize coupling between modules
 - Design for deletion—make components replaceable
 
-### Rule 2 - Make Correctness Automatic [CORRECT]
+### Step 2 - Make Correctness Automatic [CORRECT]
 
 Prevent bugs at compile-time, catch them immediately at runtime.
 
@@ -32,7 +33,7 @@ Prevent bugs at compile-time, catch them immediately at runtime.
 
 ![Performance Monitoring](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=200&fit=crop)
 
-### Rule 3 - Measure, Then Optimize [FAST]
+### Step 3 - Measure, Then Optimize [FAST]
 _Profile before optimizing. Evidence beats intuition._
 
 - Instrument critical paths with metrics
@@ -46,7 +47,7 @@ _Profile before optimizing. Evidence beats intuition._
 
 ![Evolution](https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?w=800&h=200&fit=crop)
 
-### Rule 4 - Simplify Change [MAINTAINABLE]
+### Step 4 - Simplify Change [SCALABLE]
 _Code is read and modified 10x more than written._
 
 - Use Doc Strings to Document *why* decisions were made 
@@ -63,13 +64,27 @@ graph TD
     B --> C[Measure Performance]
     C --> D[Optimize With Evidence]
     D --> E[Simplify Change]
+
+    B -.->|Out| I[Ship MVP]
+    D -.->|Out| J[Stable Prod]
+    E -.->|Out| K[Scaled Prod]
+
+    style I fill:#90EE90
+    style I color:#FFFFFF
+    style J fill:#90EE90
+    style J color:#FFFFFF
+    style K fill:#90EE90
+    style K color:#FFFFFF
     
     B -.->|Achieves| F[CORRECT]
     D -.->|Achieves| G[FAST]
     E -.->|Achieves| H[MAINTAINABLE]
     
-    style F fill:#90EE90
+    style F fill:#87CEEB
+    style F color:#FFFFFF
     style G fill:#87CEEB
-    style H fill:#FFB6C1
+    style G color:#FFFFFF
+    style H fill:#87CEEB
+    style H color:#FFFFFF
 ```
 
