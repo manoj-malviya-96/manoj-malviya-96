@@ -24,7 +24,6 @@ function ProfileFooter({ className }: { className?: string }) {
         className="rounded-full mb-4"
       />
       <h3 className="text-lg mb-3">{PROFILE.name}</h3>
-      <p className="text-sm mb-3 leading-relaxed">{PROFILE.tagline}</p>
       <Link
         href={`mailto:${PROFILE.email}`}
         className="inline-flex items-center gap-1.5 text-sm text-fg hover:text-muted transition-all"

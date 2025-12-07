@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useNavigator } from "@/hooks/use-navigator";
 import { Icon } from "@/components/ui";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ import { EDUCATION, PROFILE, WORK_EXPERIENCE } from "@/core/profile";
 import { uniqueBy } from "@/core/utils";
 
 type ExternalIconURLProps = {
-  image: string;
+  image: StaticImageData | string;
   altText: string;
   url: string;
 };

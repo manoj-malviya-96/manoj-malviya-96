@@ -63,6 +63,7 @@ export const PROFILE = {
   title: "Senior Software Engineer",
   location: "Berlin, Germany",
   profilePicture: UserAvatar,
+  email: "malviyamanoj1896@gmail.com",
 };
 
 type Education = {
