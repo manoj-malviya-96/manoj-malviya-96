@@ -1,0 +1,34 @@
+// filepath: /Users/manoj/Git/manoj-malviya-96/portfolio/components/card.tsx
+import React, { memo, ReactNode } from "react";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { cn } from "@/core/utils";
+import Icon from "@/components/ui/icon";
+
+export interface CardProps {
+  icon?: IconDefinition;
+  title: string;
+  children: ReactNode;
+  className?: string;
+}
+
+const IconTitleContainer = memo(function fn({
+  icon,
+  title,
+  children,
+  className = "",
+}: CardProps) {
+  return (
+    <div className={cn("p-4 rounded-lg", className)}>
+      {(icon || title) && (
+        <span className="flex items-center gap-2 self-start pb-4 pr-4">
+          {icon && <Icon icon={icon} className="icon text-lg" />}
+          <h3 className="text-lg uppercase tracking-wider">{title}</h3>
+        </span>
+      )}
+      {children}
+    </div>
+  );
+});
+
+IconTitleContainer.displayName = "IconTitleContainer";
+export default IconTitleContainer;
