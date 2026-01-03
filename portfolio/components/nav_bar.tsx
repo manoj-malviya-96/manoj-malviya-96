@@ -60,7 +60,7 @@ export default function Navbar() {
 
   const { isVisible, isAtTop } = useScrollVisibility({
     enabled: scrollEffectEnabled,
-    velocityThreshold: 0.5,
+    velocityThreshold: 0.8,
   });
 
   return (
