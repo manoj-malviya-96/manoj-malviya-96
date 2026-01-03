@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Fuse, { IFuseOptions } from "fuse.js";
 import ProjectCard from "./project_card";
 import { Project } from "@/lib/showcase";
-import { Search_field } from "./search_field";
+import { Search } from "./search";
 import { cn } from "@/lib/utils";
 
 interface ProjectListProps {
@@ -45,7 +45,7 @@ export default function ProjectList({ projects, className }: ProjectListProps) {
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>
-      <Search_field
+      <Search
         value={query}
         onChange={setQuery}
         placeholder="Search projects (title, tags, description)"

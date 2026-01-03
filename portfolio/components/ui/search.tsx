@@ -12,7 +12,7 @@ export type SearchFieldProps = {
   "value" | "onChange" | "placeholder" | "className"
 >;
 
-export function Search_field({
+export function Search({
   value,
   onChange,
   placeholder = "Search...",
@@ -37,4 +37,4 @@ export function Search_field({
   );
 }
 
-export default Search_field;
+export default Search;

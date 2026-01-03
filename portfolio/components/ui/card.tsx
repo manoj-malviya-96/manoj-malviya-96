@@ -1,4 +1,3 @@
-// filepath: /Users/manoj/Git/manoj-malviya-96/portfolio/components/card.tsx
 import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { cn } from "@/lib/utils";
@@ -10,13 +9,7 @@ export interface CardProps {
   children: ReactNode;
   className?: string;
 }
-
-const IconTitleContainer = memo(function fn({
-  icon,
-  title,
-  children,
-  className = "",
-}: CardProps) {
+function Card({ icon, title, children, className = "" }: CardProps) {
   return (
     <div className={cn("p-4 rounded-lg", className)}>
       {(icon || title) && (
@@ -28,7 +21,6 @@ const IconTitleContainer = memo(function fn({
       {children}
     </div>
   );
-});
-
-IconTitleContainer.displayName = "IconTitleContainer";
-export default IconTitleContainer;
+}
+Card.displayName = "Card";
+export default memo(Card);

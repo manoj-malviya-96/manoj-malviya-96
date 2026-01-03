@@ -1,6 +1,6 @@
-import React, { memo, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
-function _Badge({
+export default function Badge({
   children,
   active = false,
   className = "",
@@ -18,5 +18,4 @@ function _Badge({
   );
 }
 
-_Badge.displayName = "Badge";
-export default memo(_Badge);
+Badge.displayName = "Badge";

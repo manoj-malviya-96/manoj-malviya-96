@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useMediumRSS } from "@/lib/use-medium-posts";
-import { Badge, Search_field, Skeleton } from "@/components/ui";
+import { useMediumRSS } from "@/lib/medium";
+import { Badge, Search, Skeleton } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { ExternalURL } from "@/lib/types";
 
@@ -166,7 +166,7 @@ export default function BlogsPage() {
           {/* Search Bar */}
           <div className="flex gap-3 items-center">
             <div className="flex-1">
-              <Search_field
+              <Search
                 value={searchQuery}
                 onChange={setSearchQuery}
                 placeholder="Search posts by title or content..."

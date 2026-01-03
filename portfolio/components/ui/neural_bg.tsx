@@ -212,8 +212,6 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
     pointer: { x: 0, y: 0, targetX: 0, targetY: 0 },
   });
   const isVisibleRef = useRef(true);
-
-  // derive hue/saturation/chroma from baseColor if provided
   if (baseColor) {
     const rgb = baseColor.match(/.{1,2}/g)?.map((x) => parseInt(x, 16) / 255);
     if (rgb && rgb.length === 3) {
@@ -241,8 +239,6 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
             break;
         }
       }
-
-      // Update the hue, saturation, and chroma based on the base color
       hue = h;
       saturation = s;
       chroma = l;

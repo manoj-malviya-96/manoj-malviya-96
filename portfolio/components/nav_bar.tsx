@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
-import { faMale, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { atom, useAtom } from "jotai";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useAtom } from "jotai";
+import { PortfolioLogo } from "@/lib/assets";
+import Image from "next/image";
+import { navbarDarkThemeAtom, navbarScrollEffectAtom } from "@/lib/ui_store";
+import useScrollVisibility from "@/lib/scroll_visibility";
 
 function MainLogo() {
   return (
-    <Link className="text-lg font-bold" href="/">
-      <Icon icon={faMale} className="icon" />
+    <Link className="flex flex-row items-center gap-4" href="/">
+      <Image src={PortfolioLogo} alt="Logo" width={20} height={20} />
     </Link>
   );
 }
@@ -50,43 +54,26 @@ function CTALink() {
   );
 }
 
-export const navbarScrollEffectAtom = atom(true);
-export const navbarDarkThemeAtom = atom(true);
-
-function useScrollEffect(enabled: boolean = true) {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    if (!enabled) return;
-    const handleScroll = () => {
-      const scrolled = window.scrollY > 0.5 * window.innerHeight;
-      setIsScrolled(scrolled);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [enabled]);
-  return enabled && isScrolled;
-}
-
 export default function Navbar() {
   const [scrollEffectEnabled] = useAtom(navbarScrollEffectAtom);
   const [darkThemeEnabled] = useAtom(navbarDarkThemeAtom);
-  const isScrolled = useScrollEffect(scrollEffectEnabled);
+
+  const isVisible = useScrollVisibility({
+    enabled: scrollEffectEnabled,
+    velocityThreshold: 0.5,
+  });
 
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 w-full h-fit z-10 p-1",
-        isScrolled ? "bg-back/60 backdrop-blur-md" : "bg-transparent",
+        "fixed top-0 left-0 w-full h-fit z-10 p-2 duration-300 transition-transform bg-back/60 backdrop-blur-md",
+        isVisible ? "translate-y-0" : "-translate-y-full",
       )}
       data-theme={darkThemeEnabled ? "dark" : "light"}
     >
       <span
         className={cn(
-          "flex flex-row justify-between gap-4 w-2/3 mx-auto text-front text-sm transition-transform duration-300",
-          !isScrolled && "scale-110",
+          "flex flex-row justify-around gap-4 w-2/3 mx-auto text-front text-sm",
         )}
       >
         <MainLogo />

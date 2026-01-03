@@ -1,5 +1,5 @@
 import Icon from "@/components/ui/icon";
-import Link from "@/components/ui/link";
+import Link from "next/link";
 import Image from "next/image";
 import { SOCIAL } from "@/lib/profile";
 import { UserAvatar } from "@/lib/assets";
@@ -58,9 +58,7 @@ function SocialLinks() {
           <Link
             key={label}
             href={href}
-            external
             className="p-2.5 bg-bg rounded-lg glow-subtle"
-            label={label}
           >
             <Icon icon={icon} className="w-4 h-4 icon" aria-label={label} />
           </Link>

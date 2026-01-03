@@ -9,7 +9,7 @@ interface IconProps {
   "aria-label"?: string;
 }
 
-function _Icon({ icon, className, "aria-label": ariaLabel }: IconProps) {
+function Icon({ icon, className, "aria-label": ariaLabel }: IconProps) {
   return (
     <FontAwesomeIcon
       icon={icon}
@@ -18,6 +18,5 @@ function _Icon({ icon, className, "aria-label": ariaLabel }: IconProps) {
     />
   );
 }
-
-_Icon.displayName = "Icon";
-export default memo(_Icon);
+Icon.displayName = "Icon";
+export default memo(Icon);
