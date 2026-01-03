@@ -1,10 +1,9 @@
 import PageContainer from "@/components/ui/page_container";
 import { ProjectList } from "@/components/ui";
-import { useProjects } from "@/lib/showcase";
 import { LinkedinCover } from "@/lib/assets";
+import { AllProjects } from "@/lib/showcase";
 
 export default function Page() {
-  const projects = useProjects();
   return (
     <PageContainer cover={LinkedinCover}>
       <section className="screen flex flex-col gap-8 lg:gap-16">
@@ -14,7 +13,7 @@ export default function Page() {
             Some of my favorite projects that I have worked on over the years.
           </span>
         </div>
-        <ProjectList projects={projects} />
+        <ProjectList projects={AllProjects} />
       </section>
     </PageContainer>
   );

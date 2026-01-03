@@ -1,12 +1,13 @@
 "use client";
 
 import React, { memo, ReactNode } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { Project, ProjectCTA } from "@/lib/showcase";
 import { cn } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NextImage } from "@/components/ui/image";
 
 export type ProjectCardProps = {
   project: Project;
@@ -86,7 +87,7 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   return <span className={base}>{content(cta.label)}</span>;
 };
 
-const ImagesBlock = ({ images }: { images: (string | StaticImageData)[] }) => {
+const ImagesBlock = ({ images }: { images: NextImage[] }) => {
   if (images.length === 1) {
     const img = images[0];
     return (
@@ -130,8 +131,7 @@ const ProjectCard = memo(function _ProjectCard({
   icon,
   dateOrRead,
 }: ProjectCardProps) {
-  const { title, tagline, description, tags, images, image, ctas } = project;
-  const mergedImages = images ?? (image ? [image] : []);
+  const { title, tagline, description, tags, images, ctas } = project;
 
   return (
     <div
@@ -180,11 +180,9 @@ const ProjectCard = memo(function _ProjectCard({
               ))}
             </div>
           ) : null}
-
-          {mergedImages.length > 1 && <ImagesBlock images={mergedImages} />}
+          {images.length > 1 && <ImagesBlock images={images} />}
         </div>
-
-        {mergedImages.length === 1 && <ImagesBlock images={mergedImages} />}
+        {images.length === 1 && <ImagesBlock images={images} />}
       </div>
     </div>
   );

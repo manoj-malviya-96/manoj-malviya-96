@@ -2,6 +2,7 @@ import Icon from "@/components/ui/icon";
 import Link from "@/components/ui/link";
 import Image from "next/image";
 import { SOCIAL } from "@/lib/profile";
+import { UserAvatar } from "@/lib/assets";
 
 const quickLinks = [
   { label: "Work Experience", href: "#workex" },
@@ -10,12 +11,11 @@ const quickLinks = [
   { label: "Contact", href: "#contact" },
 ] as const;
 
-const ProfilePicture = "https://avatars.githubusercontent.com/u/6278223?v=4";
 function ProfileFooter({ className }: { className?: string }) {
   return (
     <div className={className}>
       <Image
-        src={ProfilePicture}
+        src={UserAvatar}
         alt={"Profile"}
         width={90}
         height={90}

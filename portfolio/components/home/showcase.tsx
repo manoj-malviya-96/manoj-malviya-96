@@ -1,11 +1,17 @@
 "use client";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { Icon, ProjectCard } from "@/components/ui";
-import { useProjects } from "@/lib/showcase";
+import { Icon } from "@/components/ui";
+import { useMemo } from "react";
+import { AllProjects } from "@/lib/showcase";
 
 export default function ProjectShowcase() {
-  const Projects = useProjects().slice(0, 2);
+  const projects = useMemo(() => {
+    return [...AllProjects]
+      .sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999))
+      .slice(0, 3);
+  }, []);
+
   return (
     <section className="screen flex flex-col gap-8 lg:gap-16" data-theme="dark">
       <span className="flex flex-row gap-4 items-center justify-between">
@@ -19,14 +25,9 @@ export default function ProjectShowcase() {
           <Icon icon={faUpRightFromSquare} />
         </Link>
       </span>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {Projects.map((project) => (
-          <ProjectCard
-            key={project.title}
-            className="h-full"
-            project={project}
-            minimal
-          />
+      <div className="flex flex-col md:flex-row gap-8 lg:gap-16">
+        {projects.map((project) => (
+          <span key={project.title}>{project.title}</span>
         ))}
       </div>
     </section>
