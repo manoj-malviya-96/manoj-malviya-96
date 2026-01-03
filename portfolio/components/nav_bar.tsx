@@ -58,7 +58,7 @@ export default function Navbar() {
   const [scrollEffectEnabled] = useAtom(navbarScrollEffectAtom);
   const [darkThemeEnabled] = useAtom(navbarDarkThemeAtom);
 
-  const isVisible = useScrollVisibility({
+  const { isVisible, isAtTop } = useScrollVisibility({
     enabled: scrollEffectEnabled,
     velocityThreshold: 0.5,
   });
@@ -66,7 +66,8 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 w-full h-fit z-10 p-2 duration-300 transition-transform bg-back/60 backdrop-blur-md",
+        "fixed top-0 left-0 w-full h-fit z-10 p-2 duration-300 transition-transform",
+        isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
       data-theme={darkThemeEnabled ? "dark" : "light"}
