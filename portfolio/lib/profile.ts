@@ -26,11 +26,10 @@ import {
   IITJLogo,
   NoahLabs,
   PennStateLogo,
-  UserAvatar,
-} from "@/core/assets";
+} from "@/lib/assets";
 
 import type { StaticImageData as LocalImage } from "next/image";
-import { MonthAndYear } from "@/core/types";
+import { MonthAndYear } from "@/lib/types";
 
 export interface SocialLink {
   icon: IconDefinition;
@@ -58,14 +57,6 @@ export const SOCIAL: SocialLink[] = [
   { icon: faEnvelope, href: "mailto:your.email@example.com", label: "Email" },
 ];
 
-export const PROFILE = {
-  name: "Manoj Malviya",
-  title: "Senior Software Engineer",
-  location: "Berlin, Germany",
-  profilePicture: UserAvatar,
-  email: "malviyamanoj1896@gmail.com",
-};
-
 type Education = {
   school: string;
   schoolURL: string;
@@ -86,7 +77,7 @@ export const EDUCATION = [
     graduation: "2020-08",
   },
   {
-    school: "Indian Institute of Technology (IIT)",
+    school: "Indian Institute of Technology",
     schoolURL: "https://www.iitj.ac.in/",
     logo: IITJLogo,
     degree: "Bachelor of Technology",

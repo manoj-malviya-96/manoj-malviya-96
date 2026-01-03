@@ -8,4 +8,4 @@ export { Search_field } from "./search_field";
 export { default as Skeleton } from "./skeleton";
 export { default as FlipWords } from "./flip_words";
 export { default as ProjectCard } from "./project_card";
-export { default as ProjectBentoGrid } from "./project_bento_grid";
+export { default as ProjectList } from "./project_list";

@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
-import { cn } from "@/core/utils"; // Root component
+import { cn } from "@/lib/utils"; // Root component
 
 // Root component
 export function Drawer(

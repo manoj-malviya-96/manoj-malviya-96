@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { cn } from "@/core/utils";
+import { cn } from "@/lib/utils";
 
 interface IconProps {
   icon: IconDefinition;

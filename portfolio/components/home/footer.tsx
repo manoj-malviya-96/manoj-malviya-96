@@ -1,10 +1,8 @@
 import Icon from "@/components/ui/icon";
 import Link from "@/components/ui/link";
-import { PROFILE, SOCIAL } from "@/core/profile";
-import { faMailForward } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { SOCIAL } from "@/lib/profile";
 
-const social = SOCIAL;
 const quickLinks = [
   { label: "Work Experience", href: "#workex" },
   { label: "Projects & Blogs", href: "#showcase" },
@@ -23,14 +21,7 @@ function ProfileFooter({ className }: { className?: string }) {
         height={90}
         className="rounded-full mb-4"
       />
-      <h3 className="text-lg mb-3">{PROFILE.name}</h3>
-      <Link
-        href={`mailto:${PROFILE.email}`}
-        className="inline-flex items-center gap-1.5 text-sm text-fg hover:text-muted transition-all"
-      >
-        Get in touch
-        <Icon icon={faMailForward} className="icon" />
-      </Link>
+      <h3 className="text-lg mb-3">Manoj Malviya</h3>
     </div>
   );
 }
@@ -63,7 +54,7 @@ function SocialLinks() {
         Follow my work and connect with me
       </p>
       <div className="flex flex-wrap gap-2">
-        {social.map(({ icon, href, label }) => (
+        {SOCIAL.map(({ icon, href, label }) => (
           <Link
             key={label}
             href={href}
@@ -89,7 +80,7 @@ function CopyRight() {
 
 export default function Footer() {
   return (
-    <footer className="light p-6 sm:p-8 lg:p-16">
+    <footer className="p-6 sm:p-8 lg:p-16" data-theme="light">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
         <ProfileFooter className="sm:col-span-2" />
         <QuickLinks />

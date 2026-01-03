@@ -1,11 +1,12 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import { useNavigator } from "@/hooks/use-navigator";
+import Link from "next/link";
 import { Icon } from "@/components/ui";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import { EDUCATION, PROFILE, WORK_EXPERIENCE } from "@/core/profile";
-import { uniqueBy } from "@/core/utils";
+import { EDUCATION, WORK_EXPERIENCE } from "@/lib/profile";
+import { uniqueBy } from "@/lib/utils";
+import { UserAvatar } from "@/lib/assets";
 
 type ExternalIconURLProps = {
   image: StaticImageData | string;
@@ -25,9 +26,9 @@ function ExternalIconURL({ image, altText, url }: ExternalIconURLProps) {
         alt={altText}
         width={48}
         height={48}
-        className="object-cover h-8 w-8 rounded-full"
+        className="object-cover h-6 w-6 rounded-full"
       />
-      <span className="text-md hidden md:inline">{altText}</span>
+      <span className="text-sm hidden md:inline">{altText}</span>
     </a>
   );
 }
@@ -48,7 +49,6 @@ const WorkOrganizations = uniqueBy(
 })) as ExternalIconURLProps[];
 
 export default function AboutMe() {
-  const navigate = useNavigator();
   return (
     <section
       className={
@@ -56,40 +56,39 @@ export default function AboutMe() {
       }
     >
       <Image
-        src={PROFILE.profilePicture}
+        src={UserAvatar}
         alt="Profile"
-        width={400}
-        height={400}
+        width={500}
+        height={500}
         className="object-cover rounded-lg"
       />
       <div className="flex-1 flex flex-col items-start gap-8">
         <span className="flex flex-row gap-4 items-center">
           <h2 className="text-6xl font-bold">About Me</h2>
-          <button
+          <Link
+            href="/about"
             className="bg-muted px-3 py-2 rounded-full cursor-pointer hover:scale-105 transition-transform duration-300"
-            onClick={() => {
-              navigate("about");
-            }}
             aria-label="Read More About Me"
           >
             <Icon icon={faUpRightFromSquare} />
-          </button>
+          </Link>
         </span>
         <div className="text-left mt-4 flex flex-col gap-4">
-          <h2 className="text-2xl font-bold my-2">{`Hello! I am ${PROFILE.name}`}</h2>
-          <p className="text-subtle">
-            Currently <strong>{PROFILE.title}</strong> at @ NoahLabs, working on
-            cutting-edge technologies and innovative solutions.
-          </p>
-          <h2 className="text-2xl font-bold mt-6">Past Work</h2>
-          <span className="flex flex-row gap-4 items-center">
+          <h2 className="text-2xl font-bold my-2">Hello! I am Manoj Malviya</h2>
+          <span className="text-subtle">
+            Senior Software Engineer with 7+ years delivering physics simulation
+            and CAD software, specializing in turning complex geometry/physics
+            problems into fast, reliable user-facing features.
+            <br /> <br />
+            I lead cross-functional initiatives and translate business goals
+            into shipped systems with measurable impact.
+            <br /> <br />
+            Past associations -
+          </span>
+          <span className="flex flex-row flex-wrap gap-4 items-center">
             {WorkOrganizations.map((item) => (
               <ExternalIconURL key={item.altText} {...item} />
             ))}
-          </span>
-
-          <h2 className="text-2xl font-bold mt-6">Education </h2>
-          <span className="flex flex-row gap-4 items-center">
             {Educations.map((item) => (
               <ExternalIconURL key={item.altText} {...item} />
             ))}

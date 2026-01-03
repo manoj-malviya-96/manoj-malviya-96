@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { cn } from "../../core/utils";
+import { cn } from "@/lib/utils";
 
 interface SkeletonProps {
   className?: string;

@@ -1,11 +1,11 @@
 "use client";
 import { memo } from "react";
-import { useGitHubMetrics } from "@/hooks/use-github-metrics";
+import { github } from "@/lib/github";
 import IconTitleContainer from "@/components/ui/iconTitleContainer";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { useGoogleScholar } from "@/hooks/use-google-scholar";
+import { google_scholar } from "@/lib/google_scholar";
 import { faAtom, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { TECH_STACK } from "@/core/profile";
+import { TECH_STACK } from "@/lib/profile";
 import Icon from "@/components/ui/icon";
 
 const LoadingString = "-";
@@ -48,7 +48,7 @@ const testdata = [
 ];
 
 export function GithubMetricsCard() {
-  const { data, error } = useGitHubMetrics();
+  const { data, error } = github();
 
   if (error) {
     console.error("Error fetching GitHub metrics:", error);
@@ -90,7 +90,7 @@ export function GithubMetricsCard() {
 GithubMetricsCard.displayName = "GithubMetricsCard";
 
 export function ScholarMetricsCard() {
-  const { data, error } = useGoogleScholar();
+  const { data, error } = google_scholar();
 
   if (error) {
     console.error("Error fetching Google Scholar metrics:", error);

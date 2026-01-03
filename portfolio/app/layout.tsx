@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "@/hooks/react-query-provider";
+import { ReactQueryProvider } from "@/lib/react_query";
 import "./globals.css";
 import React from "react";
-import Footer from "@/screens/footer";
-import NavBar from "@/screens/nav_bar";
+import Footer from "@/components/home/footer";
+import NavBar from "@/components/nav_bar";
+import TransitionLayout from "@/components/ui/transition_layout";
 
 export const metadata: Metadata = {
   title: "Manoj Malviya",
@@ -21,8 +22,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <>
             <NavBar />
-            {/*<TransitionLayout> {children}</TransitionLayout>*/}
-            {children}
+            <TransitionLayout> {children}</TransitionLayout>
             <Footer />
           </>
         </ReactQueryProvider>

@@ -1,7 +1,7 @@
 // filepath: /Users/manoj/Git/manoj-malviya-96/portfolio/components/card.tsx
 import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { cn } from "@/core/utils";
+import { cn } from "@/lib/utils";
 import Icon from "@/components/ui/icon";
 
 export interface CardProps {

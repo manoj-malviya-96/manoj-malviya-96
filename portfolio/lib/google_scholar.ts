@@ -85,7 +85,7 @@ async function fetchScholarMetrics(): Promise<ScholarMetrics> {
   };
 }
 
-export function useGoogleScholar() {
+export function google_scholar() {
   return useQuery({
     queryKey: ["google-scholar", USER],
     queryFn: fetchScholarMetrics,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { cn } from "@/core/utils";
+import { cn } from "@/lib/utils";
 
 export default function FlipWords({
   words,

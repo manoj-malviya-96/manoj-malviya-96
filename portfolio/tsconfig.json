@@ -24,7 +24,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "core/types.d.ts",
+    "lib/core/types.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",

@@ -32,6 +32,8 @@
     "@radix-ui/react-dialog": "^1.1.15",
     "@tanstack/react-query": "^5.90.10",
     "clsx": "^2.1.1",
+    "fuse.js": "^7.0.0",
+    "jotai": "^2.16.1",
     "motion": "^12.23.24",
     "next": "^16.0.7",
     "prettier": "^3.6.2",

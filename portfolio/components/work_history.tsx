@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from "react";
 import Image from "next/image";
-import { MonthAndYear } from "@/core/types";
-import { WORK_EXPERIENCE } from "@/core/profile";
+import { MonthAndYear } from "@/lib/types";
+import { WORK_EXPERIENCE } from "@/lib/profile";
 
 export interface TimelineItem {
   startDate: MonthAndYear;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useMediumRSS } from "@/hooks/use-medium-posts";
+import { useMediumRSS } from "@/lib/use-medium-posts";
 import { Badge, Search_field, Skeleton } from "@/components/ui";
-import { cn } from "@/core/utils";
-import { ExternalURL } from "@/core/types";
+import { cn } from "@/lib/utils";
+import { ExternalURL } from "@/lib/types";
 
 function BlogPostItem({
   title,

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ExternalURL } from "@/core/types";
+import { ExternalURL } from "@/lib/types";
 
 export type Post = {
   title: string;

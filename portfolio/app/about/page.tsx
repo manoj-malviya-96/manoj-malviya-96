@@ -4,7 +4,7 @@ import {
   TechStackList,
 } from "@/components/metrics";
 import PageContainer from "@/components/ui/page_container";
-import { LinkedinCover } from "@/core/assets";
+import { LinkedinCover } from "@/lib/assets";
 
 export default function About() {
   return (
