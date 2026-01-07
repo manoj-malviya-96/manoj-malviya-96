@@ -1,7 +1,6 @@
 "use client";
 
-import FlipWords from "@/components/ui/flip_words";
-import NeuralCanvas from "@/components/ui/neural_bg";
+import { FlipWords, NeuralCanvas } from "@/components/ui";
 
 function LandingContent() {
   const words = ["modern", "efficient", "correct", "scalable"];

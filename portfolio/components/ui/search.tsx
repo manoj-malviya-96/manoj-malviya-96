@@ -12,7 +12,7 @@ export type SearchFieldProps = {
   "value" | "onChange" | "placeholder" | "className"
 >;
 
-export function Search({
+export default function Search({
   value,
   onChange,
   placeholder = "Search...",
@@ -36,5 +36,3 @@ export function Search({
     </div>
   );
 }
-
-export default Search;

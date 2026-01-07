@@ -1,12 +1,12 @@
 "use client";
 import { memo } from "react";
-import { github } from "@/lib/github";
-import IconTitleContainer from "@/components/ui/iconTitleContainer";
+import { useGithub } from "@/lib/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { google_scholar } from "@/lib/google_scholar";
 import { faAtom, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { TECH_STACK } from "@/lib/profile";
 import Icon from "@/components/ui/icon";
+import Card from "@/components/ui/card";
 
 const LoadingString = "-";
 
@@ -41,25 +41,15 @@ const HighlightStat = memo(function fn({
   );
 });
 
-const testdata = [
-  { time: "2023-01-01", value: 100 },
-  { time: "2023-01-02", value: 101 },
-  { time: "2023-01-03", value: 102 },
-];
-
 export function GithubMetricsCard() {
-  const { data, error } = github();
+  const { data, error } = useGithub();
 
   if (error) {
     console.error("Error fetching GitHub metrics:", error);
     return null;
   }
   return (
-    <IconTitleContainer
-      icon={faGithub}
-      title="GitHub"
-      className="flex-grow w-full bg-muted"
-    >
+    <Card icon={faGithub} title="GitHub" className="flex-grow w-full bg-muted">
       <HighlightStat
         value={data ? data.commits.toLocaleString() : LoadingString}
         label="Total Contributions"
@@ -84,7 +74,7 @@ export function GithubMetricsCard() {
           label="Longest Streak"
         />
       </div>
-    </IconTitleContainer>
+    </Card>
   );
 }
 GithubMetricsCard.displayName = "GithubMetricsCard";
@@ -98,10 +88,10 @@ export function ScholarMetricsCard() {
   }
 
   return (
-    <IconTitleContainer
+    <Card
       icon={faGraduationCap}
       title="Research"
-      className="flex-grow w-full"
+      className="flex-grow w-full bg-muted"
     >
       <HighlightStat
         value={data ? data.citations.toLocaleString() : LoadingString}
@@ -119,7 +109,7 @@ export function ScholarMetricsCard() {
           label="This Year"
         />
       </div>
-    </IconTitleContainer>
+    </Card>
   );
 }
 
@@ -137,13 +127,13 @@ function TechBadge({ name }: { name: string }) {
 export function TechStackList() {
   const names = Object.keys(TECH_STACK);
   return (
-    <IconTitleContainer icon={faAtom} title="Tech Stack">
+    <Card icon={faAtom} title="Tech Stack">
       <div className="flex flex-wrap gap-2 sm:gap-3">
         {names.map((name) => (
           <TechBadge key={name} name={name} />
         ))}
       </div>
-    </IconTitleContainer>
+    </Card>
   );
 }
 

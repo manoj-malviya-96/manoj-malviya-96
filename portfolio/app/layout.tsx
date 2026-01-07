@@ -5,7 +5,6 @@ import React from "react";
 import Footer from "@/components/home/footer";
 import NavBar from "@/components/nav_bar";
 import TransitionLayout from "@/components/ui/transition_layout";
-import { Provider as JotaiProvider } from "jotai";
 
 export const metadata: Metadata = {
   title: "Manoj Malviya",
@@ -21,11 +20,9 @@ export default function RootLayout({
     <html lang="en" data-theme="light">
       <body>
         <ReactQueryProvider>
-          <JotaiProvider>
-            <NavBar />
-            <TransitionLayout> {children}</TransitionLayout>
-            <Footer />
-          </JotaiProvider>
+          <NavBar />
+          <TransitionLayout> {children}</TransitionLayout>
+          <Footer />
         </ReactQueryProvider>
       </body>
     </html>

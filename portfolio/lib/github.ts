@@ -69,7 +69,7 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
   };
 }
 
-export function github() {
+export function useGithub() {
   return useQuery({
     queryKey: ["github-metrics", GITHUB_USERNAME],
     queryFn: fetchGitHubMetrics,

@@ -1,4 +1,4 @@
-import { ProjectList } from "@/components/ui";
+import ProjectList from "@/components/projects/project_list";
 import { AllProjects } from "@/lib/showcase";
 
 export default function Page() {

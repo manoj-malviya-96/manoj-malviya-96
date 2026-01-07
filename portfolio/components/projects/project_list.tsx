@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Fuse, { IFuseOptions } from "fuse.js";
 import ProjectCard from "./project_card";
 import { Project } from "@/lib/showcase";
-import { Search } from "./search";
+import { Search } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 interface ProjectListProps {

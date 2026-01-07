@@ -1,20 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useAtom } from "jotai";
-import { PortfolioLogo } from "@/lib/assets";
-import Image from "next/image";
-import { navbarDarkThemeAtom, navbarScrollEffectAtom } from "@/lib/ui_store";
+import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
+import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/scroll_visibility";
 
 function MainLogo() {
   return (
-    <Link className="flex flex-row items-center gap-4" href="/">
-      <Image src={PortfolioLogo} alt="Logo" width={20} height={20} />
+    <Link className="flex flex-row items-center gap-4 " href="/">
+      <Icon icon={faStumbleuponCircle} className="icon" />
     </Link>
   );
 }
@@ -55,8 +53,19 @@ function CTALink() {
 }
 
 export default function Navbar() {
-  const [scrollEffectEnabled] = useAtom(navbarScrollEffectAtom);
-  const [darkThemeEnabled] = useAtom(navbarDarkThemeAtom);
+  const pathname = usePathname();
+  const [darkThemeEnabled, setDarkThemeEnabled] = useState(false);
+  const [scrollEffectEnabled, setScrollEffectEnabled] = useState(true);
+
+  useEffect(() => {
+    if (pathname == "/") {
+      setScrollEffectEnabled(true);
+      setDarkThemeEnabled(true);
+    } else {
+      setScrollEffectEnabled(false);
+      setDarkThemeEnabled(false);
+    }
+  }, [pathname]);
 
   const { isVisible, isAtTop } = useScrollVisibility({
     enabled: scrollEffectEnabled,
@@ -66,7 +75,7 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 w-full h-fit z-10 p-2 duration-300 transition-transform",
+        "fixed top-0 left-0 w-full h-fit z-10 p-1 duration-300 transition-transform",
         isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
@@ -74,7 +83,7 @@ export default function Navbar() {
     >
       <span
         className={cn(
-          "flex flex-row justify-around gap-4 w-2/3 mx-auto text-front text-sm",
+          "flex flex-row justify-around gap-4 w-full lg:w-2/3 mx-auto text-front text-sm",
         )}
       >
         <MainLogo />

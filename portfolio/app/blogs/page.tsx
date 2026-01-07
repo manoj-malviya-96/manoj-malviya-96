@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useMediumRSS } from "@/lib/medium";
-import { Badge, Search, Skeleton } from "@/components/ui";
+import { Badge, Icon, Search } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { ExternalURL } from "@/lib/types";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function BlogPostItem({
   title,
@@ -88,22 +89,6 @@ function BlogPostItem({
           </div>
         </div>
       </a>
-    </div>
-  );
-}
-
-function BlogPostSkeleton() {
-  return (
-    <div className="py-6 border-b border-muted/20">
-      <div className="flex flex-col gap-2">
-        <Skeleton className="h-6 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-2/3" />
-        <div className="flex gap-2 mt-1">
-          <Skeleton className="h-3 w-20" />
-          <Skeleton className="h-3 w-16" />
-        </div>
-      </div>
     </div>
   );
 }
@@ -224,9 +209,7 @@ export default function BlogsPage() {
         <div className="max-w-4xl">
           {isLoading && (
             <div className="flex flex-col">
-              {[...Array(5)].map((_, i) => (
-                <BlogPostSkeleton key={i} />
-              ))}
+              <Icon icon={faSpinner} />
             </div>
           )}
 
