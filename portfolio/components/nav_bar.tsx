@@ -54,9 +54,10 @@ function CTALink() {
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isHome = pathname === "/";
+  const isDarkMode = pathname === "/";
+  const isScrollEffectEnabled = pathname === "/" || pathname === "/projects";
   const { isVisible, isAtTop } = useScrollVisibility({
-    enabled: isHome,
+    enabled: isScrollEffectEnabled,
     velocityThreshold: 0.8,
   });
 
@@ -67,7 +68,7 @@ export default function Navbar() {
         isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
-      data-theme={isHome ? "dark" : "light"}
+      data-theme={isDarkMode ? "dark" : "light"}
     >
       <span
         className={cn(
