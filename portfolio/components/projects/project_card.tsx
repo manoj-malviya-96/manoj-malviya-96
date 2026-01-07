@@ -3,7 +3,7 @@
 import React, { memo, ReactNode } from "react";
 import Image from "next/image";
 import { Project, ProjectCTA } from "@/lib/showcase";
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -63,7 +63,7 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   }
   // custom
   if (cta.node) {
-    return <span className={cn(base, "cursor-default")}>{cta.node}</span>;
+    return <span className={mergeCls(base, "cursor-default")}>{cta.node}</span>;
   }
   if (cta.href) {
     return (
@@ -135,7 +135,7 @@ const ProjectCard = memo(function _ProjectCard({
 
   return (
     <div
-      className={cn(
+      className={mergeCls(
         "relative w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur hover:border-white/20 transition-all duration-200",
         highlight && "ring-2 ring-white/40",
         className,

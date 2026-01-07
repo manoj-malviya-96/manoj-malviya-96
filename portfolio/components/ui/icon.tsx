@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 
 interface IconProps {
   icon: IconDefinition;
@@ -13,7 +13,7 @@ function Icon({ icon, className, "aria-label": ariaLabel }: IconProps) {
   return (
     <FontAwesomeIcon
       icon={icon}
-      className={cn("icon", className)}
+      className={mergeCls("icon", className)}
       aria-label={ariaLabel}
     />
   );

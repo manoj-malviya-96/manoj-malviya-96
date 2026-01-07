@@ -1,6 +1,6 @@
 import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 import Icon from "@/components/ui/icon";
 
 export interface CardProps {
@@ -11,7 +11,7 @@ export interface CardProps {
 }
 function Card({ icon, title, children, className = "" }: CardProps) {
   return (
-    <div className={cn("p-4 rounded-lg", className)}>
+    <div className={mergeCls("p-4 rounded-lg", className)}>
       {(icon || title) && (
         <span className="flex items-center gap-2 self-start pb-4 pr-4">
           {icon && <Icon icon={icon} className="icon text-lg" />}

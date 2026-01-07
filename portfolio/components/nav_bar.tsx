@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -63,7 +63,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={cn(
+      className={mergeCls(
         "fixed top-0 left-0 w-full h-fit z-10 p-1 duration-300 transition-transform",
         isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
         isVisible ? "translate-y-0" : "-translate-y-full",
@@ -71,7 +71,7 @@ export default function Navbar() {
       data-theme={isDarkMode ? "dark" : "light"}
     >
       <span
-        className={cn(
+        className={mergeCls(
           "flex flex-row justify-around gap-4 w-full lg:w-2/3 mx-auto text-front text-sm",
         )}
       >

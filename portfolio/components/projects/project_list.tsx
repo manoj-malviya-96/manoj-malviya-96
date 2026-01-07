@@ -5,7 +5,7 @@ import Fuse, { IFuseOptions } from "fuse.js";
 import ProjectCard from "./project_card";
 import { Project } from "@/lib/showcase";
 import { Search } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 
 interface ProjectListProps {
   projects: Project[];
@@ -44,7 +44,7 @@ export default function ProjectList({ projects, className }: ProjectListProps) {
   }, [fuse, debouncedQuery, sorted]);
 
   return (
-    <div className={cn("flex flex-col gap-6", className)}>
+    <div className={mergeCls("flex flex-col gap-6", className)}>
       <Search
         value={query}
         onChange={setQuery}

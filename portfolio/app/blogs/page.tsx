@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMediumRSS } from "@/lib/medium";
 import { Badge, Icon, Search } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { mergeCls } from "@/lib/utils";
 import { ExternalURL } from "@/lib/types";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -176,7 +176,7 @@ export default function BlogsPage() {
                 <button
                   key={tag}
                   onClick={() => handleTagClick(tag)}
-                  className={cn(
+                  className={mergeCls(
                     "transition-all duration-200 hover:scale-105",
                     selectedTag === tag && "ring-2 ring-front/50",
                   )}
