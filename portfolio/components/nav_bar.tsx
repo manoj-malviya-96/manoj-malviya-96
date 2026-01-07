@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
@@ -54,21 +53,10 @@ function CTALink() {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [darkThemeEnabled, setDarkThemeEnabled] = useState(false);
-  const [scrollEffectEnabled, setScrollEffectEnabled] = useState(true);
 
-  useEffect(() => {
-    if (pathname == "/") {
-      setScrollEffectEnabled(true);
-      setDarkThemeEnabled(true);
-    } else {
-      setScrollEffectEnabled(false);
-      setDarkThemeEnabled(false);
-    }
-  }, [pathname]);
-
+  const isHome = pathname === "/";
   const { isVisible, isAtTop } = useScrollVisibility({
-    enabled: scrollEffectEnabled,
+    enabled: isHome,
     velocityThreshold: 0.8,
   });
 
@@ -79,7 +67,7 @@ export default function Navbar() {
         isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
-      data-theme={darkThemeEnabled ? "dark" : "light"}
+      data-theme={isHome ? "dark" : "light"}
     >
       <span
         className={cn(
