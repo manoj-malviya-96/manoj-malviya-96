@@ -10,8 +10,8 @@ import useScrollVisibility from "@/lib/scroll_visibility";
 
 function MainLogo() {
   return (
-    <Link className="flex flex-row items-center gap-4 " href="/">
-      <Icon icon={faStumbleuponCircle} className="icon" />
+    <Link className="flex flex-row items-center gap-4 cursor-pointer " href="/">
+      <Icon icon={faStumbleuponCircle} className="icon-large" />
     </Link>
   );
 }
@@ -29,7 +29,7 @@ function NavigationLinks() {
         <Link
           key={link.href}
           href={link.href}
-          className="text-sm p-2 rounded-md transition-colors hover:opacity-80 "
+          className="text-sm p-2 rounded-md transition-colors hover:opacity-80 cursor-pointer"
         >
           {link.label}
         </Link>
@@ -72,7 +72,7 @@ export default function Navbar() {
     >
       <span
         className={mergeCls(
-          "flex flex-row justify-around gap-4 w-full lg:w-2/3 mx-auto text-front text-sm",
+          "flex flex-row justify-around w-full lg:w-2/3 mx-auto text-front",
         )}
       >
         <MainLogo />

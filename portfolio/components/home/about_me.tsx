@@ -7,6 +7,7 @@ import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { EDUCATION, WORK_EXPERIENCE } from "@/lib/profile";
 import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
+import { Typography } from "@/components/ui/text";
 
 type ExternalIconURLProps = {
   image: StaticImageData | string;
@@ -64,7 +65,7 @@ export default function AboutMe() {
       />
       <div className="flex-1 flex flex-col items-start gap-8">
         <span className="flex flex-row gap-4 items-center">
-          <h2 className="text-6xl font-bold">About Me</h2>
+          <Typography variant="heading">About Me</Typography>
           <Link
             href="/about"
             className="bg-muted px-3 py-2 rounded-full cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -74,8 +75,10 @@ export default function AboutMe() {
           </Link>
         </span>
         <div className="text-left mt-4 flex flex-col gap-4">
-          <h2 className="text-2xl font-bold my-2">Hello! I am Manoj Malviya</h2>
-          <span className="text-subtle">
+          <Typography variant="title" className="my-2">
+            Hello! I am Manoj Malviya
+          </Typography>
+          <Typography variant="body">
             Senior Software Engineer with 7+ years delivering physics simulation
             and CAD software, specializing in turning complex geometry/physics
             problems into fast, reliable user-facing features.
@@ -84,7 +87,7 @@ export default function AboutMe() {
             into shipped systems with measurable impact.
             <br /> <br />
             Past associations -
-          </span>
+          </Typography>
           <span className="flex flex-row flex-wrap gap-4 items-center">
             {WorkOrganizations.map((item) => (
               <ExternalIconURL key={item.altText} {...item} />
