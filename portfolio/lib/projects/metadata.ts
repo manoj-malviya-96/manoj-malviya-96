@@ -7,7 +7,7 @@ export const ProjectIds = [
 
 export type ProjectId = (typeof ProjectIds)[number];
 
-type ProjectMeta = {
+export type ProjectMeta = {
   title: string;
   description: string;
   tags: ProjectTag[];

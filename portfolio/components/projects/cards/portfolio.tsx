@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import ProjectCard from "@/components/projects/project_card";
 import { PortfolioMetadata as meta } from "@/lib/projects/metadata";
 
-export default function getPortfolioCard(): ReactNode {
+export default function PortfolioCard(): ReactNode {
   return (
     <ProjectCard
       {...meta}
