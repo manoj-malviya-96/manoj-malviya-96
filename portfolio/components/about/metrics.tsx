@@ -118,9 +118,12 @@ ScholarMetricsCard.displayName = "ScholarMetricsCard";
 function TechBadge({ name }: { name: string }) {
   const icon = TECH_STACK[name];
   return (
-    <span className="flex flex-wrap items-center gap-2 rounded-lg text-sm sm:px-2 sm:py-1">
+    <Typography
+      variant="caption"
+      className="flex flex-wrap items-center gap-2 rounded-lg sm:px-2 sm:py-1"
+    >
       {icon && <Icon icon={icon} />} {name}
-    </span>
+    </Typography>
   );
 }
 

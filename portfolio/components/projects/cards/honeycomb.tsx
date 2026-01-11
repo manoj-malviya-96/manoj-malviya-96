@@ -1,5 +1,6 @@
 import ProjectCard from "@/components/projects/project_card";
 import { HoneyCombMetadata as meta } from "@/lib/projects/metadata";
+import { Typography } from "@/components/ui/text";
 
 export default function HoneycombProjectCard() {
   return (
@@ -19,7 +20,7 @@ export default function HoneycombProjectCard() {
         },
       ]}
     >
-      {meta.description}
+      <Typography variant="body">{meta.description}</Typography>
     </ProjectCard>
   );
 }

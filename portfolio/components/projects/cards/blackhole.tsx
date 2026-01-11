@@ -1,5 +1,6 @@
 import ProjectCard from "@/components/projects/project_card";
 import { BlackholeMetadata as meta } from "@/lib/projects/metadata";
+import { Typography } from "@/components/ui/text";
 
 export default function BlackholeProjectCard() {
   return (
@@ -21,7 +22,7 @@ export default function BlackholeProjectCard() {
         },
       ]}
     >
-      {meta.description}
+      <Typography variant="body">{meta.description}</Typography>
     </ProjectCard>
   );
 }

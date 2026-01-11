@@ -70,9 +70,9 @@ function SocialLinks() {
 
 function CopyRight() {
   return (
-    <span className="text-subtle text-sm">
+    <Typography variant="caption">
       &copy; 2025 Manoj Malviya. All rights reserved.
-    </span>
+    </Typography>
   );
 }
 

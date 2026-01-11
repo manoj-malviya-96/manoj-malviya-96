@@ -34,9 +34,9 @@ function NavigationLinks() {
         <Link
           key={link.href}
           href={link.href}
-          className="text-sm p-2 rounded-md transition-colors hover:opacity-80 cursor-pointer"
+          className="p-2 rounded-md transition-colors hover:opacity-80 cursor-pointer"
         >
-          {link.label}
+          <Typography variant="caption">{link.label}</Typography>
         </Link>
       ))}
     </span>

@@ -2,6 +2,7 @@ import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { mergeCls } from "@/lib/utils";
 import Icon from "@/components/ui/icon";
+import { Typography } from "@/components/ui/text";
 
 export interface CardProps {
   icon?: IconDefinition;
@@ -15,7 +16,9 @@ function Card({ icon, title, children, className = "" }: CardProps) {
       {(icon || title) && (
         <span className="flex items-center gap-2 self-start pb-4 pr-4">
           {icon && <Icon icon={icon} className="icon text-lg" />}
-          <h3 className="text-lg uppercase tracking-wider">{title}</h3>
+          <Typography variant="title" className="uppercase tracking-wider">
+            {title}
+          </Typography>
         </span>
       )}
       {children}

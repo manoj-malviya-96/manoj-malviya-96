@@ -29,7 +29,9 @@ function ExternalIconURL({ image, altText, url }: ExternalIconURLProps) {
         height={48}
         className="object-cover h-6 w-6 rounded-full"
       />
-      <span className="text-sm hidden md:inline">{altText}</span>
+      <Typography variant="caption" className="hidden md:inline">
+        {altText}
+      </Typography>
     </a>
   );
 }

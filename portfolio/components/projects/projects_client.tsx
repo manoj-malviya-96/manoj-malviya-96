@@ -118,9 +118,9 @@ export default function ProjectsClient({
       />
 
       {filtered.length === 0 ? (
-        <div className="text-sm text-subtle">
+        <Typography variant="caption">
           No projects match that search.
-        </div>
+        </Typography>
       ) : (
         <ul className="flex flex-col gap-16">
           {filtered.map((project) => (
