@@ -2,8 +2,13 @@
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Icon } from "@/components/ui";
-import { ProjectIds, ProjectsMetadata } from "@/lib/projects/metadata";
+import {
+  ProjectId,
+  ProjectIds,
+  ProjectsMetadata,
+} from "@/lib/projects/metadata";
 import { Typography } from "@/components/ui/text";
+import { faLaptopCode } from "@fortawesome/free-solid-svg-icons/faLaptopCode";
 
 export default function ProjectShowcase() {
   return (
@@ -21,36 +26,33 @@ export default function ProjectShowcase() {
       </span>
 
       {/* Table of Contents */}
-      <div className="bg-muted/30 rounded-xl p-6 backdrop-blur-sm">
-        <Typography variant="title" className="mb-4 text-primary">
-          All Projects
-        </Typography>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {ProjectIds.map((id) => (
-            <li key={id}>
-              <Link
-                href={`/projects#${id}`}
-                className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors group"
-              >
-                <Typography
-                  variant="caption"
-                  className="text-primary opacity-60 group-hover:opacity-100 transition-opacity"
-                >
-                  →
-                </Typography>
-                <span className="flex-1">
-                  <Typography variant="label" className="block">
-                    {ProjectsMetadata[id].title}
-                  </Typography>
-                  <Typography variant="caption" className="line-clamp-1">
-                    {ProjectsMetadata[id].description}
-                  </Typography>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {ProjectIds.map((id) => (
+          <li key={id}>
+            <ProjectItem projectId={id} />
+          </li>
+        ))}
+      </ul>
     </section>
+  );
+}
+
+function ProjectItem({ projectId }: { projectId: ProjectId }) {
+  const meta = ProjectsMetadata[projectId];
+  return (
+    <Link
+      href={`/projects#${projectId}`}
+      className="flex gap-4 p-2 rounded-lg hover:bg-muted transition-colors group items-center cursor-pointer"
+    >
+      <Icon icon={faLaptopCode} />
+      <span className="flex-1 flex-col">
+        <Typography variant="label" className="block">
+          {meta.title}
+        </Typography>
+        <Typography variant="caption" className="line-clamp-1">
+          {meta.description}
+        </Typography>
+      </span>
+    </Link>
   );
 }
