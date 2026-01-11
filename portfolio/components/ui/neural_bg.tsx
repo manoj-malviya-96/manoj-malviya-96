@@ -323,6 +323,8 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
   useEffect(() => {
     const { gl, program, uniforms } = stateRef.current;
     if (gl && program && uniforms.u_hue) {
+      // Check if program is still valid before using it
+      if (!gl.isProgram(program)) return;
       gl.useProgram(program);
       gl.uniform1f(uniforms.u_hue, hue);
     }
@@ -331,6 +333,8 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
   useEffect(() => {
     const { gl, program, uniforms } = stateRef.current;
     if (gl && program && uniforms.u_saturation) {
+      // Check if program is still valid before using it
+      if (!gl.isProgram(program)) return;
       gl.useProgram(program);
       gl.uniform1f(uniforms.u_saturation, saturation);
     }
@@ -339,6 +343,8 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
   useEffect(() => {
     const { gl, program, uniforms } = stateRef.current;
     if (gl && program && uniforms.u_chroma) {
+      // Check if program is still valid before using it
+      if (!gl.isProgram(program)) return;
       gl.useProgram(program);
       gl.uniform1f(uniforms.u_chroma, chroma);
     }
