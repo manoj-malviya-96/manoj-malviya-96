@@ -1,7 +1,7 @@
-import React, { ElementType, ReactNode } from "react";
+import React, { ElementType, memo, ReactNode } from "react";
 import { mergeCls } from "@/lib/utils";
 
-export default function Badge({
+function Badge({
   children,
   className = "",
   element = "span",
@@ -27,3 +27,5 @@ export default function Badge({
 }
 
 Badge.displayName = "Badge";
+
+export default memo(Badge);
