@@ -11,7 +11,7 @@ type TypographyVariant =
 
 const TypographyClasses: Record<TypographyVariant, string> = {
   largeHeading: "font-extrabold text-7xl text-9xl tracking-wide uppercase",
-  heading: "font-bold text-6xl lg:text-7xl",
+  heading: "font-bold text-4xl lg:text-6xl uppercase",
   title: "font-bold text-2xl lg:text-3xl",
   body: "leading-relaxed text-subtle",
   caption: "text-sm text-subtle",
