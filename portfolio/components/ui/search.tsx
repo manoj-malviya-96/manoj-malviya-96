@@ -24,19 +24,15 @@ export default function Search({
     console.log(value);
   }, [value]);
   return (
-    <div className="relative">
-      <Icon
-        icon={faSearch}
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-subtle"
-      />
+    <div className="flex flex-row items-center justify-start gap-4 bg-muted px-4 rounded-lg">
+      <Icon icon={faSearch} className="icon text-subtle" />
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={mergeCls(
-          "pl-10 bg-muted border-0 rounded-lg h-10 text-sm w-full",
-          "focus:outline-none focus:ring-2 focus:ring-front/30",
+          "border-0 rounded-lg h-10 text-sm w-full px-4 focus:outline-none focus:ring-0",
           className,
         )}
         {...rest}

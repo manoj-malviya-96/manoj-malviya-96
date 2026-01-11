@@ -59,36 +59,7 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   );
 };
 
-const IMG_SIZE = 240;
-
-const ImagesBlock = ({ images }: { images: NextImage[] }) => {
-  if (images.length === 1) {
-    return (
-      <Image
-        src={images[0]}
-        alt="project image"
-        width={IMG_SIZE}
-        height={IMG_SIZE}
-        loading="lazy"
-        className="flex-1"
-      />
-    );
-  }
-  return (
-    <div className="flex flex-row flex-wrap gap-3 mt-3">
-      {images.map((img, idx) => (
-        <Image
-          key={idx}
-          src={img}
-          width={IMG_SIZE}
-          height={IMG_SIZE}
-          loading="lazy"
-          alt={`project image ${idx + 1}`}
-        />
-      ))}
-    </div>
-  );
-};
+const IMG_SIZE = 480;
 
 function ProjectCard({
   title,
@@ -97,24 +68,21 @@ function ProjectCard({
   tags,
   images,
   ctas,
-  highlight = false,
   className,
 }: ProjectMeta & {
   body: ReactNode;
   images: NextImage[];
   ctas?: ProjectCTA[];
-  highlight?: boolean;
   className?: string;
 }) {
   return (
     <div
       className={mergeCls(
-        "flex flex-row flex-wrap gap-4 p-6 lg:p-8 rounded-xl w-full h-fit items-start",
-        highlight && "bg-gradient-to-l from-muted to-muted/20",
+        "flex flex-row flex-wrap gap-4 rounded-xl w-full h-fit items-start ",
         className,
       )}
     >
-      <div className="flex flex-col gap-4 p-4 md:p-6 flex-1">
+      <div className="flex flex-col gap-4 py-2 lg:py-4 flex-2">
         {/* Heading */}
         <span className="flex flex-col items-start justify-start gap-0">
           <Typography variant="title">{title}</Typography>
@@ -143,9 +111,32 @@ function ProjectCard({
             ))}
           </span>
         )}
-        {images.length > 1 && <ImagesBlock images={images} />}
+        {images.length > 1 && (
+          <div className="flex flex-row flex-wrap gap-4">
+            {images.map((img, idx) => (
+              <Image
+                key={idx}
+                src={img}
+                width={IMG_SIZE}
+                height={IMG_SIZE}
+                loading="lazy"
+                className="flex-1 object-cover"
+                alt={`project image ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      {images.length === 1 && <ImagesBlock images={images} />}
+      {images.length === 1 && (
+        <Image
+          src={images[0]}
+          alt="project image"
+          width={IMG_SIZE}
+          height={IMG_SIZE}
+          className="flex-1 object-cover"
+          loading="lazy"
+        />
+      )}
     </div>
   );
 }

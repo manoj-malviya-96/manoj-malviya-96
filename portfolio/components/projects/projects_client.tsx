@@ -74,21 +74,6 @@ export default function ProjectsClient({
     };
   }, [ids]);
 
-  // Handle scroll to project from hash
-  useEffect(() => {
-    if (!isLoading && typeof window !== "undefined") {
-      const hash = window.location.hash.slice(1);
-      if (hash) {
-        setTimeout(() => {
-          const element = document.getElementById(hash);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        }, 100);
-      }
-    }
-  }, [isLoading]);
-
   // Filter and sort projects
   const filtered = useMemo(() => {
     if (!projects) return [];
@@ -125,7 +110,7 @@ export default function ProjectsClient({
   };
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-8">
       <Search
         value={query}
         onChange={handleSearch}
