@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "@/lib/react_query";
+import { ReactQueryProvider } from "@/lib/query/react_query";
 import "./globals.css";
 import React from "react";
 import Footer from "@/components/home/footer";

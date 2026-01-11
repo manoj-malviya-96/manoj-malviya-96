@@ -1,10 +1,10 @@
 "use client";
 import { memo } from "react";
-import { useGithub } from "@/lib/github";
+import { useGithub } from "@/lib/query/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { google_scholar } from "@/lib/google_scholar";
+import { google_scholar } from "@/lib/query/google_scholar";
 import { faAtom, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { TECH_STACK } from "@/lib/profile";
+import { TECH_STACK } from "@/lib/about_me/profile";
 import Icon from "@/components/ui/icon";
 import Card from "@/components/ui/card";
 

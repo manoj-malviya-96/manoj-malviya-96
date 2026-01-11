@@ -4,7 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/ui";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import { EDUCATION, WORK_EXPERIENCE } from "@/lib/profile";
+import { EDUCATION, WORK_EXPERIENCE } from "@/lib/about_me/profile";
 import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
 import { Typography } from "@/components/ui/text";

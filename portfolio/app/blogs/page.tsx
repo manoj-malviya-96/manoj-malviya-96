@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useMediumRSS } from "@/lib/medium";
+import { useMediumRSS } from "@/lib/query/medium";
 import { Badge, Icon, Search } from "@/components/ui";
 import { mergeCls } from "@/lib/utils";
 import { ExternalURL } from "@/lib/types";

@@ -1,7 +1,7 @@
 import Icon from "@/components/ui/icon";
 import Link from "next/link";
 import Image from "next/image";
-import { SOCIAL } from "@/lib/profile";
+import { SOCIAL } from "@/lib/about_me/profile";
 import { UserAvatar } from "@/lib/assets";
 
 const quickLinks = [

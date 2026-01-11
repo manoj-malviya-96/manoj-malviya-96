@@ -6,7 +6,7 @@ import Icon from "@/components/ui/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
-import useScrollVisibility from "@/lib/scroll_visibility";
+import useScrollVisibility from "@/lib/ui/scroll_visibility";
 
 function MainLogo() {
   return (
