@@ -11,7 +11,7 @@ import useScrollVisibility from "@/lib/ui/scroll_visibility";
 function MainLogo() {
   return (
     <Link className="flex flex-row items-center gap-4 cursor-pointer " href="/">
-      <Icon icon={faStumbleuponCircle} className="icon-large" />
+      <Icon icon={faStumbleuponCircle} className="icon-large text-2xl" />
     </Link>
   );
 }
@@ -45,7 +45,7 @@ function CTALink() {
         className="cursor-pointer rounded-md hover:scale-105 transition-transform duration-300 p-2"
         aria-label="Search"
       >
-        <Icon icon={faSearch} className="icon" />
+        <Icon icon={faSearch} />
       </button>
     </span>
   );
