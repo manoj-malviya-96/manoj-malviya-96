@@ -37,7 +37,7 @@ function NavigationLinks() {
           href={link.href}
           className="p-2 rounded-md transition-colors hover:opacity-80 cursor-pointer"
         >
-          <Typography variant="caption">{link.label}</Typography>
+          <Typography variant="label">{link.label}</Typography>
         </Link>
       ))}
     </span>

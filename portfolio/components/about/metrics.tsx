@@ -3,11 +3,12 @@ import { memo } from "react";
 import { useGithub } from "@/lib/query/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { google_scholar } from "@/lib/query/google_scholar";
-import { faAtom, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { TECH_STACK } from "@/lib/about_me/profile";
 import Icon from "@/components/ui/icon";
 import Card from "@/components/ui/card";
 import { Typography } from "@/components/ui/text";
+import { mergeCls } from "@/lib/utils";
 
 const LoadingString = "-";
 
@@ -20,8 +21,10 @@ const Stat = memo(function fn({
 }) {
   return (
     <div className="flex flex-col items-center justify-center">
-      <span className="text-xl sm:text-2xl">{value}</span>
-      <span className="text-xs text-subtle">{label}</span>
+      <Typography variant="caption">{label}</Typography>
+      <Typography variant="title" component="span">
+        {value}
+      </Typography>
     </div>
   );
 });
@@ -34,15 +37,17 @@ const HighlightStat = memo(function fn({
   label: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center w-full mb-2">
+    <div className="flex flex-col items-center justify-center w-full">
       {/* Todo: I want to be like a counter. */}
-      <span className="text-xl sm:text-5xl font-bold">{value}</span>
-      <span className="text-xs text-subtle">{label}</span>
+      <Typography variant="caption">{label}</Typography>
+      <Typography variant="heading" component="span">
+        {value}
+      </Typography>
     </div>
   );
 });
 
-export function GithubMetricsCard() {
+export function GithubMetricsCard({ className }: { className?: string }) {
   const { data, error } = useGithub();
 
   if (error) {
@@ -50,7 +55,14 @@ export function GithubMetricsCard() {
     return null;
   }
   return (
-    <Card icon={faGithub} title="GitHub" className="flex-grow w-full bg-muted">
+    <Card
+      icon={faGithub}
+      title="Github"
+      className={mergeCls("flex-grow w-full bg-muted", className)}
+      description={
+        "A live snapshot of engineering momentum—shipping consistently, iterating in public, and maintaining strong build cadence over time. The card highlights sustained activity and follow-through: not just starting projects, but finishing, refining, and maintaining them.\n"
+      }
+    >
       <HighlightStat
         value={data ? data.commits.toLocaleString() : LoadingString}
         label="Total Contributions"
@@ -80,7 +92,7 @@ export function GithubMetricsCard() {
 }
 GithubMetricsCard.displayName = "GithubMetricsCard";
 
-export function ScholarMetricsCard() {
+export function ScholarMetricsCard({ className }: { className?: string }) {
   const { data, error } = google_scholar();
 
   if (error) {
@@ -92,7 +104,10 @@ export function ScholarMetricsCard() {
     <Card
       icon={faGraduationCap}
       title="Research"
-      className="flex-grow w-full bg-muted"
+      description={
+        "A quick view of research impact and consistency—how often the work is referenced, and how reliably it translates into publishable, citable outcomes. The metrics summarize visibility and influence at a glance, complementing the portfolio’s product and engineering work"
+      }
+      className={mergeCls("flex-grow w-full bg-muted", className)}
     >
       <HighlightStat
         value={data ? data.citations.toLocaleString() : LoadingString}
@@ -131,13 +146,11 @@ function TechBadge({ name }: { name: string }) {
 export function TechStackList() {
   const names = Object.keys(TECH_STACK);
   return (
-    <Card icon={faAtom} title="Tech Stack">
-      <div className="flex flex-wrap gap-2 sm:gap-3">
-        {names.map((name) => (
-          <TechBadge key={name} name={name} />
-        ))}
-      </div>
-    </Card>
+    <div className="flex flex-wrap gap-2 sm:gap-3">
+      {names.map((name) => (
+        <TechBadge key={name} name={name} />
+      ))}
+    </div>
   );
 }
 

@@ -58,5 +58,8 @@ export default function useScrollVisibility({
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [enabled, velocityThreshold]);
+  if (!enabled) {
+    return { isVisible: true, isAtTop: false };
+  }
   return { isVisible, isAtTop };
 }

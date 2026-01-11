@@ -157,7 +157,7 @@ export const WORK_EXPERIENCE = [
 ] as WorkExperience[];
 
 export const TECH_STACK: Record<string, IconDefinition> = {
-  TypeScript: faJs, // Using JS icon as placeholder for TypeScript
+  TypeScript: faJs,
   Python: faPython,
   "C / C++": faC,
   Rust: faRust,
