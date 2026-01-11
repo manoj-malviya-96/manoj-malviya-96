@@ -85,7 +85,6 @@ const nextConfig: NextConfig = {
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-brands-svg-icons",
     ],
-    viewTransition: true,
   },
 };
 
