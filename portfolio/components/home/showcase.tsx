@@ -26,7 +26,7 @@ export default function ProjectShowcase() {
       </span>
 
       {/* Table of Contents */}
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {ProjectIds.map((id) => (
           <li key={id}>
             <ProjectItem projectId={id} />
