@@ -65,18 +65,19 @@ const IMG_SIZE = 480;
 function ProjectCard({
   title,
   description,
-  body,
+  children,
   tags,
   images,
   ctas,
   className,
 }: ProjectMeta & {
-  body: ReactNode;
+  children: ReactNode;
   images: NextImage[];
   ctas?: ProjectCTA[];
   className?: string;
 }) {
   //Todo fix background colors to match apple style
+  console.log(children, title);
   return (
     <div
       className={mergeCls(
@@ -104,7 +105,7 @@ function ProjectCard({
           </ul>
         )}
 
-        {body && <Typography variant="body">{body}</Typography>}
+        {children}
 
         {ctas?.length && (
           <span className="flex flex-wrap gap-2 items-center">

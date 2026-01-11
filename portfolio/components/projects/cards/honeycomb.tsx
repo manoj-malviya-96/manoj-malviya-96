@@ -1,12 +1,10 @@
-import type { ReactNode } from "react";
 import ProjectCard from "@/components/projects/project_card";
 import { HoneyCombMetadata as meta } from "@/lib/projects/metadata";
 
-export default function HoneycombProjectCard(): ReactNode {
+export default function HoneycombProjectCard() {
   return (
     <ProjectCard
       {...meta}
-      body={meta.description}
       images={[
         "https://upload.wikimedia.org/wikipedia/commons/f/f7/Honey_comb.jpg",
       ]}
@@ -20,6 +18,8 @@ export default function HoneycombProjectCard(): ReactNode {
           href: "https://medium.com/@manojmalviya/honeycomb-visualizer",
         },
       ]}
-    />
+    >
+      {meta.description}
+    </ProjectCard>
   );
 }

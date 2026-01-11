@@ -1,12 +1,10 @@
-import type { ReactNode } from "react";
 import ProjectCard from "@/components/projects/project_card";
 import { PortfolioMetadata as meta } from "@/lib/projects/metadata";
 
-export default function PortfolioCard(): ReactNode {
+export default function PortfolioCard() {
   return (
     <ProjectCard
       {...meta}
-      body={meta.description}
       images={[
         "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?fm=jpg&q=60&w=1600&fit=crop",
       ]}
@@ -21,6 +19,8 @@ export default function PortfolioCard(): ReactNode {
           href: "https://manoj-malviya-96.vercel.app",
         },
       ]}
-    />
+    >
+      {meta.description}
+    </ProjectCard>
   );
 }
