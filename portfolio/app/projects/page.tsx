@@ -1,14 +1,18 @@
-import {
-  getProjectCardNodes,
-  ProjectIds,
-  sortProjectIdsByEffort,
-} from "@/lib/projects";
+import { ProjectIds } from "@/lib/projects/metadata";
 import { Typography } from "@/components/ui/text";
+import ProjectsClient from "@/components/projects/projects_client";
+import { Suspense } from "react";
 
-export default async function Page() {
-  const ids = sortProjectIdsByEffort(ProjectIds);
-  const cards = await getProjectCardNodes(ids);
+function ProjectsLoading() {
+  return (
+    <section className="flex flex-col gap-4 items-center justify-center py-16">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <p className="text-subtle text-sm">Loading projects...</p>
+    </section>
+  );
+}
 
+export default function Page() {
   return (
     <main className="screen flex flex-col gap-8 lg:gap-16">
       <span className="space-y-4">
@@ -19,11 +23,9 @@ export default async function Page() {
         </Typography>
       </span>
 
-      <section className="flex flex-col gap-16">
-        {cards.map((node, idx) => (
-          <div key={ids[idx]}>{node}</div>
-        ))}
-      </section>
+      <Suspense fallback={<ProjectsLoading />}>
+        <ProjectsClient ids={[...ProjectIds]} />
+      </Suspense>
     </main>
   );
 }

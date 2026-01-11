@@ -2,34 +2,9 @@
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Icon } from "@/components/ui";
-import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
-import {
-  getProjectCardNode,
-  type ProjectId,
-  ProjectIds,
-  sortProjectIdsByEffort,
-} from "@/lib/projects";
+import { ProjectIds, ProjectsMetadata } from "@/lib/projects/metadata";
 
 export default function ProjectShowcase() {
-  const ids: ProjectId[] = useMemo(
-    () => sortProjectIdsByEffort(ProjectIds).slice(0, 3),
-    [],
-  );
-
-  const [cards, setCards] = useState<ReactNode[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const nodes = await Promise.all(ids.map((id) => getProjectCardNode(id)));
-      if (!cancelled) setCards(nodes);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [ids]);
-
   return (
     <section className="screen flex flex-col gap-8 lg:gap-16" data-theme="dark">
       <span className="flex flex-row gap-4 items-center justify-between">
@@ -43,12 +18,34 @@ export default function ProjectShowcase() {
           <Icon icon={faUpRightFromSquare} />
         </Link>
       </span>
-      <div className="flex flex-col md:flex-row gap-8 lg:gap-16">
-        {cards.map((node, idx) => (
-          <div key={ids[idx]} className="max-w-xl">
-            {node}
-          </div>
-        ))}
+
+      {/* Table of Contents */}
+      <div className="bg-muted/30 rounded-xl p-6 backdrop-blur-sm">
+        <h3 className="text-lg font-semibold mb-4 text-primary">
+          All Projects
+        </h3>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {ProjectIds.map((id) => (
+            <li key={id}>
+              <Link
+                href={`/projects#${id}`}
+                className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors group"
+              >
+                <span className="text-primary opacity-60 group-hover:opacity-100 transition-opacity">
+                  →
+                </span>
+                <span className="flex-1">
+                  <span className="font-medium block">
+                    {ProjectsMetadata[id].title}
+                  </span>
+                  <span className="text-sm text-subtle line-clamp-1">
+                    {ProjectsMetadata[id].description}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
