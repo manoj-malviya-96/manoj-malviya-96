@@ -7,6 +7,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
+import { NextRouter } from "next/router";
 
 function MainLogo() {
   return (
@@ -16,11 +17,15 @@ function MainLogo() {
   );
 }
 
-const links = [
+type NavLink = {
+  href: NextRouter["route"];
+  label: string;
+};
+
+const links: NavLink[] = [
   { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
-  { href: "/blogs", label: "Blogs" },
-];
+] as const;
 
 function NavigationLinks() {
   return (
