@@ -7,12 +7,12 @@ function LandingContent() {
   const words = ["modern", "efficient", "correct", "scalable"];
   return (
     <div className="flex flex-col items-center text-left gap-4 w-fit self-center">
-      <Typography variant="largeHeading" className="mx-auto">
+      <Typography variant="title" className="mx-auto font-medium">
         Build
-        <FlipWords words={words} className="font-bold" /> <br />
+        <FlipWords words={words} className="font-extrabold" /> <br />
         digital products fast <br />
       </Typography>
-      <Typography variant="body" className="ml-auto">
+      <Typography variant="label" className="ml-auto">
         Manoj Malviya
       </Typography>
     </div>
