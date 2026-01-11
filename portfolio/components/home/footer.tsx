@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SOCIAL } from "@/lib/about_me/profile";
 import { UserAvatar } from "@/lib/assets";
+import { Typography } from "@/components/ui/text";
 
 const quickLinks = [
   { label: "Work Experience", href: "#workex" },

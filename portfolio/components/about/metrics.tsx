@@ -7,6 +7,7 @@ import { faAtom, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { TECH_STACK } from "@/lib/about_me/profile";
 import Icon from "@/components/ui/icon";
 import Card from "@/components/ui/card";
+import { Typography } from "@/components/ui/text";
 
 const LoadingString = "-";
 

@@ -8,6 +8,7 @@ import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
 import { NextRouter } from "next/router";
+import { Typography } from "@/components/ui/text";
 
 function MainLogo() {
   return (
