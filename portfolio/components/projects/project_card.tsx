@@ -1,6 +1,6 @@
 import React, { memo, ReactNode } from "react";
 import Image from "next/image";
-import { ProjectMeta } from "@/lib/projects";
+import { type ProjectMeta } from "@/lib/projects/metadata";
 import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -59,14 +59,17 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   );
 };
 
+const IMG_SIZE = 240;
+
 const ImagesBlock = ({ images }: { images: NextImage[] }) => {
   if (images.length === 1) {
     return (
       <Image
         src={images[0]}
         alt="project image"
-        width={320}
-        height={320}
+        width={IMG_SIZE}
+        height={IMG_SIZE}
+        loading="lazy"
         className="flex-1"
       />
     );
@@ -77,8 +80,9 @@ const ImagesBlock = ({ images }: { images: NextImage[] }) => {
         <Image
           key={idx}
           src={img}
-          width={320}
-          height={320}
+          width={IMG_SIZE}
+          height={IMG_SIZE}
+          loading="lazy"
           alt={`project image ${idx + 1}`}
         />
       ))}
@@ -122,7 +126,7 @@ function ProjectCard({
         {/* Tags */}
         {!!tags.length && (
           <ul className="flex flex-row flex-wrap gap-2 items-center">
-            {tags.map((tag) => (
+            {tags.map((tag: string) => (
               <Badge key={tag} element="li">
                 {tag}
               </Badge>
@@ -134,7 +138,7 @@ function ProjectCard({
 
         {ctas?.length && (
           <span className="flex flex-wrap gap-2 items-center">
-            {ctas.map((cta, idx) => (
+            {ctas.map((cta: ProjectCTA, idx: number) => (
               <CTAButton key={idx} cta={cta} />
             ))}
           </span>

@@ -5,9 +5,8 @@ import { Suspense } from "react";
 
 function ProjectsLoading() {
   return (
-    <section className="flex flex-col gap-4 items-center justify-center py-16">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      <p className="text-subtle text-sm">Loading projects...</p>
+    <section className="screen">
+      <Typography variant={"body"}>Loading projects...</Typography>
     </section>
   );
 }

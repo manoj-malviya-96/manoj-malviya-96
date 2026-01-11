@@ -16,8 +16,8 @@ export default function Badge({
   return (
     <Component
       className={mergeCls(
-        "inline-block px-2 py-1 rounded-lg text-sm",
-        active && "bg-muted/70",
+        "inline-block px-2 py-1 rounded-lg text-sm bg-muted",
+        active && "bg-front text-back",
         className,
       )}
     >

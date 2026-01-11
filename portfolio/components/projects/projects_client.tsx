@@ -40,7 +40,7 @@ export default function ProjectsClient({
 }: ProjectsClientProps) {
   const searchParams = useSearchParams();
   const [projects, setProjects] = useState<ProjectData[] | null>(null);
-  const queryFromUrl = searchParams.get("q") || initialQuery;
+  const queryFromUrl = searchParams.get("search") || initialQuery;
   const [query, setQuery] = useState(queryFromUrl);
   const [isLoading, setIsLoading] = useState(true);
 
