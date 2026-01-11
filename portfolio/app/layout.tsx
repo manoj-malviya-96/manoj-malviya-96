@@ -4,7 +4,6 @@ import "./globals.css";
 import React from "react";
 import Footer from "@/components/home/footer";
 import NavBar from "@/components/nav_bar";
-import TransitionLayout from "@/components/ui/transition_layout";
 
 export const metadata: Metadata = {
   title: "Manoj Malviya",
@@ -21,7 +20,7 @@ export default function RootLayout({
       <body>
         <ReactQueryProvider>
           <NavBar />
-          <TransitionLayout> {children}</TransitionLayout>
+          {children}
           <Footer />
         </ReactQueryProvider>
       </body>

@@ -1,20 +1,28 @@
-import React, { ReactNode } from "react";
+import React, { ElementType, ReactNode } from "react";
+import { mergeCls } from "@/lib/utils";
 
 export default function Badge({
   children,
-  active = false,
   className = "",
+  element = "span",
+  active = false,
 }: {
   children: ReactNode;
-  active?: boolean;
   className?: string;
+  element?: ElementType;
+  active?: boolean;
 }) {
+  const Component = element;
   return (
-    <span
-      className={`px-2 py-1 rounded-md text-xs whitespace-nowrap ${active ? "bg-fg text-bg" : "bg-muted"} ${className}`}
+    <Component
+      className={mergeCls(
+        "inline-block px-2 py-1 rounded-lg text-sm",
+        active && "bg-muted/70",
+        className,
+      )}
     >
       {children}
-    </span>
+    </Component>
   );
 }
 

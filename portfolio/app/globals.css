@@ -33,7 +33,6 @@
     --color-subtle: var(--color_subtle);
     --color-success: var(--color_success);
     --color-danger: var(--color_danger);
-
 }
 
 @layer base {

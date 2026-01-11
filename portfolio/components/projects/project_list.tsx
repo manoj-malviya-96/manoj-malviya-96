@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Fuse, { IFuseOptions } from "fuse.js";
 import ProjectCard from "./project_card";
-import { Project } from "@/lib/showcase";
+import type { ProjectCard as Project } from "@/lib/projects";
 import { Search } from "@/components/ui";
 import { mergeCls } from "@/lib/utils";
 
@@ -16,11 +16,17 @@ const fuseOptions: IFuseOptions<Project> = {
   includeScore: true,
   threshold: 0.35,
   keys: [
-    { name: "title", weight: 0.4 },
-    { name: "tagline", weight: 0.15 },
+    { name: "title", weight: 0.35 },
     { name: "description", weight: 0.25 },
+    { name: "body", weight: 0.2 },
     { name: "tags", weight: 0.2 },
   ],
+};
+
+const effortOrder: Record<Project["effort"], number> = {
+  low: 1,
+  medium: 2,
+  high: 3,
 };
 
 export default function ProjectList({ projects, className }: ProjectListProps) {
@@ -33,7 +39,9 @@ export default function ProjectList({ projects, className }: ProjectListProps) {
   }, [query]);
 
   const sorted = useMemo(() => {
-    return [...projects].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+    return [...projects].sort(
+      (a, b) => effortOrder[a.effort] - effortOrder[b.effort],
+    );
   }, [projects]);
 
   const fuse = useMemo(() => new Fuse(sorted, fuseOptions), [sorted]);
@@ -44,7 +52,7 @@ export default function ProjectList({ projects, className }: ProjectListProps) {
   }, [fuse, debouncedQuery, sorted]);
 
   return (
-    <div className={mergeCls("flex flex-col gap-6", className)}>
+    <section className={mergeCls("flex flex-col gap-6", className)}>
       <Search
         value={query}
         onChange={setQuery}
@@ -56,17 +64,14 @@ export default function ProjectList({ projects, className }: ProjectListProps) {
           No projects match that search.
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-16">
           {filtered.map((project, idx) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              highlight={idx === 0}
-              className="shadow-sm"
-            />
+            <li className="list-none" key={project.id}>
+              <ProjectCard {...project} highlight={idx === 0} />
+            </li>
           ))}
-        </div>
+        </ul>
       )}
-    </div>
+    </section>
   );
 }

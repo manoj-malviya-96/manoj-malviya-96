@@ -2,15 +2,33 @@
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Icon } from "@/components/ui";
-import { useMemo } from "react";
-import { AllProjects } from "@/lib/showcase";
+import type { ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  getProjectCardNode,
+  type ProjectId,
+  ProjectIds,
+  sortProjectIdsByEffort,
+} from "@/lib/projects";
 
 export default function ProjectShowcase() {
-  const projects = useMemo(() => {
-    return [...AllProjects]
-      .sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999))
-      .slice(0, 3);
-  }, []);
+  const ids: ProjectId[] = useMemo(
+    () => sortProjectIdsByEffort(ProjectIds).slice(0, 3),
+    [],
+  );
+
+  const [cards, setCards] = useState<ReactNode[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const nodes = await Promise.all(ids.map((id) => getProjectCardNode(id)));
+      if (!cancelled) setCards(nodes);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [ids]);
 
   return (
     <section className="screen flex flex-col gap-8 lg:gap-16" data-theme="dark">
@@ -26,8 +44,10 @@ export default function ProjectShowcase() {
         </Link>
       </span>
       <div className="flex flex-col md:flex-row gap-8 lg:gap-16">
-        {projects.map((project) => (
-          <span key={project.title}>{project.title}</span>
+        {cards.map((node, idx) => (
+          <div key={ids[idx]} className="max-w-xl">
+            {node}
+          </div>
         ))}
       </div>
     </section>

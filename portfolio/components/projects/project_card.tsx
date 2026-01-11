@@ -1,191 +1,149 @@
-"use client";
-
 import React, { memo, ReactNode } from "react";
 import Image from "next/image";
-import { Project, ProjectCTA } from "@/lib/showcase";
+import { ProjectMeta } from "@/lib/projects";
 import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextImage } from "@/components/ui/image";
+import { Typography } from "@/components/ui/text";
+import { Badge } from "@/components/ui";
+import { ExternalURL } from "@/lib/types";
 
-export type ProjectCardProps = {
-  project: Project;
-  highlight?: boolean;
-  minimal?: boolean;
-  onClick?: () => void;
-  className?: string;
-  icon?: ReactNode;
-  dateOrRead?: string;
-};
+type GithubRepo = `https://github.com/${string}/${string}`;
+type MediumPost = `https://medium.com/@${string}/${string}`;
+type ProjectCTA =
+  | { kind: "github"; href: GithubRepo }
+  | { kind: "medium"; href: MediumPost }
+  | { kind: "demo"; label?: string; href: ExternalURL }
+  | { kind: "custom"; node: ReactNode };
 
 const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
-  const base =
-    "inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 hover:scale-[1.02] bg-white/10 hover:bg-white/20 backdrop-blur";
-  const content = (label: string, icon?: ReactNode) => (
-    <span className="inline-flex items-center gap-2">
-      {icon}
-      {label}
-    </span>
-  );
-
-  if (cta.kind === "github") {
-    return (
-      <a
-        href={cta.href}
-        className={base}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {content(
-          cta.label ?? "GitHub",
-          <FontAwesomeIcon icon={faGithub} className="w-4 h-4" />,
-        )}
-      </a>
-    );
-  }
-  if (cta.kind === "medium") {
-    return (
-      <a
-        href={cta.href}
-        className={base}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {content(
-          cta.label ?? "Medium",
-          <FontAwesomeIcon icon={faMedium} className="w-4 h-4" />,
-        )}
-      </a>
-    );
-  }
-  // custom
-  if (cta.node) {
+  const base = "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm";
+  if (cta.kind === "custom") {
     return <span className={mergeCls(base, "cursor-default")}>{cta.node}</span>;
   }
-  if (cta.href) {
-    return (
-      <a
-        href={cta.href}
-        className={base}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {content(
-          cta.label,
-          <FontAwesomeIcon
-            icon={faArrowUpRightFromSquare}
-            className="w-4 h-4"
-          />,
-        )}
-      </a>
-    );
-  }
-  return <span className={base}>{content(cta.label)}</span>;
+
+  const icon = (() => {
+    switch (cta.kind) {
+      case "github":
+        return <FontAwesomeIcon icon={faGithub} />;
+      case "medium":
+        return <FontAwesomeIcon icon={faMedium} />;
+      case "demo":
+        return null;
+      default:
+        return null;
+    }
+  })();
+
+  const label = (() => {
+    switch (cta.kind) {
+      case "github":
+        return "GitHub";
+      case "medium":
+        return "Blog";
+      case "demo":
+        return cta.label ?? "Demo";
+      default:
+        return null;
+    }
+  })();
+
+  return (
+    <a href={cta.href} className={base} target="_blank" rel="noreferrer">
+      <span className="inline-flex items-center gap-2">
+        {icon}
+        {label}
+      </span>
+    </a>
+  );
 };
 
 const ImagesBlock = ({ images }: { images: NextImage[] }) => {
   if (images.length === 1) {
-    const img = images[0];
     return (
-      <div className="relative w-full md:w-60 h-36 md:h-40 overflow-hidden rounded-lg">
-        <Image
-          src={img}
-          alt="project image"
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 240px"
-        />
-      </div>
+      <Image
+        src={images[0]}
+        alt="project image"
+        width={320}
+        height={320}
+        className="flex-1"
+      />
     );
   }
   return (
     <div className="flex flex-row flex-wrap gap-3 mt-3">
       {images.map((img, idx) => (
-        <div
+        <Image
           key={idx}
-          className="relative w-36 h-24 rounded-lg overflow-hidden"
-        >
-          <Image
-            src={img}
-            alt={`project image ${idx + 1}`}
-            fill
-            className="object-cover"
-            sizes="180px"
-          />
-        </div>
+          src={img}
+          width={320}
+          height={320}
+          alt={`project image ${idx + 1}`}
+        />
       ))}
     </div>
   );
 };
 
-const ProjectCard = memo(function _ProjectCard({
-  project,
+function ProjectCard({
+  title,
+  description,
+  body,
+  tags,
+  images,
+  ctas,
   highlight = false,
-  onClick,
-  minimal = false,
   className,
-  icon,
-  dateOrRead,
-}: ProjectCardProps) {
-  const { title, tagline, description, tags, images, ctas } = project;
-
+}: ProjectMeta & {
+  body: ReactNode;
+  images: NextImage[];
+  ctas?: ProjectCTA[];
+  highlight?: boolean;
+  className?: string;
+}) {
   return (
     <div
       className={mergeCls(
-        "relative w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur hover:border-white/20 transition-all duration-200",
-        highlight && "ring-2 ring-white/40",
+        "flex flex-row flex-wrap gap-4 p-6 lg:p-8 rounded-xl w-full h-fit items-start",
+        highlight && "bg-gradient-to-l from-muted to-muted/20",
         className,
       )}
-      onClick={onClick}
     >
-      <div className="flex flex-col md:flex-row gap-4 p-4 md:p-6">
-        <div className="flex-1 flex flex-col gap-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-2">{icon}</div>
-            {dateOrRead && (
-              <span className="text-xs opacity-70">{dateOrRead}</span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <span className="text-2xl font-bold leading-tight">{title}</span>
-            {tagline && <span className="text-sm text-subtle">{tagline}</span>}
-          </div>
-
-          {!minimal && description && (
-            <p className="text-sm text-subtle leading-relaxed">{description}</p>
+      <div className="flex flex-col gap-4 p-4 md:p-6 flex-1">
+        {/* Heading */}
+        <span className="flex flex-col items-start justify-start gap-0">
+          <Typography variant="title">{title}</Typography>
+          {description && (
+            <Typography variant="caption">{description}</Typography>
           )}
+        </span>
 
-          {!!tags.length && (
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-1 rounded-md bg-white/10"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+        {/* Tags */}
+        {!!tags.length && (
+          <ul className="flex flex-row flex-wrap gap-2 items-center">
+            {tags.map((tag) => (
+              <Badge key={tag} element="li">
+                {tag}
+              </Badge>
+            ))}
+          </ul>
+        )}
 
-          {ctas?.length ? (
-            <div className="flex flex-wrap gap-2 pt-2">
-              {ctas.map((cta, idx) => (
-                <CTAButton key={idx} cta={cta} />
-              ))}
-            </div>
-          ) : null}
-          {images.length > 1 && <ImagesBlock images={images} />}
-        </div>
-        {images.length === 1 && <ImagesBlock images={images} />}
+        {body && <Typography variant="body">{body}</Typography>}
+
+        {ctas?.length && (
+          <span className="flex flex-wrap gap-2 items-center">
+            {ctas.map((cta, idx) => (
+              <CTAButton key={idx} cta={cta} />
+            ))}
+          </span>
+        )}
+        {images.length > 1 && <ImagesBlock images={images} />}
       </div>
+      {images.length === 1 && <ImagesBlock images={images} />}
     </div>
   );
-});
+}
 
-export default ProjectCard;
+export default memo(ProjectCard);

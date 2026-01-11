@@ -10,10 +10,9 @@ type TypographyVariant =
   | "label";
 
 const TypographyClasses: Record<TypographyVariant, string> = {
-  largeHeading:
-    "font-bold text-7xl text-9xl leading-tight tracking-wide uppercase",
-  heading: "font-bold text-5xl md:text-7xl leading-tight ",
-  title: "text-xl lg:text-2xl leading-snug",
+  largeHeading: "font-extrabold text-7xl text-9xl tracking-wide uppercase",
+  heading: "font-bold text-6xl lg:text-7xl",
+  title: "font-bold text-2xl lg:text-3xl",
   body: "leading-relaxed text-subtle",
   caption: "text-sm text-subtle",
   label: "font-md text-base",
