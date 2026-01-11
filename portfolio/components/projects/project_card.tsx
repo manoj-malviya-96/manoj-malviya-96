@@ -18,7 +18,8 @@ type ProjectCTA =
   | { kind: "custom"; node: ReactNode };
 
 const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
-  const base = "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm";
+  const base =
+    "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-front text-back";
   if (cta.kind === "custom") {
     return <span className={mergeCls(base, "cursor-default")}>{cta.node}</span>;
   }
@@ -75,14 +76,15 @@ function ProjectCard({
   ctas?: ProjectCTA[];
   className?: string;
 }) {
+  //Todo fix background colors to match apple style
   return (
     <div
       className={mergeCls(
-        "flex flex-row flex-wrap gap-4 rounded-xl w-full h-fit items-start ",
+        "flex flex-row flex-wrap gap-4 w-full h-fit p-4 lg:p-8 items-start",
         className,
       )}
     >
-      <div className="flex flex-col gap-4 py-2 lg:py-4 flex-2">
+      <div className="flex flex-col gap-4 flex-1">
         {/* Heading */}
         <span className="flex flex-col items-start justify-start gap-0">
           <Typography variant="title">{title}</Typography>
