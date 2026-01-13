@@ -3,63 +3,63 @@ import { calculateDuration, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Typography } from "@/components/ui/text";
 import Badge from "@/components/ui/badge";
+import Icon from "@/components/ui/icon";
+import { faCalendar, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 function WorkExpCard({ experience }: { experience: WorkExperience }) {
   return (
-    <div className="flex gap-6 flex-1 w-full">
-      {/* Content */}
-      <div className="flex-1 pt-1">
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
-          <div className="flex items-start gap-4 mb-4">
-            <div className="w-14 h-14 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden flex-shrink-0">
-              <Image src={experience.logo} alt={`${experience.company} logo`} />
-            </div>
+    <div className="flex-1 w-full">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+        <div className="flex items-start gap-4 mb-4">
+          <Image
+            src={experience.logo}
+            alt={`${experience.company} logo`}
+            className="w-14 h-14"
+          />
 
-            <div className="flex-1 min-w-0">
-              <Typography variant="title">{experience.position}</Typography>
-              <a
-                href={experience.companyURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="opacity-80 hover:opacity-100 cursor-pointer"
-              >
-                {experience.company}
-              </a>
-            </div>
-            <Badge>{experience.type}</Badge>
+          <div className="flex-1 min-w-0">
+            <Typography variant="body" className="font-extrabold text-front">
+              {experience.position}
+            </Typography>
+            <a
+              href={experience.companyURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-80 hover:opacity-100 cursor-pointer"
+            >
+              <Typography variant="caption">{experience.company}</Typography>
+            </a>
           </div>
-
-          <div className="flex flex-wrap gap-4 text-sm text-subtle mb-4">
-            <div className="flex items-center gap-1.5">
-              <i className="far fa-calendar text-xs"></i>
-              <span>
-                {formatDate(experience.startDate)} -{" "}
-                {experience.endDate
-                  ? formatDate(experience.endDate)
-                  : "Present"}
-                <span className="text-gray-400 ml-1">
-                  ·{" "}
-                  {calculateDuration(experience.startDate, experience.endDate)}
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <i className="fas fa-map-marker-alt text-xs"></i>
-              <span>{experience.location}</span>
-            </div>
-          </div>
-
-          {experience.role && experience.role.length > 0 && (
-            <ul className="space-y-2">
-              {experience.role.map((item, idx) => (
-                <li key={idx} className="text-subtle flex gap-2 text-sm">
-                  <span className="text-front">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <Badge>{experience.type}</Badge>
         </div>
+
+        <div className="flex flex-wrap gap-4 mb-4">
+          <Typography variant="caption" className="flex items-center gap-1.5">
+            <Icon icon={faCalendar} aria-label="Duration" />
+            {formatDate(experience.startDate)} -{" "}
+            {experience.endDate ? formatDate(experience.endDate) : "Present"}
+            <span className="text-gray-400">
+              · {calculateDuration(experience.startDate, experience.endDate)}
+            </span>
+          </Typography>
+          <Typography variant="caption" className="flex items-center gap-1.5">
+            <Icon icon={faLocationDot} aria-label="Location" />
+            {experience.location}
+          </Typography>
+        </div>
+
+        {experience.role && experience.role.length > 0 && (
+          <ul className="space-y-2">
+            {experience.role.map((item, idx) => (
+              <li key={idx} className="flex gap-2">
+                <Typography variant="caption" className="text-front">
+                  •
+                </Typography>
+                <Typography variant="caption">{item}</Typography>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
@@ -70,9 +70,21 @@ export default function WorkHistory({
 }: {
   experiences: WorkExperience[];
 }) {
+  const sortedExperiences = experiences.sort((a, b) => {
+    if (a.endDate && b.endDate) {
+      return a.endDate < b.endDate ? 1 : -1;
+    }
+    if (!a.endDate && !b.endDate) {
+      return a.startDate < b.startDate ? 1 : -1;
+    }
+    if (!a.endDate) return -1;
+    if (!b.endDate) return 1;
+    return 0;
+  });
+
   return (
     <div className="flex flex-col gap-0">
-      {experiences.map((exp, idx) => (
+      {sortedExperiences.map((exp, idx) => (
         <div key={idx} className="flex flex-col gap-0 items-center">
           <WorkExpCard experience={exp} />
           {idx !== experiences.length - 1 && (

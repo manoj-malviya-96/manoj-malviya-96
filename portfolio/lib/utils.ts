@@ -19,31 +19,31 @@ export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
   });
 }
 
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
 export function formatDate(date: MonthAndYear): string {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const [month, year] = date.split("/");
+  const [year, month] = date.split("-");
   return `${months[parseInt(month) - 1]} ${year}`;
 }
 
 export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
-  const [startMonth, startYear] = start.split("/").map(Number);
+  const [startYear, startMonth] = start.split("-").map(Number);
 
   let endMonth: number, endYear: number;
   if (end) {
-    [endMonth, endYear] = end.split("/").map(Number);
+    [endYear, endMonth] = end.split("-").map(Number);
   } else {
     const now = new Date();
     endMonth = now.getMonth() + 1;

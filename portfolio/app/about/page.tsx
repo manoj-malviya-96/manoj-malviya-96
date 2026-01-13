@@ -10,7 +10,7 @@ export default function About() {
   return (
     <main className="screen flex flex-col gap-8 lg:gap-16">
       <span className="flex flex-col  gap-4">
-        <Typography variant="largeHeading">About me</Typography>
+        <Typography variant="heading">About me</Typography>
         <Typography variant="body">
           Senior Software Engineer & Tech Lead building fast, reliable
           products—from pixel-perfect UIs to performance-critical engines.
@@ -20,8 +20,8 @@ export default function About() {
           outcomes.
         </Typography>
       </span>
-      <Typography variant="heading">Work Experience</Typography>
-      <div className="border flex flex-row gap-8">
+      <Typography variant="title">Work Experience</Typography>
+      <div className="flex flex-row flex-wrap gap-8">
         <WorkHistory experiences={WORK_EXPERIENCE} />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
           <GithubMetricsCard />

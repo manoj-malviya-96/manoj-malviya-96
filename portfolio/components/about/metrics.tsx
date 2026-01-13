@@ -22,7 +22,7 @@ const Stat = memo(function fn({
   return (
     <div className="flex flex-col items-center justify-center">
       <Typography variant="caption">{label}</Typography>
-      <Typography variant="title" component="span">
+      <Typography variant="heading" component="span">
         {value}
       </Typography>
     </div>
@@ -40,7 +40,7 @@ const HighlightStat = memo(function fn({
     <div className="flex flex-col items-center justify-center w-full">
       {/* Todo: I want to be like a counter. */}
       <Typography variant="caption">{label}</Typography>
-      <Typography variant="heading" component="span">
+      <Typography variant="largeHeading" component="span">
         {value}
       </Typography>
     </div>
@@ -60,7 +60,7 @@ export function GithubMetricsCard({ className }: { className?: string }) {
       title="Github"
       className={mergeCls("bg-muted", className)}
       description={
-        "A live snapshot of engineering momentum—shipping consistently, iterating in public, and maintaining strong build cadence over time. The card highlights sustained activity and follow-through: not just starting projects, but finishing, refining, and maintaining them.\n"
+        "A live snapshot of engineering momentum—shipping consistently.\n"
       }
     >
       <HighlightStat
@@ -104,9 +104,7 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
     <Card
       icon={faGraduationCap}
       title="Research"
-      description={
-        "A quick view of research impact and consistency—how often the work is referenced, and how reliably it translates into publishable, citable outcomes. The metrics summarize visibility and influence at a glance, complementing the portfolio’s product and engineering work"
-      }
+      description={"A quick view of research impact and consistency"}
       className={mergeCls("bg-muted", className)}
     >
       <HighlightStat
