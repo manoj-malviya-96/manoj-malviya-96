@@ -1,15 +1,16 @@
 import {
   GithubMetricsCard,
   ScholarMetricsCard,
-  TechStackList,
 } from "@/components/about/metrics";
 import { Typography } from "@/components/ui/text";
+import WorkHistory from "@/components/about/work_history";
+import { WORK_EXPERIENCE } from "@/lib/about_me/profile";
 
 export default function About() {
   return (
-    <main className="screen flex flex-col  gap-8 lg:gap-16">
+    <main className="screen flex flex-col gap-8 lg:gap-16">
       <span className="flex flex-col  gap-4">
-        <Typography variant="heading">About me</Typography>
+        <Typography variant="largeHeading">About me</Typography>
         <Typography variant="body">
           Senior Software Engineer & Tech Lead building fast, reliable
           products—from pixel-perfect UIs to performance-critical engines.
@@ -18,19 +19,15 @@ export default function About() {
           workflows into intuitive user experiences and measurable product
           outcomes.
         </Typography>
-        <TechStackList />
       </span>
-
-      <span className="flex flex-col gap-4">
-        <Typography variant="body">
-          Live proof of consistency—real shipping cadence in code, and
-          measurable impact through published work and citations
-        </Typography>
-        <div className="flex flex-row flex-wrap gap-4 lg:gap-8 ">
-          <GithubMetricsCard className="flex-1" />
-          <ScholarMetricsCard className="flex-1" />
+      <Typography variant="heading">Work Experience</Typography>
+      <div className="border flex flex-row gap-8">
+        <WorkHistory experiences={WORK_EXPERIENCE} />
+        <div className="flex flex-col gap-4 lg:gap-8 flex-1">
+          <GithubMetricsCard />
+          <ScholarMetricsCard />
         </div>
-      </span>
+      </div>
     </main>
   );
 }

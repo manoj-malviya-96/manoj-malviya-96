@@ -1,5 +1,6 @@
 import { ElementType, ReactNode } from "react";
 import { mergeCls } from "@/lib/utils";
+import { ClassValue } from "clsx";
 
 type TypographyVariant =
   | "largeHeading"
@@ -9,10 +10,10 @@ type TypographyVariant =
   | "caption"
   | "label";
 
-const TypographyClasses: Record<TypographyVariant, string> = {
-  largeHeading: "font-extrabold text-7xl text-9xl tracking-wide uppercase",
-  heading: "font-bold text-4xl lg:text-6xl uppercase",
-  title: "font-bold text-2xl lg:text-3xl",
+const TypographyClasses: Record<TypographyVariant, ClassValue> = {
+  largeHeading: "font-bold text-3xl lg:text-5xl tracking-wide uppercase",
+  heading: "font-bold text-2xl lg:text-3xl uppercase",
+  title: "font-bold text-xl lg:text-2xl",
   body: "text-subtle text-md lg:text-lg",
   caption: "text-sm text-subtle",
   label: "font-md text-base",

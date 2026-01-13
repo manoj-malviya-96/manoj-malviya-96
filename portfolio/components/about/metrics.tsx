@@ -58,7 +58,7 @@ export function GithubMetricsCard({ className }: { className?: string }) {
     <Card
       icon={faGithub}
       title="Github"
-      className={mergeCls("flex-grow w-full bg-muted", className)}
+      className={mergeCls("bg-muted", className)}
       description={
         "A live snapshot of engineering momentum—shipping consistently, iterating in public, and maintaining strong build cadence over time. The card highlights sustained activity and follow-through: not just starting projects, but finishing, refining, and maintaining them.\n"
       }
@@ -107,7 +107,7 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
       description={
         "A quick view of research impact and consistency—how often the work is referenced, and how reliably it translates into publishable, citable outcomes. The metrics summarize visibility and influence at a glance, complementing the portfolio’s product and engineering work"
       }
-      className={mergeCls("flex-grow w-full bg-muted", className)}
+      className={mergeCls("bg-muted", className)}
     >
       <HighlightStat
         value={data ? data.citations.toLocaleString() : LoadingString}
@@ -142,16 +142,3 @@ function TechBadge({ name }: { name: string }) {
     </Typography>
   );
 }
-
-export function TechStackList() {
-  const names = Object.keys(TECH_STACK);
-  return (
-    <div className="flex flex-wrap gap-2 sm:gap-3">
-      {names.map((name) => (
-        <TechBadge key={name} name={name} />
-      ))}
-    </div>
-  );
-}
-
-TechStackList.displayName = "TechStackList";

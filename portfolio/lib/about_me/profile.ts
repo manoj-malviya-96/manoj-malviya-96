@@ -87,7 +87,7 @@ export const EDUCATION = [
   },
 ] as Education[];
 
-type WorkExperience = {
+export type WorkExperience = {
   company: string;
   logo: LocalImage;
   companyURL: string;

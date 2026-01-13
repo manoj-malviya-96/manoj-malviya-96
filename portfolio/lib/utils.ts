@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { MonthAndYear } from "@/lib/types";
 
 export function mergeCls(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,4 +17,44 @@ export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
       return true;
     }
   });
+}
+
+export function formatDate(date: MonthAndYear): string {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const [month, year] = date.split("/");
+  return `${months[parseInt(month) - 1]} ${year}`;
+}
+
+export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
+  const [startMonth, startYear] = start.split("/").map(Number);
+
+  let endMonth: number, endYear: number;
+  if (end) {
+    [endMonth, endYear] = end.split("/").map(Number);
+  } else {
+    const now = new Date();
+    endMonth = now.getMonth() + 1;
+    endYear = now.getFullYear();
+  }
+
+  const months = (endYear - startYear) * 12 + (endMonth - startMonth);
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+
+  if (years === 0) return `${remainingMonths} mo`;
+  if (remainingMonths === 0) return `${years} yr`;
+  return `${years} yr ${remainingMonths} mo`;
 }
