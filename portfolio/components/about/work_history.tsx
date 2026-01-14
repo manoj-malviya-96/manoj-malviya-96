@@ -5,6 +5,7 @@ import { Typography } from "@/components/ui/text";
 import Badge from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { faCalendar, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import Link from "@/components/ui/link";
 
 function WorkExpCard({ experience }: { experience: WorkExperience }) {
   return (
@@ -21,14 +22,7 @@ function WorkExpCard({ experience }: { experience: WorkExperience }) {
             <Typography variant="body" className="font-extrabold text-front">
               {experience.position}
             </Typography>
-            <a
-              href={experience.companyURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-80 hover:opacity-100 cursor-pointer"
-            >
-              <Typography variant="caption">{experience.company}</Typography>
-            </a>
+            <Link url={experience.companyURL}>{experience.company}</Link>
           </div>
           <Badge>{experience.type}</Badge>
         </div>

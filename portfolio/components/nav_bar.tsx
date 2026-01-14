@@ -1,18 +1,17 @@
 "use client";
 
 import { mergeCls } from "@/lib/utils";
-import Link from "next/link";
 import Icon from "@/components/ui/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
 import { NextRouter } from "next/router";
-import { Typography } from "@/components/ui/text";
+import Link from "@/components/ui/link";
 
 function MainLogo() {
   return (
-    <Link className="flex flex-row items-center gap-4 cursor-pointer " href="/">
+    <Link url="/" className="text-front">
       <Icon icon={faStumbleuponCircle} className="icon-large text-2xl" />
     </Link>
   );
@@ -30,14 +29,10 @@ const links: NavLink[] = [
 
 function NavigationLinks() {
   return (
-    <span className="flex flex-row gap-4">
+    <span className="flex flex-row gap-4 items-center">
       {links.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          className="p-2 rounded-md transition-colors hover:opacity-80 cursor-pointer"
-        >
-          <Typography variant="label">{link.label}</Typography>
+        <Link key={link.href} url={link.href} className="text-front">
+          {link.label}
         </Link>
       ))}
     </span>
@@ -60,7 +55,6 @@ function CTALink() {
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isDarkMode = pathname === "/";
   const isScrollEffectEnabled = pathname === "/" || pathname === "/projects";
   const { isVisible, isAtTop } = useScrollVisibility({
     enabled: isScrollEffectEnabled,
@@ -71,14 +65,14 @@ export default function Navbar() {
     <nav
       className={mergeCls(
         "fixed top-0 left-0 w-full h-fit z-10 p-1 duration-300 transition-transform",
-        isAtTop ? "bg-transparent" : "bg-back/60 backdrop-blur-md",
+        isAtTop && pathname === "/" ? "bg-transparent" : "bg-back", // Only transparent on home
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
-      data-theme={isDarkMode ? "dark" : "light"}
+      data-theme="dark"
     >
       <span
         className={mergeCls(
-          "flex flex-row justify-around w-full lg:w-2/3 mx-auto text-front",
+          "flex flex-row justify-around w-full lg:w-2/3 mx-auto text-front items-center",
         )}
       >
         <MainLogo />
