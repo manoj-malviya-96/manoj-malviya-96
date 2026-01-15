@@ -21,11 +21,7 @@
 }
 
 @theme inline {
-    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-
+    --font-sans: system-ui;
     /* color-* defines theme colors to follow TW styles */
     --color-back: var(--color_back);
     --color-front: var(--color_front);
@@ -38,6 +34,10 @@
 @layer base {
     html {
         @apply font-sans leading-relaxed subpixel-antialiased scroll-smooth;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     body {

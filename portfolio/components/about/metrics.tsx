@@ -4,8 +4,6 @@ import { useGithub } from "@/lib/query/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { google_scholar } from "@/lib/query/google_scholar";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { TECH_STACK } from "@/lib/about_me/profile";
-import Icon from "@/components/ui/icon";
 import Card from "@/components/ui/card";
 import { Typography } from "@/components/ui/text";
 import { mergeCls } from "@/lib/utils";
@@ -52,13 +50,12 @@ export function GithubMetricsCard({ className }: { className?: string }) {
 
   if (error) {
     console.error("Error fetching GitHub metrics:", error);
-    return null;
   }
   return (
     <Card
       icon={faGithub}
       title="Github"
-      className={mergeCls("bg-muted", className)}
+      className={mergeCls("bg-muted/40 shadow-sm", className)}
       description={
         "A live snapshot of engineering momentum—shipping consistently.\n"
       }
@@ -97,7 +94,6 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
 
   if (error) {
     console.error("Error fetching Google Scholar metrics:", error);
-    return null;
   }
 
   return (
@@ -105,7 +101,7 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
       icon={faGraduationCap}
       title="Research"
       description={"A quick view of research impact and consistency"}
-      className={mergeCls("bg-muted", className)}
+      className={mergeCls("bg-muted/40 shadow-sm", className)}
     >
       <HighlightStat
         value={data ? data.citations.toLocaleString() : LoadingString}
@@ -128,15 +124,3 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
 }
 
 ScholarMetricsCard.displayName = "ScholarMetricsCard";
-
-function TechBadge({ name }: { name: string }) {
-  const icon = TECH_STACK[name];
-  return (
-    <Typography
-      variant="caption"
-      className="flex flex-wrap items-center gap-2 rounded-lg sm:px-2 sm:py-1"
-    >
-      {icon && <Icon icon={icon} />} {name}
-    </Typography>
-  );
-}

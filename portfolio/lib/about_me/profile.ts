@@ -29,7 +29,7 @@ import {
 } from "@/lib/assets";
 
 import type { StaticImageData as LocalImage } from "next/image";
-import { MonthAndYear } from "@/lib/types";
+import { ExternalURL, MonthAndYear } from "@/lib/types";
 
 export interface SocialLink {
   icon: IconDefinition;
@@ -90,7 +90,7 @@ export const EDUCATION = [
 export type WorkExperience = {
   company: string;
   logo: LocalImage;
-  companyURL: string;
+  companyURL: ExternalURL;
   position: string;
   startDate: MonthAndYear;
   endDate?: MonthAndYear;
