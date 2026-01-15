@@ -30,7 +30,7 @@ function WorkExpCard({
         />
         <span className="flex flex-col gap-1">
           <span className="flex flex-row flex-wrap gap-2">
-            <Typography variant="body" className="font-extrabold text-front">
+            <Typography variant="title" className="font-extrabold text-front">
               {position}
             </Typography>
             <Badge>{type}</Badge>

@@ -20,7 +20,9 @@ export default function About() {
           outcomes.
         </Typography>
       </span>
-      <Typography variant="title">Work Experience</Typography>
+      {/* Todo add slideshow here */}
+
+      {/* Work Experience and Metrics cards */}
       <div className="flex flex-row flex-wrap gap-8">
         <WorkHistory experiences={WORK_EXPERIENCE} />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
