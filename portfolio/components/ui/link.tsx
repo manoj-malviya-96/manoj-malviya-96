@@ -7,17 +7,21 @@ import { mergeCls } from "@/lib/utils";
 type LinkProps = {
   url: ExternalURL | UrlObject | string;
   className?: string;
+  newTab?: boolean;
   children: ReactNode;
 };
 
-export default function Link({ url, children, className }: LinkProps) {
+export default function Link({ url, children, newTab, className }: LinkProps) {
+  const props = newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
   return (
     <NextLink
       href={url}
+      replace={false}
       className={mergeCls(
         "text-subtle text-sm cursor-pointer hover:text-front transition-colors duration-300",
         className,
       )}
+      {...props}
     >
       {children}
     </NextLink>

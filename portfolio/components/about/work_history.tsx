@@ -36,7 +36,9 @@ function WorkExpCard({
             <Badge>{type}</Badge>
           </span>
           <Typography variant="caption" className="flex items-center gap-2">
-            <Link url={companyURL}>{company}</Link>
+            <Link url={companyURL} newTab>
+              {company}
+            </Link>
             <Icon icon={faLocationDot} aria-label="Location" />
             {location}
           </Typography>
@@ -83,7 +85,7 @@ export default function WorkHistory({
         <div key={idx} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />
           {idx !== experiences.length - 1 && (
-            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8 lg:ml-16" />
+            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-2 lg:ml-9" />
           )}
         </div>
       ))}
