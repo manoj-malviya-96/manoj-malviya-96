@@ -51,6 +51,13 @@ export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
   }
 
   const months = (endYear - startYear) * 12 + (endMonth - startMonth);
+
+  if (months < 0) {
+    throw new Error(
+      `Invalid date range: end date '${end || "now"}' is before start date '${start}'`,
+    );
+  }
+
   const years = Math.floor(months / 12);
   const remainingMonths = months % 12;
 
