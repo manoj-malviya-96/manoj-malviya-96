@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
 import Link from "@/lib/ui/link";
 import { ExternalURL } from "@/lib/types";
+import { useMemo } from "react";
 
 function MainLogo() {
   return (
@@ -56,7 +57,10 @@ function CTALink() {
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isScrollEffectEnabled = pathname === "/" || pathname === "/projects";
+  const isScrollEffectEnabled = useMemo(
+    () => pathname === "/" || pathname === "/projects",
+    [pathname],
+  );
   const { isVisible, isAtTop } = useScrollVisibility({
     enabled: isScrollEffectEnabled,
     velocityThreshold: 0.8,
