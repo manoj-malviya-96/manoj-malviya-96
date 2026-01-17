@@ -3,18 +3,18 @@
 // Add React import at the top
 import React, { ComponentType, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { type ProjectId, ProjectsMetadata } from "@/lib/projects/metadata";
-import { getProjectCardNode } from "@/lib/projects/cards";
 import { Search } from "@/lib/ui";
 import Fuse, { IFuseOptions } from "fuse.js";
 import { Typography } from "@/lib/ui/text";
+import type { ProjectTag } from "@/lib/projects/list/types";
+import { ALL_PROJECTS } from "@/lib/projects/list";
 
 interface ProjectData {
-  id: ProjectId;
+  id: string;
   Component: ComponentType;
   title: string;
   description: string;
-  tags: string[];
+  tags: readonly ProjectTag[];
   effort: "low" | "medium" | "high";
 }
 
@@ -31,7 +31,7 @@ const fuseOptions: IFuseOptions<ProjectData> = {
 const effortOrder = { low: 1, medium: 2, high: 3 };
 
 interface ProjectsClientProps {
-  ids: ProjectId[];
+  ids?: string[];
   initialQuery?: string;
 }
 
@@ -51,13 +51,14 @@ export default function ProjectsClient({
 
     (async () => {
       try {
-        const components = await Promise.all(
-          ids.map((id) => getProjectCardNode(id)),
-        );
-        const projectData: ProjectData[] = ids.map((id, idx) => ({
-          id,
-          Component: components[idx],
-          ...ProjectsMetadata[id],
+        const projectsToShow = ids
+          ? ALL_PROJECTS.filter((p) => ids.includes(p.id))
+          : ALL_PROJECTS;
+
+        const projectData = projectsToShow.map((project) => ({
+          id: project.id,
+          Component: project.Card,
+          ...project.metadata,
         }));
 
         if (!cancelled) {

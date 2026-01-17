@@ -1,11 +1,19 @@
 import ProjectCard from "@/lib/projects/project_card";
-import { PortfolioMetadata as meta } from "@/lib/projects/metadata";
 import { Typography } from "@/lib/ui/text";
+import type { Project } from "@/lib/projects/list/types";
 
-export default function PortfolioCard() {
+const metadata = {
+  title: "Portfolio",
+  description: `A modern portfolio website to showcase my projects and skills, 
+              built with Next.js, TailwindCSS and TypeScript`,
+  tags: ["web", "open-source", "nextjs", "tailwind", "typescript", "ui/ux"],
+  effort: "medium",
+} as const;
+
+function PortfolioCard() {
   return (
     <ProjectCard
-      {...meta}
+      {...metadata}
       images={[
         "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?fm=jpg&q=60&w=1600&fit=crop",
       ]}
@@ -21,7 +29,13 @@ export default function PortfolioCard() {
         },
       ]}
     >
-      <Typography variant="body">{meta.description}</Typography>
+      <Typography variant="body">{metadata.description}</Typography>
     </ProjectCard>
   );
 }
+
+export const project: Project = {
+  id: "portfolio",
+  metadata,
+  Card: PortfolioCard,
+} as const;

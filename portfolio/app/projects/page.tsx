@@ -1,4 +1,3 @@
-import { ProjectIds } from "@/lib/projects/metadata";
 import { Typography } from "@/lib/ui/text";
 import ProjectsClient from "@/lib/projects/projects_client";
 import { Suspense } from "react";
@@ -22,7 +21,7 @@ export default function Page() {
         </Typography>
       </span>
       <Suspense fallback={<ProjectsLoading />}>
-        <ProjectsClient ids={[...ProjectIds]} />
+        <ProjectsClient />
       </Suspense>
     </main>
   );

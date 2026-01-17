@@ -1,11 +1,18 @@
 import ProjectCard from "@/lib/projects/project_card";
-import { HoneyCombMetadata as meta } from "@/lib/projects/metadata";
 import { Typography } from "@/lib/ui/text";
+
+export const metadata = {
+  title: "HoneyMesh",
+  description:
+    "Generate and visualize honeycomb lattice structures for scientific and educational use.",
+  tags: ["rendering", "high-performance", "open-source", "python"],
+  effort: "medium",
+} as const;
 
 export default function HoneycombProjectCard() {
   return (
     <ProjectCard
-      {...meta}
+      {...metadata}
       images={[
         "https://upload.wikimedia.org/wikipedia/commons/f/f7/Honey_comb.jpg",
       ]}
@@ -20,7 +27,13 @@ export default function HoneycombProjectCard() {
         },
       ]}
     >
-      <Typography variant="body">{meta.description}</Typography>
+      <Typography variant="body">{metadata.description}</Typography>
     </ProjectCard>
   );
 }
+
+export const project = {
+  id: "honeycomb",
+  metadata,
+  Card: HoneycombProjectCard,
+} as const;

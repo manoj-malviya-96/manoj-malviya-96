@@ -1,11 +1,19 @@
 import ProjectCard from "@/lib/projects/project_card";
-import { BlackholeMetadata as meta } from "@/lib/projects/metadata";
 import { Typography } from "@/lib/ui/text";
+import type { Project } from "@/lib/projects/list/types";
 
-export default function BlackholeProjectCard() {
+const metadata = {
+  title: "Blackhole",
+  description:
+    "A simulation that simulates and visualizers gravitational effects around black holes.",
+  tags: ["rendering", "gpu", "optimization", "c++", "opengl"] as const,
+  effort: "high",
+} as const;
+
+function BlackholeProjectCard() {
   return (
     <ProjectCard
-      {...meta}
+      {...metadata}
       images={[
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1400&fit=crop&sat=-15",
@@ -22,7 +30,13 @@ export default function BlackholeProjectCard() {
         },
       ]}
     >
-      <Typography variant="body">{meta.description}</Typography>
+      <Typography variant="body">{metadata.description}</Typography>
     </ProjectCard>
   );
 }
+
+export const project: Project = {
+  id: "blackhole",
+  metadata,
+  Card: BlackholeProjectCard,
+} as const;

@@ -2,11 +2,7 @@
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Icon } from "@/lib/ui";
-import {
-  ProjectId,
-  ProjectIds,
-  ProjectsMetadata,
-} from "@/lib/projects/metadata";
+import { ALL_PROJECTS } from "@/lib/projects/list";
 import { Typography } from "@/lib/ui/text";
 import { faLaptopCode } from "@fortawesome/free-solid-svg-icons/faLaptopCode";
 
@@ -27,9 +23,9 @@ export default function ProjectShowcase() {
 
       {/* Table of Contents */}
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {ProjectIds.map((id) => (
-          <li key={id}>
-            <ProjectItem projectId={id} />
+        {ALL_PROJECTS.map((project) => (
+          <li key={project.id}>
+            <ProjectItem projectId={project.id} />
           </li>
         ))}
       </ul>
@@ -37,8 +33,10 @@ export default function ProjectShowcase() {
   );
 }
 
-function ProjectItem({ projectId }: { projectId: ProjectId }) {
-  const meta = ProjectsMetadata[projectId];
+function ProjectItem({ projectId }: { projectId: string }) {
+  const project = ALL_PROJECTS.find((p) => p.id === projectId);
+  if (!project) return null;
+
   return (
     <Link
       href={`/projects#${projectId}`}
@@ -47,10 +45,10 @@ function ProjectItem({ projectId }: { projectId: ProjectId }) {
       <Icon icon={faLaptopCode} />
       <span className="flex-1 flex-col">
         <Typography variant="label" className="block">
-          {meta.title}
+          {project.metadata.title}
         </Typography>
         <Typography variant="caption" className="line-clamp-1">
-          {meta.description}
+          {project.metadata.description}
         </Typography>
       </span>
     </Link>

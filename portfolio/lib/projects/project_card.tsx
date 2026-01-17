@@ -1,6 +1,6 @@
 import React, { memo, ReactNode } from "react";
 import Image from "next/image";
-import { type ProjectMeta } from "@/lib/projects/metadata";
+import { type ProjectMeta } from "@/lib/projects/list/types";
 import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

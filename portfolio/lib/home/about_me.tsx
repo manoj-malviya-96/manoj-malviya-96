@@ -2,7 +2,8 @@
 
 import Image, { StaticImageData } from "next/image";
 import Link from "@/lib/ui/link";
-import { EDUCATION, WORK_EXPERIENCE } from "@/lib/about_me/profile";
+import { EDUCATION } from "@/lib/about_me/profile";
+import { WORK_EXPERIENCE } from "@/lib/about_me/work_experience";
 import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
 import { Typography } from "@/lib/ui/text";

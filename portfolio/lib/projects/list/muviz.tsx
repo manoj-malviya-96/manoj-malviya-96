@@ -1,12 +1,20 @@
 import ProjectCard from "@/lib/projects/project_card";
-import { MuvizMetadata as meta } from "@/lib/projects/metadata";
 import { MuvizDemo } from "@/lib/assets";
 import { Typography } from "@/lib/ui/text";
+import type { Project } from "@/lib/projects/list/types";
 
-export default function MuvizProjectCard() {
+const metadata = {
+  title: "Muviz - Music Visualizer",
+  description:
+    "A fast, feature-rich music visualizer for reactive beautiful visualizations",
+  tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux"],
+  effort: "high",
+} as const;
+
+function MuvizProjectCard() {
   return (
     <ProjectCard
-      {...meta}
+      {...metadata}
       images={[MuvizDemo]}
       ctas={[
         {
@@ -38,3 +46,9 @@ export default function MuvizProjectCard() {
     </ProjectCard>
   );
 }
+
+export const project: Project = {
+  id: "muviz",
+  metadata,
+  Card: MuvizProjectCard,
+} as const;
