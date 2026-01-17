@@ -1,6 +1,5 @@
 "use client";
 
-// Add React import at the top
 import React, { ComponentType, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search } from "@/lib/ui";
@@ -30,22 +29,10 @@ const fuseOptions: IFuseOptions<ProjectData> = {
 
 const effortOrder = { low: 1, medium: 2, high: 3 };
 
-interface ProjectsClientProps {
-  ids?: string[];
-  initialQuery?: string;
-}
-
-export default function ProjectsClient({
-  ids,
-  initialQuery = "",
-}: ProjectsClientProps) {
-  const searchParams = useSearchParams();
+function useLoadProjects(ids?: string[]) {
   const [projects, setProjects] = useState<ProjectData[] | null>(null);
-  const queryFromUrl = searchParams.get("search") || initialQuery;
-  const [query, setQuery] = useState(queryFromUrl);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load projects
   useEffect(() => {
     let cancelled = false;
 
@@ -76,8 +63,11 @@ export default function ProjectsClient({
     };
   }, [ids]);
 
-  // Filter and sort projects
-  const filtered = useMemo(() => {
+  return { projects, isLoading };
+}
+
+function useFilteredProjects(projects: ProjectData[] | null, query: string) {
+  return useMemo(() => {
     if (!projects) return [];
 
     const sorted = [...projects].sort(
@@ -89,6 +79,23 @@ export default function ProjectsClient({
     const fuse = new Fuse(sorted, fuseOptions);
     return fuse.search(query.trim()).map((r) => r.item);
   }, [projects, query]);
+}
+
+interface ProjectsClientProps {
+  ids?: string[];
+  initialQuery?: string;
+}
+
+export default function ProjectsClient({
+  ids,
+  initialQuery = "",
+}: ProjectsClientProps) {
+  const searchParams = useSearchParams();
+  const queryFromUrl = searchParams.get("search") || initialQuery;
+  const [query, setQuery] = useState(queryFromUrl);
+
+  const { projects, isLoading } = useLoadProjects(ids);
+  const filtered = useFilteredProjects(projects, query);
 
   if (isLoading) {
     return (
