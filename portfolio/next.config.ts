@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable turbopack for faster builds
   turbopack: {},
+  reactCompiler: true,
 
   // Production compiler optimizations
   compiler: {
