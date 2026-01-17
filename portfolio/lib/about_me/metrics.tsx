@@ -1,8 +1,8 @@
 "use client";
 import { memo } from "react";
-import { useGithub } from "@/lib/query/github";
+import { useGithub } from "@/lib/about_me/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { google_scholar } from "@/lib/query/google_scholar";
+import { google_scholar } from "@/lib/about_me/google_scholar";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import Card from "@/lib/ui/card";
 import { Typography } from "@/lib/ui/text";
