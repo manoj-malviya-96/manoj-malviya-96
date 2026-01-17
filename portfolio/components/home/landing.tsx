@@ -7,7 +7,7 @@ function LandingContent() {
   const words = ["modern", "efficient", "correct", "scalable"];
   return (
     <div className="flex flex-col items-center text-left gap-4 w-fit self-center">
-      <Typography variant="title" className="mx-auto font-medium">
+      <Typography variant="title" className="mx-auto lg:text-2xl font-medium">
         Build
         <FlipWords words={words} className="font-extrabold" /> <br />
         digital products fast <br />

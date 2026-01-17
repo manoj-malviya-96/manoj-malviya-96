@@ -24,7 +24,6 @@ import {
   FlowkeyLogo,
   FormlabsLogo,
   IITJLogo,
-  NoahLabs,
   PennStateLogo,
 } from "@/lib/assets";
 
@@ -96,7 +95,7 @@ export type WorkExperience = {
   endDate?: MonthAndYear;
   location: string;
   type: "Full-time" | "Part-time" | "Internship" | "Contract";
-  role?: string[];
+  role?: string;
 };
 export const WORK_EXPERIENCE = [
   {
@@ -108,10 +107,9 @@ export const WORK_EXPERIENCE = [
     location: "Somerville, MA",
     type: "Full-time",
     logo: FormlabsLogo,
-    role: [
-      "Developed software solutions for 3D printing technologies, focusing on improving print quality and reliability.",
-      "Collaborated with cross-functional teams to integrate new features into existing products.",
-    ],
+    role: `Focused on computational design and optimization for 3D printing, 
+          taking algorithms from research and experimentation 
+          through production-ready engineering`,
   },
   {
     company: "Formlabs",
@@ -122,10 +120,9 @@ export const WORK_EXPERIENCE = [
     location: "Budapest, Hungary",
     logo: FormlabsLogo,
     type: "Full-time",
-    role: [
-      "Led a team of engineers in developing advanced software features for 3D printing systems.",
-      "Implemented scalable solutions to enhance system performance and user experience.",
-    ],
+    role: `Owned end-to-end delivery of CAD/CAM desktop features in PreForm
+          leading UI architecture and performance while 
+          coordinating across product, design, and hardware team`,
   },
   {
     company: "Flowkey",
@@ -136,23 +133,22 @@ export const WORK_EXPERIENCE = [
     location: "Berlin, Germany",
     logo: FlowkeyLogo,
     type: "Contract",
-    role: [
-      "Designed and implemented new features for the Flowkey music learning platform.",
-      "Optimized backend services to improve application responsiveness and scalability.",
-    ],
+    role: `Worked on core product performance for music learning, 
+          focusing on real-time rendering and ML-backed audio workflows 
+          across the Apple ecosystem`,
   },
   {
-    company: "Noah Labs",
-    companyURL: "https://www.noah-labs.com/",
-    position: "Senior Software Engineer",
-    startDate: "2025-10",
+    company: "Penn State University",
+    companyURL: "https://www.psu.edu/",
+    position: "Graduate Research Assistant",
+    startDate: "2018-08",
+    endDate: "2020-07",
     location: "Berlin, Germany",
-    logo: NoahLabs,
+    logo: PennStateLogo,
     type: "Full-time",
-    role: [
-      "Leading the development of innovative software solutions in the field of AI and machine learning.",
-      "Collaborating with a multidisciplinary team to drive product innovation and excellence.",
-    ],
+    role: `Conducted research in computational design and digital manufacturing, 
+          building prototypes and publishing work spanning optimization, 
+          graphics, and machine learning`,
   },
 ] as WorkExperience[];
 

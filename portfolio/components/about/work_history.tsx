@@ -48,16 +48,7 @@ function WorkExpCard({
           {timeString}
         </Typography>
       </div>
-
-      {role && role.length > 0 && (
-        <ul className="list-disc list-inside space-y-2">
-          {role.map((item, idx) => (
-            <Typography variant="body" component="li" key={idx}>
-              {item}
-            </Typography>
-          ))}
-        </ul>
-      )}
+      {role && <Typography variant="body">{role}</Typography>}
     </div>
   );
 }
@@ -80,7 +71,7 @@ export default function WorkHistory({
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       {sortedExperiences.map((exp, idx) => (
         <div key={idx} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />

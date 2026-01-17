@@ -1,13 +1,13 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import Link from "next/link";
-import { Icon } from "@/components/ui";
-import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import Link from "@/components/ui/link";
 import { EDUCATION, WORK_EXPERIENCE } from "@/lib/about_me/profile";
 import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
 import { Typography } from "@/components/ui/text";
+import { Icon } from "@/components/ui";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
 
 type ExternalIconURLProps = {
   image: StaticImageData | string;
@@ -55,7 +55,7 @@ export default function AboutMe() {
   return (
     <section
       className={
-        "screen flex flex-row flex-wrap justify-center gap-4 lg:gap-16 items-start"
+        "screen flex flex-row flex-wrap justify-center gap-4 lg:gap-16 item-center"
       }
     >
       <Image
@@ -63,42 +63,44 @@ export default function AboutMe() {
         alt="Profile"
         width={500}
         height={500}
-        className="object-cover rounded-lg"
+        className="object-cover rounded-lg flex-1"
       />
-      <div className="flex-1 flex flex-col items-start gap-8">
-        <span className="flex flex-row gap-4 items-center">
-          <Typography variant="heading">About Me</Typography>
-          <Link
-            href="/about"
-            className="bg-muted px-3 py-2 rounded-full cursor-pointer hover:scale-105 transition-transform duration-300"
-            aria-label="Read More About Me"
-          >
-            <Icon icon={faUpRightFromSquare} />
-          </Link>
+      <div className="flex flex-col gap-4 flex-2">
+        <Typography variant="heading">About Me</Typography>
+        <Typography variant="title" className="my-2">
+          Hello! I am Manoj Malviya
+        </Typography>
+        <Typography variant="body">
+          Senior Software Engineer with 7+ years delivering physics simulation
+          and CAD software, specializing in turning complex geometry/physics
+          problems into fast, reliable user-facing features.
+          <br />
+          I lead cross-functional initiatives and translate business goals into
+          shipped systems with measurable impact.
+          <br /> <br />
+          Past associations -
+        </Typography>
+        <span className="flex flex-row flex-wrap gap-4 items-center">
+          {WorkOrganizations.map((item) => (
+            <ExternalIconURL key={item.altText} {...item} />
+          ))}
+          {Educations.map((item) => (
+            <ExternalIconURL key={item.altText} {...item} />
+          ))}
         </span>
-        <div className="text-left mt-4 flex flex-col gap-4">
-          <Typography variant="title" className="my-2">
-            Hello! I am Manoj Malviya
-          </Typography>
-          <Typography variant="body">
-            Senior Software Engineer with 7+ years delivering physics simulation
-            and CAD software, specializing in turning complex geometry/physics
-            problems into fast, reliable user-facing features.
-            <br /> <br />
-            I lead cross-functional initiatives and translate business goals
-            into shipped systems with measurable impact.
-            <br /> <br />
-            Past associations -
-          </Typography>
-          <span className="flex flex-row flex-wrap gap-4 items-center">
-            {WorkOrganizations.map((item) => (
-              <ExternalIconURL key={item.altText} {...item} />
-            ))}
-            {Educations.map((item) => (
-              <ExternalIconURL key={item.altText} {...item} />
-            ))}
-          </span>
-        </div>
+        <Typography
+          variant="body"
+          className="flex flex-row gap-4 items-center mt-8"
+        >
+          You can learn more about my work experience and education
+          <Link
+            url="/about"
+            className="bg-subtle text-back px-4 py-2 w-fit rounded-lg"
+          >
+            Learn more
+            <Icon icon={faArrowRight} className="ml-2" />
+          </Link>
+        </Typography>
       </div>
     </section>
   );

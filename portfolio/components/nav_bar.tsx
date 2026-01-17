@@ -6,8 +6,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
-import { NextRouter } from "next/router";
 import Link from "@/components/ui/link";
+import { ExternalURL } from "@/lib/types";
 
 function MainLogo() {
   return (
@@ -18,20 +18,21 @@ function MainLogo() {
 }
 
 type NavLink = {
-  href: NextRouter["route"];
+  url: string | ExternalURL;
   label: string;
 };
 
 const links: NavLink[] = [
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
+  { url: "/about", label: "About" },
+  { url: "/projects", label: "Projects" },
+  { url: "https://medium.com/@manoj-malviya", label: "Blog" },
 ] as const;
 
 function NavigationLinks() {
   return (
-    <span className="flex flex-row gap-4 items-center">
+    <span className="flex flex-row gap-8 items-center">
       {links.map((link) => (
-        <Link key={link.href} url={link.href} className="text-front">
+        <Link key={link.url} url={link.url} className="text-front">
           {link.label}
         </Link>
       ))}
@@ -72,7 +73,7 @@ export default function Navbar() {
     >
       <span
         className={mergeCls(
-          "flex flex-row justify-around w-full lg:w-2/3 mx-auto text-front items-center",
+          "flex flex-row gap-4 justify-around w-full lg:w-2/3 mx-auto text-front items-center",
         )}
       >
         <MainLogo />

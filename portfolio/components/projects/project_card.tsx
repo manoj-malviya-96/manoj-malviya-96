@@ -76,8 +76,6 @@ function ProjectCard({
   ctas?: ProjectCTA[];
   className?: string;
 }) {
-  //Todo fix background colors to match apple style
-  console.log(children, title);
   return (
     <div
       className={mergeCls(
