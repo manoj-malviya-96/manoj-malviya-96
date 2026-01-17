@@ -61,7 +61,7 @@ const PennStateGRA: WorkExperience = {
   companyURL: "https://www.psu.edu/",
   position: "Graduate Research Assistant",
   startDate: "2018-08",
-  endDate: "2020-07",
+  endDate: "2020-12",
   location: "Berlin, Germany",
   logo: PennStateLogo,
   type: "Full-time",
