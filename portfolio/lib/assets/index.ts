@@ -5,3 +5,4 @@ export { default as FlowkeyLogo } from "./flowkey-dark.png";
 export { default as NoahLabs } from "./noahlabs-logo.jpeg";
 export { default as IITJLogo } from "./iitj.png";
 export { default as MuvizDemo } from "./muviz_demo.gif";
+export { default as HoneycombDemo } from "./honeycomb_demo.gif";

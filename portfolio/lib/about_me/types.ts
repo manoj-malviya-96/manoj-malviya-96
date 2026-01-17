@@ -7,6 +7,7 @@ export type SoftwareConcepts =
   | "high-performance"
   | "gpu"
   | "optimization"
+  | "cad"
   | "micro-services";
 
 export type SoftSkills =
@@ -22,6 +23,9 @@ export type ProgrammingFrameworks =
   | "qt/qml"
   | "tailwind"
   | "vtk"
+  | "numpy"
+  | "pytorch"
+  | "tensorflow"
   | "wasm"
   | "opengl";
 
@@ -31,5 +35,4 @@ export type ProgrammingLanguage =
   | "rust"
   | "go"
   | "c++"
-  | "ruby"
   | "swift";
