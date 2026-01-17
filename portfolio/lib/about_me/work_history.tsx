@@ -1,4 +1,4 @@
-import { WorkExperience } from "@/lib/about_me/profile";
+import { WorkExperience } from "@/lib/about_me/work_experience";
 import { calculateDuration, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Typography } from "@/lib/ui/text";

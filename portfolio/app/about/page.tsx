@@ -1,7 +1,7 @@
 import { GithubMetricsCard, ScholarMetricsCard } from "@/lib/about_me/metrics";
 import { Typography } from "@/lib/ui/text";
 import WorkHistory from "@/lib/about_me/work_history";
-import { WORK_EXPERIENCE } from "@/lib/about_me/profile";
+import { WORK_EXPERIENCE } from "@/lib/about_me/work_experience";
 
 export default function About() {
   return (
@@ -20,7 +20,7 @@ export default function About() {
       {/* Todo add slideshow here */}
 
       {/* Work Experience and Metrics cards */}
-      <div className="flex flex-row flex-wrap gap-8">
+      <div className="flex flex-row flex-wrap gap-8 lg:gap-16">
         <WorkHistory experiences={WORK_EXPERIENCE} />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
           <GithubMetricsCard />
