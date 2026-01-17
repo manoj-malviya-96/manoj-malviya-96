@@ -18,7 +18,7 @@ export default function Link({ url, children, newTab, className }: LinkProps) {
       href={url}
       replace={false}
       className={mergeCls(
-        "text-subtle text-sm cursor-pointer hover:text-front transition-colors duration-300",
+        "cursor-pointer hover:text-front transition-colors duration-300",
         className,
       )}
       {...props}
