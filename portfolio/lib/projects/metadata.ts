@@ -23,8 +23,8 @@ export type ProjectMeta = {
 
 export const PortfolioMetadata: ProjectMeta = {
   title: "Portfolio",
-  description:
-    "A modern portfolio website to showcase my projects and skills, built with Next.js and Tailwind CSS.",
+  description: `A modern portfolio website to showcase my projects and skills, 
+              built with Next.js, TailwindCSS and TypeScript`,
   tags: ["web", "open-source", "nextjs", "tailwind", "typescript", "ui/ux"],
   effort: "medium",
 };
@@ -32,7 +32,7 @@ export const PortfolioMetadata: ProjectMeta = {
 export const MuvizMetadata: ProjectMeta = {
   title: "Muviz - Music Visualizer",
   description:
-    "A fast, feature-rich music visualizer for the web (inspired by the Winamp days).",
+    "A fast, feature-rich music visualizer for reactive beautiful visualizations",
   tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux"],
   effort: "high",
 };
@@ -48,12 +48,12 @@ export const HoneyCombMetadata: ProjectMeta = {
 export const BlackholeMetadata: ProjectMeta = {
   title: "Blackhole",
   description:
-    "A simulation that visualizes gravitational effects and phenomena around black holes.",
-  tags: ["rendering", "gpu", "optimization", "c++"],
+    "A simulation that simulates and visualizers gravitational effects around black holes.",
+  tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
   effort: "high",
 };
 
-// Dont import this for atomic stuff. Use the constants directly.
+// Don't import this for atomic stuff. Use the constants directly.
 export const ProjectsMetadata: Record<ProjectId, ProjectMeta> = {
   portfolio: PortfolioMetadata,
   muviz: MuvizMetadata,
