@@ -1,16 +1,17 @@
 "use client";
 
 // Add React import at the top
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ComponentType, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { type ProjectId, ProjectsMetadata } from "@/lib/projects/metadata";
 import { getProjectCardNode } from "@/lib/projects/cards";
 import { Search } from "@/lib/ui";
 import Fuse, { IFuseOptions } from "fuse.js";
+import { Typography } from "@/lib/ui/text";
 
 interface ProjectData {
   id: ProjectId;
-  node: ReactNode;
+  Component: ComponentType;
   title: string;
   description: string;
   tags: string[];
@@ -50,12 +51,12 @@ export default function ProjectsClient({
 
     (async () => {
       try {
-        const nodes = await Promise.all(
+        const components = await Promise.all(
           ids.map((id) => getProjectCardNode(id)),
         );
         const projectData: ProjectData[] = ids.map((id, idx) => ({
           id,
-          node: nodes[idx],
+          Component: components[idx],
           ...ProjectsMetadata[id],
         }));
 
@@ -123,11 +124,14 @@ export default function ProjectsClient({
         </Typography>
       ) : (
         <ul className="flex flex-col gap-16">
-          {filtered.map((project) => (
-            <li className="list-none" key={project.id} id={project.id}>
-              {project.node}
-            </li>
-          ))}
+          {filtered.map((project) => {
+            const ProjectComponent = project.Component;
+            return (
+              <li className="list-none" key={project.id} id={project.id}>
+                <ProjectComponent />
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>

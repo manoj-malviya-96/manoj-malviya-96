@@ -28,13 +28,11 @@ function WorkExpCard({
           alt={`${company} logo`}
           className="w-13 h-full object-cover"
         />
-        <span className="flex flex-col gap-1">
-          <span className="flex flex-row flex-wrap gap-2">
-            <Typography variant="title" className="font-extrabold text-front">
-              {position}
-            </Typography>
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-row flex-wrap gap-2">
+            <Typography variant="title">{position}</Typography>
             <Badge>{type}</Badge>
-          </span>
+          </div>
           <Typography variant="caption" className="flex items-center gap-2">
             <Link url={companyURL} newTab>
               {company}
@@ -42,8 +40,7 @@ function WorkExpCard({
             <Icon icon={faLocationDot} aria-label="Location" />
             {location}
           </Typography>
-        </span>
-
+        </div>
         <Typography variant="caption" className="ml-auto">
           {timeString}
         </Typography>
