@@ -1,3 +1,10 @@
+import {
+  ProgrammingFrameworks,
+  ProgrammingLanguage,
+  SoftSkills,
+  SoftwareConcepts,
+} from "@/lib/about_me/types";
+
 export const ProjectIds = [
   "portfolio",
   "muviz",
@@ -54,47 +61,10 @@ export const ProjectsMetadata: Record<ProjectId, ProjectMeta> = {
   blackhole: BlackholeMetadata,
 };
 
-// Types ---
-type SoftwareConcepts =
-  | "web"
-  | "mobile"
-  | "ai"
-  | "rendering"
-  | "open-source"
-  | "high-performance"
-  | "gpu"
-  | "optimization"
-  | "micro-services";
-
-type OtherSkills =
-  | "communication"
-  | "ui/ux"
-  | "project-management"
-  | "devops"
-  | "testing";
-
-type ProgrammingFrameworks =
-  | "react"
-  | "nextjs"
-  | "qt/qml"
-  | "tailwind"
-  | "vtk"
-  | "wasm"
-  | "opengl";
-
-type ProgrammingLanguage =
-  | "typescript"
-  | "python"
-  | "rust"
-  | "go"
-  | "c++"
-  | "ruby"
-  | "swift";
-
 type ProjectTag =
   | ProgrammingFrameworks
   | ProgrammingLanguage
   | SoftwareConcepts
-  | OtherSkills;
+  | SoftSkills;
 
 type ProjectEffort = "low" | "medium" | "high";
