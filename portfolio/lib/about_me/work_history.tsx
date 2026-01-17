@@ -1,10 +1,10 @@
 import { WorkExperience } from "@/lib/about_me/profile";
 import { calculateDuration, formatDate } from "@/lib/utils";
 import Image from "next/image";
-import { Typography } from "@/components/ui/text";
+import { Typography } from "@/lib/ui/text";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { Badge, Icon } from "@/components/ui";
-import Link from "@/components/ui/link";
+import { Badge, Icon } from "@/lib/ui";
+import Link from "@/lib/ui/link";
 
 function WorkExpCard({
   startDate,

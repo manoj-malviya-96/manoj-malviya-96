@@ -5,7 +5,7 @@ import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { type ProjectId, ProjectsMetadata } from "@/lib/projects/metadata";
 import { getProjectCardNode } from "@/lib/projects/cards";
-import { Search } from "@/components/ui";
+import { Search } from "@/lib/ui";
 import Fuse, { IFuseOptions } from "fuse.js";
 
 interface ProjectData {

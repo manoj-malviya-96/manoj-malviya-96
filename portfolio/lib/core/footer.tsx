@@ -1,9 +1,9 @@
-import Icon from "@/components/ui/icon";
+import Icon from "@/lib/ui/icon";
 import Link from "next/link";
 import Image from "next/image";
 import { SOCIAL } from "@/lib/about_me/profile";
 import { UserAvatar } from "@/lib/assets";
-import { Typography } from "@/components/ui/text";
+import { Typography } from "@/lib/ui/text";
 
 const quickLinks = [
   { label: "Work Experience", href: "#workex" },

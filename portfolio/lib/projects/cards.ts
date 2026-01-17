@@ -4,19 +4,19 @@ import { ProjectId } from "@/lib/projects/metadata";
 export async function getProjectCardNode(id: ProjectId): Promise<ReactNode> {
   switch (id) {
     case "portfolio": {
-      const mod = await import("@/components/projects/cards/portfolio");
+      const mod = await import("@/lib/projects/cards/portfolio");
       return mod.default();
     }
     case "muviz": {
-      const mod = await import("@/components/projects/cards/muviz");
+      const mod = await import("@/lib/projects/cards/muviz");
       return mod.default();
     }
     case "honeycomb": {
-      const mod = await import("@/components/projects/cards/honeycomb");
+      const mod = await import("@/lib/projects/cards/honeycomb");
       return mod.default();
     }
     case "blackhole": {
-      const mod = await import("@/components/projects/cards/blackhole");
+      const mod = await import("@/lib/projects/cards/blackhole");
       return mod.default();
     }
     default: {

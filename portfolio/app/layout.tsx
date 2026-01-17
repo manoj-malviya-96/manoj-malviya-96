@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ReactQueryProvider } from "@/lib/query/react_query";
 import "./globals.css";
 import React from "react";
-import Footer from "@/components/home/footer";
-import NavBar from "@/components/nav_bar";
+import Footer from "@/lib/core/footer";
+import NavBar from "@/lib/core/nav_bar";
 
 export const metadata: Metadata = {
   title: "Manoj Malviya",

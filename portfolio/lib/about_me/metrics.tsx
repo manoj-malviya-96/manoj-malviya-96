@@ -4,8 +4,8 @@ import { useGithub } from "@/lib/query/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { google_scholar } from "@/lib/query/google_scholar";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import Card from "@/components/ui/card";
-import { Typography } from "@/components/ui/text";
+import Card from "@/lib/ui/card";
+import { Typography } from "@/lib/ui/text";
 import { mergeCls } from "@/lib/utils";
 
 const LoadingString = "-";

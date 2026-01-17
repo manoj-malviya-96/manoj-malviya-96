@@ -4,9 +4,9 @@ import { type ProjectMeta } from "@/lib/projects/metadata";
 import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextImage } from "@/components/ui/image";
-import { Typography } from "@/components/ui/text";
-import { Badge } from "@/components/ui";
+import { NextImage } from "@/lib/ui/image";
+import { Typography } from "@/lib/ui/text";
+import { Badge } from "@/lib/ui";
 import { ExternalURL } from "@/lib/types";
 
 type GithubRepo = `https://github.com/${string}/${string}`;

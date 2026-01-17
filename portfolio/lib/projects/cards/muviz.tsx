@@ -1,7 +1,7 @@
-import ProjectCard from "@/components/projects/project_card";
+import ProjectCard from "@/lib/projects/project_card";
 import { MuvizMetadata as meta } from "@/lib/projects/metadata";
 import { MuvizDemo } from "@/lib/assets";
-import { Typography } from "@/components/ui/text";
+import { Typography } from "@/lib/ui/text";
 
 function MusicDescription() {
   return (

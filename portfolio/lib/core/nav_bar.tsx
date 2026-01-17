@@ -1,12 +1,12 @@
 "use client";
 
 import { mergeCls } from "@/lib/utils";
-import Icon from "@/components/ui/icon";
+import Icon from "@/lib/ui/icon";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faStumbleuponCircle } from "@fortawesome/free-brands-svg-icons";
 import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
-import Link from "@/components/ui/link";
+import Link from "@/lib/ui/link";
 import { ExternalURL } from "@/lib/types";
 
 function MainLogo() {

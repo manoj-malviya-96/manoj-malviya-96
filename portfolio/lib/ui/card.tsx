@@ -1,8 +1,8 @@
 import React, { memo, ReactNode } from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { mergeCls } from "@/lib/utils";
-import Icon from "@/components/ui/icon";
-import { Typography } from "@/components/ui/text";
+import Icon from "@/lib/ui/icon";
+import { Typography } from "@/lib/ui/text";
 
 export interface CardProps {
   icon?: IconDefinition;

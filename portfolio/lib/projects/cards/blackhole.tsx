@@ -1,6 +1,6 @@
-import ProjectCard from "@/components/projects/project_card";
+import ProjectCard from "@/lib/projects/project_card";
 import { BlackholeMetadata as meta } from "@/lib/projects/metadata";
-import { Typography } from "@/components/ui/text";
+import { Typography } from "@/lib/ui/text";
 
 export default function BlackholeProjectCard() {
   return (

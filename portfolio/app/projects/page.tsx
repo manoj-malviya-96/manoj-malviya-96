@@ -1,6 +1,6 @@
 import { ProjectIds } from "@/lib/projects/metadata";
-import { Typography } from "@/components/ui/text";
-import ProjectsClient from "@/components/projects/projects_client";
+import { Typography } from "@/lib/ui/text";
+import ProjectsClient from "@/lib/projects/projects_client";
 import { Suspense } from "react";
 
 function ProjectsLoading() {

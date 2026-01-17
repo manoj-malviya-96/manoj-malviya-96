@@ -1,13 +1,13 @@
 "use client";
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { Icon } from "@/components/ui";
+import { Icon } from "@/lib/ui";
 import {
   ProjectId,
   ProjectIds,
   ProjectsMetadata,
 } from "@/lib/projects/metadata";
-import { Typography } from "@/components/ui/text";
+import { Typography } from "@/lib/ui/text";
 import { faLaptopCode } from "@fortawesome/free-solid-svg-icons/faLaptopCode";
 
 export default function ProjectShowcase() {

@@ -1,7 +1,7 @@
 "use client";
 
-import { FlipWords, NeuralCanvas } from "@/components/ui";
-import { Typography } from "@/components/ui/text";
+import { FlipWords, NeuralCanvas } from "@/lib/ui";
+import { Typography } from "@/lib/ui/text";
 
 function LandingContent() {
   const words = ["modern", "efficient", "correct", "scalable"];

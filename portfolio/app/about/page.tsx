@@ -1,9 +1,6 @@
-import {
-  GithubMetricsCard,
-  ScholarMetricsCard,
-} from "@/components/about/metrics";
-import { Typography } from "@/components/ui/text";
-import WorkHistory from "@/components/about/work_history";
+import { GithubMetricsCard, ScholarMetricsCard } from "@/lib/about_me/metrics";
+import { Typography } from "@/lib/ui/text";
+import WorkHistory from "@/lib/about_me/work_history";
 import { WORK_EXPERIENCE } from "@/lib/about_me/profile";
 
 export default function About() {

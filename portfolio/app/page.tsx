@@ -1,6 +1,6 @@
-import AboutMe from "@/components/home/about_me";
-import Landing from "@/components/home/landing";
-import ProjectShowcase from "@/components/home/showcase";
+import AboutMe from "@/lib/home/about_me";
+import Landing from "@/lib/home/landing";
+import ProjectShowcase from "@/lib/home/showcase";
 
 export default function App() {
   return (

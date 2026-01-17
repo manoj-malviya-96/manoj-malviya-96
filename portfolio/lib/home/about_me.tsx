@@ -1,12 +1,12 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import Link from "@/components/ui/link";
+import Link from "@/lib/ui/link";
 import { EDUCATION, WORK_EXPERIENCE } from "@/lib/about_me/profile";
 import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
-import { Typography } from "@/components/ui/text";
-import { Icon } from "@/components/ui";
+import { Typography } from "@/lib/ui/text";
+import { Icon } from "@/lib/ui";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
 
 type ExternalIconURLProps = {
