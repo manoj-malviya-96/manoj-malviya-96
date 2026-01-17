@@ -1,12 +1,6 @@
-import dynamic from "next/dynamic";
-
-const Landing = dynamic(() => import("@/screens/landing"), { ssr: true });
-const AboutMe = dynamic(() => import("@/screens/about_me"), { ssr: true });
-const ProjectShowcase = dynamic(() => import("@/screens/showcase"), {
-  ssr: true,
-});
-
-const Thoughts = dynamic(() => import("@/screens/thoughts"), { ssr: true });
+import AboutMe from "@/lib/home/about_me";
+import Landing from "@/lib/home/landing";
+import ProjectShowcase from "@/lib/home/showcase";
 
 export default function App() {
   return (
@@ -14,7 +8,6 @@ export default function App() {
       <Landing />
       <AboutMe />
       <ProjectShowcase />
-      <Thoughts />
     </>
   );
 }

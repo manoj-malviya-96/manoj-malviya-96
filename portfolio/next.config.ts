@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable turbopack for faster builds
   turbopack: {},
-
+  reactCompiler: true,
   // Production compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
@@ -85,7 +85,6 @@ const nextConfig: NextConfig = {
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-brands-svg-icons",
     ],
-    viewTransition: true,
   },
 };
 

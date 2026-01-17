@@ -1,20 +1,28 @@
-import PageContainer from "@/components/ui/page_container";
-import { ProjectBentoGrid } from "@/components/ui";
-import { AllProjects } from "@/core/showcase";
-import { LinkedinCover } from "@/core/assets";
+import { Typography } from "@/lib/ui/text";
+import ProjectsClient from "@/lib/projects/projects_client";
+import { Suspense } from "react";
+
+function ProjectsLoading() {
+  return (
+    <section className="screen">
+      <Typography variant={"body"}>Loading projects...</Typography>
+    </section>
+  );
+}
 
 export default function Page() {
   return (
-    <PageContainer cover={LinkedinCover}>
-      <section className="screen flex flex-col gap-8 lg:gap-16">
-        <div className="space-y-4">
-          <h2 className="text-6xl font-bold">Projects</h2>
-          <p className="text-lg text-subtle">
-            A showcase of my projects, experiments, and collaborations.
-          </p>
-        </div>
-        <ProjectBentoGrid projects={AllProjects} />
-      </section>
-    </PageContainer>
+    <main className="screen flex flex-col gap-8 lg:gap-16">
+      <span className="flex flex-col gap-2">
+        <Typography variant="heading">Projects</Typography>
+        <Typography variant="body">
+          A collection of my favorite projects that I have worked on over the
+          years.
+        </Typography>
+      </span>
+      <Suspense fallback={<ProjectsLoading />}>
+        <ProjectsClient />
+      </Suspense>
+    </main>
   );
 }

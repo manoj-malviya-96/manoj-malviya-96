@@ -1,19 +1,32 @@
-import {
-  GithubMetricsCard,
-  ScholarMetricsCard,
-  TechStackList,
-} from "@/components/metrics";
-import PageContainer from "@/components/ui/page_container";
-import { LinkedinCover } from "@/core/assets";
+import { GithubMetricsCard, ScholarMetricsCard } from "@/lib/about_me/metrics";
+import { Typography } from "@/lib/ui/text";
+import WorkHistory from "@/lib/about_me/work_history";
+import { WORK_EXPERIENCE } from "@/lib/about_me/work_experience";
 
 export default function About() {
   return (
-    <PageContainer cover={LinkedinCover}>
-      <div className="screen grid grid-cols-1 md:grid-cols-3 gap-6">
-        <GithubMetricsCard />
-        <ScholarMetricsCard />
-        <TechStackList />
+    <main className="screen flex flex-col gap-8 lg:gap-16">
+      <span className="flex flex-col  gap-4">
+        <Typography variant="heading">About me</Typography>
+        <Typography variant="body">
+          Senior Software Engineer & Tech Lead building fast, reliable
+          products—from pixel-perfect UIs to performance-critical engines.
+          Experienced across CAD/CAM, rendering, optimization, and
+          hardware-software ecosystems, with a track record of turning complex
+          workflows into intuitive user experiences and measurable product
+          outcomes.
+        </Typography>
+      </span>
+      {/* Todo add slideshow here */}
+
+      {/* Work Experience and Metrics cards */}
+      <div className="flex flex-row flex-wrap gap-8 lg:gap-16">
+        <WorkHistory experiences={WORK_EXPERIENCE} />
+        <div className="flex flex-col gap-4 lg:gap-8 flex-1">
+          <GithubMetricsCard />
+          <ScholarMetricsCard />
+        </div>
       </div>
-    </PageContainer>
+    </main>
   );
 }
