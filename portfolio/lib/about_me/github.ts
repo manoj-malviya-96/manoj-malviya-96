@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
-const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USER!;
-const GITHUB_CONTRIBUTIONS_API = process.env.NEXT_PUBLIC_GITHUB_API!;
-
-if (!GITHUB_USERNAME || !GITHUB_CONTRIBUTIONS_API) {
-  throw new Error(
-    "Missing environment variables: ensure NEXT_PUBLIC_GITHUB_USERNAME and NEXT_PUBLIC_GITHUB_API are set",
-  );
+export interface GitHubMetrics {
+  commits: number;
+  contributionYears: number;
+  currentYearCommits: number;
+  activeDays: number;
+  longestStreak: number;
 }
 
 interface GitHubContributionsResponse {
@@ -20,29 +19,20 @@ interface GitHubContributionsResponse {
   }>;
 }
 
-async function fetchGitHubContributions(): Promise<GitHubContributionsResponse> {
-  const response = await fetch(
-    `${GITHUB_CONTRIBUTIONS_API}/${GITHUB_USERNAME}`,
-  );
-  if (!response.ok) throw new Error("Failed to fetch GitHub contributions");
-  return response.json();
-}
-
-export interface GitHubMetrics {
-  commits: number;
-  contributionYears: number;
-  currentYearCommits: number;
-  activeDays: number;
-  longestStreak: number;
-}
 async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
-  const data = await fetchGitHubContributions();
+  const response = await fetch("/api/github", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  if (!response.ok) throw new Error("Failed to fetch GitHub metrics");
+  const data = (await response.json()) as GitHubContributionsResponse;
 
   const totalCommits = Object.values(data.total).reduce(
     (sum, count) => sum + count,
     0,
   );
-
   const years = Object.keys(data.total).map(Number);
   const contributionYears =
     years.length > 0 ? Math.max(...years) - Math.min(...years) + 1 : 0;
@@ -69,12 +59,9 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
   };
 }
 
-export function useGithub() {
+export function useGithubQuery() {
   return useQuery({
-    queryKey: ["github-metrics", GITHUB_USERNAME],
+    queryKey: ["github-metrics"],
     queryFn: fetchGitHubMetrics,
-    staleTime: 1000 * 60 * 10,
-    gcTime: 1000 * 60 * 60,
-    retry: 2,
   });
 }

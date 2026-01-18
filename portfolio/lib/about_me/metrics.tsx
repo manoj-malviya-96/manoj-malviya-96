@@ -1,8 +1,8 @@
 "use client";
 import { memo } from "react";
-import { useGithub } from "@/lib/about_me/github";
+import { useGithubQuery } from "@/lib/about_me/github";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { google_scholar } from "@/lib/about_me/google_scholar";
+import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import Card from "@/lib/ui/card";
 import { Typography } from "@/lib/ui/text";
@@ -46,7 +46,7 @@ const HighlightStat = memo(function fn({
 });
 
 export function GithubMetricsCard({ className }: { className?: string }) {
-  const { data, error } = useGithub();
+  const { data, error } = useGithubQuery();
 
   if (error) {
     console.error("Error fetching GitHub metrics:", error);
@@ -87,10 +87,8 @@ export function GithubMetricsCard({ className }: { className?: string }) {
     </Card>
   );
 }
-GithubMetricsCard.displayName = "GithubMetricsCard";
-
 export function ScholarMetricsCard({ className }: { className?: string }) {
-  const { data, error } = google_scholar();
+  const { data, error } = useGoogleScholarQuery();
 
   if (error) {
     console.error("Error fetching Google Scholar metrics:", error);
@@ -113,7 +111,6 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
           label="Publications"
         />
         <Stat value={data ? data.hIndex : LoadingString} label="h-index" />
-        <Stat value={data ? data.i10Index : LoadingString} label="i10-index" />
         <Stat
           value={data ? data.recentYearCitations : LoadingString}
           label="This Year"
@@ -122,5 +119,3 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
     </Card>
   );
 }
-
-ScholarMetricsCard.displayName = "ScholarMetricsCard";
