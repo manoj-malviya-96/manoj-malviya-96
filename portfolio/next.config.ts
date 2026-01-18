@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable turbopack for faster builds
   turbopack: {},
   reactCompiler: true,
-  // Production compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
@@ -56,24 +54,14 @@ const nextConfig: NextConfig = {
 
   // Optimize images
   images: {
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000, // Changed: 1-year cache for images
     formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Added: responsive breakpoints
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Added: for smaller images
     remotePatterns: [
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "upload.wikimedia.org",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.brandfetch.io",
       },
     ],
   },
@@ -84,8 +72,14 @@ const nextConfig: NextConfig = {
       "@fortawesome/react-fontawesome",
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-brands-svg-icons",
+      "@fortawesome/fontawesome-svg-core",
+      "motion",
+      "fuse.js",
     ],
   },
+
+  // ========== NEW: Output standalone for better production builds ==========
+  output: "standalone",
 };
 
 export default nextConfig;

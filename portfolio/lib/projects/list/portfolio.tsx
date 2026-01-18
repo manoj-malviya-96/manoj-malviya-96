@@ -2,7 +2,6 @@ import ProjectCard from "@/lib/projects/project_card";
 import { Typography } from "@/lib/ui/text";
 import type { Project } from "@/lib/projects/list/types";
 import Link from "@/lib/ui/link";
-import { PortfolioDemo } from "@/lib/assets";
 
 const metadata = {
   title: "Portfolio",
@@ -16,7 +15,9 @@ function PortfolioCard() {
   return (
     <ProjectCard
       {...metadata}
-      images={[PortfolioDemo]}
+      images={[
+        "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/portfolio.webm",
+      ]}
       ctas={[
         {
           kind: "github",

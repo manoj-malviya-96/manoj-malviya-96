@@ -43,6 +43,11 @@
     body {
         @apply bg-back text-front;
     }
+
+    /* Prevent layout shift from images */
+    img {
+        content-visibility: auto;
+    }
 }
 
 @layer components {

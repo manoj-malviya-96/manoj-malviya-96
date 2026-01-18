@@ -21,6 +21,7 @@ export default function Link({ url, children, newTab, className }: LinkProps) {
         "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
         className,
       )}
+      aria-label={url.toString()}
       {...props}
     >
       {children}

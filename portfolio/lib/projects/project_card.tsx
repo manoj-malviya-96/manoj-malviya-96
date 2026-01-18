@@ -4,7 +4,7 @@ import { type ProjectMeta } from "@/lib/projects/list/types";
 import { mergeCls } from "@/lib/utils";
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextImage } from "@/lib/ui/image";
+import { MediaContent } from "@/lib/ui/media";
 import { Typography } from "@/lib/ui/text";
 import { Badge } from "@/lib/ui";
 import { ExternalURL } from "@/lib/types";
@@ -60,7 +60,48 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   );
 };
 
-const IMG_SIZE = 480;
+function Media({
+  media,
+  width = IMG_SIZE,
+  height = IMG_SIZE,
+  className,
+  alt = "project media",
+}: {
+  media: MediaContent;
+  width?: number;
+  height?: number;
+  className?: string;
+  alt?: string;
+}) {
+  if (typeof media === "string" && media.endsWith(".webm")) {
+    return (
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        width={width}
+        height={height}
+        className={mergeCls("object-cover rounded-xl", className)}
+        aria-label={alt}
+      >
+        <source src={media} type="video/webm" />
+      </video>
+    );
+  }
+
+  return (
+    <Image
+      src={media}
+      alt={alt}
+      width={width}
+      height={height}
+      className={mergeCls("object-cover rounded-xl", className)}
+    />
+  );
+}
+
+const IMG_SIZE = 720;
 
 function ProjectCard({
   title,
@@ -72,7 +113,7 @@ function ProjectCard({
   className,
 }: ProjectMeta & {
   children: ReactNode;
-  images: NextImage[];
+  images: MediaContent[];
   ctas?: ProjectCTA[];
   className?: string;
 }) {
@@ -115,28 +156,14 @@ function ProjectCard({
         {images.length > 1 && (
           <div className="flex flex-row flex-wrap gap-4">
             {images.map((img, idx) => (
-              <Image
-                key={idx}
-                src={img}
-                width={IMG_SIZE}
-                height={IMG_SIZE}
-                loading="lazy"
-                className="flex-1 object-cover"
-                alt={`project image ${idx + 1}`}
-              />
+              <Media key={idx} media={img} alt={`${title} image`} />
             ))}
+            priority
           </div>
         )}
       </div>
       {images.length === 1 && (
-        <Image
-          src={images[0]}
-          alt="project image"
-          width={IMG_SIZE}
-          height={IMG_SIZE}
-          className="flex-1 object-cover"
-          loading="lazy"
-        />
+        <Media media={images[0]} alt={`${title} image`} />
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 import ProjectCard from "@/lib/projects/project_card";
 import { Typography } from "@/lib/ui/text";
-import { HoneycombDemo } from "@/lib/assets";
 import { ProjectMeta } from "@/lib/projects/list/types";
 
 export const metadata: ProjectMeta = {
@@ -22,7 +21,9 @@ export default function HoneycombProjectCard() {
   return (
     <ProjectCard
       {...metadata}
-      images={[HoneycombDemo]}
+      images={[
+        "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/honeycomb_demo.webm",
+      ]}
       ctas={[
         {
           kind: "github",

@@ -34,12 +34,12 @@
     "fuse.js": "^7.0.0",
     "motion": "^12.23.24",
     "next": "^16.0.7",
-    "prettier": "^3.6.2",
-    "react": "19.2.0",
+     "react": "19.2.0",
     "react-dom": "19.2.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "prettier": "^3.6.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
