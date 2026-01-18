@@ -79,7 +79,7 @@ function CopyRight() {
 
 export default function Footer() {
   return (
-    <footer className="p-6 sm:p-8 lg:p-16" data-theme="light">
+    <footer className="p-6 sm:p-8 lg:p-16 min-h-[400px]" data-theme="light">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
         <ProfileFooter className="sm:col-span-2" />
         <QuickLinks />
