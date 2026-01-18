@@ -9,12 +9,11 @@ export default function About() {
       <span className="flex flex-col  gap-4">
         <Typography variant="heading">About me</Typography>
         <Typography variant="body">
-          Senior Software Engineer & Tech Lead building fast, reliable
-          products—from pixel-perfect UIs to performance-critical engines.
-          Experienced across CAD/CAM, rendering, optimization, and
-          hardware-software ecosystems, with a track record of turning complex
-          workflows into intuitive user experiences and measurable product
-          outcomes.
+          I build fast, reliable products—from pixel-perfect UIs to
+          performance-critical engines (yes, I care about the last millisecond).
+          I lead across CAD/CAM, rendering, and optimization in
+          hardware–software ecosystems, turning gnarly workflows into intuitive
+          experiences and measurable product impact.
         </Typography>
       </span>
       {/* Todo add slideshow here */}
