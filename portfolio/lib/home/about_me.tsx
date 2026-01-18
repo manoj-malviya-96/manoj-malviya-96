@@ -72,12 +72,11 @@ export default function AboutMe() {
           Hello! I am Manoj Malviya
         </Typography>
         <Typography variant="body">
-          Senior Software Engineer with 7+ years delivering physics simulation
-          and CAD software, specializing in turning complex geometry/physics
-          problems into fast, reliable user-facing features.
-          <br />
-          I lead cross-functional initiatives and translate business goals into
-          shipped systems with measurable impact.
+           I build fast, reliable products—from pixel-perfect UIs to
+          performance-critical engines (yes, I care about the last millisecond).
+          I lead across CAD/CAM, rendering, and optimization in
+          hardware–software ecosystems, turning gnarly workflows into intuitive
+          experiences and measurable product impact.
           <br /> <br />
           Past associations -
         </Typography>
