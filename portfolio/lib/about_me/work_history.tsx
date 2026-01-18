@@ -22,28 +22,32 @@ function WorkExpCard({
 
   return (
     <div className="flex-1 w-full bg-muted/40 shadow-sm rounded-xl p-4 flex flex-col gap-4">
-      <div className="flex flex-row gap-4 items-start">
+      <div className="flex flex-row items-center gap-4 w-full">
         <Image
           src={logo}
           alt={`${company} logo`}
-          className="w-13 h-full object-cover"
+          className="w-14 h-14 object-contain rounded-2xl"
         />
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-row flex-wrap gap-2">
+        <span className="flex flex-col gap-1 flex-1">
+          {/* Name, position and date Row */}
+          <span className="flex flex-row flex-wrap gap-1 items-center">
             <Typography variant="title">{position}</Typography>
-            <Badge>{type}</Badge>
-          </div>
-          <Typography variant="caption" className="flex items-center gap-2">
-            <Link url={companyURL} newTab>
+            <Badge className="hidden lg:block h-fit">{type}</Badge>
+            <Typography variant="caption" className="lg:ml-auto">
+              {timeString}
+            </Typography>
+          </span>
+          {/* Location and Company*/}
+          <span className="flex flex-row items-center gap-1">
+            <Link url={companyURL} newTab className="text-sm">
               {company}
             </Link>
-            <Icon icon={faLocationDot} aria-label="Location" />
-            {location}
-          </Typography>
-        </div>
-        <Typography variant="caption" className="ml-auto">
-          {timeString}
-        </Typography>
+            <Typography variant="caption">
+              <Icon icon={faLocationDot} aria-label="Location" />
+              {location}
+            </Typography>
+          </span>
+        </span>
       </div>
       {role && <Typography variant="body">{role}</Typography>}
     </div>
@@ -73,7 +77,7 @@ export default function WorkHistory({
         <div key={idx} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />
           {idx !== experiences.length - 1 && (
-            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-2 lg:ml-9" />
+            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-10" /> // ml-10 is to match icon but its hacky. Todo fix it.
           )}
         </div>
       ))}

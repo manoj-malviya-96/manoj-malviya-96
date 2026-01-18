@@ -11,7 +11,7 @@ function LandingContent() {
         variant="title"
         className="mx-auto lg:text-2xl font-medium select-none"
       >
-        Build
+        Building
         <FlipWords words={words} className="font-extrabold" /> <br />
         digital products fast <br />
       </Typography>
