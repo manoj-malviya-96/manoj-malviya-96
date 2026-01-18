@@ -120,7 +120,6 @@ function ProjectCard({
                 src={img}
                 width={IMG_SIZE}
                 height={IMG_SIZE}
-                loading="lazy"
                 className="object-cover rounded-xl"
                 alt={`project image ${idx + 1}`}
               />
@@ -135,7 +134,6 @@ function ProjectCard({
           width={IMG_SIZE}
           height={IMG_SIZE}
           className="object-cover rounded-xl"
-          loading="lazy"
         />
       )}
     </div>
