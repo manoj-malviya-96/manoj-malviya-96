@@ -1,5 +1,4 @@
 import ProjectCard from "@/lib/projects/project_card";
-import { MuvizDemo } from "@/lib/assets";
 import { Typography } from "@/lib/ui/text";
 import type { Project } from "@/lib/projects/list/types";
 
@@ -15,7 +14,9 @@ function MuvizProjectCard() {
   return (
     <ProjectCard
       {...metadata}
-      images={[MuvizDemo]}
+      images={[
+        "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/muviz.webm",
+      ]}
       ctas={[
         {
           kind: "github",
