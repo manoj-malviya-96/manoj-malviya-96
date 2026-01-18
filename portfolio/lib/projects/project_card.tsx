@@ -60,7 +60,7 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
   );
 };
 
-const IMG_SIZE = 480;
+const IMG_SIZE = 720;
 
 function ProjectCard({
   title,
@@ -121,7 +121,7 @@ function ProjectCard({
                 width={IMG_SIZE}
                 height={IMG_SIZE}
                 loading="lazy"
-                className="flex-1 object-cover"
+                className="object-cover rounded-xl"
                 alt={`project image ${idx + 1}`}
               />
             ))}
@@ -134,7 +134,7 @@ function ProjectCard({
           alt="project image"
           width={IMG_SIZE}
           height={IMG_SIZE}
-          className="flex-1 object-cover"
+          className="object-cover rounded-xl"
           loading="lazy"
         />
       )}
