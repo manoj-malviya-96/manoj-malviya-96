@@ -124,6 +124,7 @@ function ProjectCard({
                 alt={`project image ${idx + 1}`}
               />
             ))}
+            priority
           </div>
         )}
       </div>
@@ -133,6 +134,7 @@ function ProjectCard({
           alt="project image"
           width={IMG_SIZE}
           height={IMG_SIZE}
+          priority
           className="object-cover rounded-xl"
         />
       )}
