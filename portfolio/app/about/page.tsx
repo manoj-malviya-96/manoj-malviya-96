@@ -20,7 +20,7 @@ export default function About() {
       {/* Todo add slideshow here */}
 
       {/* Work Experience and Metrics cards */}
-      <div className="flex flex-row flex-wrap gap-8 lg:gap-16">
+      <div className="flex flex-col lg:flex-row  gap-8 lg:gap-16">
         <WorkHistory experiences={WORK_EXPERIENCE} />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
           <GithubMetricsCard />
