@@ -1,56 +1,11 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "@/lib/ui/link";
-import { EDUCATION } from "@/lib/about_me/profile";
-import { WORK_EXPERIENCE } from "@/lib/about_me/work_experience";
-import { uniqueBy } from "@/lib/utils";
 import { UserAvatar } from "@/lib/assets";
 import { Typography } from "@/lib/ui/text";
 import { Icon } from "@/lib/ui";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
-
-type ExternalIconURLProps = {
-  image: StaticImageData | string;
-  altText: string;
-  url: string;
-};
-function ExternalIconURL({ image, altText, url }: ExternalIconURLProps) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex flex-row bg-muted px-4 py-2 rounded-lg gap-2 items-center"
-    >
-      <Image
-        src={image}
-        alt={altText}
-        width={48}
-        height={48}
-        className="object-cover h-6 w-6 rounded-full"
-      />
-      <Typography variant="caption" className="hidden md:inline">
-        {altText}
-      </Typography>
-    </a>
-  );
-}
-
-const Educations = uniqueBy(EDUCATION, (edu) => edu.schoolURL).map((edu) => ({
-  image: edu.logo,
-  altText: edu.school,
-  url: edu.schoolURL,
-})) as ExternalIconURLProps[];
-
-const WorkOrganizations = uniqueBy(
-  WORK_EXPERIENCE,
-  (work) => work.companyURL,
-).map((work) => ({
-  image: work.logo,
-  altText: work.company,
-  url: work.companyURL,
-})) as ExternalIconURLProps[];
 
 export default function AboutMe() {
   return (
@@ -62,45 +17,25 @@ export default function AboutMe() {
       <Image
         src={UserAvatar}
         alt="Profile"
-        width={500}
-        height={500}
-        className="object-cover rounded-lg flex-1"
+        className="object-cover rounded-xl flex-1"
       />
       <div className="flex flex-col gap-4 flex-2">
-        <Typography variant="heading">About Me</Typography>
-        <Typography variant="title" className="my-2">
-          Hello! I am Manoj Malviya
-        </Typography>
+        <Typography variant="heading">Hello! I am Manoj</Typography>
         <Typography variant="body">
-           I build fast, reliable products—from pixel-perfect UIs to
-          performance-critical engines (yes, I care about the last millisecond).
-          I lead across CAD/CAM, rendering, and optimization in
+          I am Manoj Malviya I build fast, reliable products—from pixel-perfect
+          UIs to performance-critical engines (yes, I care about the last
+          millisecond). I lead across CAD/CAM, rendering, and optimization in
           hardware–software ecosystems, turning gnarly workflows into intuitive
           experiences and measurable product impact.
           <br /> <br />
-          Past associations -
         </Typography>
-        <span className="flex flex-row flex-wrap gap-4 items-center">
-          {WorkOrganizations.map((item) => (
-            <ExternalIconURL key={item.altText} {...item} />
-          ))}
-          {Educations.map((item) => (
-            <ExternalIconURL key={item.altText} {...item} />
-          ))}
-        </span>
-        <Typography
-          variant="body"
-          className="flex flex-row gap-4 items-center mt-8"
+        <Link
+          url="/resume"
+          className="bg-subtle text-back px-4 py-2 w-fit rounded-full hover:text-back"
         >
-          You can learn more about my work experience and education
-          <Link
-            url="/about"
-            className="bg-subtle text-back px-4 py-2 w-fit rounded-lg"
-          >
-            Learn more
-            <Icon icon={faArrowRight} className="ml-2" />
-          </Link>
-        </Typography>
+          Resume
+          <Icon icon={faArrowRight} className="ml-2" />
+        </Link>
       </div>
     </section>
   );

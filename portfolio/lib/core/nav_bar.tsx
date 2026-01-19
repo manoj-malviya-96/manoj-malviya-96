@@ -24,7 +24,7 @@ type NavLink = {
 };
 
 const links: NavLink[] = [
-  { url: "/about", label: "About" },
+  { url: "/resume", label: "Resume" },
   { url: "/projects", label: "Projects" },
 ] as const;
 

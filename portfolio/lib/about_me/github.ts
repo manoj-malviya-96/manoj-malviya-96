@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 export interface GitHubMetrics {
-  commits: number;
-  contributionYears: number;
-  currentYearCommits: number;
-  activeDays: number;
+  totalContribution: number;
+  currentYearContribution: number;
+  dailyAverage: number;
   longestStreak: number;
 }
 
@@ -34,9 +33,6 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
     0,
   );
   const years = Object.keys(data.total).map(Number);
-  const contributionYears =
-    years.length > 0 ? Math.max(...years) - Math.min(...years) + 1 : 0;
-
   const currentYear = new Date().getFullYear().toString();
   const currentYearCommits = data.total[currentYear] || 0;
   const activeDays = data.contributions.filter((c) => c.count > 0).length;
@@ -51,10 +47,9 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
     }
   });
   return {
-    commits: totalCommits,
-    contributionYears,
-    currentYearCommits,
-    activeDays,
+    totalContribution: totalCommits,
+    currentYearContribution: currentYearCommits,
+    dailyAverage: Math.round(totalCommits / activeDays),
     longestStreak,
   };
 }
