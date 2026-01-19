@@ -26,7 +26,6 @@ type NavLink = {
 const links: NavLink[] = [
   { url: "/about", label: "About" },
   { url: "/projects", label: "Projects" },
-  { url: "https://medium.com/@manoj-malviya", label: "Blog" },
 ] as const;
 
 function NavigationLinks() {
