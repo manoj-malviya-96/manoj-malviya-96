@@ -3,8 +3,13 @@
 import { FlipWords, NeuralCanvas } from "@/lib/ui";
 import { Typography } from "@/lib/ui/text";
 
+const words: readonly string[] = [
+  "modern",
+  "efficient",
+  "reliable",
+  "scalable",
+] as const;
 function LandingContent() {
-  const words = ["modern", "efficient", "correct", "scalable"];
   return (
     <div className="flex flex-col items-center text-left gap-4 w-fit self-center">
       <Typography
@@ -14,9 +19,6 @@ function LandingContent() {
         Building
         <FlipWords words={words} className="font-extrabold" /> <br />
         digital products fast <br />
-      </Typography>
-      <Typography variant="label" className="ml-auto select-none">
-        Manoj Malviya
       </Typography>
     </div>
   );
