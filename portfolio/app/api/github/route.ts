@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import getConfig from "@/lib/core/config";
+import { SocialUsersID } from "@/lib/about_me/profile";
 
 export async function GET() {
-  const { githubUserName, githubContributionsApi } = getConfig();
+  const { githubContributionsApi } = getConfig();
+
   try {
     const response = await fetch(
-      `${githubContributionsApi}/${githubUserName}`,
+      `${githubContributionsApi}/${SocialUsersID.Github}`,
       {
         method: "GET",
         headers: {

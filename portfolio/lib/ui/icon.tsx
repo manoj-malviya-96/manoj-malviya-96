@@ -20,7 +20,7 @@ function Icon({
     <FontAwesomeIcon
       icon={icon}
       className={mergeCls(
-        size == "md" ? "text-sm lg:text-md" : "text-md lg:text-lg",
+        size == "md" ? "text-sm lg:text-lg" : "text-md lg:text-xl",
         className,
       )}
       aria-label={ariaLabel}

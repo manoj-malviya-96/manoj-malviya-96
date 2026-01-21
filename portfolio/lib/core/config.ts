@@ -1,7 +1,5 @@
 interface Config {
-  githubUserName: string;
   githubContributionsApi: string;
-  scholarUser: string;
   scholarTargetUrl: string;
 }
 
@@ -11,9 +9,7 @@ export default function getConfig(): Config {
     return _config;
   }
   _config = {
-    githubUserName: process.env.NEXT_PUBLIC_GITHUB_USER!,
     githubContributionsApi: process.env.NEXT_PUBLIC_GITHUB_API!,
-    scholarUser: process.env.NEXT_PUBLIC_SCHOLAR_USER!,
     scholarTargetUrl: process.env.NEXT_PUBLIC_SCHOLAR_API!,
   } as const;
   return _config;

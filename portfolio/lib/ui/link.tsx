@@ -12,6 +12,9 @@ type LinkProps = {
 };
 
 export default function Link({ url, children, newTab, className }: LinkProps) {
+  if (!url) {
+    throw new Error("Link component requires a url prop");
+  }
   const props = newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
   return (
     <NextLink
@@ -21,7 +24,7 @@ export default function Link({ url, children, newTab, className }: LinkProps) {
         "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
         className,
       )}
-      aria-label={url.toString()}
+      aria-label={typeof url === "string" ? url : url.toString()}
       {...props}
     >
       {children}

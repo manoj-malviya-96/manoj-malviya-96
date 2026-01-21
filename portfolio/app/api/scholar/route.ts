@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import getConfig from "@/lib/core/config";
+import { SocialUsersID } from "@/lib/about_me/profile";
 
 export async function GET() {
-  const { scholarTargetUrl, scholarUser } = getConfig();
-
+  const { scholarTargetUrl } = getConfig();
   try {
     const targetUrl = new URL(scholarTargetUrl);
-    targetUrl.searchParams.set("user", scholarUser);
+    targetUrl.searchParams.set("user", SocialUsersID.Scholar);
 
     const response = await fetch(targetUrl.toString(), {
       method: "GET",

@@ -1,43 +1,39 @@
 import Icon from "@/lib/ui/icon";
-import Link from "next/link";
-import Image from "next/image";
-import { SOCIAL } from "@/lib/about_me/profile";
-import { UserAvatar } from "@/lib/assets";
+import Link from "@/lib/ui/link";
+import {
+  EmailAddress,
+  getSocialLinks,
+  ResumePDF,
+  SocialMedia,
+} from "@/lib/about_me/profile";
 import { Typography } from "@/lib/ui/text";
+import {
+  faGithub,
+  faInstagram,
+  faLinkedin,
+  faMedium,
+} from "@fortawesome/free-brands-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
 
 const quickLinks = [
-  { label: "Work Experience", href: "#workex" },
-  { label: "Projects & Blogs", href: "#showcase" },
-  { label: "Resume PDF", href: "#" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work Experience", href: "/experience" },
+  { label: "Projects & Blogs", href: "/projects" },
+  {
+    label: "Resume PDF",
+    href: ResumePDF,
+  },
+  { label: "Contact", href: EmailAddress },
 ] as const;
-
-function ProfileFooter({ className }: { className?: string }) {
-  return (
-    <div className={className}>
-      <Image
-        src={UserAvatar}
-        alt={"Profile"}
-        width={90}
-        height={90}
-        className="rounded-full mb-4"
-      />
-      <h3 className="text-lg mb-3">Manoj Malviya</h3>
-    </div>
-  );
-}
 
 function QuickLinks() {
   return (
-    <span>
-      <h3 className="text-lg mb-3">Quick Links</h3>
-      <ul className="space-y-1.5">
+    <span className="flex flex-col gap-4">
+      <Typography variant="title">Quick Links</Typography>
+      <ul className="flex flex-col gap-1">
         {quickLinks.map((link) => (
           <li key={link.label}>
-            <Link
-              href={link.href}
-              className="text-sm text-subtle hover:text-fg transition-all"
-            >
+            <Link url={link.href} newTab>
               {link.label}
             </Link>
           </li>
@@ -47,45 +43,55 @@ function QuickLinks() {
   );
 }
 
+const SocialIcon: Record<SocialMedia, IconDefinition> = {
+  Github: faGithub,
+  Linkedin: faLinkedin,
+  Scholar: faGoogleScholar,
+  Medium: faMedium,
+  Instagram: faInstagram,
+} as const;
+
 function SocialLinks() {
+  const socials = getSocialLinks();
+  const socialKeys = Object.keys(socials) as SocialMedia[];
+  if (!socials) return null;
   return (
-    <span>
-      <h3 className="text-lg mb-3">Connect</h3>
-      <p className="text-subtle text-sm mb-3 leading-relaxed">
-        Follow my work and connect with me
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {SOCIAL.map(({ icon, href, label }) => (
-          <Link
-            key={label}
-            href={href}
-            className="p-2.5 bg-bg rounded-lg glow-subtle"
-          >
-            <Icon icon={icon} className="w-4 h-4 icon" aria-label={label} />
-          </Link>
+    <span className="flex flex-col gap-1">
+      <Typography variant="title">Connect</Typography>
+      <Typography variant="body">
+        Feel free to reach out to me on any of the platforms below.
+      </Typography>
+      <ul className="flex flex-row gap-4 mt-4">
+        {socialKeys.map((key) => (
+          <li key={key}>
+            <Link url={socials[key]} newTab>
+              <Icon icon={SocialIcon[key]} size="lg" />
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </span>
   );
 }
 
+const thisYear = new Date().getFullYear();
 function CopyRight() {
   return (
-    <Typography variant="caption">
-      &copy; 2025 Manoj Malviya. All rights reserved.
-    </Typography>
+    <Typography variant="caption">{`@ ${thisYear} Manoj Malviya. All rights reserved.`}</Typography>
   );
 }
 
 export default function Footer() {
   return (
-    <footer className="p-6 sm:p-8 lg:p-16 min-h-[400px]" data-theme="light">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
-        <ProfileFooter className="sm:col-span-2" />
+    <footer
+      className="p-6 sm:p-8 lg:p-16 min-h-[400px] flex flex-col gap-4"
+      data-theme="light"
+    >
+      <span className="flex flex-row justify-between">
         <QuickLinks />
         <SocialLinks />
-      </div>
-      <div className="border-t border-muted pt-4">
+      </span>
+      <div className="border-t border-muted/69 pt-4">
         <CopyRight />
       </div>
     </footer>
