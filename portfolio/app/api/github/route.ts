@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
-
-const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USER!;
-const GITHUB_CONTRIBUTIONS_API = process.env.NEXT_PUBLIC_GITHUB_API!;
-
-if (!GITHUB_USERNAME || !GITHUB_CONTRIBUTIONS_API) {
-  throw new Error(
-    "Missing environment variables: ensure NEXT_PUBLIC_GITHUB_USER and NEXT_PUBLIC_GITHUB_API are set",
-  );
-}
+import getConfig from "@/lib/core/config";
 
 export async function GET() {
+  const { githubUserName, githubContributionsApi } = getConfig();
   try {
     const response = await fetch(
-      `${GITHUB_CONTRIBUTIONS_API}/${GITHUB_USERNAME}`,
+      `${githubContributionsApi}/${githubUserName}`,
       {
         method: "GET",
         headers: {
