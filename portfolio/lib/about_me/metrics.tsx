@@ -3,6 +3,11 @@ import { useMemo } from "react";
 import { useGithubQuery } from "@/lib/about_me/github";
 import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import StatCard from "@/lib/ui/stat";
+import Link from "@/lib/ui/link";
+import { SOCIAL } from "@/lib/about_me/profile";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { Icon } from "@/lib/ui";
+import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
 
 export function GithubMetricsCard({ className }: { className?: string }) {
   const { data, error } = useGithubQuery();
@@ -27,6 +32,11 @@ export function GithubMetricsCard({ className }: { className?: string }) {
       description="A live snapshot of engineering momentum."
       stats={stats}
       className={className}
+      cta={
+        <Link newTab url={SOCIAL[0].href}>
+          <Icon icon={faGithub} size="lg" />
+        </Link>
+      }
     />
   );
 }
@@ -52,6 +62,14 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
       description="Research impact metrics."
       stats={stats}
       className={className}
+      cta={
+        <Link
+          newTab
+          url={"https://scholar.google.com/citations?user=0oMXOy0AAAAJ&hl=en"}
+        >
+          <Icon icon={faGoogleScholar} size="lg" />
+        </Link>
+      }
     />
   );
 }

@@ -62,4 +62,8 @@
         background-size: 200% 200%;
         animation: gradient-move 5s infinite;
     }
+
+    .card {
+        @apply bg-muted/40 shadow-sm hover:shadow-lg duration-300 transition-shadow rounded-2xl p-4 ;
+    }
 }

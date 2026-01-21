@@ -12,13 +12,17 @@ export interface CardProps {
   description?: string;
   stats: Stat[];
   className?: string;
+  cta?: React.ReactNode;
 }
 
-const StatCard = memo(({ title, description, stats }: CardProps) => {
+const StatCard = memo(({ title, description, stats, cta }: CardProps) => {
   return (
-    <div className="flex flex-col gap-4 p-6 bg-muted/40 rounded-xl">
+    <div className="flex flex-col gap-4 p-6 card rounded-xl">
       <span>
-        <Typography variant="title">{title}</Typography>
+        <span className="flex flex-row items-center justify-between gap-2">
+          <Typography variant="title">{title}</Typography>
+          {cta}
+        </span>
         <Typography variant="body">{description}</Typography>
       </span>
 
