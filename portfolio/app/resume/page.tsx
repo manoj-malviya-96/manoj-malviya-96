@@ -20,7 +20,7 @@ export default function About() {
 
       {/* Work Experience and Metrics cards */}
       <section className="flex flex-col lg:flex-row  gap-8 lg:gap-16">
-        <WorkHistory experiences={WORK_EXPERIENCE} />
+        <WorkHistory experiences={WORK_EXPERIENCE} className="flex-2" />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
           <GithubMetricsCard />
           <ScholarMetricsCard />

@@ -1,5 +1,5 @@
 import { WorkExperience } from "@/lib/about_me/work_experience";
-import { calculateDuration, formatDate } from "@/lib/utils";
+import { calculateDuration, formatDate, mergeCls } from "@/lib/utils";
 import Image from "next/image";
 import { Typography } from "@/lib/ui/text";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
@@ -60,8 +60,10 @@ function WorkExpCard({
 
 export default function WorkHistory({
   experiences,
+  className,
 }: {
   experiences: WorkExperience[];
+  className?: string;
 }) {
   const sortedExperiences = experiences.sort((a, b) => {
     if (a.endDate && b.endDate) {
@@ -76,14 +78,14 @@ export default function WorkHistory({
   });
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className={mergeCls("flex flex-col", className)}>
       {sortedExperiences.map((exp, idx) => (
-        <div key={idx} className="flex flex-col gap-0 items-center">
+        <span key={exp.startDate} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />
           {idx !== experiences.length - 1 && (
             <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8" /> // ml-8 is to match icon but its hacky. Todo fix it.
           )}
-        </div>
+        </span>
       ))}
     </div>
   );
