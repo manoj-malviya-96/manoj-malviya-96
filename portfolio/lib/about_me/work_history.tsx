@@ -81,7 +81,7 @@ export default function WorkHistory({
         <div key={idx} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />
           {idx !== experiences.length - 1 && (
-            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8" /> // ml-10 is to match icon but its hacky. Todo fix it.
+            <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8" /> // ml-8 is to match icon but its hacky. Todo fix it.
           )}
         </div>
       ))}
