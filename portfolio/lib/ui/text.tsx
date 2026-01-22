@@ -12,7 +12,7 @@ type TypographyVariant =
 
 const TypographyClasses: Record<TypographyVariant, ClassValue> = {
   largeHeading: "font-bold text-7xl tracking-wide uppercase",
-  heading: "font-bold text-5xl uppercase",
+  heading: "font-bold text-5xl",
   title: "font-extrabold text-front text-2xl",
   body: "text-subtle text-md",
   caption: "text-sm text-subtle",

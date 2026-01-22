@@ -13,12 +13,9 @@ const words: readonly string[] = [
 function HeroText() {
   return (
     <div className="flex flex-col items-center text-left gap-4 w-fit self-center">
-      <Typography
-        variant="title"
-        className="mx-auto lg:text-2xl font-medium select-none"
-      >
+      <Typography variant="heading" className="font-medium ">
         Building
-        <FlipWords words={words} className="font-extrabold" /> <br />
+        <FlipWords words={words} className="font-extrabold uppercase" /> <br />
         digital products fast <br />
       </Typography>
     </div>
