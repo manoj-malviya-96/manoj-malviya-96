@@ -7,16 +7,16 @@
         --color_danger: oklch(0.546 0.179 23.376 / 0.69);
 
         --color_back: oklch(0.97 0 89.876);
-        --color_muted: oklch(0.839 0 89.876 / 0.47);
+        --color_muted: oklch(0.839 0 89.876 / 0.69);
         --color_subtle: oklch(0.244 0 89.876 / 0.69);
         --color_front: oklch(0.244 0 89.876);
     }
 
     [data-theme="dark"] {
         --color_back: oklch(0.115 0 89.876);
-        --color_muted: oklch(0.356 0 89.876 / 0.47);
+        --color_muted: oklch(0.281 0 89.876 / 0.69);
         --color_subtle: oklch(0.739 0 89.876 / 0.69);
-        --color_front: oklch(0.864 0 89.876);
+        --color_front: oklch(0.894 0 89.876);
     }
 }
 

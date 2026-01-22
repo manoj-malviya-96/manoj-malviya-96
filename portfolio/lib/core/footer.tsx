@@ -77,23 +77,21 @@ function SocialLinks() {
 const thisYear = new Date().getFullYear();
 function CopyRight() {
   return (
-    <Typography variant="caption">{`@ ${thisYear} Manoj Malviya. All rights reserved.`}</Typography>
+    <span className="flex flex-col gap-4">
+      <Typography variant="caption">{`Copyright @ ${thisYear} Manoj Malviya`}</Typography>
+    </span>
   );
 }
 
 export default function Footer() {
   return (
     <footer
-      className="p-6 sm:p-8 lg:p-16 min-h-[400px] flex flex-col gap-4"
-      data-theme="light"
+      className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front"
+      data-theme="dark"
     >
-      <span className="flex flex-row justify-between">
-        <QuickLinks />
-        <SocialLinks />
-      </span>
-      <div className="border-t border-muted/69 pt-4">
-        <CopyRight />
-      </div>
+      <QuickLinks />
+      <SocialLinks />
+      <CopyRight />
     </footer>
   );
 }
