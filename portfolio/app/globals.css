@@ -51,9 +51,9 @@
 }
 
 @layer components {
+
     .screen {
-        @apply px-4 sm:px-12 lg:px-16 xl:px-24 py-32 w-full min-h-dvh bg-back text-front;
-        /* py-32 to avoid navbar overlap */
+        @apply w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
     }
 
     /* Animated gradient text utilities using CSS variables */
