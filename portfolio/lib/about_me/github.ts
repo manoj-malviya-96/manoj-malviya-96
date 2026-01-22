@@ -32,7 +32,6 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
     (sum, count) => sum + count,
     0,
   );
-  const years = Object.keys(data.total).map(Number);
   const currentYear = new Date().getFullYear().toString();
   const currentYearCommits = data.total[currentYear] || 0;
   const activeDays = data.contributions.filter((c) => c.count > 0).length;
