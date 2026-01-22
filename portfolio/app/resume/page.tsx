@@ -1,7 +1,6 @@
 import { GithubMetricsCard, ScholarMetricsCard } from "@/lib/about_me/metrics";
 import { Typography } from "@/lib/ui/text";
 import WorkHistory from "@/lib/about_me/work_history";
-import { WORK_EXPERIENCE } from "@/lib/about_me/work_experience";
 
 export default function About() {
   return (
@@ -20,7 +19,7 @@ export default function About() {
 
       {/* Work Experience and Metrics cards */}
       <section className="flex flex-col lg:flex-row  gap-8 lg:gap-16">
-        <WorkHistory experiences={WORK_EXPERIENCE} className="flex-2" />
+        <WorkHistory className="flex-2" />
         <div className="flex flex-col gap-4 lg:gap-8 flex-1">
           <GithubMetricsCard />
           <ScholarMetricsCard />

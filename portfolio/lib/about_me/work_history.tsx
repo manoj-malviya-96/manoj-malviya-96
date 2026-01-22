@@ -1,10 +1,14 @@
-import { WorkExperience } from "@/lib/about_me/work_experience";
+import {
+  WORK_EXPERIENCE,
+  WorkExperience,
+} from "@/lib/about_me/work_experience";
 import { calculateDuration, formatDate, mergeCls } from "@/lib/utils";
 import Image from "next/image";
 import { Typography } from "@/lib/ui/text";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Badge, Icon } from "@/lib/ui";
 import Link from "@/lib/ui/link";
+import { useMemo } from "react";
 
 function WorkExpCard({
   startDate,
@@ -58,31 +62,29 @@ function WorkExpCard({
   );
 }
 
-export default function WorkHistory({
-  experiences,
-  className,
-}: {
-  experiences: WorkExperience[];
-  className?: string;
-}) {
-  const sortedExperiences = experiences.sort((a, b) => {
-    if (a.endDate && b.endDate) {
-      return a.endDate < b.endDate ? 1 : -1;
-    }
-    if (!a.endDate && !b.endDate) {
-      return a.startDate < b.startDate ? 1 : -1;
-    }
-    if (!a.endDate) return -1;
-    if (!b.endDate) return 1;
-    return 0;
-  });
+export default function WorkHistory({ className }: { className?: string }) {
+  const sortedExperiences = useMemo(
+    () =>
+      WORK_EXPERIENCE.sort((a, b) => {
+        if (a.endDate && b.endDate) {
+          return a.endDate < b.endDate ? 1 : -1;
+        }
+        if (!a.endDate && !b.endDate) {
+          return a.startDate < b.startDate ? 1 : -1;
+        }
+        if (!a.endDate) return -1;
+        if (!b.endDate) return 1;
+        return 0;
+      }),
+    [],
+  );
 
   return (
     <div className={mergeCls("flex flex-col", className)}>
       {sortedExperiences.map((exp, idx) => (
         <span key={exp.startDate} className="flex flex-col gap-0 items-center">
           <WorkExpCard {...exp} />
-          {idx !== experiences.length - 1 && (
+          {idx !== sortedExperiences.length - 1 && (
             <span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8" /> // ml-8 is to match icon but its hacky. Todo fix it.
           )}
         </span>
