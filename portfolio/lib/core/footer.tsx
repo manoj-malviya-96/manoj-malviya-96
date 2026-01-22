@@ -1,3 +1,4 @@
+"use client";
 import Icon from "@/lib/ui/icon";
 import Link from "@/lib/ui/link";
 import {
@@ -17,6 +18,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
 import Image from "next/image";
 import { UserAvatar } from "@/lib/assets";
+import { usePathname } from "next/navigation";
 
 const quickLinks = [
   { label: "Work Experience", href: "/experience" },
@@ -91,6 +93,8 @@ function CopyRight() {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/") return null; // No footer on home page
   return (
     <footer
       className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front border-muted/50 border-t-1"
