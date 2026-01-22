@@ -5,10 +5,10 @@ import {
 import { calculateDuration, formatDate, mergeCls } from "@/lib/utils";
 import Image from "next/image";
 import { Typography } from "@/lib/ui/text";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Badge, Icon } from "@/lib/ui";
 import Link from "@/lib/ui/link";
 import { useMemo } from "react";
+import { faLocationArrow } from "@fortawesome/free-solid-svg-icons/faLocationArrow";
 
 function WorkExpCard({
   startDate,
@@ -42,12 +42,19 @@ function WorkExpCard({
             <Typography variant="caption">{timeString}</Typography>
           </span>
           {/* Location and Company*/}
-          <span className="flex flex-row items-center gap-1">
+          <span className="flex flex-row items-center gap-4">
             <Link url={companyURL} newTab className="text-sm">
               {company}
             </Link>
-            <Typography variant="caption">
-              <Icon icon={faLocationDot} aria-label="Location" />
+            <Typography
+              variant="caption"
+              className="flex flex-row gap-2 items-center"
+            >
+              <Icon
+                icon={faLocationArrow}
+                aria-label="Location"
+                className="text-sm lg:text-sm"
+              />
               {location}
             </Typography>
           </span>

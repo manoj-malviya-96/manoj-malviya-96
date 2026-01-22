@@ -23,7 +23,7 @@ const StatCard = memo(({ title, description, stats, cta }: CardProps) => {
           <Typography variant="title">{title}</Typography>
           {cta}
         </span>
-        <Typography variant="body">{description}</Typography>
+        <Typography variant="caption">{description}</Typography>
       </span>
 
       <ul className="grid grid-cols-2 gap-0">

@@ -53,7 +53,7 @@
 @layer components {
 
     .screen {
-        @apply w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
+        @apply w-[95vw] lg:w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
     }
 
     /* Animated gradient text utilities using CSS variables */
