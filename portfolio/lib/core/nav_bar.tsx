@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import useScrollVisibility from "@/lib/ui/scroll_visibility";
 import Link from "@/lib/ui/link";
 import { ExternalURL } from "@/lib/types";
+import { useMemo } from "react";
 
 function MainLogo() {
   return (
@@ -59,11 +60,16 @@ export default function Navbar() {
     velocityThreshold: 0.8,
   });
 
+  const hideBackgroundWhenOnTop = useMemo(
+    () => pathname === "/" && isAtTop,
+    [isAtTop, pathname],
+  );
+
   return (
     <nav
       className={mergeCls(
         "fixed top-0 left-0 w-full h-12 z-10 p-1 duration-300 transition-transform",
-        isAtTop && pathname === "/" ? "bg-transparent" : "bg-back", // Only transparent on home
+        hideBackgroundWhenOnTop ? "bg-transparent" : "bg-back", // Only transparent on home
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
       data-theme="dark"
