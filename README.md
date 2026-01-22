@@ -16,29 +16,6 @@
 
 Senior Software Engineer with 7+ years building high-performance systems across desktop, embedded, and web platforms. I specialize in taking complex problems and delivering solutions that are both technically excellent and user-friendly.
 
-I build software using these principles 
-
-[![Code Philosophy](https://img.shields.io/badge/Code-Philosophy-white?style=flat-square)](./learn/philosophy.md)
-
-**Core Expertise**:
-- High-performance systems
-- Computational design and optimization algorithms
-- Cross-platform desktop applications
-- Full-stack development
-- Hardware-software integration
-
-**What I Deliver**:
-- ⚡ Performance: speed improvements, latency reductions
-- 🎯 Reliability: Type-safe systems with observable failures
-- 🚀 Impact: Cost reduction, NPS improvement, millions of users served
-- 👨‍🏫 Leadership : Mentoring, setting standards, driving technical excellence
-
-**Soft Skills**:
-- **Collaboration**: Bridge Product, Design, and Engineering teams for user-centric solutions
-- **Learning**: Fast adopter of new tech stacks (Swift, Go, Rust) driven by problem requirements
-- **Discipline**: Set and maintain development standards, mentor juniors in clean-code practices
-- **Creativity**: Novel algorithms for 3D printing, optimization, and computational design
-
 
 ## Tech Stack
 
@@ -64,15 +41,5 @@ AWS | Docker | GitHub Actions | Jenkins | CMake/Ninja
 MongoDB | SQL | Supabase | Vercel
 Protobuf | libusb | Linux
 ```
-
-
-## Education
-> **Master of Science in Mechanical Engineering**  
-*Pennsylvania State University, 2018-2020* <br>
-> _Computational Design · Machine Learning · 3D Graphics · UI/UX Design · Optimization Algorithms_
-
-> **Bachelors of Science in Mechanical Engineering**  
-*Indian Institute of Technology, 2018-2020* <br>
-
 ---
 
