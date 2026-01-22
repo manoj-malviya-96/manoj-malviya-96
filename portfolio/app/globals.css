@@ -52,7 +52,7 @@
 
 @layer components {
     .screen {
-        @apply px-4 sm:px-12 lg:px-16 xl:px-24 py-32 w-full min-h-[98vh] bg-back text-front;
+        @apply px-4 sm:px-12 lg:px-16 xl:px-24 py-32 w-full min-h-dvh bg-back text-front;
         /* py-32 to avoid navbar overlap */
     }
 
