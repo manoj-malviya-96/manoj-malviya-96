@@ -15,6 +15,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
+import Image from "next/image";
+import { UserAvatar } from "@/lib/assets";
 
 const quickLinks = [
   { label: "Work Experience", href: "/experience" },
@@ -78,7 +80,12 @@ const thisYear = new Date().getFullYear();
 function CopyRight() {
   return (
     <span className="flex flex-col gap-4">
-      <Typography variant="caption">{`Copyright @ ${thisYear} Manoj Malviya`}</Typography>
+      <Image
+        src={UserAvatar}
+        alt="Profile"
+        className="object-cover rounded-xl w-20 h-20"
+      />
+      <Typography variant="body">{`Copyright @ ${thisYear} Manoj Malviya`}</Typography>
     </span>
   );
 }
@@ -89,9 +96,9 @@ export default function Footer() {
       className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front border-muted/50 border-t-1"
       data-theme="dark"
     >
+      <CopyRight />
       <QuickLinks />
       <SocialLinks />
-      <CopyRight />
     </footer>
   );
 }

@@ -9,11 +9,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
 
 export default function AboutMe() {
   return (
-    <section
-      className={
-        "screen flex flex-row flex-wrap justify-center gap-4 lg:gap-16 item-center"
-      }
-    >
+    <section className={"screen flex flex-col items-center"}>
       <Image
         src={UserAvatar}
         alt="Profile"
