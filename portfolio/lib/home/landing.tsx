@@ -12,13 +12,13 @@ const words: readonly string[] = [
 
 function HeroText() {
   return (
-    <div className="flex flex-col items-center text-left gap-4 w-fit self-center">
-      <Typography variant="heading" className="font-medium ">
+    <span className="flex flex-col items-center text-left gap-8 w-fit self-center">
+      <Typography variant="heading" className="font-light text-wrap">
         Building
-        <FlipWords words={words} className="font-extrabold uppercase" /> <br />
-        digital products fast <br />
+        <FlipWords words={words} className="font-bold uppercase" /> <br />
+        digital products quick <br />
       </Typography>
-    </div>
+    </span>
   );
 }
 
