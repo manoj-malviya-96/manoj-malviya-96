@@ -86,7 +86,7 @@ function CopyRight() {
 export default function Footer() {
   return (
     <footer
-      className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front"
+      className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front border-muted/50 border-t-1"
       data-theme="dark"
     >
       <QuickLinks />
