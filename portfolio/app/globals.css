@@ -14,9 +14,9 @@
 
     [data-theme="dark"] {
         --color_back: oklch(0.115 0 89.876);
-        --color_muted: oklch(0.281 0 89.876 / 0.69);
-        --color_subtle: oklch(0.739 0 89.876 / 0.69);
-        --color_front: oklch(0.894 0 89.876);
+        --color_muted: oklch(0.264 0 89.876 / 0.69);
+        --color_subtle: oklch(0.888 0 89.876 / 0.69);
+        --color_front: oklch(0.925 0 89.876);
     }
 }
 
@@ -65,5 +65,13 @@
 
     .card {
         @apply bg-muted/40 shadow-sm hover:shadow-lg duration-300 transition-shadow rounded-2xl p-4 ;
+    }
+
+    .control-primary {
+        @apply bg-front text-back rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
+    }
+
+    .control-secondary {
+        @apply bg-muted text-front rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
     }
 }

@@ -14,6 +14,7 @@ type NavLink = {
 };
 
 const links: NavLink[] = [
+  { url: "/", label: "Home" },
   { url: "/resume", label: "Resume" },
   { url: "/projects", label: "Projects" },
 ] as const;
@@ -23,13 +24,14 @@ export default function Navbar() {
 
   const { isVisible } = useScrollVisibility({
     velocityThreshold: 0.8,
+    enabled: pathname !== "/",
   });
+  if (pathname === "/") return null;
 
   return (
     <nav
       className={mergeCls(
-        "fixed top-0 left-0 w-full h-12 z-10 p-1 duration-300 transition-transform",
-        pathname === "/" ? "bg-transparent" : "bg-back", // Only transparent on home
+        "fixed top-0 left-0 w-full h-12 z-10 p-1 duration-300 transition-transform bg-back",
         isVisible ? "translate-y-0" : "-translate-y-full",
       )}
       data-theme="dark"
@@ -39,12 +41,15 @@ export default function Navbar() {
           "flex flex-row gap-4 w-full lg:w-[70vw] mx-auto text-front items-center h-full",
         )}
       >
-        <Link url="/" className="font-bold text-lg text-front">
-          MANOJ MALVIYA
-        </Link>
-        |
         {links.map((link) => (
-          <Link key={link.url} url={link.url} className="text-front">
+          <Link
+            key={link.url}
+            url={link.url}
+            className={mergeCls(
+              "text-front px-2 py-1 transition-colors duration-300 hover:bg-muted rounded-lg",
+              pathname === link.url && "bg-muted",
+            )}
+          >
             {link.label}
           </Link>
         ))}

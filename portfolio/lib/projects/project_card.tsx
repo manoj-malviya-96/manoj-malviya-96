@@ -121,7 +121,7 @@ function ProjectCard({
     <div
       className={mergeCls(
         images.length > 1 ? "flex-col" : "flex-col lg:flex-row",
-        "flex gap-8 w-full h-fit p-4 lg:p-8 items-start",
+        "flex gap-8 w-full h-fit items-start",
         className,
       )}
     >

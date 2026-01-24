@@ -8,10 +8,17 @@ type LinkProps = {
   url: ExternalURL | UrlObject | string;
   className?: string;
   newTab?: boolean;
+  asControl?: boolean;
   children: ReactNode;
 };
 
-export default function Link({ url, children, newTab, className }: LinkProps) {
+export default function Link({
+  url,
+  children,
+  newTab,
+  asControl = false,
+  className,
+}: LinkProps) {
   if (!url) {
     throw new Error("Link component requires a url prop");
   }
@@ -21,7 +28,9 @@ export default function Link({ url, children, newTab, className }: LinkProps) {
       href={url}
       replace={false}
       className={mergeCls(
-        "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
+        asControl
+          ? "control-primary"
+          : "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
         className,
       )}
       aria-label={typeof url === "string" ? url : url.toString()}

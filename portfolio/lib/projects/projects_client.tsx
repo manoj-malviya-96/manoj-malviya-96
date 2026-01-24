@@ -119,7 +119,7 @@ export default function ProjectsClient({
   };
 
   return (
-    <section className="flex flex-col gap-8">
+    <section className="flex flex-col gap-16">
       <Search
         value={query}
         onChange={handleSearch}
@@ -131,7 +131,7 @@ export default function ProjectsClient({
           No projects match that search.
         </Typography>
       ) : (
-        <ul className="flex flex-col gap-16">
+        <ul className="flex flex-col gap-32">
           {filtered.map((project) => {
             const ProjectComponent = project.Component;
             return (

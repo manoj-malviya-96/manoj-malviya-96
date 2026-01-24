@@ -14,7 +14,7 @@ function ProjectsLoading() {
 
 export default function Page() {
   return (
-    <main className="screen flex flex-col gap-8 lg:gap-16 w-[80vw]">
+    <main className="screen flex flex-col gap-8 lg:gap-16">
       <span className="flex flex-col gap-2">
         <Typography variant="heading">Projects</Typography>
         <Typography variant="body">
