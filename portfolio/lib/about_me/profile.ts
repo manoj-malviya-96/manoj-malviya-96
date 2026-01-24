@@ -1,14 +1,8 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faGithub,
-  faLinkedin,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { IITJLogo, PennStateLogo } from "@/lib/assets";
 
 import type { StaticImageData as LocalImage } from "next/image";
-import { MonthAndYear } from "@/lib/types";
+import { ExternalURL, MonthAndYear } from "@/lib/types";
 
 export interface SocialLink {
   icon: IconDefinition;
@@ -16,25 +10,36 @@ export interface SocialLink {
   label: string;
 }
 
-export const SOCIAL: SocialLink[] = [
-  {
-    icon: faGithub,
-    href: "https://github.com/manoj-malviya-96",
-    label: "GitHub",
-  },
-  {
-    icon: faLinkedin,
-    href: "https://linkedin.com/in/yourusername",
-    label: "LinkedIn",
-  },
-  {
-    icon: faTwitter,
-    href: "https://twitter.com/yourusername",
-    label: "Twitter",
-  },
-  { icon: faGlobe, href: "https://yourwebsite.com", label: "Website" },
-  { icon: faEnvelope, href: "mailto:your.email@example.com", label: "Email" },
-];
+export const SocialUsersID = {
+  Github: "manoj-malviya-96",
+  Linkedin: "manoj-malviya-",
+  Medium: "@manoj-malviya",
+  Instagram: "manoj_malviya_",
+  Scholar: "0oMXOy0AAAAJ",
+} as const;
+
+export type SocialMedia = keyof typeof SocialUsersID;
+
+// Todo clear this
+let _linksCached: Record<SocialMedia, ExternalURL> | null = null;
+export function getSocialLinks() {
+  if (_linksCached) return _linksCached;
+  const { Github, Linkedin, Medium, Instagram, Scholar } = SocialUsersID;
+  _linksCached = {
+    Github: `https://github.com/${Github}`,
+    Linkedin: `https://www.linkedin.com/in/${Linkedin}`,
+    Medium: `https://medium.com/${Medium}`,
+    Instagram: `https://www.instagram.com/${Instagram}`,
+    Scholar: `https://scholar.google.com/citations?user=${Scholar}&hl=en`,
+  } as const;
+  return _linksCached as Record<SocialMedia, ExternalURL>;
+}
+
+// Todo better way to do this?
+export const ResumePDF: ExternalURL =
+  "https://docs.google.com/document/d/1h56spN-URNEDdwn1ofiqUaxJpm83aLz89QrNjPl4BgQ" as const;
+
+export const EmailAddress = "mailto:malviyamanoj1896@gmail.com";
 
 type Education = {
   school: string;

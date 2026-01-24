@@ -7,16 +7,16 @@
         --color_danger: oklch(0.546 0.179 23.376 / 0.69);
 
         --color_back: oklch(0.97 0 89.876);
-        --color_muted: oklch(0.839 0 89.876 / 0.47);
+        --color_muted: oklch(0.839 0 89.876 / 0.69);
         --color_subtle: oklch(0.244 0 89.876 / 0.69);
         --color_front: oklch(0.244 0 89.876);
     }
 
     [data-theme="dark"] {
         --color_back: oklch(0.115 0 89.876);
-        --color_muted: oklch(0.356 0 89.876 / 0.47);
-        --color_subtle: oklch(0.739 0 89.876 / 0.69);
-        --color_front: oklch(0.864 0 89.876);
+        --color_muted: oklch(0.264 0 89.876 / 0.69);
+        --color_subtle: oklch(0.888 0 89.876 / 0.69);
+        --color_front: oklch(0.925 0 89.876);
     }
 }
 
@@ -51,9 +51,9 @@
 }
 
 @layer components {
+
     .screen {
-        @apply px-4 sm:px-12 lg:px-16 xl:px-24 py-32 w-full min-h-[90vh] bg-back text-front;
-        /* py-32 to avoid navbar overlap */
+        @apply w-[90vw] lg:w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
     }
 
     /* Animated gradient text utilities using CSS variables */
@@ -61,5 +61,17 @@
         @apply bg-clip-text text-transparent font-semibold ease-in-out bg-gradient-to-l from-front via-muted to-front;
         background-size: 200% 200%;
         animation: gradient-move 5s infinite;
+    }
+
+    .card {
+        @apply bg-muted/40 shadow-sm hover:shadow-lg duration-300 transition-shadow rounded-2xl p-4 ;
+    }
+
+    .control-primary {
+        @apply bg-front text-back rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
+    }
+
+    .control-secondary {
+        @apply bg-muted text-front rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
     }
 }

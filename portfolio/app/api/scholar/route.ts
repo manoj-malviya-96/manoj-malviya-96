@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server";
-
-const USER = process.env.NEXT_PUBLIC_SCHOLAR_USER!;
-const TARGET_URL = process.env.NEXT_PUBLIC_SCHOLAR_API!;
-
-if (!USER || !TARGET_URL) {
-  throw new Error(
-    "Missing environment variables: ensure NEXT_PUBLIC_SCHOLAR_USER and NEXT_PUBLIC_SCHOLAR_API are set",
-  );
-}
+import getConfig from "@/lib/core/config";
+import { SocialUsersID } from "@/lib/about_me/profile";
 
 export async function GET() {
+  const { scholarTargetUrl } = getConfig();
   try {
-    const targetUrl = new URL(TARGET_URL);
-    targetUrl.searchParams.set("user", USER);
+    const targetUrl = new URL(scholarTargetUrl);
+    targetUrl.searchParams.set("user", SocialUsersID.Scholar);
 
     const response = await fetch(targetUrl.toString(), {
       method: "GET",

@@ -120,7 +120,8 @@ function ProjectCard({
   return (
     <div
       className={mergeCls(
-        "flex flex-row flex-wrap gap-4 w-full h-fit p-4 lg:p-8 items-start",
+        images.length > 1 ? "flex-col" : "flex-col lg:flex-row",
+        "flex gap-8 w-full h-fit items-start",
         className,
       )}
     >
@@ -153,18 +154,12 @@ function ProjectCard({
             ))}
           </span>
         )}
-        {images.length > 1 && (
-          <div className="flex flex-row flex-wrap gap-4">
-            {images.map((img, idx) => (
-              <Media key={idx} media={img} alt={`${title} image`} />
-            ))}
-            priority
-          </div>
-        )}
       </div>
-      {images.length === 1 && (
-        <Media media={images[0]} alt={`${title} image`} />
-      )}
+      <span className="flex flex-1">
+        {images.map((img, idx) => (
+          <Media key={idx} media={img} alt={`${title} image`} />
+        ))}
+      </span>
     </div>
   );
 }

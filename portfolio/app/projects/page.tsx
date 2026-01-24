@@ -1,11 +1,13 @@
 import { Typography } from "@/lib/ui/text";
 import ProjectsClient from "@/lib/projects/projects_client";
 import { Suspense } from "react";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { Icon } from "@/lib/ui";
 
 function ProjectsLoading() {
   return (
     <section className="screen">
-      <Typography variant={"body"}>Loading projects...</Typography>
+      <Icon icon={faSpinner} size="lg" />
     </section>
   );
 }
