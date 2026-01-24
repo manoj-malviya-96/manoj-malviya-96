@@ -39,7 +39,7 @@ export default function Landing() {
         Hey! I am Manoj Malviya, a mechanical engineer turned SOFTWARE ENGINEER
         with knack of making music and solving problems.
       </Typography>
-      <span className="flex flex-row gap-4">
+      <span className="flex flex-row flex-wrap gap-4">
         <Link url="/projects" asControl className="control-primary">
           <Icon icon={faCodeBranch} className="mr-2" />
           View my projects
