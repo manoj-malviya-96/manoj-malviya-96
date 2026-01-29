@@ -1,46 +1,47 @@
-import React, { memo } from "react";
+import type React from "react";
+import { memo } from "react";
 import { Typography } from "@/lib/ui/text";
 import { mergeCls } from "@/lib/utils";
 
 type Stat = {
-  label: string;
-  value?: string | number;
+	label: string;
+	value?: string | number;
 };
 
 export interface CardProps {
-  title: string;
-  description?: string;
-  stats: Stat[];
-  className?: string;
-  cta?: React.ReactNode;
+	title: string;
+	description?: string;
+	stats: Stat[];
+	className?: string;
+	cta?: React.ReactNode;
 }
 
 const StatCard = memo(({ title, description, stats, cta }: CardProps) => {
-  return (
-    <div className="flex flex-col gap-4 p-6 card rounded-xl">
-      <span>
-        <span className="flex flex-row items-center justify-between gap-2">
-          <Typography variant="title">{title}</Typography>
-          {cta}
-        </span>
-        <Typography variant="caption">{description}</Typography>
-      </span>
+	return (
+		<div className="flex flex-col gap-4 p-6 card rounded-xl">
+			<span>
+				<span className="flex flex-row items-center justify-between gap-2">
+					<Typography variant="title">{title}</Typography>
+					{cta}
+				</span>
+				<Typography variant="caption">{description}</Typography>
+			</span>
 
-      <ul className="grid grid-cols-2 gap-0">
-        {stats.slice(0, 4).map((stat, i) => (
-          <li
-            key={i}
-            className={mergeCls("flex flex-col items-center justify-start p-4")}
-          >
-            <Typography variant="heading" component="span">
-              {stat.value ?? "-"}
-            </Typography>
-            <Typography variant="caption">{stat.label}</Typography>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+			<ul className="grid grid-cols-2 gap-0">
+				{stats.slice(0, 4).map((stat, i) => (
+					<li
+						key={i}
+						className={mergeCls("flex flex-col items-center justify-start p-4")}
+					>
+						<Typography variant="heading" component="span">
+							{stat.value ?? "-"}
+						</Typography>
+						<Typography variant="caption">{stat.label}</Typography>
+					</li>
+				))}
+			</ul>
+		</div>
+	);
 });
 
 StatCard.displayName = "StatCard";
