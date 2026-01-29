@@ -1,31 +1,28 @@
-import { memo } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { mergeCls } from "@/lib/utils";
+import type {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {mergeCls} from "@/lib/utils";
 
 interface IconProps {
-  icon: IconDefinition;
-  size?: "md" | "lg";
-  className?: string;
-  "aria-label"?: string;
+    icon: IconDefinition;
+    size?: "md" | "lg";
+    className?: string;
+    "aria-label"?: string;
 }
 
-function Icon({
-  icon,
-  className,
-  size = "md",
-  "aria-label": ariaLabel,
-}: IconProps) {
-  return (
-    <FontAwesomeIcon
-      icon={icon}
-      className={mergeCls(
-        size == "md" ? "text-sm lg:text-lg" : "text-md lg:text-xl",
-        className,
-      )}
-      aria-label={ariaLabel}
-    />
-  );
+export default function Icon({
+                                 icon,
+                                 className,
+                                 size = "md",
+                                 "aria-label": ariaLabel,
+                             }: IconProps) {
+    return (
+        <FontAwesomeIcon
+            icon={icon}
+            className={mergeCls(
+                className,
+            )}
+            size={size === "md" ? "1x" : "2x"}
+            aria-label={ariaLabel}
+        />
+    );
 }
-Icon.displayName = "Icon";
-export default memo(Icon);
