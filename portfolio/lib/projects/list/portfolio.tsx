@@ -24,6 +24,7 @@ function PortfolioCard() {
 					href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
 				},
 			]}
+
 		>
 			<Typography variant="body">
 				It’s simple, informative, and it works which is exactly the point. I
