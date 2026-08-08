@@ -1,4 +1,16 @@
+/* Declared first so it sorts below every Tailwind layer. atom's stylesheet
+   styles :root and body unlayered, so imported as-is it would outrank this
+   file's own theme. Confining it to the lowest layer makes this repo
+   authoritative wherever the two overlap, which is deliberate: atom names its
+   design tokens the same way Tailwind v4 does, so --radius-sm/md/lg and
+   --color-muted collide and resolve to Tailwind's and this file's values
+   rather than atom's (atom components pick up the host radius scale; its
+   --color-page/content/surface/faint and --space-* are unique and survive).
+   Once atom namespaces its tokens as --atom-*, that overlap disappears. */
+@layer atom;
+
 @import "tailwindcss";
+@import "@manoj-malviya-96/atom/styles.css" layer(atom);
 
 @layer base {
 	/* color_* defines root colors, so Todo- we can change that later */
@@ -42,6 +54,14 @@
 
 	body {
 		@apply bg-back text-front;
+		/* atom's stylesheet sets font-family, font-size and line-height
+		   directly on body, and a rule matching body beats inherited html
+		   styles whatever the cascade layer says. Inherit explicitly so the
+		   next/font Inter class on html and html's own type scale keep
+		   winning here. */
+		font-family: inherit;
+		font-size: inherit;
+		line-height: inherit;
 	}
 
 	/* Prevent layout shift from images */

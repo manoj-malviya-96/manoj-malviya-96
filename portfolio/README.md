@@ -2,7 +2,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Authenticating to GitHub Packages
+
+The UI primitives come from [`@manoj-malviya-96/atom`](https://github.com/manoj-malviya-96/atom),
+published to GitHub Packages rather than npmjs. GitHub Packages requires an
+authenticated request even for public packages, so `npm install` fails with a
+401 unless a token is present. `.npmrc` points the scope at the registry and
+reads the token from the environment:
+
+```bash
+export NODE_AUTH_TOKEN=<personal access token with read:packages>
+npm install
+```
+
+The same variable has to exist wherever the app is built — including the Vercel
+project's environment variables, or deploys will fail at install time.
+
+Then, run the development server:
 
 ```bash
 npm run dev
