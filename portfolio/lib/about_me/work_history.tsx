@@ -1,14 +1,15 @@
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons/faLocationArrow";
-import Image from "next/image";
+import { Badge, Flex, Image, Typography } from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
+import type React from "react";
 import { useMemo } from "react";
 import {
 	WORK_EXPERIENCE,
 	type WorkExperience,
 } from "@/lib/about_me/work_experience";
-import { Badge, Icon } from "@/lib/ui";
+import { Icon } from "@/lib/ui";
 import Link from "@/lib/ui/link";
-import { Typography } from "@/lib/ui/text";
-import { calculateDuration, formatDate, mergeCls } from "@/lib/utils";
+import { calculateDuration, formatDate } from "@/lib/utils";
 
 function WorkExpCard({
 	startDate,
@@ -25,51 +26,70 @@ function WorkExpCard({
 	const timeString = `${formatDate(startDate)} - ${endDate ? formatDate(endDate) : "Present"} • ${duration}`;
 
 	return (
-		<div className="flex-1 w-full card flex flex-col gap-4">
-			<div className="flex flex-row items-center gap-4 w-full">
+		<Flex
+			direction="col"
+			gap="md"
+			padding="lg"
+			radius="md"
+			backgroundColor="surface"
+			style={{ flex: 1, width: "100%" }}
+		>
+			<Flex direction="row" gap="md" vAlign="center">
 				<Image
+					as={NextImage}
 					src={logo}
 					alt={`${company} logo`}
-					className="w-10 h-10 object-contain rounded-2xl"
+					fit="contain"
+					radius="md"
+					style={{ width: "2.5rem", height: "2.5rem" }}
 				/>
-				<span className="flex flex-col gap-0 flex-1">
+				<Flex direction="col" style={{ flex: 1 }}>
 					{/* Name, position and date Row */}
-					<span className="flex flex-row flex-wrap gap-1 items-center justify-between">
-						<span className="flex flex-row gap-2 items-center">
+					<Flex
+						direction="row"
+						gap="xs"
+						vAlign="center"
+						hAlign="between"
+						style={{ flexWrap: "wrap" }}
+					>
+						<Flex direction="row" gap="sm" vAlign="center">
 							<Typography variant="title">{position}</Typography>
-							<Badge className="hidden lg:block h-fit">{type}</Badge>
-						</span>
+							<Badge className="hide-below-lg">{type}</Badge>
+						</Flex>
 						<Typography variant="caption">{timeString}</Typography>
-					</span>
+					</Flex>
 					{/* Location and Company*/}
-					<span className="flex flex-row items-center gap-4">
-						<Link url={companyURL} newTab className="text-sm">
-							{company}
-						</Link>
-						<Typography
-							variant="caption"
-							className="flex flex-row gap-2 items-center"
-						>
-							<Icon
-								icon={faLocationArrow}
-								aria-label="Location"
-								className="text-sm lg:text-sm"
-							/>
-							{location}
+					<Flex direction="row" gap="md" vAlign="center">
+						<Typography variant="caption">
+							<Link url={companyURL} newTab>
+								{company}
+							</Link>
 						</Typography>
-					</span>
-				</span>
-			</div>
+						<Typography variant="caption">
+							<Flex direction="row" gap="sm" vAlign="center" inline>
+								<Icon icon={faLocationArrow} aria-label="Location" />
+								{location}
+							</Flex>
+						</Typography>
+					</Flex>
+				</Flex>
+			</Flex>
 			{role && (
-				<Typography variant="body" className="p-2">
+				<Typography variant="body" padding="sm">
 					{role}
 				</Typography>
 			)}
-		</div>
+		</Flex>
 	);
 }
 
-export default function WorkHistory({ className }: { className?: string }) {
+export default function WorkHistory({
+	className,
+	style,
+}: {
+	className?: string;
+	style?: React.CSSProperties;
+}) {
 	const sortedExperiences = useMemo(
 		() =>
 			WORK_EXPERIENCE.sort((a, b) => {
@@ -87,15 +107,15 @@ export default function WorkHistory({ className }: { className?: string }) {
 	);
 
 	return (
-		<div className={mergeCls("flex flex-col", className)}>
+		<Flex direction="col" className={className} style={style}>
 			{sortedExperiences.map((exp, idx) => (
-				<span key={exp.startDate} className="flex flex-col gap-0 items-center">
+				<Flex key={exp.startDate} direction="col" hAlign="center">
 					<WorkExpCard {...exp} />
 					{idx !== sortedExperiences.length - 1 && (
-						<span className="bg-subtle/20 w-0.5 h-8 mr-auto ml-8" /> // ml-8 is to match icon but its hacky. Todo fix it.
+						<span className="work-history-connector" />
 					)}
-				</span>
+				</Flex>
 			))}
-		</div>
+		</Flex>
 	);
 }

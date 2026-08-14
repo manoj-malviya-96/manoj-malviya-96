@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
+import { mergeCls } from "@/lib/utils";
 
 const vertexShaderSource = `
   attribute vec4 a_position;
@@ -275,6 +276,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 		pointer.x += (pointer.targetX - pointer.x) * 0.2;
 		pointer.y += (pointer.targetY - pointer.y) * 0.2;
 
+		// biome-ignore lint/correctness/useHookAtTopLevel: gl.useProgram is the WebGL API method, not a React hook
 		gl.useProgram(program);
 
 		if (uniforms.u_time) {
@@ -326,6 +328,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 		if (gl && program && uniforms.u_hue) {
 			// Check if program is still valid before using it
 			if (!gl.isProgram(program)) return;
+			// biome-ignore lint/correctness/useHookAtTopLevel: gl.useProgram is the WebGL API method, not a React hook
 			gl.useProgram(program);
 			gl.uniform1f(uniforms.u_hue, hue);
 		}
@@ -336,6 +339,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 		if (gl && program && uniforms.u_saturation) {
 			// Check if program is still valid before using it
 			if (!gl.isProgram(program)) return;
+			// biome-ignore lint/correctness/useHookAtTopLevel: gl.useProgram is the WebGL API method, not a React hook
 			gl.useProgram(program);
 			gl.uniform1f(uniforms.u_saturation, saturation);
 		}
@@ -346,6 +350,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 		if (gl && program && uniforms.u_chroma) {
 			// Check if program is still valid before using it
 			if (!gl.isProgram(program)) return;
+			// biome-ignore lint/correctness/useHookAtTopLevel: gl.useProgram is the WebGL API method, not a React hook
 			gl.useProgram(program);
 			gl.uniform1f(uniforms.u_chroma, chroma);
 		}
@@ -366,6 +371,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 			);
 			const buffers = createQuad(gl);
 
+			// biome-ignore lint/correctness/useHookAtTopLevel: gl.useProgram is the WebGL API method, not a React hook
 			gl.useProgram(program);
 
 			const posLoc = gl.getAttribLocation(program, "a_position");
@@ -466,10 +472,7 @@ const NeuroCanvas: React.FC<NeuroCanvasProps> = ({
 	]);
 
 	return (
-		<canvas
-			ref={canvasRef}
-			className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
-		/>
+		<canvas ref={canvasRef} className={mergeCls("neural-canvas", className)} />
 	);
 };
 

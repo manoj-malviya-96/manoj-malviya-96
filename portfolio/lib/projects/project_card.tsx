@@ -1,12 +1,11 @@
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import React, { memo, type ReactNode } from "react";
+import { Badge, Flex, Image, Typography, Video } from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
+import { memo, type ReactNode } from "react";
 import type { ProjectMeta } from "@/lib/projects/list/types";
 import type { ExternalURL } from "@/lib/types";
-import { Badge } from "@/lib/ui";
 import type { MediaContent } from "@/lib/ui/media";
-import { Typography } from "@/lib/ui/text";
 import { mergeCls } from "@/lib/utils";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
@@ -18,10 +17,8 @@ type ProjectCTA =
 	| { kind: "custom"; node: ReactNode };
 
 const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
-	const base =
-		"inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-front text-back";
 	if (cta.kind === "custom") {
-		return <span className={mergeCls(base, "cursor-default")}>{cta.node}</span>;
+		return <span className="cta-button cta-button--custom">{cta.node}</span>;
 	}
 
 	const icon = (() => {
@@ -51,57 +48,58 @@ const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
 	})();
 
 	return (
-		<a href={cta.href} className={base} target="_blank" rel="noreferrer">
-			<span className="inline-flex items-center gap-2">
+		<a href={cta.href} className="cta-button" target="_blank" rel="noreferrer">
+			<Flex direction="row" gap="xs" vAlign="center" inline>
 				{icon}
 				{label}
-			</span>
+			</Flex>
 		</a>
 	);
 };
+
+const IMG_SIZE = 720;
 
 function Media({
 	media,
 	width = IMG_SIZE,
 	height = IMG_SIZE,
-	className,
 	alt = "project media",
 }: {
 	media: MediaContent;
 	width?: number;
 	height?: number;
-	className?: string;
 	alt?: string;
 }) {
 	if (typeof media === "string" && media.endsWith(".webm")) {
 		return (
-			<video
+			<Video
 				autoPlay
 				loop
 				muted
 				playsInline
 				width={width}
 				height={height}
-				className={mergeCls("object-cover rounded-xl", className)}
+				fit="cover"
+				radius="md"
 				aria-label={alt}
 			>
 				<source src={media} type="video/webm" />
-			</video>
+			</Video>
 		);
 	}
 
 	return (
 		<Image
+			as={NextImage}
 			src={media}
 			alt={alt}
 			width={width}
 			height={height}
-			className={mergeCls("object-cover rounded-xl", className)}
+			fit="cover"
+			radius="md"
 		/>
 	);
 }
-
-const IMG_SIZE = 720;
 
 function ProjectCard({
 	title,
@@ -118,49 +116,62 @@ function ProjectCard({
 	className?: string;
 }) {
 	return (
-		<div
+		<Flex
+			direction="col"
+			gap="lg"
+			hAlign="start"
 			className={mergeCls(
-				images.length > 1 ? "flex-col" : "flex-col lg:flex-row",
-				"flex gap-8 w-full h-fit items-start",
+				images.length <= 1 && "direction-responsive-row",
 				className,
 			)}
 		>
-			<div className="flex flex-col gap-4 flex-1">
+			<Flex direction="col" gap="md" style={{ flex: 1 }}>
 				{/* Heading */}
-				<span className="flex flex-col items-start justify-start gap-0">
+				<Flex direction="col" hAlign="start" vAlign="start">
 					<Typography variant="title">{title}</Typography>
 					{description && (
 						<Typography variant="caption">{description}</Typography>
 					)}
-				</span>
+				</Flex>
 
 				{/* Tags */}
 				{!!tags.length && (
-					<ul className="flex flex-row flex-wrap gap-2 items-center">
+					<Flex
+						as="ul"
+						direction="row"
+						gap="sm"
+						vAlign="center"
+						style={{ flexWrap: "wrap" }}
+					>
 						{tags.map((tag: string) => (
-							<Badge key={tag} element="li">
-								{tag}
-							</Badge>
+							<li key={tag}>
+								<Badge>{tag}</Badge>
+							</li>
 						))}
-					</ul>
+					</Flex>
 				)}
 
 				{children}
 
 				{ctas?.length && (
-					<span className="flex flex-wrap gap-2 items-center">
+					<Flex
+						direction="row"
+						gap="sm"
+						vAlign="center"
+						style={{ flexWrap: "wrap" }}
+					>
 						{ctas.map((cta: ProjectCTA, idx: number) => (
 							<CTAButton key={idx} cta={cta} />
 						))}
-					</span>
+					</Flex>
 				)}
-			</div>
-			<span className="flex flex-1">
+			</Flex>
+			<Flex direction="row" style={{ flex: 1 }}>
 				{images.map((img, idx) => (
 					<Media key={idx} media={img} alt={`${title} image`} />
 				))}
-			</span>
-		</div>
+			</Flex>
+		</Flex>
 	);
 }
 

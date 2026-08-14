@@ -1,76 +1,296 @@
-@import "tailwindcss";
-
-@layer base {
-	/* color_* defines root colors, so Todo- we can change that later */
-	:root {
-		--color_success: oklch(0.659 0.12 144.059 / 0.69);
-		--color_danger: oklch(0.546 0.179 23.376 / 0.69);
-
-		--color_back: oklch(0.97 0 89.876);
-		--color_muted: oklch(0.839 0 89.876 / 0.69);
-		--color_subtle: oklch(0.244 0 89.876 / 0.69);
-		--color_front: oklch(0.244 0 89.876);
-	}
-
-	[data-theme="dark"] {
-		--color_back: oklch(0.115 0 89.876);
-		--color_muted: oklch(0.264 0 89.876 / 0.69);
-		--color_subtle: oklch(0.888 0 89.876 / 0.69);
-		--color_front: oklch(0.925 0 89.876);
-	}
+/*
+ * App-owned color tokens, separate from atom's own --color-* tokens.
+ * These support nested [data-theme="dark"] overrides on individual sections
+ * (nav, footer, home hero) — atom's theme system only reacts to data-theme
+ * on the root <html> element, so it can't express a per-section override.
+ */
+:root {
+	--color_success: oklch(0.659 0.12 144.059 / 0.69);
+	--color_danger: oklch(0.546 0.179 23.376 / 0.69);
+	--color_back: oklch(0.97 0 89.876);
+	--color_muted: oklch(0.839 0 89.876 / 0.69);
+	--color_subtle: oklch(0.244 0 89.876 / 0.69);
+	--color_front: oklch(0.244 0 89.876);
 }
 
-@theme inline {
-	--font-sans: system-ui;
-	/* color-* defines theme colors to follow TW styles */
-	--color-back: var(--color_back);
-	--color-front: var(--color_front);
-	--color-muted: var(--color_muted);
-	--color-subtle: var(--color_subtle);
-	--color-success: var(--color_success);
-	--color-danger: var(--color_danger);
+[data-theme="dark"] {
+	--color_back: oklch(0.115 0 89.876);
+	--color_muted: oklch(0.264 0 89.876 / 0.69);
+	--color_subtle: oklch(0.888 0 89.876 / 0.69);
+	--color_front: oklch(0.925 0 89.876);
 }
 
-@layer base {
-	html {
-		@apply font-sans leading-relaxed subpixel-antialiased scroll-smooth;
-		font-synthesis: none;
-		text-rendering: optimizeLegibility;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-
-	body {
-		@apply bg-back text-front;
-	}
-
-	/* Prevent layout shift from images */
-	img {
-		content-visibility: auto;
-	}
+html {
+	scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	font-synthesis: none;
 }
 
-@layer components {
+body {
+	background: var(--color_back);
+	color: var(--color_front);
+}
+
+/* Prevent layout shift from images */
+img {
+	content-visibility: auto;
+}
+
+.screen {
+	width: 90vw;
+	min-height: 100vh;
+	margin-inline: auto;
+	padding-block: 8rem;
+	background: var(--color_back);
+	color: var(--color_front);
+}
+
+@media (min-width: 1024px) {
 	.screen {
-		@apply w-[90vw] lg:w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
+		width: 70vw;
 	}
+}
 
-	/* Animated gradient text utilities using CSS variables */
-	.text-gradient {
-		@apply bg-clip-text text-transparent font-semibold ease-in-out bg-gradient-to-l from-front via-muted to-front;
-		background-size: 200% 200%;
-		animation: gradient-move 5s infinite;
-	}
+.control-primary,
+.control-secondary {
+	display: inline-block;
+	border-radius: 0.75rem;
+	padding: 0.5rem 1rem;
+	transition: transform 300ms;
+}
 
-	.card {
-		@apply bg-muted/40 shadow-sm hover:shadow-lg duration-300 transition-shadow rounded-2xl p-4;
-	}
+.control-primary:hover,
+.control-secondary:hover {
+	transform: scale(1.05);
+}
 
-	.control-primary {
-		@apply bg-front text-back rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
-	}
+.control-primary {
+	background: var(--color_front);
+	color: var(--color_back);
+}
 
-	.control-secondary {
-		@apply bg-muted text-front rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
+.control-secondary {
+	background: var(--color_muted);
+	color: var(--color_front);
+}
+
+.bg-back {
+	background: var(--color_back);
+}
+
+.bg-front {
+	background: var(--color_front);
+}
+
+.bg-muted {
+	background: var(--color_muted);
+}
+
+.text-back {
+	color: var(--color_back);
+}
+
+.text-front {
+	color: var(--color_front);
+}
+
+.text-subtle {
+	color: var(--color_subtle);
+}
+
+.border-top-muted {
+	border-top: 1px solid color-mix(in oklch, var(--color_muted) 50%, transparent);
+}
+
+.link-subtle {
+	color: var(--color_subtle);
+	cursor: pointer;
+	transition: color 300ms;
+}
+
+.link-subtle:hover {
+	color: var(--color_front);
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
 	}
+}
+
+.spinner {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 9999px;
+	border: 2px solid transparent;
+	border-bottom-color: var(--color_front);
+	animation: spin 1s linear infinite;
+}
+
+/* Bumps a Flex/Grid gap up a step once there's room for it. */
+.gap-responsive-lg {
+	gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+	.gap-responsive-lg {
+		gap: var(--space-xl);
+	}
+}
+
+.direction-responsive-row {
+	flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+	.direction-responsive-row {
+		flex-direction: row;
+	}
+}
+
+.cta-button {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.375rem 0.75rem;
+	border-radius: var(--radius-md);
+	font-size: var(--text-label);
+	background: var(--color_front);
+	color: var(--color_back);
+}
+
+.cta-button--custom {
+	cursor: default;
+}
+
+.search-field {
+	padding-inline: 1rem;
+	border-radius: var(--radius-md);
+	background: var(--color_muted);
+}
+
+.landing-hero {
+	max-width: 90vw;
+	user-select: none;
+}
+
+@media (min-width: 1024px) {
+	.landing-hero {
+		max-width: 1000px;
+	}
+}
+
+.nav-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	width: 100%;
+	height: 3rem;
+	padding: 0.25rem;
+	transition: transform 300ms;
+}
+
+.nav-bar--visible {
+	transform: translateY(0);
+}
+
+.nav-bar--hidden {
+	transform: translateY(-100%);
+}
+
+.nav-bar-inner {
+	width: 100%;
+	height: 100%;
+	margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+	.nav-bar-inner {
+		width: 70vw;
+	}
+}
+
+/* Higher specificity than .link-subtle so it wins regardless of class order. */
+.nav-bar .nav-link {
+	color: var(--color_front);
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--radius-md);
+	transition: background-color 300ms;
+}
+
+.nav-bar .nav-link:hover {
+	background: var(--color_muted);
+}
+
+.nav-bar .nav-link--active {
+	background: var(--color_muted);
+}
+
+.nav-search-button {
+	margin-left: auto;
+	padding: 0.5rem;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: transform 300ms;
+}
+
+.nav-search-button:hover {
+	transform: scale(1.05);
+}
+
+.footer {
+	min-height: 10vh;
+	padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+	.footer {
+		padding: 2rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.footer {
+		padding: 4rem;
+	}
+}
+
+.home-main {
+	position: relative;
+	z-index: 0;
+	width: 100%;
+	min-height: 100dvh;
+	overflow: hidden;
+}
+
+.neural-canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.home-neural-canvas {
+	z-index: -1;
+}
+
+.hide-below-lg {
+	display: none;
+}
+
+@media (min-width: 1024px) {
+	.hide-below-lg {
+		display: block;
+	}
+}
+
+.work-history-connector {
+	width: 0.125rem;
+	height: 2rem;
+	margin-right: auto;
+	margin-left: 2rem;
+	background: color-mix(in oklch, var(--color_subtle) 20%, transparent);
 }

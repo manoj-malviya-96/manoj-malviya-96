@@ -1,5 +1,6 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { type InputHTMLAttributes, useEffect } from "react";
+import { Flex, InputField } from "@manoj-malviya-96/atom";
+import type { InputHTMLAttributes } from "react";
 import { mergeCls } from "@/lib/utils";
 import Icon from "./icon";
 
@@ -10,33 +11,32 @@ export type SearchFieldProps = {
 	className?: string;
 } & Omit<
 	InputHTMLAttributes<HTMLInputElement>,
-	"value" | "onChange" | "placeholder" | "className"
+	"value" | "onChange" | "placeholder" | "className" | "type"
 >;
 
 export default function Search({
 	value,
 	onChange,
 	placeholder = "Search...",
-	className = "",
+	className,
 	...rest
 }: SearchFieldProps) {
-	useEffect(() => {
-		console.log(value);
-	}, [value]);
 	return (
-		<div className="flex flex-row items-center justify-start gap-4 bg-muted px-4 rounded-lg">
-			<Icon icon={faSearch} className="icon text-subtle" />
-			<input
+		<Flex
+			direction="row"
+			gap="md"
+			vAlign="center"
+			className={mergeCls("search-field", className)}
+		>
+			<Icon icon={faSearch} className="text-subtle" />
+			<InputField
 				type="text"
+				variant="plain"
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				placeholder={placeholder}
-				className={mergeCls(
-					"border-0 rounded-lg h-10 text-sm w-full px-4 focus:outline-none focus:ring-0",
-					className,
-				)}
 				{...rest}
 			/>
-		</div>
+		</Flex>
 	);
 }

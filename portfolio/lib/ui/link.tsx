@@ -1,3 +1,4 @@
+import { Link as AtomLink } from "@manoj-malviya-96/atom";
 import { default as NextLink } from "next/link";
 import type { ReactNode } from "react";
 import type { UrlObject } from "url";
@@ -8,35 +9,43 @@ type LinkProps = {
 	url: ExternalURL | UrlObject | string;
 	className?: string;
 	newTab?: boolean;
-	asControl?: boolean;
+	asControl?: "primary" | "secondary";
 	children: ReactNode;
 };
 
+const controlClass = {
+	primary: "control-primary",
+	secondary: "control-secondary",
+} as const;
+
+/**
+ * Atom's Link renders a plain <a> — it has no notion of Next.js routing.
+ * Internal paths go through next/link (via atom's polymorphic `as`) to keep
+ * client-side navigation; external URLs stay a plain anchor.
+ */
 export default function Link({
 	url,
 	children,
 	newTab,
-	asControl = false,
+	asControl,
 	className,
 }: LinkProps) {
 	if (!url) {
 		throw new Error("Link component requires a url prop");
 	}
-	const props = newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
+	const isInternal = typeof url === "object" || url.startsWith("/");
 	return (
-		<NextLink
+		<AtomLink
+			as={isInternal ? NextLink : "a"}
 			href={url}
-			replace={false}
+			openNewTab={newTab}
+			aria-label={typeof url === "string" ? url : url.toString()}
 			className={mergeCls(
-				asControl
-					? "control-primary"
-					: "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
+				asControl ? controlClass[asControl] : "link-subtle",
 				className,
 			)}
-			aria-label={typeof url === "string" ? url : url.toString()}
-			{...props}
 		>
 			{children}
-		</NextLink>
+		</AtomLink>
 	);
 }

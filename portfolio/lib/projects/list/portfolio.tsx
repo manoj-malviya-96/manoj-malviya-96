@@ -1,7 +1,7 @@
+import { Typography } from "@manoj-malviya-96/atom";
 import type { Project } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
 import Link from "@/lib/ui/link";
-import { Typography } from "@/lib/ui/text";
 
 const metadata = {
 	title: "Portfolio",
@@ -24,7 +24,6 @@ function PortfolioCard() {
 					href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
 				},
 			]}
-
 		>
 			<Typography variant="body">
 				It’s simple, informative, and it works which is exactly the point. I

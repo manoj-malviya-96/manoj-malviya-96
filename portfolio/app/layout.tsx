@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "@/lib/core/react_query";
-import "./globals.css";
 import { Inter } from "next/font/google";
 import type React from "react";
 import Footer from "@/lib/core/footer";
 import NavBar from "@/lib/core/nav_bar";
+import { ReactQueryProvider } from "@/lib/core/react_query";
+import "@manoj-malviya-96/atom/styles.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "Manoj Malviya",
@@ -27,8 +28,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" data-theme="light" className={inter.className}>
-			<body>
+		<html lang="en" data-theme="light">
+			<body className={inter.className}>
 				<ReactQueryProvider>
 					<NavBar />
 					{children}

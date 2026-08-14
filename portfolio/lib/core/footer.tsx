@@ -7,7 +7,8 @@ import {
 	faMedium,
 } from "@fortawesome/free-brands-svg-icons";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import Image from "next/image";
+import { Flex, Image, Typography } from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import {
 	EmailAddress,
@@ -18,7 +19,6 @@ import {
 import { UserAvatar } from "@/lib/assets";
 import Icon from "@/lib/ui/icon";
 import Link from "@/lib/ui/link";
-import { Typography } from "@/lib/ui/text";
 
 const quickLinks = [
 	{ label: "Work Experience", href: "/experience" },
@@ -32,9 +32,9 @@ const quickLinks = [
 
 function QuickLinks() {
 	return (
-		<span className="flex flex-col gap-4">
+		<Flex direction="col" gap="md">
 			<Typography variant="title">Quick Links</Typography>
-			<ul className="flex flex-col gap-1">
+			<Flex as="ul" direction="col" gap="xs">
 				{quickLinks.map((link) => (
 					<li key={link.label}>
 						<Link url={link.href} newTab>
@@ -42,8 +42,8 @@ function QuickLinks() {
 						</Link>
 					</li>
 				))}
-			</ul>
-		</span>
+			</Flex>
+		</Flex>
 	);
 }
 
@@ -60,12 +60,17 @@ function SocialLinks() {
 	const socialKeys = Object.keys(socials) as SocialMedia[];
 	if (!socials) return null;
 	return (
-		<span className="flex flex-col gap-1">
+		<Flex direction="col" gap="xs">
 			<Typography variant="title">Connect</Typography>
 			<Typography variant="body">
 				Feel free to reach out to me on any of the platforms below.
 			</Typography>
-			<ul className="flex flex-row gap-4 mt-4">
+			<Flex
+				as="ul"
+				direction="row"
+				gap="md"
+				style={{ marginTop: "var(--space-md)" }}
+			>
 				{socialKeys.map((key) => (
 					<li key={key}>
 						<Link url={socials[key]} newTab>
@@ -73,22 +78,25 @@ function SocialLinks() {
 						</Link>
 					</li>
 				))}
-			</ul>
-		</span>
+			</Flex>
+		</Flex>
 	);
 }
 
 const thisYear = new Date().getFullYear();
 function CopyRight() {
 	return (
-		<span className="flex flex-col gap-4">
+		<Flex direction="col" gap="md">
 			<Image
+				as={NextImage}
 				src={UserAvatar}
 				alt="Profile"
-				className="object-cover rounded-xl w-20 h-20"
+				fit="cover"
+				radius="md"
+				style={{ width: "5rem", height: "5rem" }}
 			/>
 			<Typography variant="body">{`Copyright @ ${thisYear} Manoj Malviya`}</Typography>
-		</span>
+		</Flex>
 	);
 }
 
@@ -96,13 +104,17 @@ export default function Footer() {
 	const pathname = usePathname();
 	if (pathname === "/") return null; // No footer on home page
 	return (
-		<footer
-			className="p-6 sm:p-8 lg:p-16 min-h-[10vh] flex flex-row justify-between gap-4 bg-back text-front border-muted/50 border-t-1"
+		<Flex
+			as="footer"
+			direction="row"
+			hAlign="between"
+			gap="md"
+			className="footer bg-back text-front border-top-muted"
 			data-theme="dark"
 		>
 			<CopyRight />
 			<QuickLinks />
 			<SocialLinks />
-		</footer>
+		</Flex>
 	);
 }

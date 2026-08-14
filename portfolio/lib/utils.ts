@@ -1,9 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import type { MonthAndYear } from "@/lib/types";
 
 export function mergeCls(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+	return clsx(inputs);
 }
 
 export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {

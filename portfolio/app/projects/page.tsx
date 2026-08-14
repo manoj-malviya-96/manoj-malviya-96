@@ -1,8 +1,8 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { Flex, Typography } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
 import { Icon } from "@/lib/ui";
-import { Typography } from "@/lib/ui/text";
 
 function ProjectsLoading() {
 	return (
@@ -14,17 +14,22 @@ function ProjectsLoading() {
 
 export default function Page() {
 	return (
-		<main className="screen flex flex-col gap-8 lg:gap-16">
-			<span className="flex flex-col gap-2">
+		<Flex
+			as="main"
+			direction="col"
+			gap="lg"
+			className="screen gap-responsive-lg"
+		>
+			<Flex direction="col" gap="xs">
 				<Typography variant="heading">Projects</Typography>
 				<Typography variant="body">
 					A collection of my favorite projects that I have worked on over the
 					years.
 				</Typography>
-			</span>
+			</Flex>
 			<Suspense fallback={<ProjectsLoading />}>
 				<ProjectsClient />
 			</Suspense>
-		</main>
+		</Flex>
 	);
 }

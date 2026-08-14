@@ -1,12 +1,12 @@
 "use client";
 
+import { Flex, Typography } from "@manoj-malviya-96/atom";
 import Fuse, { type IFuseOptions } from "fuse.js";
 import { useSearchParams } from "next/navigation";
-import React, { type ComponentType, useEffect, useMemo, useState } from "react";
+import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { ALL_PROJECTS } from "@/lib/projects/list";
 import type { ProjectTag } from "@/lib/projects/list/types";
 import { Search } from "@/lib/ui";
-import { Typography } from "@/lib/ui/text";
 
 interface ProjectData {
 	id: string;
@@ -99,10 +99,17 @@ export default function ProjectsClient({
 
 	if (isLoading) {
 		return (
-			<section className="flex flex-col gap-4 items-center justify-center py-16">
-				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-				<p className="text-subtle text-sm">Loading projects...</p>
-			</section>
+			<Flex
+				as="section"
+				direction="col"
+				gap="md"
+				padding="xl"
+				hAlign="center"
+				vAlign="center"
+			>
+				<div className="spinner" />
+				<Typography variant="caption">Loading projects...</Typography>
+			</Flex>
 		);
 	}
 
@@ -119,7 +126,7 @@ export default function ProjectsClient({
 	};
 
 	return (
-		<section className="flex flex-col gap-16">
+		<Flex as="section" direction="col" gap="xl">
 			<Search
 				value={query}
 				onChange={handleSearch}
@@ -131,17 +138,21 @@ export default function ProjectsClient({
 					No projects match that search.
 				</Typography>
 			) : (
-				<ul className="flex flex-col gap-32">
+				<Flex as="ul" direction="col" gap="xl">
 					{filtered.map((project) => {
 						const ProjectComponent = project.Component;
 						return (
-							<li className="list-none" key={project.id} id={project.id}>
+							<li
+								style={{ listStyle: "none" }}
+								key={project.id}
+								id={project.id}
+							>
 								<ProjectComponent />
 							</li>
 						);
 					})}
-				</ul>
+				</Flex>
 			)}
-		</section>
+		</Flex>
 	);
 }
