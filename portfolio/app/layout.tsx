@@ -28,7 +28,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" data-theme="light">
+		/*
+		 * suppressHydrationWarning covers this element's own attributes only:
+		 * theme extensions (Dark Reader and friends) stamp data-* onto <html>
+		 * before React loads, and the mismatch is theirs, not the tree's.
+		 */
+		<html lang="en" data-theme="light" suppressHydrationWarning>
 			<body className={inter.className}>
 				<ReactQueryProvider>
 					<NavBar />
