@@ -7,7 +7,7 @@ import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import { getSocialLinks } from "@/lib/about_me/profile";
 import { Icon, Link, StatCard } from "@/lib/ui";
 
-export function GithubMetricsCard({ className }: { className?: string }) {
+export function GithubMetricsCard() {
 	const { data, error } = useGithubQuery();
 
 	return (
@@ -17,7 +17,6 @@ export function GithubMetricsCard({ className }: { className?: string }) {
 			error={
 				error ? `Could not load GitHub metrics: ${error.message}` : undefined
 			}
-			className={className}
 			stats={[
 				{ label: "Total Contributions", value: data?.totalContribution },
 				{ label: "This Year", value: data?.currentYearContribution },
@@ -37,7 +36,7 @@ export function GithubMetricsCard({ className }: { className?: string }) {
 	);
 }
 
-export function ScholarMetricsCard({ className }: { className?: string }) {
+export function ScholarMetricsCard() {
 	const { data, error } = useGoogleScholarQuery();
 
 	return (
@@ -47,7 +46,6 @@ export function ScholarMetricsCard({ className }: { className?: string }) {
 			error={
 				error ? `Could not load Scholar metrics: ${error.message}` : undefined
 			}
-			className={className}
 			stats={[
 				{ label: "Total Citations", value: data?.citations?.toLocaleString() },
 				{ label: "Publications", value: data?.publications },
