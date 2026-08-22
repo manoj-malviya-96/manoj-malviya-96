@@ -26,6 +26,10 @@ img {
 .neural-canvas {
 	position: fixed;
 	inset: 0;
+	/* canvas is a replaced element: inset alone sizes it to its 300x150
+       intrinsic default instead of stretching to fill the viewport. */
+	width: 100%;
+	height: 100%;
 	z-index: -1;
 	pointer-events: none;
 	opacity: 0.55;

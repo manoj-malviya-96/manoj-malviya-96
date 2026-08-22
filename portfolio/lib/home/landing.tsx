@@ -33,13 +33,7 @@ export default function Landing() {
 				<Link url="/projects" padding="sm" radius="md" backgroundColor="brand">
 					View my projects
 				</Link>
-				<Link
-					url="/resume"
-					padding="sm"
-					radius="md"
-					backgroundColor="surface"
-					className="frosted"
-				>
+				<Link url="/resume" padding="sm" radius="md" backgroundColor="surface">
 					Resume
 				</Link>
 			</Flex>

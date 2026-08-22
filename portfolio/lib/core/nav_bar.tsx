@@ -19,7 +19,7 @@ export default function NavBar() {
 		<HeaderBar
 			left={
 				<Atom as="nav" aria-label="Site">
-					<TabBar aria-label="Sections">
+					<TabBar aria-label="Sections" placement="inline">
 						{NAV_LINKS.map(({ url, label }) => {
 							const isCurrent = pathname === url;
 							return (
