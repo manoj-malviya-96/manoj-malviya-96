@@ -61,6 +61,7 @@ function WorkExpCard({
 			padding="lg"
 			radius="md"
 			backgroundColor="surface"
+			className="frosted"
 			style={{ flex: 1, width: "100%" }}
 		>
 			<Flex direction="row" gap="md" vAlign="center">

@@ -30,8 +30,7 @@ export default function Footer() {
 			direction="row"
 			hAlign="between"
 			gap="md"
-			backgroundColor="page"
-			className="footer theme-dark"
+			className="footer"
 		>
 			<CopyRight />
 			<QuickLinks />

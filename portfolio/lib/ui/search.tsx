@@ -21,6 +21,7 @@ export default function Search({
 			padding="sm"
 			radius="md"
 			backgroundColor="surface"
+			className="frosted"
 		>
 			<Icon icon={faSearch} />
 			<InputField

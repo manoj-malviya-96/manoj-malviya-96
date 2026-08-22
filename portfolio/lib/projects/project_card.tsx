@@ -27,7 +27,6 @@ type ProjectCardProps = ProjectMeta & {
 	children: ReactNode;
 	images: readonly MediaContent[];
 	ctas?: readonly ProjectCTA[];
-	className?: string;
 };
 
 export default function ProjectCard({
@@ -37,16 +36,18 @@ export default function ProjectCard({
 	tags,
 	images,
 	ctas,
-	className,
 }: ProjectCardProps) {
 	return (
 		<Flex
 			direction="col"
 			gap="lg"
 			hAlign="start"
+			padding="lg"
+			radius="md"
+			backgroundColor="surface"
 			className={mergeCls(
+				"frosted",
 				images.length <= 1 && "direction-responsive-row",
-				className,
 			)}
 		>
 			<Flex direction="col" gap="md" style={{ flex: 1 }}>

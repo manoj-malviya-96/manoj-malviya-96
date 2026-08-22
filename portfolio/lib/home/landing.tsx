@@ -1,5 +1,5 @@
 import { Flex, Typography } from "@manoj-malviya-96/atom";
-import { Link } from "@/lib/ui";
+import { Link, NeuralCanvas } from "@/lib/ui";
 
 export default function Landing() {
 	return (
@@ -11,13 +11,16 @@ export default function Landing() {
 			vAlign="center"
 			className="landing-hero"
 		>
-			<Flex direction="col" gap="md" hAlign="center">
+			<Flex direction="col" gap="lg" hAlign="center">
+				<Typography variant="overline" align="center">
+					Product builder & tinkerer
+				</Typography>
 				<Typography variant="hero" align="center">
 					Building efficient products for a better future
 				</Typography>
-				<Typography variant="body" align="center">
+				<Typography variant="subtitle" align="center">
 					Hey! I am Manoj Malviya, a software engineer specializing in building
-					tools
+					tools.
 				</Typography>
 			</Flex>
 			<Flex
@@ -30,10 +33,17 @@ export default function Landing() {
 				<Link url="/projects" padding="sm" radius="md" backgroundColor="brand">
 					View my projects
 				</Link>
-				<Link url="/resume" padding="sm" radius="md" backgroundColor="surface">
+				<Link
+					url="/resume"
+					padding="sm"
+					radius="md"
+					backgroundColor="surface"
+					className="frosted"
+				>
 					Resume
 				</Link>
 			</Flex>
+			<NeuralCanvas hue={255} saturation={0.5} chroma={0.8} followScroll />
 		</Flex>
 	);
 }

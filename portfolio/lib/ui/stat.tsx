@@ -30,6 +30,7 @@ export default function StatCard({
 			padding="lg"
 			radius="md"
 			backgroundColor="surface"
+			className="frosted"
 		>
 			<Flex direction="col" gap="xs">
 				<Flex direction="row" hAlign="between" vAlign="center" gap="sm">

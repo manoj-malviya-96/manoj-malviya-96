@@ -22,6 +22,7 @@ const inter = Inter({
 	preload: true,
 });
 
+/** Each page names its own scheme; globals.css lifts it to <html>. */
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -33,7 +34,7 @@ export default function RootLayout({
 		 * theme extensions (Dark Reader and friends) stamp data-* onto <html>
 		 * before React loads, and the mismatch is theirs, not the tree's.
 		 */
-		<html lang="en" data-theme="light" suppressHydrationWarning>
+		<html lang="en" suppressHydrationWarning>
 			<body className={inter.className}>
 				<ReactQueryProvider>
 					<NavBar />
