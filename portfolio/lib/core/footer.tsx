@@ -1,4 +1,5 @@
 "use client";
+
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
 	faGithub,
@@ -7,7 +8,7 @@ import {
 	faMedium,
 } from "@fortawesome/free-brands-svg-icons";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import { Flex, Image, Typography } from "@manoj-malviya-96/atom";
+import { Flex, Image, List, Typography } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -17,104 +18,99 @@ import {
 	type SocialMedia,
 } from "@/lib/about_me/profile";
 import { UserAvatar } from "@/lib/assets";
-import Icon from "@/lib/ui/icon";
-import Link from "@/lib/ui/link";
-
-const quickLinks = [
-	{ label: "Work Experience", href: "/experience" },
-	{ label: "Projects & Blogs", href: "/projects" },
-	{
-		label: "Resume PDF",
-		href: ResumePDF,
-	},
-	{ label: "Contact", href: EmailAddress },
-] as const;
-
-function QuickLinks() {
-	return (
-		<Flex direction="col" gap="md">
-			<Typography variant="title">Quick Links</Typography>
-			<Flex as="ul" direction="col" gap="xs">
-				{quickLinks.map((link) => (
-					<li key={link.label}>
-						<Link url={link.href} newTab>
-							{link.label}
-						</Link>
-					</li>
-				))}
-			</Flex>
-		</Flex>
-	);
-}
-
-const SocialIcon: Record<SocialMedia, IconDefinition> = {
-	Github: faGithub,
-	Linkedin: faLinkedin,
-	Scholar: faGoogleScholar,
-	Medium: faMedium,
-	Instagram: faInstagram,
-} as const;
-
-function SocialLinks() {
-	const socials = getSocialLinks();
-	const socialKeys = Object.keys(socials) as SocialMedia[];
-	if (!socials) return null;
-	return (
-		<Flex direction="col" gap="xs">
-			<Typography variant="title">Connect</Typography>
-			<Typography variant="body">
-				Feel free to reach out to me on any of the platforms below.
-			</Typography>
-			<Flex
-				as="ul"
-				direction="row"
-				gap="md"
-				style={{ marginTop: "var(--space-md)" }}
-			>
-				{socialKeys.map((key) => (
-					<li key={key}>
-						<Link url={socials[key]} newTab>
-							<Icon icon={SocialIcon[key]} size="lg" />
-						</Link>
-					</li>
-				))}
-			</Flex>
-		</Flex>
-	);
-}
-
-const thisYear = new Date().getFullYear();
-function CopyRight() {
-	return (
-		<Flex direction="col" gap="md">
-			<Image
-				as={NextImage}
-				src={UserAvatar}
-				alt="Profile"
-				fit="cover"
-				radius="md"
-				style={{ width: "5rem", height: "5rem" }}
-			/>
-			<Typography variant="body">{`Copyright @ ${thisYear} Manoj Malviya`}</Typography>
-		</Flex>
-	);
-}
+import { Icon, Link } from "@/lib/ui";
 
 export default function Footer() {
 	const pathname = usePathname();
-	if (pathname === "/") return null; // No footer on home page
+	if (pathname === "/") return null;
+
 	return (
 		<Flex
 			as="footer"
 			direction="row"
 			hAlign="between"
 			gap="md"
-			className="footer bg-back text-front border-top-muted"
-			data-theme="dark"
+			backgroundColor="page"
+			className="footer theme-dark"
 		>
 			<CopyRight />
 			<QuickLinks />
 			<SocialLinks />
+		</Flex>
+	);
+}
+
+const AVATAR_SIZE = "5rem";
+
+function CopyRight() {
+	return (
+		<Flex direction="col" gap="md">
+			<Image
+				as={NextImage}
+				src={UserAvatar}
+				alt="Manoj Malviya"
+				fit="cover"
+				radius="md"
+				style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
+			/>
+			<Typography variant="body">
+				{`Copyright @ ${new Date().getFullYear()} Manoj Malviya`}
+			</Typography>
+		</Flex>
+	);
+}
+
+const QUICK_LINKS = [
+	{ label: "Work Experience", url: "/resume" },
+	{ label: "Projects & Blogs", url: "/projects" },
+	{ label: "Resume PDF", url: ResumePDF },
+	{ label: "Contact", url: EmailAddress },
+] as const;
+
+function QuickLinks() {
+	return (
+		<Flex direction="col" gap="md">
+			<Typography variant="title">Quick Links</Typography>
+			<List direction="col" gap="xs">
+				{QUICK_LINKS.map(({ label, url }) => (
+					<li key={label}>
+						<Link url={url} openNewTab={url.startsWith("http")} muted>
+							{label}
+						</Link>
+					</li>
+				))}
+			</List>
+		</Flex>
+	);
+}
+
+const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: IconDefinition }> = [
+	{ name: "Github", icon: faGithub },
+	{ name: "Linkedin", icon: faLinkedin },
+	{ name: "Scholar", icon: faGoogleScholar },
+	{ name: "Medium", icon: faMedium },
+	{ name: "Instagram", icon: faInstagram },
+];
+
+function SocialLinks() {
+	const socials = getSocialLinks();
+	return (
+		<Flex direction="col" gap="md">
+			<Flex direction="col" gap="xs">
+				<Typography variant="title">Connect</Typography>
+				<Typography variant="body">
+					Feel free to reach out to me on any of the platforms below.
+				</Typography>
+			</Flex>
+			<List direction="row" gap="md">
+				{SOCIALS.map(({ name, icon }) => (
+					<li key={name}>
+						<Link url={socials[name]} openNewTab aria-label={name}>
+							<Icon icon={icon} size="lg" />
+						</Link>
+					</li>
+				))}
+			</List>
 		</Flex>
 	);
 }

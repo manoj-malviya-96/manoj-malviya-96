@@ -2,14 +2,43 @@ import { faLocationArrow } from "@fortawesome/free-solid-svg-icons/faLocationArr
 import { Badge, Flex, Image, Typography } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import type React from "react";
-import { useMemo } from "react";
 import {
 	WORK_EXPERIENCE,
 	type WorkExperience,
 } from "@/lib/about_me/work_experience";
-import { Icon } from "@/lib/ui";
-import Link from "@/lib/ui/link";
+import { Icon, Link } from "@/lib/ui";
 import { calculateDuration, formatDate } from "@/lib/utils";
+
+/** Ongoing roles first, then most recently ended. */
+const BY_RECENCY = [...WORK_EXPERIENCE].sort((a, b) => {
+	if (!a.endDate && !b.endDate) return a.startDate < b.startDate ? 1 : -1;
+	if (!a.endDate) return -1;
+	if (!b.endDate) return 1;
+	return a.endDate < b.endDate ? 1 : -1;
+});
+
+export default function WorkHistory({
+	className,
+	style,
+}: {
+	className?: string;
+	style?: React.CSSProperties;
+}) {
+	return (
+		<Flex direction="col" className={className} style={style}>
+			{BY_RECENCY.map((experience, index) => (
+				<Flex key={experience.startDate} direction="col" hAlign="center">
+					<WorkExpCard {...experience} />
+					{index !== BY_RECENCY.length - 1 && (
+						<span className="work-history-connector" />
+					)}
+				</Flex>
+			))}
+		</Flex>
+	);
+}
+
+const LOGO_SIZE = "2.5rem";
 
 function WorkExpCard({
 	startDate,
@@ -41,10 +70,9 @@ function WorkExpCard({
 					alt={`${company} logo`}
 					fit="contain"
 					radius="md"
-					style={{ width: "2.5rem", height: "2.5rem" }}
+					style={{ width: LOGO_SIZE, height: LOGO_SIZE }}
 				/>
 				<Flex direction="col" style={{ flex: 1 }}>
-					{/* Name, position and date Row */}
 					<Flex
 						direction="row"
 						gap="xs"
@@ -58,10 +86,9 @@ function WorkExpCard({
 						</Flex>
 						<Typography variant="caption">{timeString}</Typography>
 					</Flex>
-					{/* Location and Company*/}
 					<Flex direction="row" gap="md" vAlign="center">
 						<Typography variant="caption">
-							<Link url={companyURL} newTab>
+							<Link url={companyURL} openNewTab>
 								{company}
 							</Link>
 						</Typography>
@@ -79,43 +106,6 @@ function WorkExpCard({
 					{role}
 				</Typography>
 			)}
-		</Flex>
-	);
-}
-
-export default function WorkHistory({
-	className,
-	style,
-}: {
-	className?: string;
-	style?: React.CSSProperties;
-}) {
-	const sortedExperiences = useMemo(
-		() =>
-			WORK_EXPERIENCE.sort((a, b) => {
-				if (a.endDate && b.endDate) {
-					return a.endDate < b.endDate ? 1 : -1;
-				}
-				if (!a.endDate && !b.endDate) {
-					return a.startDate < b.startDate ? 1 : -1;
-				}
-				if (!a.endDate) return -1;
-				if (!b.endDate) return 1;
-				return 0;
-			}),
-		[],
-	);
-
-	return (
-		<Flex direction="col" className={className} style={style}>
-			{sortedExperiences.map((exp, idx) => (
-				<Flex key={exp.startDate} direction="col" hAlign="center">
-					<WorkExpCard {...exp} />
-					{idx !== sortedExperiences.length - 1 && (
-						<span className="work-history-connector" />
-					)}
-				</Flex>
-			))}
 		</Flex>
 	);
 }

@@ -1,7 +1,5 @@
-"use client";
-
 import { Flex, Typography } from "@manoj-malviya-96/atom";
-import Link from "@/lib/ui/link";
+import { Link } from "@/lib/ui";
 
 export default function Landing() {
 	return (
@@ -12,7 +10,6 @@ export default function Landing() {
 			hAlign="center"
 			vAlign="center"
 			className="landing-hero"
-			data-theme="dark"
 		>
 			<Flex direction="col" gap="md" hAlign="center">
 				<Typography variant="hero" align="center">
@@ -30,10 +27,10 @@ export default function Landing() {
 				vAlign="center"
 				style={{ flexWrap: "wrap" }}
 			>
-				<Link url="/projects" asControl="primary">
+				<Link url="/projects" padding="sm" radius="md" backgroundColor="brand">
 					View my projects
 				</Link>
-				<Link url="/resume" asControl="secondary">
+				<Link url="/resume" padding="sm" radius="md" backgroundColor="surface">
 					Resume
 				</Link>
 			</Flex>

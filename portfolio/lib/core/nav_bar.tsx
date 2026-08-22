@@ -1,64 +1,50 @@
 "use client";
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Flex } from "@manoj-malviya-96/atom";
+import { HeaderBar, List } from "@manoj-malviya-96/atom";
 import { usePathname } from "next/navigation";
-import type { ExternalURL } from "@/lib/types";
-import Icon from "@/lib/ui/icon";
-import Link from "@/lib/ui/link";
-import useScrollVisibility from "@/lib/ui/scroll_visibility";
-import { mergeCls } from "@/lib/utils";
+import { Icon, Link } from "@/lib/ui";
 
-type NavLink = {
-	url: string | ExternalURL;
-	label: string;
-};
-
-const links: NavLink[] = [
+const NAV_LINKS = [
 	{ url: "/", label: "Home" },
 	{ url: "/resume", label: "Resume" },
 	{ url: "/projects", label: "Projects" },
 ] as const;
 
-export default function Navbar() {
+export default function NavBar() {
 	const pathname = usePathname();
-
-	const { isVisible } = useScrollVisibility({
-		velocityThreshold: 0.8,
-		enabled: pathname !== "/",
-	});
 	if (pathname === "/") return null;
 
 	return (
-		<nav
-			className={mergeCls(
-				"nav-bar bg-back",
-				isVisible ? "nav-bar--visible" : "nav-bar--hidden",
-			)}
-			data-theme="dark"
-		>
-			<Flex
-				direction="row"
-				gap="md"
-				vAlign="center"
-				className="nav-bar-inner text-front"
-			>
-				{links.map((link) => (
-					<Link
-						key={link.url}
-						url={link.url}
-						className={mergeCls(
-							"nav-link",
-							pathname === link.url && "nav-link--active",
-						)}
-					>
-						{link.label}
-					</Link>
-				))}
-				<button type="button" className="nav-search-button" aria-label="Search">
+		<HeaderBar
+			className="theme-dark"
+			left={
+				<List direction="row" gap="xs">
+					{NAV_LINKS.map(({ url, label }) => (
+						<li key={url}>
+							<Link
+								url={url}
+								padding="sm"
+								radius="md"
+								backgroundColor={pathname === url ? "surface" : undefined}
+								aria-current={pathname === url ? "page" : undefined}
+							>
+								{label}
+							</Link>
+						</li>
+					))}
+				</List>
+			}
+			right={
+				<Link
+					url="/projects"
+					padding="sm"
+					radius="md"
+					aria-label="Search projects"
+				>
 					<Icon icon={faSearch} />
-				</button>
-			</Flex>
-		</nav>
+				</Link>
+			}
+		/>
 	);
 }

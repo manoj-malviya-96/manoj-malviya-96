@@ -1,69 +1,65 @@
 "use client";
+
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import { useMemo } from "react";
 import { useGithubQuery } from "@/lib/about_me/github";
 import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import { getSocialLinks } from "@/lib/about_me/profile";
-import { Icon } from "@/lib/ui";
-import Link from "@/lib/ui/link";
-import StatCard from "@/lib/ui/stat";
+import { Icon, Link, StatCard } from "@/lib/ui";
 
 export function GithubMetricsCard({ className }: { className?: string }) {
 	const { data, error } = useGithubQuery();
-
-	const stats = useMemo(
-		() => [
-			{ label: "Total Contributions", value: data?.totalContribution },
-			{ label: "This Year", value: data?.currentYearContribution },
-			{ label: "Daily Average", value: data?.dailyAverage },
-			{ label: "Longest Streak", value: data?.longestStreak },
-		],
-		[data],
-	);
-
-	if (error) {
-		console.error("Error fetching GitHub metrics:", error);
-	}
 
 	return (
 		<StatCard
 			title="Github"
 			description="A live snapshot of engineering momentum."
-			stats={stats}
+			error={
+				error ? `Could not load GitHub metrics: ${error.message}` : undefined
+			}
 			className={className}
+			stats={[
+				{ label: "Total Contributions", value: data?.totalContribution },
+				{ label: "This Year", value: data?.currentYearContribution },
+				{ label: "Daily Average", value: data?.dailyAverage },
+				{ label: "Longest Streak", value: data?.longestStreak },
+			]}
 			cta={
-				<Link newTab url={getSocialLinks().Github}>
+				<Link
+					url={getSocialLinks().Github}
+					openNewTab
+					aria-label="GitHub profile"
+				>
 					<Icon icon={faGithub} size="lg" />
 				</Link>
 			}
 		/>
 	);
 }
+
 export function ScholarMetricsCard({ className }: { className?: string }) {
 	const { data, error } = useGoogleScholarQuery();
 
-	const stats = useMemo(
-		() => [
-			{ label: "Total Citations", value: data?.citations?.toLocaleString() },
-			{ label: "Publications", value: data?.publications },
-			{ label: "h-index", value: data?.hIndex },
-			{ label: "This Year", value: data?.recentYearCitations },
-		],
-		[data],
-	);
-
-	if (error) {
-		console.error("Error fetching Google Scholar metrics:", error);
-	}
 	return (
 		<StatCard
 			title="Google Scholar"
 			description="Research impact metrics."
-			stats={stats}
+			error={
+				error ? `Could not load Scholar metrics: ${error.message}` : undefined
+			}
 			className={className}
+			stats={[
+				{ label: "Total Citations", value: data?.citations?.toLocaleString() },
+				{ label: "Publications", value: data?.publications },
+				{ label: "h-index", value: data?.hIndex },
+				{ label: "This Year", value: data?.recentYearCitations },
+			]}
 			cta={
-				<Link newTab url={getSocialLinks().Scholar}>
+				<Link
+					url={getSocialLinks().Scholar}
+					openNewTab
+					aria-label="Google Scholar profile"
+				>
 					<Icon icon={faGoogleScholar} size="lg" />
 				</Link>
 			}

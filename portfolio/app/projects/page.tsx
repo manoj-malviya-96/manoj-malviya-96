@@ -1,16 +1,6 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
-import { Flex, Typography } from "@manoj-malviya-96/atom";
+import { Flex, Progress, Typography } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
-import { Icon } from "@/lib/ui";
-
-function ProjectsLoading() {
-	return (
-		<section className="screen">
-			<Icon icon={faSpinner} size="lg" />
-		</section>
-	);
-}
 
 export default function Page() {
 	return (
@@ -27,7 +17,11 @@ export default function Page() {
 					years.
 				</Typography>
 			</Flex>
-			<Suspense fallback={<ProjectsLoading />}>
+			<Suspense
+				fallback={
+					<Progress value="indeterminate" aria-label="Loading projects" />
+				}
+			>
 				<ProjectsClient />
 			</Suspense>
 		</Flex>

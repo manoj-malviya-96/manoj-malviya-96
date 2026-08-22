@@ -9,8 +9,8 @@ export default function App() {
 			direction="row"
 			hAlign="center"
 			vAlign="center"
-			className="home-main bg-back text-front"
-			data-theme="dark"
+			backgroundColor="page"
+			className="home-main theme-dark"
 		>
 			<Landing />
 			<NeuralCanvas className="home-neural-canvas" followScroll />

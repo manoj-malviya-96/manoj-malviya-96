@@ -34,7 +34,7 @@ const months = [
 ] as const;
 export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
-	return `${months[parseInt(month) - 1]} ${year}`;
+	return `${months[Number.parseInt(month, 10) - 1]} ${year}`;
 }
 
 export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {

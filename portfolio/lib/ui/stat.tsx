@@ -1,60 +1,55 @@
-import { Flex, Grid, Typography } from "@manoj-malviya-96/atom";
-import type React from "react";
-import { memo } from "react";
+import { Flex, Grid, Stat, Typography } from "@manoj-malviya-96/atom";
+import type { ReactNode } from "react";
 
-type Stat = {
+export type StatItem = {
 	label: string;
-	value?: string | number;
+	value: ReactNode;
 };
 
-export interface CardProps {
+type StatCardProps = {
 	title: string;
-	description?: string;
-	stats: Stat[];
+	description: string;
+	stats: readonly StatItem[];
+	error?: string | undefined;
+	cta?: ReactNode;
 	className?: string;
-	cta?: React.ReactNode;
-}
+};
 
-const StatCard = memo(
-	({ title, description, stats, className, cta }: CardProps) => {
-		return (
-			<Flex
-				direction="col"
-				gap="md"
-				padding="lg"
-				radius="md"
-				backgroundColor="surface"
-				className={className}
-			>
-				<Flex direction="col" gap="xs">
-					<Flex direction="row" hAlign="between" vAlign="center" gap="sm">
-						<Typography variant="title">{title}</Typography>
-						{cta}
-					</Flex>
-					<Typography variant="caption">{description}</Typography>
+const MISSING_VALUE = "—";
+
+export default function StatCard({
+	title,
+	description,
+	stats,
+	error,
+	cta,
+	className,
+}: StatCardProps) {
+	return (
+		<Flex
+			direction="col"
+			gap="md"
+			padding="lg"
+			radius="md"
+			backgroundColor="surface"
+			className={className}
+		>
+			<Flex direction="col" gap="xs">
+				<Flex direction="row" hAlign="between" vAlign="center" gap="sm">
+					<Typography variant="title">{title}</Typography>
+					{cta}
 				</Flex>
-
-				<Grid columns={2} gap="xs">
-					{stats.slice(0, 4).map((stat, i) => (
-						<Flex
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							key={i}
-							direction="col"
-							hAlign="center"
-							vAlign="start"
-							padding="md"
-						>
-							<Typography variant="heading" as="p">
-								{stat.value ?? "-"}
-							</Typography>
-							<Typography variant="caption">{stat.label}</Typography>
-						</Flex>
-					))}
-				</Grid>
+				<Typography variant="caption">{error ?? description}</Typography>
 			</Flex>
-		);
-	},
-);
-
-StatCard.displayName = "StatCard";
-export default StatCard;
+			<Grid columns={2} gap="xs">
+				{stats.map((stat) => (
+					<Stat
+						key={stat.label}
+						label={stat.label}
+						value={stat.value ?? MISSING_VALUE}
+					/>
+				))}
+			</Grid>
+		</Flex>
+	);
+}
