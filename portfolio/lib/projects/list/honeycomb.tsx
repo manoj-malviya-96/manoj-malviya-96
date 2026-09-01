@@ -16,6 +16,11 @@ export const metadata: ProjectMeta = {
 	effort: "medium",
 	eyebrow: "CAD · C++ · VTK",
 	hook: "Because hexagons are just better, structurally speaking.",
+	media: {
+		kind: "video",
+		src: "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/honeycomb_demo.webm",
+		alt: "A honeycomb lattice generated and rendered in VTK.",
+	},
 	steps: {
 		problem:
 			"Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",

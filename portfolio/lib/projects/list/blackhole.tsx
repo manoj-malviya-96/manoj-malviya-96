@@ -9,6 +9,11 @@ const metadata = {
 	effort: "high",
 	eyebrow: "Graphics · C++ · OpenGL",
 	hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
+	media: {
+		kind: "image",
+		src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
+		alt: "Cover art for the black hole renderer.",
+	},
 	steps: {
 		problem:
 			"Gravitational lensing is usually only shown offline, in pre-rendered clips.",

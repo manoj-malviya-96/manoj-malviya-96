@@ -18,6 +18,11 @@ const metadata: ProjectMeta = {
 	effort: "high",
 	eyebrow: "Web · Three.js · WASM",
 	hook: "Winamp nostalgia, rebuilt for the GPU.",
+	media: {
+		kind: "video",
+		src: "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/muviz.webm",
+		alt: "Muviz reacting to a track in real time.",
+	},
 } as const;
 
 function MuvizProjectCard() {

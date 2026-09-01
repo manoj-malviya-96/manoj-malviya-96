@@ -11,6 +11,11 @@ const metadata = {
 	effort: "medium",
 	eyebrow: "Web · Next.js · Meta",
 	hook: "The portfolio, describing itself.",
+	media: {
+		kind: "video",
+		src: "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/portfolio.webm",
+		alt: "This portfolio’s interactive landing page in motion.",
+	},
 } as const;
 
 function PortfolioCard() {

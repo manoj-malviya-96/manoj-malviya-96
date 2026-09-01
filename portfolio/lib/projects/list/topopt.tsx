@@ -10,6 +10,11 @@ const metadata = {
 	effort: "high",
 	eyebrow: "Optimization · Python · HPC",
 	hook: "A 40-year-old optimization algorithm, dragged into this decade.",
+	media: {
+		kind: "video",
+		src: "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/optimization.webm",
+		alt: "A topology optimization converging on a solution.",
+	},
 	steps: {
 		problem:
 			"Classic topology-optimization research code was too slow to be useful beyond a demo.",
