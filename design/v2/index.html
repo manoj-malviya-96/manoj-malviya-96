@@ -429,13 +429,9 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   var points = [];
   var cells = [];
   var pointer = { x: -9999, y: -9999, active: false };
-  var STAGES = ['discover', 'design', 'build', 'measure'];
 
-  function stageColor(key) {
-    return getComputedStyle(document.documentElement).getPropertyValue('--stage-' + key + '-ink').trim();
-  }
   function lineColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+    return getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim();
   }
 
   function buildGrid() {
@@ -460,7 +456,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
     cells = [];
     for (var jj = 0; jj < rows; jj++) {
       for (var ii = 0; ii < cols; ii++) {
-        cells.push({ i: ii, j: jj, color: STAGES[(ii + jj * 2) % 4], flip: (ii + jj) % 2 === 0 });
+        cells.push({ i: ii, j: jj, flip: (ii + jj) % 2 === 0 });
       }
     }
   }
@@ -499,26 +495,9 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
       for (var i = 0; i < points[j].length; i++) row.push(displace(points[j][i], t));
       disp.push(row);
     }
-    for (var c = 0; c < cells.length; c++) {
-      var cell = cells[c];
-      var tl = disp[cell.j][cell.i], tr = disp[cell.j][cell.i + 1],
-          bl = disp[cell.j + 1][cell.i], br = disp[cell.j + 1][cell.i + 1];
-      ctx.fillStyle = stageColor(cell.color);
-      ctx.globalAlpha = 0.07;
-      ctx.beginPath();
-      if (cell.flip) {
-        ctx.moveTo(tl[0], tl[1]); ctx.lineTo(tr[0], tr[1]); ctx.lineTo(bl[0], bl[1]); ctx.closePath(); ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(tr[0], tr[1]); ctx.lineTo(br[0], br[1]); ctx.lineTo(bl[0], bl[1]); ctx.closePath(); ctx.fill();
-      } else {
-        ctx.moveTo(tl[0], tl[1]); ctx.lineTo(tr[0], tr[1]); ctx.lineTo(br[0], br[1]); ctx.closePath(); ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(tl[0], tl[1]); ctx.lineTo(br[0], br[1]); ctx.lineTo(bl[0], bl[1]); ctx.closePath(); ctx.fill();
-      }
-    }
     ctx.strokeStyle = lineColor();
     ctx.lineWidth = 1;
-    ctx.globalAlpha = 0.55;
+    ctx.globalAlpha = 0.3;
     for (var jr = 0; jr < disp.length; jr++) {
       ctx.beginPath();
       for (var ic = 0; ic < disp[jr].length; ic++) {
