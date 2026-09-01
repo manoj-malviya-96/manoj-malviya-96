@@ -1,25 +1,25 @@
 html {
-	text-rendering: optimizeLegibility;
-	font-synthesis: none;
-	color-scheme: light dark;
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+    color-scheme: light dark;
 }
 
 h1,
 h2,
 h3 {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
 }
 
 /* Todo integrate in atom: Typography has no font-family prop (variant only picks size + heading level) — a mono utility class is the only way to get a monospace eyebrow/caption. */
 .font-mono {
-	font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 .wordmark {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
-	font-weight: 800;
-	font-size: 0.95rem;
-	letter-spacing: -0.01em;
+    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
 }
 
 /* Todo integrate in atom: Header's props are PolymorphicAtomProps<C, "children">, which — same as
@@ -27,32 +27,32 @@ h3 {
    (it's sticky-positioned chrome only). A sticky nav needs a background; the caller currently has no
    typed way to give it one. */
 .nav-shell {
-	background-color: var(--color-surface);
-	backdrop-filter: var(--material-blur);
-	padding: var(--space-xs) var(--space-xl);
-	border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    backdrop-filter: var(--material-blur);
+    padding: var(--space-xs) var(--space-xl);
+    border-radius: var(--radius-full);
 }
 
 html[data-theme="light"] {
-	color-scheme: light;
+    color-scheme: light;
 }
 
 html[data-theme="dark"] {
-	color-scheme: dark;
+    color-scheme: dark;
 }
 
 img {
-	content-visibility: auto;
+    content-visibility: auto;
 }
 
 /* atom's Screen owns width/gutter/min-height; this only clears the sticky Header above it. */
 .screen {
-	padding-block: 9rem 6rem;
+    padding-block: 9rem 6rem;
 }
 
 /* Todo integrate in atom: no dvh-based height token — the hero needs to fill most of the first viewport without a fixed rem value. */
 .hero-panel {
-	min-height: 60dvh;
+    min-height: 60dvh;
 }
 
 /* Todo integrate in atom: no arbitrary max-width prop (Size is a fixed sm–xl/full token scale), and
@@ -61,35 +61,32 @@ img {
    same contrast treatment. Worth a real "material surface" variant on Flex/backgroundColor upstream. */
 .landing-hero,
 .mesh-surface {
-	backdrop-filter: var(--material-blur);
+    backdrop-filter: var(--material-blur);
 }
 
 .landing-hero {
-	max-width: 90vw;
-	user-select: none;
+    max-width: 90vw;
+    user-select: none;
 }
 
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {
-	display: grid;
-	gap: 1px;
-	background-color: var(--color-chrome);
-	border: 1px solid var(--color-chrome);
-	border-radius: var(--radius-lg);
-	overflow: hidden;
+    display: grid;
+    gap: 1px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
 }
 
 .track-row {
-	background-color: var(--color-raised);
-	grid-template-columns: 9.5rem 1fr;
-	gap: var(--space-lg);
+    grid-template-columns: 9.5rem 1fr;
+    gap: var(--space-lg);
 }
 
 /* Matches atom's ratio="video" (16 / 9) — Flex has no ratio prop, only Image/ImageCarousel do. */
 .project-cover-placeholder {
-	aspect-ratio: 16 / 9;
-	width: 100%;
+    aspect-ratio: 16 / 9;
+    width: 100%;
 }
 
 /*
@@ -98,67 +95,67 @@ img {
  * atom already generated. A `columns={{base, md, lg}}`-style prop would remove this whole section.
  */
 .edu-grid {
-	grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 }
 
 .footer-grid {
-	grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 }
 
 .direction-responsive-row {
-	flex-direction: column;
+    flex-direction: column;
 }
 
 .gap-responsive-lg {
-	gap: var(--space-lg);
+    gap: var(--space-lg);
 }
 
 @media (min-width: 640px) {
-	.edu-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+    .edu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (min-width: 768px) {
-	.footer-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 920px) {
-	.track-row {
-		grid-template-columns: 1fr;
-	}
+    .track-row {
+        grid-template-columns: 1fr;
+    }
 
-	.loop-grid,
-	.stat-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+    .loop-grid,
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-	.mini-work-grid,
-	.case-grid,
-	.case-steps {
-		grid-template-columns: 1fr;
-	}
+    .mini-work-grid,
+    .case-grid,
+    .case-steps {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-	.loop-grid,
-	.stat-grid {
-		grid-template-columns: 1fr;
-	}
+    .loop-grid,
+    .stat-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (min-width: 1024px) {
-	.direction-responsive-row {
-		flex-direction: row;
-	}
+    .direction-responsive-row {
+        flex-direction: row;
+    }
 
-	.gap-responsive-lg {
-		gap: var(--space-xl);
-	}
+    .gap-responsive-lg {
+        gap: var(--space-xl);
+    }
 
-	.landing-hero {
-		max-width: 38rem;
-	}
+    .landing-hero {
+        max-width: 38rem;
+    }
 }
