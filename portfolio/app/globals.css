@@ -2,6 +2,26 @@ html {
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
 	color-scheme: light dark;
+
+	/* re-point atom's tokens (unlayered, so this wins over atom's @layer atom.tokens
+	   regardless of specificity) onto the design-v2 palette. */
+	--color-page: light-dark(#f5f6f4, #14181a);
+	--color-content: light-dark(#14181a, #f2f4f2);
+	--color-raised: light-dark(#ffffff, #1c2124);
+	--color-blue: light-dark(#0f6e96, #7ec6e9);
+	--color-indigo: light-dark(#6b3fa0, #cba6f2);
+	--color-green: light-dark(#227a4a, #82dc9c);
+	--color-orange: light-dark(#9a6a10, #f2c766);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+}
+
+.font-mono {
+	font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 html[data-theme="light"] {
