@@ -5,7 +5,7 @@ import ProjectCard from "@/lib/projects/project_card";
 const metadata: ProjectMeta = {
 	title: "Muviz",
 	description:
-		"A fast, feature-rich music visualizer for reactive 3D beautiful visualizations",
+		"A fast, feature-rich music visualizer for reactive, beautiful 3D visualizations",
 	tags: [
 		"web",
 		"wasm",
@@ -16,6 +16,8 @@ const metadata: ProjectMeta = {
 		"threejs",
 	] as const,
 	effort: "high",
+	eyebrow: "Web · Three.js · WASM",
+	hook: "Winamp nostalgia, rebuilt for the GPU.",
 } as const;
 
 function MuvizProjectCard() {

@@ -5,7 +5,6 @@ import { useGithubQuery } from "@/lib/about_me/github";
 import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import type { ProgrammingLanguage } from "@/lib/about_me/types";
 import { ALL_PROJECTS } from "@/lib/projects/list";
-import { Link } from "@/lib/ui";
 
 const LANGUAGE_TAGS = new Set<ProgrammingLanguage>([
 	"typescript",
@@ -24,17 +23,7 @@ const LANGUAGE_COUNT = new Set(
 
 const MISSING_VALUE = "—";
 
-type HighlightedProject = {
-	title: string;
-	href: string;
-	cta: string;
-};
-
-export default function StatGrid({
-	highlightedProject,
-}: {
-	highlightedProject: HighlightedProject;
-}) {
+export default function StatGrid() {
 	const { data: github } = useGithubQuery();
 	const { data: scholar } = useGoogleScholarQuery();
 
@@ -60,18 +49,6 @@ export default function StatGrid({
 					scholar && (
 						<Badge color="green">+{scholar.recentYearCitations} this yr</Badge>
 					)
-				}
-			/>
-			<Stat
-				label="Highlighted project"
-				value={highlightedProject.title}
-				footer={
-					<Link
-						url={highlightedProject.href}
-						openNewTab={highlightedProject.href.startsWith("http")}
-					>
-						{highlightedProject.cta}
-					</Link>
 				}
 			/>
 		</Grid>

@@ -23,9 +23,7 @@ const FormlabsRD: WorkExperience = {
 	location: "Somerville, MA",
 	type: "Full-time",
 	logo: FormlabsLogo,
-	role: `Focused on computational design and optimization for 3D printing, 
-          taking algorithms from research and experimentation 
-          through production-ready engineering`,
+	role: "Focused on computational design and optimization for 3D printing, taking algorithms from research and experimentation through production-ready engineering",
 } as const;
 
 const FormlabsSE: WorkExperience = {
@@ -37,9 +35,7 @@ const FormlabsSE: WorkExperience = {
 	location: "Budapest, Hungary",
 	logo: FormlabsLogo,
 	type: "Full-time",
-	role: `Owned end-to-end delivery of CAD/CAM desktop features in PreForm
-          leading UI architecture and performance while 
-          coordinating across product, design, and hardware team`,
+	role: "Owned end-to-end delivery of CAD/CAM desktop features in PreForm, leading UI architecture and performance while coordinating across product, design, and hardware teams",
 } as const;
 
 const FlowkeySE: WorkExperience = {
@@ -51,9 +47,7 @@ const FlowkeySE: WorkExperience = {
 	location: "Berlin, Germany",
 	logo: FlowkeyLogo,
 	type: "Contract",
-	role: `Worked on core product performance for music learning, 
-          focusing on real-time rendering and ML-backed audio workflows 
-          across the Apple ecosystem`,
+	role: "Worked on core product performance for music learning, focusing on real-time rendering and ML-backed audio workflows across the Apple ecosystem",
 } as const;
 
 const PennStateGRA: WorkExperience = {
@@ -65,9 +59,7 @@ const PennStateGRA: WorkExperience = {
 	location: "Berlin, Germany",
 	logo: PennStateLogo,
 	type: "Full-time",
-	role: `Conducted research in computational design and digital manufacturing, 
-          building prototypes and publishing work spanning optimization, 
-          graphics, and machine learning`,
+	role: "Conducted research in computational design and digital manufacturing, building prototypes and publishing work spanning optimization, graphics, and machine learning",
 } as const;
 
 export const WORK_EXPERIENCE: WorkExperience[] = [

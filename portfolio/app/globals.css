@@ -27,9 +27,9 @@ h3 {
    (it's sticky-positioned chrome only). A sticky nav needs a background; the caller currently has no
    typed way to give it one. */
 .nav-shell {
-	background-color: var(--color-raised);
+	background-color: var(--color-surface);
 	backdrop-filter: var(--material-blur);
-	padding: var(--space-xs) var(--space-md);
+	padding: var(--space-xs) var(--space-xl);
 	border-radius: var(--radius-full);
 }
 
