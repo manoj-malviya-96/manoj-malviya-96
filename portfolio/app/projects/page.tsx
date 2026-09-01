@@ -4,7 +4,7 @@ import ProjectsClient from "@/lib/projects/projects_client";
 
 export default function Page() {
 	return (
-		<Screen gap="xl" className="theme-light">
+		<Screen gap="xl">
 			<Flex as="header" direction="col" gap="sm">
 				<Typography variant="overline">Selected work</Typography>
 				<Typography variant="heading">Projects</Typography>
