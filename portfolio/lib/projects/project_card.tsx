@@ -12,17 +12,19 @@ import NextImage from "next/image";
 import type { ReactNode } from "react";
 import type { ProjectMeta } from "@/lib/projects/list/types";
 import type { ExternalURL } from "@/lib/types";
-import { Icon } from "@/lib/ui";
+import { Icon, Link } from "@/lib/ui";
 import type { MediaContent } from "@/lib/ui/media";
 import { mergeCls } from "@/lib/utils";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
+type CaseStudyPath = `/projects/${string}`;
 
 export type ProjectCTA =
 	| { kind: "github"; href: GithubRepo }
 	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL };
+	| { kind: "demo"; label?: string; href: ExternalURL }
+	| { kind: "case-study"; label?: string; href: CaseStudyPath };
 
 type ProjectCardProps = ProjectMeta & {
 	children: ReactNode;
@@ -85,6 +87,14 @@ export default function ProjectCard({
 }
 
 function CTALink({ cta }: { cta: ProjectCTA }) {
+	if (cta.kind === "case-study") {
+		return (
+			<Link url={cta.href} padding="sm" radius="md" backgroundColor="brand">
+				{cta.label ?? "Read the case study"}
+			</Link>
+		);
+	}
+
 	const onClick = () => window.open(cta.href, "_blank", "noopener,noreferrer");
 
 	if (cta.kind === "demo") {
@@ -101,7 +111,7 @@ function ctaIcon(kind: "github" | "medium") {
 	return kind === "github" ? faGithub : faMedium;
 }
 
-function ctaLabel(cta: ProjectCTA): string {
+function ctaLabel(cta: Exclude<ProjectCTA, { kind: "case-study" }>): string {
 	switch (cta.kind) {
 		case "github":
 			return "GitHub";
