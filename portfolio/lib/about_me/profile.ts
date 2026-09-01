@@ -19,22 +19,17 @@ export const SocialUsersID = {
 
 export type SocialMedia = keyof typeof SocialUsersID;
 
-// Todo clear this
-let _linksCached: Record<SocialMedia, ExternalURL> | null = null;
 export function getSocialLinks() {
-	if (_linksCached) return _linksCached;
 	const { Github, Linkedin, Medium, Instagram, Scholar } = SocialUsersID;
-	_linksCached = {
+	return {
 		Github: `https://github.com/${Github}`,
 		Linkedin: `https://www.linkedin.com/in/${Linkedin}`,
 		Medium: `https://medium.com/${Medium}`,
 		Instagram: `https://www.instagram.com/${Instagram}`,
 		Scholar: `https://scholar.google.com/citations?user=${Scholar}&hl=en`,
-	} as const;
-	return _linksCached as Record<SocialMedia, ExternalURL>;
+	} satisfies Record<SocialMedia, ExternalURL>;
 }
 
-// Todo better way to do this?
 export const ResumePDF: ExternalURL =
 	"https://docs.google.com/document/d/1h56spN-URNEDdwn1ofiqUaxJpm83aLz89QrNjPl4BgQ" as const;
 

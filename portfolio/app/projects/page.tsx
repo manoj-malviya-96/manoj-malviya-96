@@ -1,30 +1,25 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { Flex, Progress, Screen, Typography } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
-import { Icon } from "@/lib/ui";
-import { Typography } from "@/lib/ui/text";
-
-function ProjectsLoading() {
-	return (
-		<section className="screen">
-			<Icon icon={faSpinner} size="lg" />
-		</section>
-	);
-}
 
 export default function Page() {
 	return (
-		<main className="screen flex flex-col gap-8 lg:gap-16">
-			<span className="flex flex-col gap-2">
+		<Screen gap="xl" className="theme-light">
+			<Flex as="header" direction="col" gap="sm">
+				<Typography variant="overline">Selected work</Typography>
 				<Typography variant="heading">Projects</Typography>
-				<Typography variant="body">
+				<Typography variant="subtitle">
 					A collection of my favorite projects that I have worked on over the
 					years.
 				</Typography>
-			</span>
-			<Suspense fallback={<ProjectsLoading />}>
+			</Flex>
+			<Suspense
+				fallback={
+					<Progress value="indeterminate" aria-label="Loading projects" />
+				}
+			>
 				<ProjectsClient />
 			</Suspense>
-		</main>
+		</Screen>
 	);
 }

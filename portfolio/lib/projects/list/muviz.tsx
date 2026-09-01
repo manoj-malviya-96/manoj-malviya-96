@@ -1,12 +1,20 @@
-import type { Project } from "@/lib/projects/list/types";
+import { Typography } from "@manoj-malviya-96/atom";
+import type { Project, ProjectMeta } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
-import { Typography } from "@/lib/ui/text";
 
-const metadata = {
-	title: "Muviz - Music Visualizer",
+const metadata: ProjectMeta = {
+	title: "Muviz",
 	description:
-		"A fast, feature-rich music visualizer for reactive beautiful visualizations",
-	tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux"],
+		"A fast, feature-rich music visualizer for reactive 3D beautiful visualizations",
+	tags: [
+		"web",
+		"wasm",
+		"c++",
+		"typescript",
+		"react",
+		"ui/ux",
+		"threejs",
+	] as const,
 	effort: "high",
 } as const;
 
@@ -34,15 +42,11 @@ function MuvizProjectCard() {
 				just something ridiculously satisfying about watching visuals snap to
 				the beat. That itch is exactly why I’m building Muviz: a web visualizer
 				that stays fast without skimping on features. <br /> <br />
-				Under the hood, it uses a <strong>C++ WASM backend</strong> that
+				Under the hood, it uses a <strong>Cpp feature extractor </strong> that
 				analyzes the full audio track in one pass and keeps the results in
 				memory, so the frontend can focus on what it does best: rendering
-				smooth, reactive visuals. Using WebGL for rendering means it can handle
-				complex effects without breaking a sweat. The result? A music visualizer
-				that’s not only feature-rich but also lightning-fast, delivering an
-				immersive experience that truly resonates with the music. <br /> <br />
-				Next up - adding more modes, connecting with external APIS (soundcloud,
-				spotify, etc.), and more!
+				smooth, reactive visuals. Using ThreeJS for rendering means it can
+				handle complex effects without breaking a sweat.
 			</Typography>
 		</ProjectCard>
 	);
