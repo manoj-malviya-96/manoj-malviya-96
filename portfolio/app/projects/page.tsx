@@ -6,11 +6,13 @@ export default function Page() {
 	return (
 		<Screen gap="xl">
 			<Flex as="header" direction="col" gap="sm">
-				<Typography variant="overline">Selected work</Typography>
-				<Typography variant="heading">Projects</Typography>
+				<Typography variant="overline" className="font-mono">
+					Selected work
+				</Typography>
+				<Typography variant="heading">Worked end to end.</Typography>
 				<Typography variant="subtitle">
-					A collection of my favorite projects that I have worked on over the
-					years.
+					A case study where I have one written up — a GitHub link where I
+					don&apos;t.
 				</Typography>
 			</Flex>
 			<Suspense
