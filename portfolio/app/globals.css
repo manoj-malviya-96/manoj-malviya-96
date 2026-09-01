@@ -77,9 +77,13 @@ img {
 	display: none;
 }
 
-@media (min-width: 640px) {
-	.footer {
-		padding: 4rem var(--space-xl);
+.footer-grid {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.footer-grid {
+		grid-template-columns: repeat(3, 1fr);
 	}
 }
 

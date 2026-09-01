@@ -8,7 +8,14 @@ import {
 	faMedium,
 } from "@fortawesome/free-brands-svg-icons";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import { Divider, Flex, Image, List, Typography } from "@manoj-malviya-96/atom";
+import {
+	Divider,
+	Flex,
+	Grid,
+	Image,
+	List,
+	Typography,
+} from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import {
 	EmailAddress,
@@ -21,22 +28,38 @@ import { Icon, Link } from "@/lib/ui";
 
 export default function Footer() {
 	return (
-		<Flex as="footer" direction="col" gap="md">
-			<Divider direction="horizontal" />
-			<Flex direction="row" hAlign="between" gap="md" className="footer">
-				<CopyRight />
+		<Flex
+			as="footer"
+			direction="col"
+			gap="lg"
+			padding="xl"
+			radius="lg"
+			backgroundColor="surface"
+			className="footer-card"
+		>
+			<Grid columns={3} gap="lg" className="footer-grid">
+				<About />
 				<QuickLinks />
 				<SocialLinks />
+			</Grid>
+			<Divider direction="horizontal" />
+			<Flex direction="row" hAlign="between" gap="sm" wrap>
+				<Typography variant="caption" className="font-mono">
+					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
+				</Typography>
+				<Typography variant="caption" className="font-mono">
+					BERLIN, DE
+				</Typography>
 			</Flex>
 		</Flex>
 	);
 }
 
-const AVATAR_SIZE = "5rem";
+const AVATAR_SIZE = "3rem";
 
-function CopyRight() {
+function About() {
 	return (
-		<Flex direction="col" gap="md">
+		<Flex direction="col" gap="sm">
 			<Image
 				as={NextImage}
 				src={UserAvatar}
@@ -46,8 +69,10 @@ function CopyRight() {
 				radius="md"
 				style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
 			/>
+			<Typography variant="title">Manoj Malviya</Typography>
 			<Typography variant="body">
-				{`Copyright @ ${new Date().getFullYear()} Manoj Malviya`}
+				Product-minded engineer building things that work today and still work
+				next year. Occasionally simulates a black hole for fun.
 			</Typography>
 		</Flex>
 	);
