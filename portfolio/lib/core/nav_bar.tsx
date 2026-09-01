@@ -1,20 +1,17 @@
 "use client";
 
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Header, Tab, TabBar } from "@manoj-malviya-96/atom";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon, Link } from "@/lib/ui";
+import { ThemeToggle } from "@/lib/ui";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Projects" },
+	{ url: "/projects", label: "Work" },
 	{ url: "/resume", label: "Resume" },
 ] as const;
 
 export default function NavBar() {
 	const pathname = usePathname();
-	const showTabs = NAV_LINKS.some(({ url }) => url === pathname);
-	if (!showTabs) return null;
 
 	return (
 		<Header
@@ -36,16 +33,7 @@ export default function NavBar() {
 					})}
 				</TabBar>
 			}
-			right={
-				<Link
-					url="/projects"
-					padding="sm"
-					radius="md"
-					aria-label="Search projects"
-				>
-					<Icon icon={faSearch} />
-				</Link>
-			}
+			right={<ThemeToggle />}
 		/>
 	);
 }
