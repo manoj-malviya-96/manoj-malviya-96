@@ -51,11 +51,7 @@ function buildGrid(width: number, height: number): Grid {
 	return { cols, rows, points };
 }
 
-/**
- * A slow, subtle wireframe mesh painted as the site's full-viewport
- * background. Wireframe-only by design — no triangle fills, just muted
- * grid + diagonal strokes that drift and gently repel from the pointer.
- */
+// Wireframe only, deliberately — no triangle fills. Keep it that way.
 export default function MeshCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
