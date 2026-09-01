@@ -1,161 +1,146 @@
-html {
-	text-rendering: optimizeLegibility;
-	font-synthesis: none;
-	color-scheme: light dark;
 
-	/* re-point atom's tokens (unlayered, so this wins over atom's @layer atom.tokens
-	   regardless of specificity) onto the design-v2 palette. */
-	--color-page: light-dark(#f5f6f4, #14181a);
-	--color-content: light-dark(#14181a, #f2f4f2);
-	--color-raised: light-dark(#ffffff, #1c2124);
-	--color-blue: light-dark(#0f6e96, #7ec6e9);
-	--color-indigo: light-dark(#6b3fa0, #cba6f2);
-	--color-green: light-dark(#227a4a, #82dc9c);
-	--color-orange: light-dark(#9a6a10, #f2c766);
+
+html {
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+    color-scheme: light dark;
 }
 
 h1,
 h2,
 h3 {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
 }
 
 .font-mono {
-	font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-/* Header (@manoj-malviya-96/atom) fixes its own radius/backgroundColor — this
-   overrides them for the floating glass-pill nav look design v2 calls for. */
-.nav-pill {
-	border-radius: var(--radius-full);
-	background-color: var(--color-chrome);
-	backdrop-filter: var(--material-blur);
-}
 
 .wordmark {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
-	font-weight: 800;
-	font-size: 0.95rem;
-	letter-spacing: -0.01em;
+    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
 }
 
 html[data-theme="light"] {
-	color-scheme: light;
+    color-scheme: light;
 }
 
 html[data-theme="dark"] {
-	color-scheme: dark;
+    color-scheme: dark;
 }
 
 img {
-	content-visibility: auto;
+    content-visibility: auto;
 }
 
 /* atom's Screen owns width/gutter/min-height; this only clears the sticky Header above it. */
 .screen {
-	padding-block: 9rem 6rem;
+    padding-block: 9rem 6rem;
 }
 
 .home-screen {
-	min-height: 100dvh;
+    min-height: 100dvh;
 }
 
 .hero-panel {
-	min-height: 60dvh;
+    min-height: 60dvh;
 }
 
 .landing-hero {
-	max-width: 90vw;
-	user-select: none;
-	backdrop-filter: var(--material-blur);
+    max-width: 90vw;
+    user-select: none;
+    backdrop-filter: var(--material-blur);
 }
 
 .track-list {
-	display: grid;
-	gap: 1px;
-	background-color: var(--color-chrome);
-	border: 1px solid var(--color-chrome);
-	border-radius: var(--radius-lg);
-	overflow: hidden;
+    display: grid;
+    gap: 1px;
+    background-color: var(--color-chrome);
+    border: 1px solid var(--color-chrome);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
 }
 
 .track-row {
-	background-color: var(--color-raised);
-	grid-template-columns: 9.5rem 1fr;
-	gap: var(--space-lg);
+    background-color: var(--color-raised);
+    grid-template-columns: 9.5rem 1fr;
+    gap: var(--space-lg);
 }
 
 .edu-grid {
-	grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width: 640px) {
-	.edu-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+    .edu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 920px) {
-	.track-row {
-		grid-template-columns: 1fr;
-	}
+    .track-row {
+        grid-template-columns: 1fr;
+    }
 }
 
 .hero-soft {
-	display: block;
-	color: var(--color-muted);
-	font-weight: 600;
+    display: block;
+    color: var(--color-muted);
+    font-weight: 600;
 }
 
 @media (max-width: 920px) {
-	.loop-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+    .loop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-	.mini-work-grid {
-		grid-template-columns: 1fr;
-	}
+    .mini-work-grid {
+        grid-template-columns: 1fr;
+    }
 
-	.case-grid,
-	.case-steps {
-		grid-template-columns: 1fr;
-	}
+    .case-grid,
+    .case-steps {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-	.loop-grid {
-		grid-template-columns: 1fr;
-	}
+    .loop-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .gap-responsive-lg {
-	gap: var(--space-lg);
+    gap: var(--space-lg);
 }
 
 .direction-responsive-row {
-	flex-direction: column;
+    flex-direction: column;
 }
 
 .footer-grid {
-	grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
-	.footer-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (min-width: 1024px) {
-	.gap-responsive-lg {
-		gap: var(--space-xl);
-	}
+    .gap-responsive-lg {
+        gap: var(--space-xl);
+    }
 
-	.direction-responsive-row {
-		flex-direction: row;
-	}
+    .direction-responsive-row {
+        flex-direction: row;
+    }
 
-	.landing-hero {
-		max-width: 38rem;
-	}
+    .landing-hero {
+        max-width: 38rem;
+    }
 }
