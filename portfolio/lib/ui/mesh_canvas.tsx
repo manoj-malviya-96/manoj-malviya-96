@@ -51,7 +51,6 @@ function buildGrid(width: number, height: number): Grid {
 	return { cols, rows, points };
 }
 
-// Wireframe only, deliberately — no triangle fills. Keep it that way.
 export default function MeshCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
