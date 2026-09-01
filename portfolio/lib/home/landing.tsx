@@ -1,5 +1,7 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
 import { Badge, Flex, Grid, Typography } from "@manoj-malviya-96/atom";
+import { project as MuvizProject } from "@/lib/projects/list/muviz";
+import { project as TopOptProject } from "@/lib/projects/list/topopt";
 import { Link, MeshCanvas } from "@/lib/ui";
 
 const LOOP: ReadonlyArray<{
@@ -31,17 +33,17 @@ const LOOP: ReadonlyArray<{
 
 const FEATURED_WORK = [
 	{
-		title: "topopt-py",
+		title: TopOptProject.metadata.title,
 		blurb:
 			"A 40-year-old optimization algorithm, made 2x faster with nothing but better vectorization.",
-		href: "/projects/topopt_py",
+		href: `/projects/${TopOptProject.id}`,
 		cta: "Read the case study",
 	},
 	{
-		title: "Muviz",
+		title: MuvizProject.metadata.title,
 		blurb:
 			"A music visualizer with a C++ feature extractor doing the heavy lifting so the frontend can just render.",
-		href: "/projects#muviz",
+		href: `/projects#${MuvizProject.id}`,
 		cta: "See the project",
 	},
 ] as const;

@@ -2,6 +2,8 @@ import { Typography } from "@manoj-malviya-96/atom";
 import type { Project } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
 
+const PROJECT_ID = "topopt_py" as const;
+
 const metadata = {
 	title: "topopt-py",
 	description: "Fastest 2D Topology Optimization Solver in Python",
@@ -28,7 +30,7 @@ function TopOptCard() {
 			ctas={[
 				{
 					kind: "case-study",
-					href: "/projects/topopt_py",
+					href: `/projects/${PROJECT_ID}`,
 				},
 				{
 					kind: "github",
@@ -54,7 +56,7 @@ function TopOptCard() {
 }
 
 export const project: Project = {
-	id: "topopt_py",
+	id: PROJECT_ID,
 	metadata,
 	Card: TopOptCard,
 } as const;
