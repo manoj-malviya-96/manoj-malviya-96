@@ -5,6 +5,7 @@ import {
 	Image,
 	List,
 	Typography,
+	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import type { ReactNode } from "react";
@@ -93,6 +94,21 @@ function ProjectCover({
 	media?: ProjectMedia | undefined;
 	title: string;
 }) {
+	if (media?.kind === "video") {
+		return (
+			<Video
+				src={media.src}
+				aria-label={media.alt}
+				fit="cover"
+				ratio="video"
+				radius="md"
+				autoPlay
+				muted
+				loop
+				playsInline
+			/>
+		);
+	}
 	if (media) {
 		return (
 			<Image

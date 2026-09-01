@@ -21,10 +21,9 @@ export type ProjectSteps = {
 	outcome: string;
 };
 
-export type ProjectMedia = {
-	src: LocalImage | string;
-	alt: string;
-};
+export type ProjectMedia =
+	| { kind: "image"; src: LocalImage | string; alt: string }
+	| { kind: "video"; src: string; alt: string };
 
 export type ProjectMeta = {
 	title: string;
@@ -37,7 +36,7 @@ export type ProjectMeta = {
 	hook?: string;
 	/** Problem/approach/outcome breakdown — only case-study projects carry this. */
 	steps?: ProjectSteps;
-	/** Screenshot or cover art for the case card. Falls back to a generated placeholder when omitted. */
+	/** Screenshot, cover art, or a silent looping clip for the case card. Falls back to a generated placeholder when omitted. */
 	media?: ProjectMedia;
 };
 
