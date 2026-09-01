@@ -8,6 +8,7 @@ export type SoftwareConcepts =
 	| "gpu"
 	| "optimization"
 	| "cad"
+	| "simulation"
 	| "micro-services";
 
 export type SoftSkills =
@@ -27,6 +28,7 @@ export type ProgrammingFrameworks =
 	| "pytorch"
 	| "tensorflow"
 	| "wasm"
+	| "threejs"
 	| "opengl";
 
 export type ProgrammingLanguage =
