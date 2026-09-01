@@ -1,76 +1,87 @@
-@import "tailwindcss";
+.theme-light {
+	color-scheme: light;
+}
 
-@layer base {
-	/* color_* defines root colors, so Todo- we can change that later */
-	:root {
-		--color_success: oklch(0.659 0.12 144.059 / 0.69);
-		--color_danger: oklch(0.546 0.179 23.376 / 0.69);
+.theme-dark {
+	color-scheme: dark;
+}
 
-		--color_back: oklch(0.97 0 89.876);
-		--color_muted: oklch(0.839 0 89.876 / 0.69);
-		--color_subtle: oklch(0.244 0 89.876 / 0.69);
-		--color_front: oklch(0.244 0 89.876);
-	}
+html:has(.theme-light) {
+	color-scheme: light;
+}
 
-	[data-theme="dark"] {
-		--color_back: oklch(0.115 0 89.876);
-		--color_muted: oklch(0.264 0 89.876 / 0.69);
-		--color_subtle: oklch(0.888 0 89.876 / 0.69);
-		--color_front: oklch(0.925 0 89.876);
+html:has(.theme-dark) {
+	color-scheme: dark;
+}
+
+html {
+	text-rendering: optimizeLegibility;
+	font-synthesis: none;
+}
+
+img {
+	content-visibility: auto;
+}
+
+.neural-canvas {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	pointer-events: none;
+}
+
+/* atom's Screen owns width/gutter/min-height; this only clears the sticky Header above it. */
+.screen {
+	padding-block: 9rem 6rem;
+}
+
+.home-screen {
+	min-height: 100dvh;
+}
+
+.landing-hero {
+	max-width: 90vw;
+	user-select: none;
+}
+
+.footer {
+	border-top: 1px solid var(--color-faint);
+}
+
+.gap-responsive-lg {
+	gap: var(--space-lg);
+}
+
+.direction-responsive-row {
+	flex-direction: column;
+}
+
+.hide-below-lg {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.footer {
+		padding: 4rem var(--space-xl);
 	}
 }
 
-@theme inline {
-	--font-sans: system-ui;
-	/* color-* defines theme colors to follow TW styles */
-	--color-back: var(--color_back);
-	--color-front: var(--color_front);
-	--color-muted: var(--color_muted);
-	--color-subtle: var(--color_subtle);
-	--color-success: var(--color_success);
-	--color-danger: var(--color_danger);
-}
-
-@layer base {
-	html {
-		@apply font-sans leading-relaxed subpixel-antialiased scroll-smooth;
-		font-synthesis: none;
-		text-rendering: optimizeLegibility;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
+@media (min-width: 1024px) {
+	.gap-responsive-lg {
+		gap: var(--space-xl);
 	}
 
-	body {
-		@apply bg-back text-front;
+	.direction-responsive-row {
+		flex-direction: row;
 	}
 
-	/* Prevent layout shift from images */
-	img {
-		content-visibility: auto;
-	}
-}
-
-@layer components {
-	.screen {
-		@apply w-[90vw] lg:w-[70vw] min-h-[100vh] py-32 bg-back text-front mx-auto;
+	.hide-below-lg {
+		display: block;
 	}
 
-	/* Animated gradient text utilities using CSS variables */
-	.text-gradient {
-		@apply bg-clip-text text-transparent font-semibold ease-in-out bg-gradient-to-l from-front via-muted to-front;
-		background-size: 200% 200%;
-		animation: gradient-move 5s infinite;
-	}
-
-	.card {
-		@apply bg-muted/40 shadow-sm hover:shadow-lg duration-300 transition-shadow rounded-2xl p-4;
-	}
-
-	.control-primary {
-		@apply bg-front text-back rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
-	}
-
-	.control-secondary {
-		@apply bg-muted text-front rounded-xl px-4 py-2 hover:scale-105 duration-300 transition-transform;
+	.landing-hero {
+		max-width: 1000px;
 	}
 }
