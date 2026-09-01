@@ -15,6 +15,15 @@ export const metadata: ProjectMeta = {
 		"cad",
 	] as const,
 	effort: "medium",
+	eyebrow: "CAD · C++ · VTK",
+	hook: "Because hexagons are just better, structurally speaking.",
+	steps: {
+		problem:
+			"Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",
+		approach:
+			"A fast, memory-friendly skeleton algorithm, exported to a VTK mesh for downstream geometry work.",
+		outcome: "Open-source constructor and visualizer, ready for CAD workflows.",
+	},
 } as const;
 
 export default function HoneycombProjectCard() {

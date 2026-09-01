@@ -9,6 +9,15 @@ const metadata = {
 	description: "Fastest 2D Topology Optimization Solver in Python",
 	tags: ["simulation", "optimization", "high-performance", "python"] as const,
 	effort: "high",
+	eyebrow: "Optimization · Python · HPC",
+	hook: "A 40-year-old optimization algorithm, dragged into this decade.",
+	steps: {
+		problem:
+			"Classic topology-optimization research code was too slow to be useful beyond a demo.",
+		approach:
+			"Vectorized the core solver in NumPy instead of rewriting the whole thing in C++.",
+		outcome: "2× faster, scales to more elements, without leaving Python.",
+	},
 } as const;
 
 export const caseStudy = {
