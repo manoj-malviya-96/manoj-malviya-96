@@ -1,13 +1,14 @@
 "use client";
 
-import { Header, Tab, TabBar } from "@manoj-malviya-96/atom";
+import { Flex, Header, Tab, TabBar } from "@manoj-malviya-96/atom";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "@/lib/ui";
+import { EmailAddress } from "@/lib/about_me/profile";
+import { Link, ThemeToggle } from "@/lib/ui";
 
 const NAV_LINKS = [
 	{ url: "/projects", label: "Work" },
-	{ url: "/resume", label: "Resume" },
+	{ url: "/resume", label: "Résumé" },
 ] as const;
 
 export default function NavBar() {
@@ -15,7 +16,13 @@ export default function NavBar() {
 
 	return (
 		<Header
+			className="nav-pill"
 			left={
+				<Link url="/" className="wordmark">
+					Manoj Malviya
+				</Link>
+			}
+			center={
 				<TabBar as="nav" aria-label="Sections" placement="inline">
 					{NAV_LINKS.map(({ url, label }) => {
 						const isCurrent = pathname === url;
@@ -33,7 +40,19 @@ export default function NavBar() {
 					})}
 				</TabBar>
 			}
-			right={<ThemeToggle />}
+			right={
+				<Flex direction="row" gap="sm" vAlign="center">
+					<ThemeToggle />
+					<Link
+						url={EmailAddress}
+						padding="sm"
+						radius="full"
+						backgroundColor="brand"
+					>
+						Say hello ↗
+					</Link>
+				</Flex>
+			}
 		/>
 	);
 }

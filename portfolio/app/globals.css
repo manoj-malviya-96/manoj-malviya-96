@@ -24,6 +24,21 @@ h3 {
 	font-family: var(--font-mono), ui-monospace, monospace;
 }
 
+/* Header (@manoj-malviya-96/atom) fixes its own radius/backgroundColor — this
+   overrides them for the floating glass-pill nav look design v2 calls for. */
+.nav-pill {
+	border-radius: var(--radius-full);
+	background-color: var(--color-chrome);
+	backdrop-filter: var(--material-blur);
+}
+
+.wordmark {
+	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 0.95rem;
+	letter-spacing: -0.01em;
+}
+
 html[data-theme="light"] {
 	color-scheme: light;
 }
