@@ -78,14 +78,14 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<Flex direction="col" gap="lg">
+		<Flex direction="col" vAlign="end" gap="lg" className="hero-panel">
 			<Flex
 				as="header"
 				direction="col"
 				gap="md"
 				padding="xl"
 				radius="lg"
-				backgroundColor="surface"
+				backgroundColor="chrome"
 				className="landing-hero"
 			>
 				<Typography variant="overline" className="font-mono">

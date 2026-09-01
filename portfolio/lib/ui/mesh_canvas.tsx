@@ -66,11 +66,15 @@ export default function MeshCanvas() {
 		lastMove: 0,
 	});
 	const colorRef = useRef("#8a8a8a");
+	const drawRef = useRef<(t: number) => void>(() => {});
 	const theme = useTheme();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
 	useEffect(() => {
-		colorRef.current = getThemeColor("muted");
+		// "muted" is a currentColor-relative color-mix token — its own baked-in alpha
+		// would compound with LINE_ALPHA below and render near-invisible. "content" is
+		// opaque, so LINE_ALPHA alone controls the line's visual weight.
+		colorRef.current = getThemeColor("content");
 	}, [theme]);
 
 	const handleResize = (size: CanvasSize) => {
@@ -80,6 +84,9 @@ export default function MeshCanvas() {
 		if (!ctx) return;
 		const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		// ResizeObserver callbacks always fire async, so the reduced-motion
+		// single-shot draw() below can run before this — redraw once the grid is real.
+		drawRef.current(performance.now());
 	};
 
 	useEffect(() => {
@@ -168,6 +175,7 @@ export default function MeshCanvas() {
 
 			if (!reduceMotion) raf = requestAnimationFrame(draw);
 		};
+		drawRef.current = draw;
 
 		const onVisibility = () => {
 			if (document.hidden) {
@@ -189,6 +197,7 @@ export default function MeshCanvas() {
 			window.removeEventListener("pointermove", onPointerMove);
 			document.removeEventListener("visibilitychange", onVisibility);
 			if (raf) cancelAnimationFrame(raf);
+			drawRef.current = () => {};
 		};
 	}, []);
 
@@ -196,6 +205,8 @@ export default function MeshCanvas() {
 		<Canvas
 			ref={canvasRef}
 			onResize={handleResize}
+			width="100%"
+			height="100%"
 			style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none" }}
 		/>
 	);

@@ -60,9 +60,14 @@ img {
 	min-height: 100dvh;
 }
 
+.hero-panel {
+	min-height: 60dvh;
+}
+
 .landing-hero {
 	max-width: 90vw;
 	user-select: none;
+	backdrop-filter: var(--material-blur);
 }
 
 .track-list {
@@ -151,6 +156,6 @@ img {
 	}
 
 	.landing-hero {
-		max-width: 1000px;
+		max-width: 38rem;
 	}
 }
