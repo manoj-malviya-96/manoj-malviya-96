@@ -9,19 +9,11 @@ import {
 import NextImage from "next/image";
 import type React from "react";
 import {
-	WORK_EXPERIENCE,
+	WORK_EXPERIENCE_BY_RECENCY,
 	type WorkExperience,
 } from "@/lib/about_me/work_experience";
 import { Icon, Link } from "@/lib/ui";
 import { calculateDuration, formatDate } from "@/lib/utils";
-
-/** Ongoing roles first, then most recently ended. */
-const BY_RECENCY = [...WORK_EXPERIENCE].sort((a, b) => {
-	if (!a.endDate && !b.endDate) return a.startDate < b.startDate ? 1 : -1;
-	if (!a.endDate) return -1;
-	if (!b.endDate) return 1;
-	return a.endDate < b.endDate ? 1 : -1;
-});
 
 export default function WorkHistory({
 	className,
@@ -34,7 +26,7 @@ export default function WorkHistory({
 		<Timeline
 			className={className}
 			style={style}
-			events={BY_RECENCY.map((experience) => ({
+			events={WORK_EXPERIENCE_BY_RECENCY.map((experience) => ({
 				key: experience.startDate,
 				label: `${formatDate(experience.startDate)} - ${experience.endDate ? formatDate(experience.endDate) : "Present"} • ${calculateDuration(experience.startDate, experience.endDate)}`,
 				children: <WorkExpCard {...experience} />,

@@ -65,6 +65,28 @@ img {
 	user-select: none;
 }
 
+.hero-soft {
+	display: block;
+	color: var(--color-muted);
+	font-weight: 600;
+}
+
+@media (max-width: 920px) {
+	.loop-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.mini-work-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 600px) {
+	.loop-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
 .gap-responsive-lg {
 	gap: var(--space-lg);
 }

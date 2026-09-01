@@ -1,8 +1,10 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
 import { Badge, Flex, Grid, Typography } from "@manoj-malviya-96/atom";
-import { project as MuvizProject } from "@/lib/projects/list/muviz";
+import { WORK_EXPERIENCE_BY_RECENCY } from "@/lib/about_me/work_experience";
+import { project as BlackholeProject } from "@/lib/projects/list/blackhole";
 import { project as TopOptProject } from "@/lib/projects/list/topopt";
 import { Link, MeshCanvas } from "@/lib/ui";
+import { uniqueBy, yearsSince } from "@/lib/utils";
 
 const LOOP: ReadonlyArray<{
 	color: ColorToken;
@@ -12,22 +14,22 @@ const LOOP: ReadonlyArray<{
 	{
 		color: "blue",
 		stage: "Discover",
-		copy: "Talk to users, poke at the requirements, find the real problem before touching a keyboard.",
+		copy: "Before I open Figma or an editor, I want to know what's actually broken — for the user, not just the backlog.",
 	},
 	{
 		color: "indigo",
 		stage: "Design",
-		copy: "UI/UX exploration and data-informed calls — sketch the user flow before it becomes code.",
+		copy: "A user flow and a database schema are just two ways of drawing the same decision. I try to get both right the first time. I don't always.",
 	},
 	{
 		color: "green",
 		stage: "Build",
-		copy: "Correct, fast, maintainable, in that order. Ship the thing that works and keeps working.",
+		copy: "Correct, fast, maintainable — validated at the edges, profiled before optimized, built so future-me doesn't curse present-me.",
 	},
 	{
 		color: "orange",
 		stage: "Measure",
-		copy: "Watch what actually happens. Keep what works, cut what doesn't, go again.",
+		copy: "Ship it, then actually look. About half of what I've built worked as planned. The other half taught me something more useful.",
 	},
 ];
 
@@ -35,18 +37,32 @@ const FEATURED_WORK = [
 	{
 		title: TopOptProject.metadata.title,
 		blurb:
-			"A 40-year-old optimization algorithm, made 2x faster with nothing but better vectorization.",
+			"Made a 40-year-old optimization algorithm fast again, out of pure spite for slow for-loops.",
 		href: `/projects/${TopOptProject.id}`,
-		cta: "Read the case study",
+		cta: "Read the case study →",
 	},
 	{
-		title: MuvizProject.metadata.title,
+		title: BlackholeProject.metadata.title,
 		blurb:
-			"A music visualizer with a C++ feature extractor doing the heavy lifting so the frontend can just render.",
-		href: `/projects#${MuvizProject.id}`,
-		cta: "See the project",
+			"Built a real-time gravitational lensing simulator, because pre-rendered gravity felt like cheating.",
+		href: "https://github.com/manoj-malviya-96/blackhole",
+		cta: "View on GitHub ↗",
 	},
 ] as const;
+
+const STACK = ["C++", "Swift", "TypeScript", "Python", "OpenGL"] as const;
+
+const TRACK = uniqueBy(
+	WORK_EXPERIENCE_BY_RECENCY,
+	(entry) => entry.company,
+).slice(0, 3);
+
+const EXPERIENCE_START = WORK_EXPERIENCE_BY_RECENCY.reduce(
+	(earliest, entry) =>
+		entry.startDate < earliest ? entry.startDate : earliest,
+	WORK_EXPERIENCE_BY_RECENCY[0].startDate,
+);
+const YEARS_EXPERIENCE = yearsSince(EXPERIENCE_START);
 
 export default function Landing() {
 	return (
@@ -62,31 +78,72 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<Flex
-			as="section"
-			direction="col"
-			gap="lg"
-			hAlign="center"
-			vAlign="center"
-			className="landing-hero"
-		>
-			<Typography variant="overline" align="center">
-				Product builder & tinkerer
-			</Typography>
-			<Typography variant="hero" align="center">
-				I build things, then find out if they actually work.
-			</Typography>
-			<Typography variant="subtitle" align="center">
-				Software engineer with a mechanical engineering brain — idea to shipped
-				product, then back to the data to see what to fix next.
-			</Typography>
-			<Flex direction="row" gap="md" hAlign="center" vAlign="center" wrap>
-				<Link url="/projects" padding="sm" radius="md" backgroundColor="brand">
-					See the work
-				</Link>
-				<Link url="/resume" padding="sm" radius="md" backgroundColor="surface">
-					Resume
-				</Link>
+		<Flex direction="col" gap="lg">
+			<Flex
+				as="header"
+				direction="col"
+				gap="md"
+				padding="xl"
+				radius="lg"
+				backgroundColor="surface"
+				className="landing-hero"
+			>
+				<Typography variant="overline" className="font-mono">
+					Software engineer, product-brained — Berlin, DE
+				</Typography>
+				<Typography variant="hero">
+					I care about your users
+					<span className="hero-soft">as much as your query plans.</span>
+				</Typography>
+				<Typography variant="subtitle">
+					Seven years across hardware, creative tools, and ML — turning
+					&quot;wouldn&apos;t it be nice if—&quot; into things that ship, and
+					keep working.
+				</Typography>
+				<Typography variant="caption" style={{ fontStyle: "italic" }}>
+					Mechanical engineer by degree, software engineer by trade, product
+					person by compulsion.
+				</Typography>
+				<Flex direction="row" gap="md" wrap>
+					<Link url="#loop" padding="sm" radius="full" backgroundColor="brand">
+						See how I work →
+					</Link>
+					<Link
+						url="/resume"
+						padding="sm"
+						radius="full"
+						backgroundColor="surface"
+					>
+						Résumé
+					</Link>
+				</Flex>
+			</Flex>
+			<Flex
+				direction="row"
+				hAlign="between"
+				vAlign="center"
+				gap="md"
+				padding="lg"
+				radius="full"
+				backgroundColor="surface"
+				wrap
+			>
+				<Flex direction="row" gap="sm" vAlign="center" wrap>
+					<Typography variant="body">
+						<strong>{YEARS_EXPERIENCE}+</strong> yrs shaping product & systems
+					</Typography>
+					<Typography variant="body" muted>
+						·
+					</Typography>
+					<Typography variant="body">
+						<strong>2×</strong> faster — topopt-py, modernized
+					</Typography>
+				</Flex>
+				<Flex direction="row" gap="sm" wrap>
+					{STACK.map((tech) => (
+						<Badge key={tech}>{tech}</Badge>
+					))}
+				</Flex>
 			</Flex>
 		</Flex>
 	);
@@ -94,21 +151,26 @@ function Hero() {
 
 function Loop() {
 	return (
-		<Flex as="section" direction="col" gap="lg">
+		<Flex as="section" id="loop" direction="col" gap="lg">
 			<Flex direction="col" gap="sm">
-				<Typography variant="overline">How it actually goes</Typography>
+				<Typography variant="overline" className="font-mono">
+					How I work
+				</Typography>
 				<Typography variant="heading">
-					Discover, design, build, measure — repeat
+					Requirements in. Shipped, measured software out.
+				</Typography>
+				<Typography variant="body" muted>
+					No middle-management jargon required — I just refuse to skip steps.
 				</Typography>
 			</Flex>
-			<Grid columns={4} gap="md">
+			<Grid columns={4} gap="md" className="loop-grid">
 				{LOOP.map(({ color, stage, copy }) => (
 					<Flex
 						key={stage}
 						direction="col"
 						gap="sm"
 						padding="lg"
-						radius="md"
+						radius="lg"
 						backgroundColor="surface"
 					>
 						<Badge color={color}>{stage}</Badge>
@@ -124,32 +186,34 @@ function FeaturedWork() {
 	return (
 		<Flex as="section" direction="col" gap="lg">
 			<Flex direction="col" gap="sm">
-				<Typography variant="overline">Selected work</Typography>
-				<Typography variant="heading">
-					A couple of things I&apos;ve built
+				<Typography variant="overline" className="font-mono">
+					A few things I&apos;ve shipped
+				</Typography>
+				<Typography variant="heading">Proof, briefly.</Typography>
+				<Typography variant="body" muted>
+					The rest — plus the messy parts — live on the full work page.
 				</Typography>
 			</Flex>
-			<Flex direction="row" gap="md" wrap>
+			<Grid columns={2} gap="md" className="mini-work-grid">
 				{FEATURED_WORK.map(({ title, blurb, href, cta }) => (
-					<Flex
+					<Link
 						key={title}
-						direction="col"
-						gap="md"
+						url={href}
+						openNewTab={href.startsWith("http")}
 						padding="lg"
-						radius="md"
+						radius="lg"
 						backgroundColor="surface"
-						grow
 					>
-						<Typography variant="title">{title}</Typography>
-						<Typography variant="body" grow>
-							{blurb}
-						</Typography>
-						<Link url={href} padding="sm" radius="md" backgroundColor="chrome">
-							{cta}
-						</Link>
-					</Flex>
+						<Flex direction="col" gap="md">
+							<Typography variant="title">{title}</Typography>
+							<Typography variant="body" muted grow>
+								{blurb}
+							</Typography>
+							<Typography variant="label">{cta}</Typography>
+						</Flex>
+					</Link>
 				))}
-			</Flex>
+			</Grid>
 		</Flex>
 	);
 }
@@ -163,16 +227,29 @@ function TrackStrip() {
 			vAlign="center"
 			gap="md"
 			padding="lg"
-			radius="md"
+			radius="full"
 			backgroundColor="surface"
 			wrap
 		>
-			<Typography variant="body">
-				A few years of CAD/CAM, rendering, and optimization work, distilled onto
-				one page.
-			</Typography>
-			<Link url="/resume" padding="sm" radius="md" backgroundColor="brand">
-				Full resume
+			<Flex direction="row" gap="sm" wrap>
+				<Typography variant="body">
+					Most recently at <strong>{TRACK[0].company}</strong>
+				</Typography>
+				<Typography variant="body" muted>
+					·
+				</Typography>
+				<Typography variant="body">
+					previously <strong>{TRACK[1].company}</strong>
+				</Typography>
+				<Typography variant="body" muted>
+					·
+				</Typography>
+				<Typography variant="body">
+					<strong>{TRACK[2].company}</strong> before that
+				</Typography>
+			</Flex>
+			<Link url="/resume" padding="sm" radius="full" backgroundColor="brand">
+				Full history →
 			</Link>
 		</Flex>
 	);

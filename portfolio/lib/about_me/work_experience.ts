@@ -76,3 +76,13 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
 	FlowkeySE,
 	PennStateGRA,
 ] as const;
+
+/** Ongoing roles first, then most recently ended. */
+export const WORK_EXPERIENCE_BY_RECENCY: WorkExperience[] = [
+	...WORK_EXPERIENCE,
+].sort((a, b) => {
+	if (!a.endDate && !b.endDate) return a.startDate < b.startDate ? 1 : -1;
+	if (!a.endDate) return -1;
+	if (!b.endDate) return 1;
+	return a.endDate < b.endDate ? 1 : -1;
+});

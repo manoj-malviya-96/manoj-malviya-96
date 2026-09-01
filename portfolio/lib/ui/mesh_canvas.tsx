@@ -20,15 +20,16 @@ type Grid = {
 	points: Point[];
 };
 
-const CELL_SIZE = 72;
+const CELL_SIZE = 130;
 const JITTER = 0.35;
-const DRIFT_RADIUS = 6;
-const POINTER_RADIUS = 160;
-const POINTER_PUSH = 22;
+const DRIFT_RADIUS = 4;
+const POINTER_RADIUS = 170;
+const POINTER_PUSH = 36;
 const LINE_ALPHA = 0.16;
 const POINTER_EASE = 0.12;
 const STRENGTH_EASE = 0.06;
 const IDLE_TIMEOUT_MS = 500;
+const MAX_DPR = 2;
 
 function buildGrid(width: number, height: number): Grid {
 	const cols = Math.ceil(width / CELL_SIZE) + 1;
@@ -77,7 +78,7 @@ export default function MeshCanvas() {
 		gridRef.current = buildGrid(size.width, size.height);
 		const ctx = canvasRef.current?.getContext("2d");
 		if (!ctx) return;
-		const dpr = window.devicePixelRatio || 1;
+		const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	};
 
