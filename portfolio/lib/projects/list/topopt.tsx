@@ -19,6 +19,11 @@ const metadata = {
 	},
 } as const;
 
+export const GITHUB_URL =
+	"https://github.com/manoj-malviya-96/topopt-py/tree/master" as const;
+export const MEDIUM_URL =
+	"https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2" as const;
+
 export const caseStudy = {
 	problem:
 		"The classic 99-line topology optimization code is a beautiful piece of engineering — it finds the optimal material distribution in a structure given its loads and constraints. But it's from an era that didn't care about wall-clock time: nested Python loops over every element, every iteration. Slow af, and it falls over well before you reach the element counts a real design needs.",
@@ -39,11 +44,11 @@ function TopOptCard() {
 				},
 				{
 					kind: "github",
-					href: "https://github.com/manoj-malviya-96/topopt-py/tree/master",
+					href: GITHUB_URL,
 				},
 				{
 					kind: "medium",
-					href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
+					href: MEDIUM_URL,
 				},
 			]}
 		/>
