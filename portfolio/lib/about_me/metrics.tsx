@@ -1,16 +1,13 @@
 "use client";
 
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import { BarChart, Heatmap } from "@manoj-malviya-96/atom";
-import { toContributionHeatmap, useGithubQuery } from "@/lib/about_me/github";
+import { useGithubQuery } from "@/lib/about_me/github";
 import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import { getSocialLinks } from "@/lib/about_me/profile";
-import { Icon, Link, StatCard } from "@/lib/ui";
+import { Link, StatCard } from "@/lib/ui";
+import { Github, GoogleScholar } from "@/lib/ui/brand_icons";
 
 export function GithubMetricsCard() {
 	const { data, error } = useGithubQuery();
-	const heatmap = data && toContributionHeatmap(data.contributions);
 
 	return (
 		<StatCard
@@ -25,24 +22,13 @@ export function GithubMetricsCard() {
 				{ label: "Daily Average", value: data?.dailyAverage },
 				{ label: "Longest Streak", value: data?.longestStreak },
 			]}
-			chart={
-				heatmap && (
-					<Heatmap
-						xLabels={heatmap.xLabels}
-						yLabels={heatmap.yLabels}
-						values={heatmap.values}
-						height={140}
-						aria-label="Daily contributions"
-					/>
-				)
-			}
 			cta={
 				<Link
 					url={getSocialLinks().Github}
 					openNewTab
 					aria-label="GitHub profile"
 				>
-					<Icon icon={faGithub} size="lg" />
+					<Github />
 				</Link>
 			}
 		/>
@@ -51,7 +37,6 @@ export function GithubMetricsCard() {
 
 export function ScholarMetricsCard() {
 	const { data, error } = useGoogleScholarQuery();
-	const years = data && Object.keys(data.citationsPerYear).sort();
 
 	return (
 		<StatCard
@@ -66,29 +51,13 @@ export function ScholarMetricsCard() {
 				{ label: "h-index", value: data?.hIndex },
 				{ label: "This Year", value: data?.recentYearCitations },
 			]}
-			chart={
-				years &&
-				data && (
-					<BarChart
-						categories={years}
-						series={[
-							{
-								label: "Citations",
-								data: years.map((year) => data.citationsPerYear[year] ?? 0),
-							},
-						]}
-						height={140}
-						aria-label="Citations per year"
-					/>
-				)
-			}
 			cta={
 				<Link
 					url={getSocialLinks().Scholar}
 					openNewTab
 					aria-label="Google Scholar profile"
 				>
-					<Icon icon={faGoogleScholar} size="lg" />
+					<GoogleScholar />
 				</Link>
 			}
 		/>

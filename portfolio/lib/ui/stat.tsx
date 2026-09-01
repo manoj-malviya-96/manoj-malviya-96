@@ -12,7 +12,6 @@ type StatCardProps = {
 	stats: readonly StatItem[];
 	error?: string | undefined;
 	cta?: ReactNode;
-	chart?: ReactNode;
 };
 
 const MISSING_VALUE = "—";
@@ -23,7 +22,6 @@ export default function StatCard({
 	stats,
 	error,
 	cta,
-	chart,
 }: StatCardProps) {
 	return (
 		<Flex
@@ -31,7 +29,7 @@ export default function StatCard({
 			gap="md"
 			padding="lg"
 			radius="md"
-			backgroundColor="surface"
+			backgroundColor="raised"
 		>
 			<Flex direction="col" gap="xs">
 				<Flex direction="row" hAlign="between" vAlign="center" gap="sm">
@@ -49,7 +47,6 @@ export default function StatCard({
 					/>
 				))}
 			</Grid>
-			{chart}
 		</Flex>
 	);
 }
