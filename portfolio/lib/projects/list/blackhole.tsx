@@ -1,6 +1,6 @@
+import { Typography } from "@manoj-malviya-96/atom";
 import type { Project } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
-import { Typography } from "@/lib/ui/text";
 
 const metadata = {
 	title: "Blackhole",
