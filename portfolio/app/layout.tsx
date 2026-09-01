@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import type React from "react";
 import Footer from "@/lib/core/footer";
 import NavBar from "@/lib/core/nav_bar";
@@ -22,7 +23,13 @@ const inter = Inter({
 	preload: true,
 });
 
-/** Each page names its own scheme; globals.css lifts it to <html>. */
+/**
+ * atom's setTheme only ever touches data-theme; it persists nothing, so a
+ * stored preference has to be applied before first paint here or the page
+ * flashes the system theme before hydration swaps it.
+ */
+const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -35,6 +42,11 @@ export default function RootLayout({
 		 * before React loads, and the mismatch is theirs, not the tree's.
 		 */
 		<html lang="en" suppressHydrationWarning>
+			<head>
+				<Script id="theme-init" strategy="beforeInteractive">
+					{THEME_INIT_SCRIPT}
+				</Script>
+			</head>
 			<body className={inter.className}>
 				<ReactQueryProvider>
 					<NavBar />
