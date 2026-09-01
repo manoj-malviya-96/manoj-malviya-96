@@ -71,9 +71,6 @@ export default function MeshCanvas() {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
 	useEffect(() => {
-		// "muted" is a currentColor-relative color-mix token — its own baked-in alpha
-		// would compound with LINE_ALPHA below and render near-invisible. "content" is
-		// opaque, so LINE_ALPHA alone controls the line's visual weight.
 		colorRef.current = getThemeColor("content");
 	}, [theme]);
 
@@ -84,8 +81,6 @@ export default function MeshCanvas() {
 		if (!ctx) return;
 		const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-		// ResizeObserver callbacks always fire async, so the reduced-motion
-		// single-shot draw() below can run before this — redraw once the grid is real.
 		drawRef.current(performance.now());
 	};
 
