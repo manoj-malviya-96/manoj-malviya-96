@@ -1,13 +1,6 @@
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import type { StaticImageData as LocalImage } from "next/image";
 import { IITJLogo, PennStateLogo } from "@/lib/assets";
 import type { ExternalURL, MonthAndYear } from "@/lib/types";
-
-export interface SocialLink {
-	icon: IconDefinition;
-	href: string;
-	label: string;
-}
 
 export const SocialUsersID = {
 	Github: "manoj-malviya-96",

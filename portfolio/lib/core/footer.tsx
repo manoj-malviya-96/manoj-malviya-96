@@ -1,13 +1,5 @@
 "use client";
 
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-	faGithub,
-	faInstagram,
-	faLinkedin,
-	faMedium,
-} from "@fortawesome/free-brands-svg-icons";
-import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
 import {
 	Divider,
 	Flex,
@@ -24,7 +16,15 @@ import {
 	type SocialMedia,
 } from "@/lib/about_me/profile";
 import { UserAvatar } from "@/lib/assets";
-import { Icon, Link } from "@/lib/ui";
+import { Link } from "@/lib/ui";
+import type { BrandIcon } from "@/lib/ui/brand_icons";
+import {
+	Github,
+	GoogleScholar,
+	Instagram,
+	Linkedin,
+	Medium,
+} from "@/lib/ui/brand_icons";
 
 export default function Footer() {
 	return (
@@ -34,8 +34,7 @@ export default function Footer() {
 			gap="lg"
 			padding="xl"
 			radius="lg"
-			backgroundColor="surface"
-			className="footer-card"
+			backgroundColor="raised"
 		>
 			<Grid columns={3} gap="lg" className="footer-grid">
 				<About />
@@ -60,6 +59,7 @@ const AVATAR_SIZE = "3rem";
 function About() {
 	return (
 		<Flex direction="col" gap="sm">
+			{/* Todo integrate in atom: width/height only take the sm–xl size scale (16rem+) — an avatar needs a smaller fixed size, so style= is the only path. */}
 			<Image
 				as={NextImage}
 				src={UserAvatar}
@@ -102,12 +102,12 @@ function QuickLinks() {
 	);
 }
 
-const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: IconDefinition }> = [
-	{ name: "Github", icon: faGithub },
-	{ name: "Linkedin", icon: faLinkedin },
-	{ name: "Scholar", icon: faGoogleScholar },
-	{ name: "Medium", icon: faMedium },
-	{ name: "Instagram", icon: faInstagram },
+const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: BrandIcon }> = [
+	{ name: "Github", icon: Github },
+	{ name: "Linkedin", icon: Linkedin },
+	{ name: "Scholar", icon: GoogleScholar },
+	{ name: "Medium", icon: Medium },
+	{ name: "Instagram", icon: Instagram },
 ];
 
 function SocialLinks() {
@@ -121,10 +121,10 @@ function SocialLinks() {
 				</Typography>
 			</Flex>
 			<List direction="row" gap="md">
-				{SOCIALS.map(({ name, icon }) => (
+				{SOCIALS.map(({ name, icon: SocialIcon }) => (
 					<li key={name}>
 						<Link url={socials[name]} openNewTab aria-label={name}>
-							<Icon icon={icon} size="lg" />
+							<SocialIcon />
 						</Link>
 					</li>
 				))}

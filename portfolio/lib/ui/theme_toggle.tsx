@@ -1,9 +1,8 @@
 "use client";
 
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Button, setTheme, useTheme } from "@manoj-malviya-96/atom";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Icon } from "@/lib/ui";
 
 const STORAGE_KEY = "theme";
 
@@ -30,7 +29,7 @@ export default function ThemeToggle() {
 
 	return (
 		<Button
-			icon={<Icon icon={isDark ? faSun : faMoon} />}
+			icon={isDark ? <Sun /> : <Moon />}
 			aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
 			onClick={toggle}
 			variant="plain"
