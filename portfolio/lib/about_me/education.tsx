@@ -12,7 +12,7 @@ export default function Education() {
 					gap="sm"
 					padding="lg"
 					radius="lg"
-					backgroundColor="surface"
+					backgroundColor="raised"
 				>
 					<Typography variant="title">{entry.school}</Typography>
 					<Typography variant="body" muted>
