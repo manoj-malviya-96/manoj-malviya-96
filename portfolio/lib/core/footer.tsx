@@ -8,9 +8,8 @@ import {
 	faMedium,
 } from "@fortawesome/free-brands-svg-icons";
 import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons/faGoogleScholar";
-import { Flex, Image, List, Typography } from "@manoj-malviya-96/atom";
+import { Divider, Flex, Image, List, Typography } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
-import { usePathname } from "next/navigation";
 import {
 	EmailAddress,
 	getSocialLinks,
@@ -21,20 +20,14 @@ import { UserAvatar } from "@/lib/assets";
 import { Icon, Link } from "@/lib/ui";
 
 export default function Footer() {
-	const pathname = usePathname();
-	if (pathname === "/") return null;
-
 	return (
-		<Flex
-			as="footer"
-			direction="row"
-			hAlign="between"
-			gap="md"
-			className="footer"
-		>
-			<CopyRight />
-			<QuickLinks />
-			<SocialLinks />
+		<Flex as="footer" direction="col" gap="md">
+			<Divider direction="horizontal" />
+			<Flex direction="row" hAlign="between" gap="md" className="footer">
+				<CopyRight />
+				<QuickLinks />
+				<SocialLinks />
+			</Flex>
 		</Flex>
 	);
 }
