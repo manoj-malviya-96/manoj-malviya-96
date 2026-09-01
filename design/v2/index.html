@@ -428,7 +428,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   var cellSize = 130;
   var points = [];
   var cells = [];
-  var pointer = { x: -9999, y: -9999, active: false };
+  var pointer = { x: -9999, y: -9999, targetX: -9999, targetY: -9999, strength: 0, targetStrength: 0, lastMove: -99999 };
 
   function lineColor() {
     return getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim();
@@ -471,14 +471,14 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   function displace(p, t) {
     var x = p.bx + p.jx, y = p.by + p.jy;
     if (reduced) return [x, y];
-    x += Math.sin(t * 0.0003 * p.speed + p.phase) * 6;
-    y += Math.cos(t * 0.00035 * p.speed + p.phase) * 6;
-    if (pointer.active) {
+    x += Math.sin(t * 0.00012 * p.speed + p.phase) * 4;
+    y += Math.cos(t * 0.00014 * p.speed + p.phase) * 4;
+    if (pointer.strength > 0.002) {
       var dx = x - pointer.x, dy = y - pointer.y;
       var dist = Math.sqrt(dx * dx + dy * dy);
       var radius = 170;
       if (dist < radius && dist > 0.001) {
-        var force = (1 - dist / radius) * 36;
+        var force = (1 - dist / radius) * 36 * pointer.strength;
         x += (dx / dist) * force;
         y += (dy / dist) * force;
       }
@@ -489,6 +489,12 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   function draw(t) {
     ctx.clearRect(0, 0, w, h);
     if (!points.length) return;
+    if (!reduced) {
+      if (t - pointer.lastMove > 500) pointer.targetStrength = 0;
+      pointer.x += (pointer.targetX - pointer.x) * 0.12;
+      pointer.y += (pointer.targetY - pointer.y) * 0.12;
+      pointer.strength += (pointer.targetStrength - pointer.strength) * 0.06;
+    }
     var disp = [];
     for (var j = 0; j < points.length; j++) {
       var row = [];
@@ -497,7 +503,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
     }
     ctx.strokeStyle = lineColor();
     ctx.lineWidth = 1;
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = 0.16;
     for (var jr = 0; jr < disp.length; jr++) {
       ctx.beginPath();
       for (var ic = 0; ic < disp[jr].length; ic++) {
@@ -530,9 +536,10 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   function loop(t) { draw(t); if (!reduced) raf = requestAnimationFrame(loop); }
 
   window.addEventListener('pointermove', function (e) {
-    pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
+    pointer.targetX = e.clientX; pointer.targetY = e.clientY;
+    pointer.targetStrength = 1;
+    pointer.lastMove = performance.now();
   });
-  window.addEventListener('pointerleave', function () { pointer.active = false; });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = null; } }
