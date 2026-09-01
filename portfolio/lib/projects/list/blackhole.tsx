@@ -27,11 +27,6 @@ function BlackholeProjectCard() {
 					kind: "github",
 					href: "https://github.com/manoj-malviya-96/blackhole/tree/master",
 				},
-				{
-					kind: "demo",
-					label: "Video Demo",
-					href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-				},
 			]}
 		/>
 	);

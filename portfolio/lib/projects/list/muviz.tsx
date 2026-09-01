@@ -26,10 +26,6 @@ function MuvizProjectCard() {
 			{...metadata}
 			ctas={[
 				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/muviz/tree/master",
-				},
-				{
 					kind: "demo",
 					label: "Demo",
 					href: "https://muviz.vercel.app/",
