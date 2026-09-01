@@ -1,42 +1,24 @@
-import { default as NextLink } from "next/link";
-import type { ReactNode } from "react";
-import type { UrlObject } from "url";
-import type { ExternalURL } from "@/lib/types";
-import { mergeCls } from "@/lib/utils";
+"use client";
 
-type LinkProps = {
-	url: ExternalURL | UrlObject | string;
-	className?: string;
-	newTab?: boolean;
-	asControl?: boolean;
-	children: ReactNode;
+import { Link as AtomLink } from "@manoj-malviya-96/atom";
+import NextLink from "next/link";
+import type { ComponentProps } from "react";
+
+type Href = ComponentProps<typeof NextLink>["href"];
+
+export type LinkProps = Omit<
+	ComponentProps<typeof AtomLink<"a">>,
+	"as" | "href"
+> & {
+	url: Href;
 };
 
-export default function Link({
-	url,
-	children,
-	newTab,
-	asControl = false,
-	className,
-}: LinkProps) {
-	if (!url) {
-		throw new Error("Link component requires a url prop");
-	}
-	const props = newTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
-	return (
-		<NextLink
-			href={url}
-			replace={false}
-			className={mergeCls(
-				asControl
-					? "control-primary"
-					: "text-subtle cursor-pointer hover:text-front transition-colors duration-300",
-				className,
-			)}
-			aria-label={typeof url === "string" ? url : url.toString()}
-			{...props}
-		>
-			{children}
-		</NextLink>
-	);
+/**
+ * atom's Link renders a plain <a> and knows nothing about the router, so
+ * internal paths are handed to next/link through atom's polymorphic `as` to
+ * keep client-side navigation; external URLs stay a plain anchor.
+ */
+export default function Link({ url, ...rest }: LinkProps) {
+	const isInternal = typeof url === "object" || url.startsWith("/");
+	return <AtomLink as={isInternal ? NextLink : "a"} href={url} {...rest} />;
 }
