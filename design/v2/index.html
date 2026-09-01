@@ -93,11 +93,9 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
 .breadcrumb { font-family:var(--font-mono); font-size:.78rem; color:var(--text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:.4em; }
 .breadcrumb:hover { color:var(--text); }
 
-.hero { padding-block:var(--space-8) var(--space-8); }
-.hero-panel { position:relative; border-radius:var(--radius-lg); overflow:hidden; background:var(--surface-2);
-  border:1px solid var(--border); box-shadow:var(--shadow); min-height:clamp(440px,58vh,620px);
-  display:flex; align-items:flex-end; padding:var(--space-7); }
-.hero-mesh { position:absolute; inset:0; width:100%; height:100%; }
+.mesh-bg { position:fixed; inset:0; width:100vw; height:100vh; z-index:-1; pointer-events:none; }
+.hero { padding-block:var(--space-9) var(--space-8); min-height:72vh; display:flex; align-items:flex-end; }
+.hero-panel { position:relative; width:100%; display:flex; align-items:flex-end; }
 .hero-content { position:relative; z-index:2; max-width:600px;
   background:color-mix(in srgb, var(--surface) 86%, transparent); backdrop-filter:blur(16px);
   border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--space-6) var(--space-7);
@@ -217,7 +215,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   .proof-stack { margin-left:0; }
 }
 @media (max-width:600px) {
-  .hero-panel { align-items:stretch; padding:var(--space-4); }
+  .hero { min-height:60vh; }
   .hero-content { max-width:none; }
   .loop { grid-template-columns:1fr; }
   .nav-links { display:none; }
@@ -226,6 +224,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
 </style>
 </head>
 <body>
+<canvas class="mesh-bg" id="meshCanvas" aria-hidden="true"></canvas>
 
 <div class="nav-shell">
   <nav class="nav">
@@ -248,7 +247,6 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
 <header class="hero">
   <div class="wrap">
     <div class="hero-panel">
-      <canvas class="hero-mesh" id="meshCanvas" aria-hidden="true"></canvas>
       <div class="hero-content">
         <span class="eyebrow">Software engineer, product-brained &mdash; Berlin, DE</span>
         <h1 class="hero-headline">I care about your users<span class="soft">as much as your query plans.</span></h1>
@@ -426,9 +424,8 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var panel = canvas.parentElement;
   var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var cellSize = 118;
+  var cellSize = 130;
   var points = [];
   var cells = [];
   var pointer = { x: -9999, y: -9999, active: false };
@@ -469,8 +466,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   }
 
   function resize() {
-    var rect = panel.getBoundingClientRect();
-    w = rect.width; h = rect.height;
+    w = window.innerWidth; h = window.innerHeight;
     canvas.width = w * dpr; canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     buildGrid();
@@ -554,20 +550,17 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   var raf = null;
   function loop(t) { draw(t); if (!reduced) raf = requestAnimationFrame(loop); }
 
-  panel.addEventListener('pointermove', function (e) {
-    var rect = canvas.getBoundingClientRect();
-    pointer.x = e.clientX - rect.left; pointer.y = e.clientY - rect.top; pointer.active = true;
+  window.addEventListener('pointermove', function (e) {
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
   });
-  panel.addEventListener('pointerleave', function () { pointer.active = false; });
+  window.addEventListener('pointerleave', function () { pointer.active = false; });
   window.addEventListener('resize', resize);
-
-  var io = new IntersectionObserver(function (entries) {
-    if (entries[0].isIntersecting) { if (!raf) raf = requestAnimationFrame(loop); }
-    else if (raf) { cancelAnimationFrame(raf); raf = null; }
-  }, { threshold: 0.05 });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+    else if (!reduced && !raf) { raf = requestAnimationFrame(loop); }
+  });
 
   resize();
-  io.observe(canvas);
   draw(0);
   if (!reduced) raf = requestAnimationFrame(loop);
 })();

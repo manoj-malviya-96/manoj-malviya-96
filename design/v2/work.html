@@ -93,11 +93,9 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
 .breadcrumb { font-family:var(--font-mono); font-size:.78rem; color:var(--text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:.4em; }
 .breadcrumb:hover { color:var(--text); }
 
-.hero { padding-block:var(--space-8) var(--space-8); }
-.hero-panel { position:relative; border-radius:var(--radius-lg); overflow:hidden; background:var(--surface-2);
-  border:1px solid var(--border); box-shadow:var(--shadow); min-height:clamp(440px,58vh,620px);
-  display:flex; align-items:flex-end; padding:var(--space-7); }
-.hero-mesh { position:absolute; inset:0; width:100%; height:100%; }
+.mesh-bg { position:fixed; inset:0; width:100vw; height:100vh; z-index:-1; pointer-events:none; }
+.hero { padding-block:var(--space-9) var(--space-8); min-height:72vh; display:flex; align-items:flex-end; }
+.hero-panel { position:relative; width:100%; display:flex; align-items:flex-end; }
 .hero-content { position:relative; z-index:2; max-width:600px;
   background:color-mix(in srgb, var(--surface) 86%, transparent); backdrop-filter:blur(16px);
   border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--space-6) var(--space-7);
@@ -217,7 +215,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
   .proof-stack { margin-left:0; }
 }
 @media (max-width:600px) {
-  .hero-panel { align-items:stretch; padding:var(--space-4); }
+  .hero { min-height:60vh; }
   .hero-content { max-width:none; }
   .loop { grid-template-columns:1fr; }
   .nav-links { display:none; }
@@ -226,6 +224,7 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--text); outline-o
 </style>
 </head>
 <body>
+
 
 <div class="nav-shell">
   <nav class="nav">
