@@ -1,3 +1,4 @@
+import type { StaticImageData as LocalImage } from "next/image";
 import type { ComponentType } from "react";
 import type {
 	ProgrammingFrameworks,
@@ -20,6 +21,11 @@ export type ProjectSteps = {
 	outcome: string;
 };
 
+export type ProjectMedia = {
+	src: LocalImage | string;
+	alt: string;
+};
+
 export type ProjectMeta = {
 	title: string;
 	description: string;
@@ -31,6 +37,8 @@ export type ProjectMeta = {
 	hook?: string;
 	/** Problem/approach/outcome breakdown — only case-study projects carry this. */
 	steps?: ProjectSteps;
+	/** Screenshot or cover art for the case card. Falls back to a generated placeholder when omitted. */
+	media?: ProjectMedia;
 };
 
 export interface Project {

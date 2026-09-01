@@ -1,6 +1,18 @@
-import { Badge, Flex, Grid, List, Typography } from "@manoj-malviya-96/atom";
+import {
+	Badge,
+	Flex,
+	Grid,
+	Image,
+	List,
+	Typography,
+} from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
 import type { ReactNode } from "react";
-import type { ProjectMeta, ProjectSteps } from "@/lib/projects/list/types";
+import type {
+	ProjectMedia,
+	ProjectMeta,
+	ProjectSteps,
+} from "@/lib/projects/list/types";
 import type { ExternalURL } from "@/lib/types";
 import { Link } from "@/lib/ui";
 
@@ -26,19 +38,27 @@ export default function ProjectCard({
 	hook,
 	tags,
 	steps,
+	media,
 	children,
 	ctas,
 }: ProjectCardProps) {
 	return (
-		<Grid columns={2} gap="lg" className="case-grid">
-			<Flex direction="col" gap="sm">
+		<Grid
+			columns={2}
+			gap="lg"
+			className="case-grid"
+			backgroundColor="raised"
+			padding="lg"
+			radius="lg"
+		>
+			<Flex direction="col" gap="sm" vAlign="center">
 				{eyebrow && (
 					<Typography variant="overline" className="font-mono">
 						{eyebrow}
 					</Typography>
 				)}
 				<Typography variant="title">{title}</Typography>
-				<Typography variant="body" muted style={{ fontStyle: "italic" }}>
+				<Typography variant="body" muted>
 					{hook ?? description}
 				</Typography>
 				{tags.length > 0 && (
@@ -58,8 +78,46 @@ export default function ProjectCard({
 					</Flex>
 				)}
 			</Flex>
-			{steps ? <CaseSteps steps={steps} /> : children}
+			<Flex direction="col" gap="md">
+				<ProjectCover media={media} title={title} />
+				{steps ? <CaseSteps steps={steps} /> : children}
+			</Flex>
 		</Grid>
+	);
+}
+
+function ProjectCover({
+	media,
+	title,
+}: {
+	media?: ProjectMedia | undefined;
+	title: string;
+}) {
+	if (media) {
+		return (
+			<Image
+				as={NextImage}
+				src={media.src}
+				alt={media.alt}
+				fit="cover"
+				ratio="video"
+				radius="md"
+			/>
+		);
+	}
+	return (
+		<Flex
+			direction="col"
+			hAlign="center"
+			vAlign="center"
+			backgroundColor="raised"
+			radius="md"
+			className="project-cover-placeholder"
+		>
+			<Typography variant="title" className="font-mono" muted aria-hidden>
+				{title.slice(0, 2).toUpperCase()}
+			</Typography>
+		</Flex>
 	);
 }
 
