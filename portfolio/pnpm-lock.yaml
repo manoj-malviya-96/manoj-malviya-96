@@ -32,6 +32,9 @@ importers:
       fuse.js:
         specifier: ^7.5.0
         version: 7.5.0
+      lucide:
+        specifier: ^1.39.0
+        version: 1.39.0
       next:
         specifier: ^16.3.2
         version: 16.3.2(@types/node@26.2.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -528,6 +531,9 @@ packages:
     resolution: {integrity: sha512-sQtrEfA+ez/3G0cCZecF70oqpCRttCexYUG4mUrtWL49ULUzUyxokt5kyqwtKzj1270RaKih+hcP3qLcumccow==}
     engines: {node: '>=10'}
 
+  lucide@1.39.0:
+    resolution: {integrity: sha512-5tdtUFVqkqXjQRlt8QyPeF9GjkMxiKDLWYg20vCmWYDgDY/Atnmx9foe9zF81NmbJNa+oheEfF8gN+CoCAljGg==}
+
   nanoid@3.3.18:
     resolution: {integrity: sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -924,6 +930,8 @@ snapshots:
     optional: true
 
   fuse.js@7.5.0: {}
+
+  lucide@1.39.0: {}
 
   nanoid@3.3.18: {}
 
