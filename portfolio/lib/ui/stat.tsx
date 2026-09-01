@@ -1,48 +1,55 @@
-import type React from "react";
-import { memo } from "react";
-import { Typography } from "@/lib/ui/text";
-import { mergeCls } from "@/lib/utils";
+import { Flex, Grid, Stat, Typography } from "@manoj-malviya-96/atom";
+import type { ReactNode } from "react";
 
-type Stat = {
+export type StatItem = {
 	label: string;
-	value?: string | number;
+	value: ReactNode;
 };
 
-export interface CardProps {
+type StatCardProps = {
 	title: string;
-	description?: string;
-	stats: Stat[];
-	className?: string;
-	cta?: React.ReactNode;
-}
+	description: string;
+	stats: readonly StatItem[];
+	error?: string | undefined;
+	cta?: ReactNode;
+	chart?: ReactNode;
+};
 
-const StatCard = memo(({ title, description, stats, cta }: CardProps) => {
+const MISSING_VALUE = "—";
+
+export default function StatCard({
+	title,
+	description,
+	stats,
+	error,
+	cta,
+	chart,
+}: StatCardProps) {
 	return (
-		<div className="flex flex-col gap-4 p-6 card rounded-xl">
-			<span>
-				<span className="flex flex-row items-center justify-between gap-2">
+		<Flex
+			direction="col"
+			gap="md"
+			padding="lg"
+			radius="md"
+			backgroundColor="surface"
+		>
+			<Flex direction="col" gap="xs">
+				<Flex direction="row" hAlign="between" vAlign="center" gap="sm">
 					<Typography variant="title">{title}</Typography>
 					{cta}
-				</span>
-				<Typography variant="caption">{description}</Typography>
-			</span>
-
-			<ul className="grid grid-cols-2 gap-0">
-				{stats.slice(0, 4).map((stat, i) => (
-					<li
-						key={i}
-						className={mergeCls("flex flex-col items-center justify-start p-4")}
-					>
-						<Typography variant="heading" component="span">
-							{stat.value ?? "-"}
-						</Typography>
-						<Typography variant="caption">{stat.label}</Typography>
-					</li>
+				</Flex>
+				<Typography variant="caption">{error ?? description}</Typography>
+			</Flex>
+			<Grid columns={2} gap="xs">
+				{stats.map((stat) => (
+					<Stat
+						key={stat.label}
+						label={stat.label}
+						value={stat.value ?? MISSING_VALUE}
+					/>
 				))}
-			</ul>
-		</div>
+			</Grid>
+			{chart}
+		</Flex>
 	);
-});
-
-StatCard.displayName = "StatCard";
-export default StatCard;
+}

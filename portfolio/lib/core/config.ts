@@ -1,16 +1,33 @@
-interface Config {
+type Config = {
 	githubContributionsApi: string;
 	scholarTargetUrl: string;
+};
+
+let cached: Config | null = null;
+
+export default function getConfig(): Config {
+	cached ??= {
+		githubContributionsApi: required(
+			"NEXT_PUBLIC_GITHUB_API",
+			process.env.NEXT_PUBLIC_GITHUB_API,
+		),
+		scholarTargetUrl: required(
+			"NEXT_PUBLIC_SCHOLAR_API",
+			process.env.NEXT_PUBLIC_SCHOLAR_API,
+		),
+	};
+	return cached;
 }
 
-let _config: Config | null = null; // Singleton for config.
-export default function getConfig(): Config {
-	if (_config) {
-		return _config;
+/**
+ * Reads the literal `process.env.NEXT_PUBLIC_*` member at the call site rather
+ * than by name — Next only inlines the statically written form.
+ */
+function required(name: string, value: string | undefined): string {
+	if (!value) {
+		throw new Error(
+			`${name} is unset or empty; set it in portfolio/.env (local) or the deployment's environment`,
+		);
 	}
-	_config = {
-		githubContributionsApi: process.env.NEXT_PUBLIC_GITHUB_API!,
-		scholarTargetUrl: process.env.NEXT_PUBLIC_SCHOLAR_API!,
-	} as const;
-	return _config;
+	return value;
 }

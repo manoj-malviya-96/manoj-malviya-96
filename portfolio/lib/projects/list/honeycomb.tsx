@@ -1,6 +1,6 @@
+import { Typography } from "@manoj-malviya-96/atom";
 import type { ProjectMeta } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
-import { Typography } from "@/lib/ui/text";
 
 export const metadata: ProjectMeta = {
 	title: "HoneyMesh",

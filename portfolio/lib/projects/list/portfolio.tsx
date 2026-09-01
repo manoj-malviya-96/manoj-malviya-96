@@ -1,7 +1,7 @@
+import { Typography } from "@manoj-malviya-96/atom";
 import type { Project } from "@/lib/projects/list/types";
 import ProjectCard from "@/lib/projects/project_card";
-import Link from "@/lib/ui/link";
-import { Typography } from "@/lib/ui/text";
+import { Link } from "@/lib/ui";
 
 const metadata = {
 	title: "Portfolio",
@@ -33,7 +33,7 @@ function PortfolioCard() {
 				I let things get a bit more playful
 				<br /> <br /> If you want to look at previous iteration - check out{" "}
 				<strong>
-					<Link url="https://manoj-malviya-96.github.io/" newTab>
+					<Link url="https://manoj-malviya-96.github.io/" openNewTab>
 						here
 					</Link>
 				</strong>

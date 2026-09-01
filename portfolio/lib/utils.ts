@@ -1,9 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import type { MonthAndYear } from "@/lib/types";
 
 export function mergeCls(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+	return clsx(inputs);
 }
 
 export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
@@ -19,7 +18,7 @@ export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
 	});
 }
 
-const months = [
+export const MONTH_ABBREVIATIONS = [
 	"Jan",
 	"Feb",
 	"Mar",
@@ -35,7 +34,7 @@ const months = [
 ] as const;
 export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
-	return `${months[parseInt(month) - 1]} ${year}`;
+	return `${MONTH_ABBREVIATIONS[Number.parseInt(month, 10) - 1]} ${year}`;
 }
 
 export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {

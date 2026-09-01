@@ -1,167 +1,153 @@
 import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import React, { memo, type ReactNode } from "react";
+import {
+	Badge,
+	Button,
+	Flex,
+	Image,
+	List,
+	Typography,
+	Video,
+} from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
+import type { ReactNode } from "react";
 import type { ProjectMeta } from "@/lib/projects/list/types";
 import type { ExternalURL } from "@/lib/types";
-import { Badge } from "@/lib/ui";
+import { Icon } from "@/lib/ui";
 import type { MediaContent } from "@/lib/ui/media";
-import { Typography } from "@/lib/ui/text";
 import { mergeCls } from "@/lib/utils";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
-type ProjectCTA =
+
+export type ProjectCTA =
 	| { kind: "github"; href: GithubRepo }
 	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL }
-	| { kind: "custom"; node: ReactNode };
+	| { kind: "demo"; label?: string; href: ExternalURL };
 
-const CTAButton = ({ cta }: { cta: ProjectCTA }) => {
-	const base =
-		"inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-front text-back";
-	if (cta.kind === "custom") {
-		return <span className={mergeCls(base, "cursor-default")}>{cta.node}</span>;
-	}
-
-	const icon = (() => {
-		switch (cta.kind) {
-			case "github":
-				return <FontAwesomeIcon icon={faGithub} />;
-			case "medium":
-				return <FontAwesomeIcon icon={faMedium} />;
-			case "demo":
-				return null;
-			default:
-				return null;
-		}
-	})();
-
-	const label = (() => {
-		switch (cta.kind) {
-			case "github":
-				return "GitHub";
-			case "medium":
-				return "Blog";
-			case "demo":
-				return cta.label ?? "Demo";
-			default:
-				return null;
-		}
-	})();
-
-	return (
-		<a href={cta.href} className={base} target="_blank" rel="noreferrer">
-			<span className="inline-flex items-center gap-2">
-				{icon}
-				{label}
-			</span>
-		</a>
-	);
+type ProjectCardProps = ProjectMeta & {
+	children: ReactNode;
+	images: readonly MediaContent[];
+	ctas?: readonly ProjectCTA[];
 };
 
-function Media({
-	media,
-	width = IMG_SIZE,
-	height = IMG_SIZE,
-	className,
-	alt = "project media",
-}: {
-	media: MediaContent;
-	width?: number;
-	height?: number;
-	className?: string;
-	alt?: string;
-}) {
-	if (typeof media === "string" && media.endsWith(".webm")) {
-		return (
-			<video
-				autoPlay
-				loop
-				muted
-				playsInline
-				width={width}
-				height={height}
-				className={mergeCls("object-cover rounded-xl", className)}
-				aria-label={alt}
-			>
-				<source src={media} type="video/webm" />
-			</video>
-		);
-	}
-
-	return (
-		<Image
-			src={media}
-			alt={alt}
-			width={width}
-			height={height}
-			className={mergeCls("object-cover rounded-xl", className)}
-		/>
-	);
-}
-
-const IMG_SIZE = 720;
-
-function ProjectCard({
+export default function ProjectCard({
 	title,
 	description,
 	children,
 	tags,
 	images,
 	ctas,
-	className,
-}: ProjectMeta & {
-	children: ReactNode;
-	images: MediaContent[];
-	ctas?: ProjectCTA[];
-	className?: string;
-}) {
+}: ProjectCardProps) {
 	return (
-		<div
-			className={mergeCls(
-				images.length > 1 ? "flex-col" : "flex-col lg:flex-row",
-				"flex gap-8 w-full h-fit items-start",
-				className,
-			)}
+		<Flex
+			direction="col"
+			gap="lg"
+			hAlign="center"
+			vAlign="center"
+			padding="lg"
+			radius="md"
+			backgroundColor="surface"
+			className={mergeCls(images.length <= 1 && "direction-responsive-row")}
 		>
-			<div className="flex flex-col gap-4 flex-1">
-				{/* Heading */}
-				<span className="flex flex-col items-start justify-start gap-0">
-					<Typography variant="title">{title}</Typography>
-					{description && (
-						<Typography variant="caption">{description}</Typography>
-					)}
-				</span>
+			<Flex direction="col" gap="md" grow>
+				<Typography variant="title">{title}</Typography>
+				{description && (
+					<Typography variant="caption">{description}</Typography>
+				)}
 
-				{/* Tags */}
-				{!!tags.length && (
-					<ul className="flex flex-row flex-wrap gap-2 items-center">
-						{tags.map((tag: string) => (
-							<Badge key={tag} element="li">
-								{tag}
-							</Badge>
+				{tags.length > 0 && (
+					<List direction="row" gap="sm">
+						{tags.map((tag) => (
+							<li key={tag}>
+								<Badge color="blue">{tag}</Badge>
+							</li>
 						))}
-					</ul>
+					</List>
 				)}
 
 				{children}
 
-				{ctas?.length && (
-					<span className="flex flex-wrap gap-2 items-center">
-						{ctas.map((cta: ProjectCTA, idx: number) => (
-							<CTAButton key={idx} cta={cta} />
+				{ctas && (
+					<Flex direction="row" gap="md">
+						{ctas.map((cta) => (
+							<CTALink cta={cta} key={cta.href} />
 						))}
-					</span>
+					</Flex>
 				)}
-			</div>
-			<span className="flex flex-1">
-				{images.map((img, idx) => (
-					<Media key={idx} media={img} alt={`${title} image`} />
+			</Flex>
+			<Flex direction="row" gap="md" grow>
+				{images.map((media) => (
+					<Media key={mediaKey(media)} media={media} alt={`${title} image`} />
 				))}
-			</span>
-		</div>
+			</Flex>
+		</Flex>
 	);
 }
 
-export default memo(ProjectCard);
+function CTALink({ cta }: { cta: ProjectCTA }) {
+	const onClick = () => window.open(cta.href, "_blank", "noopener,noreferrer");
+
+	if (cta.kind === "demo") {
+		return <Button onClick={onClick}>{ctaLabel(cta)}</Button>;
+	}
+	return (
+		<Button icon={<Icon icon={ctaIcon(cta.kind)} />} onClick={onClick}>
+			{ctaLabel(cta)}
+		</Button>
+	);
+}
+
+function ctaIcon(kind: "github" | "medium") {
+	return kind === "github" ? faGithub : faMedium;
+}
+
+function ctaLabel(cta: ProjectCTA): string {
+	switch (cta.kind) {
+		case "github":
+			return "GitHub";
+		case "medium":
+			return "Blog";
+		case "demo":
+			return cta.label ?? "Demo";
+	}
+}
+
+const MEDIA_SIZE = 720;
+
+function mediaKey(media: MediaContent): string {
+	return typeof media === "string" ? media : media.src;
+}
+
+function Media({ media, alt }: { media: MediaContent; alt: string }) {
+	if (typeof media === "string" && media.endsWith(".webm")) {
+		return (
+			<Video
+				autoPlay
+				loop
+				muted
+				playsInline
+				width={MEDIA_SIZE}
+				height={MEDIA_SIZE}
+				fit="cover"
+				ratio="square"
+				radius="md"
+				aria-label={alt}
+			>
+				<source src={media} type="video/webm" />
+			</Video>
+		);
+	}
+
+	return (
+		<Image
+			as={NextImage}
+			src={media}
+			alt={alt}
+			fill
+			fit="cover"
+			ratio="square"
+			radius="md"
+			style={{ position: "relative", width: MEDIA_SIZE, height: MEDIA_SIZE }}
+		/>
+	);
+}
