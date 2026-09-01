@@ -15,9 +15,6 @@ function PortfolioCard() {
 	return (
 		<ProjectCard
 			{...metadata}
-			images={[
-				"https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/portfolio.webm",
-			]}
 			ctas={[
 				{
 					kind: "github",

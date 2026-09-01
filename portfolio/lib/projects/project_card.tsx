@@ -1,20 +1,8 @@
-import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
-import {
-	Badge,
-	Button,
-	Flex,
-	Image,
-	List,
-	Typography,
-	Video,
-} from "@manoj-malviya-96/atom";
-import NextImage from "next/image";
+import { Badge, Flex, Grid, List, Typography } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
-import type { ProjectMeta } from "@/lib/projects/list/types";
+import type { ProjectMeta, ProjectSteps } from "@/lib/projects/list/types";
 import type { ExternalURL } from "@/lib/types";
-import { Icon, Link } from "@/lib/ui";
-import type { MediaContent } from "@/lib/ui/media";
-import { mergeCls } from "@/lib/utils";
+import { Link } from "@/lib/ui";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -27,137 +15,92 @@ export type ProjectCTA =
 	| { kind: "case-study"; label?: string; href: CaseStudyPath };
 
 type ProjectCardProps = ProjectMeta & {
-	children: ReactNode;
-	images: readonly MediaContent[];
+	children?: ReactNode;
 	ctas?: readonly ProjectCTA[];
 };
 
 export default function ProjectCard({
 	title,
 	description,
-	children,
+	eyebrow,
+	hook,
 	tags,
-	images,
+	steps,
+	children,
 	ctas,
 }: ProjectCardProps) {
 	return (
-		<Flex
-			direction="col"
-			gap="lg"
-			hAlign="center"
-			vAlign="center"
-			padding="lg"
-			radius="md"
-			backgroundColor="surface"
-			className={mergeCls(images.length <= 1 && "direction-responsive-row")}
-		>
-			<Flex direction="col" gap="md" grow>
-				<Typography variant="title">{title}</Typography>
-				{description && (
-					<Typography variant="caption">{description}</Typography>
+		<Grid columns={2} gap="lg" className="case-grid">
+			<Flex direction="col" gap="sm">
+				{eyebrow && (
+					<Typography variant="overline" className="font-mono">
+						{eyebrow}
+					</Typography>
 				)}
-
+				<Typography variant="title">{title}</Typography>
+				<Typography variant="body" muted style={{ fontStyle: "italic" }}>
+					{hook ?? description}
+				</Typography>
 				{tags.length > 0 && (
 					<List direction="row" gap="sm">
 						{tags.map((tag) => (
 							<li key={tag}>
-								<Badge color="blue">{tag}</Badge>
+								<Badge>{tag}</Badge>
 							</li>
 						))}
 					</List>
 				)}
-
-				{children}
-
 				{ctas && (
-					<Flex direction="row" gap="md">
+					<Flex direction="row" gap="md" wrap>
 						{ctas.map((cta) => (
 							<CTALink cta={cta} key={cta.href} />
 						))}
 					</Flex>
 				)}
 			</Flex>
-			<Flex direction="row" gap="md" grow>
-				{images.map((media) => (
-					<Media key={mediaKey(media)} media={media} alt={`${title} image`} />
-				))}
-			</Flex>
+			{steps ? <CaseSteps steps={steps} /> : children}
+		</Grid>
+	);
+}
+
+function CaseSteps({ steps }: { steps: ProjectSteps }) {
+	return (
+		<Grid columns={3} gap="md" className="case-steps">
+			<Step label="Problem" body={steps.problem} />
+			<Step label="Approach" body={steps.approach} />
+			<Step label="Outcome" body={steps.outcome} />
+		</Grid>
+	);
+}
+
+function Step({ label, body }: { label: string; body: string }) {
+	return (
+		<Flex direction="col" gap="xs">
+			<Typography variant="caption" className="font-mono" muted>
+				{label}
+			</Typography>
+			<Typography variant="body">{body}</Typography>
 		</Flex>
 	);
 }
 
 function CTALink({ cta }: { cta: ProjectCTA }) {
-	if (cta.kind === "case-study") {
-		return (
-			<Link url={cta.href} padding="sm" radius="md" backgroundColor="brand">
-				{cta.label ?? "Read the case study"}
-			</Link>
-		);
-	}
-
-	const onClick = () => window.open(cta.href, "_blank", "noopener,noreferrer");
-
-	if (cta.kind === "demo") {
-		return <Button onClick={onClick}>{ctaLabel(cta)}</Button>;
-	}
 	return (
-		<Button icon={<Icon icon={ctaIcon(cta.kind)} />} onClick={onClick}>
+		<Link url={cta.href} openNewTab={cta.kind !== "case-study"} muted>
 			{ctaLabel(cta)}
-		</Button>
+		</Link>
 	);
 }
 
-function ctaIcon(kind: "github" | "medium") {
-	return kind === "github" ? faGithub : faMedium;
-}
-
-function ctaLabel(cta: Exclude<ProjectCTA, { kind: "case-study" }>): string {
+function ctaLabel(cta: ProjectCTA): string {
 	switch (cta.kind) {
+		case "case-study":
+			return `${cta.label ?? "Read the case study"} →`;
 		case "github":
-			return "GitHub";
+			return "GitHub ↗";
 		case "medium":
-			return "Blog";
+			return "Blog ↗";
 		case "demo":
-			return cta.label ?? "Demo";
+			return `${cta.label ?? "Demo"} ↗`;
 	}
-}
-
-const MEDIA_SIZE = 720;
-
-function mediaKey(media: MediaContent): string {
-	return typeof media === "string" ? media : media.src;
-}
-
-function Media({ media, alt }: { media: MediaContent; alt: string }) {
-	if (typeof media === "string" && media.endsWith(".webm")) {
-		return (
-			<Video
-				autoPlay
-				loop
-				muted
-				playsInline
-				width={MEDIA_SIZE}
-				height={MEDIA_SIZE}
-				fit="cover"
-				ratio="square"
-				radius="md"
-				aria-label={alt}
-			>
-				<source src={media} type="video/webm" />
-			</Video>
-		);
-	}
-
-	return (
-		<Image
-			as={NextImage}
-			src={media}
-			alt={alt}
-			fill
-			fit="cover"
-			ratio="square"
-			radius="md"
-			style={{ position: "relative", width: MEDIA_SIZE, height: MEDIA_SIZE }}
-		/>
-	);
 }

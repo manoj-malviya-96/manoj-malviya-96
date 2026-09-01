@@ -1,3 +1,4 @@
+import { project as BlackholeProject } from "./blackhole";
 import { project as HoneycombProject } from "./honeycomb";
 import { project as MuvizProject } from "./muviz";
 import { project as PortfolioProject } from "./portfolio";
@@ -9,5 +10,5 @@ export const ALL_PROJECTS: Project[] = [
 	MuvizProject,
 	HoneycombProject,
 	TopOptProject,
-	// BlackholeProject,
+	BlackholeProject,
 ] as const;

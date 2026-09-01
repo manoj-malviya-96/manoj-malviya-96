@@ -79,6 +79,11 @@ img {
 	.mini-work-grid {
 		grid-template-columns: 1fr;
 	}
+
+	.case-grid,
+	.case-steps {
+		grid-template-columns: 1fr;
+	}
 }
 
 @media (max-width: 600px) {

@@ -22,9 +22,6 @@ function MuvizProjectCard() {
 	return (
 		<ProjectCard
 			{...metadata}
-			images={[
-				"https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/muviz.webm",
-			]}
 			ctas={[
 				{
 					kind: "github",
