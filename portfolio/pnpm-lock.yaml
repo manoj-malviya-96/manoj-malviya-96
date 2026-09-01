@@ -21,8 +21,8 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0(@fortawesome/fontawesome-svg-core@7.3.1)(react@19.2.8)
       '@manoj-malviya-96/atom':
-        specifier: ^0.1.7
-        version: 0.1.7(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: ^0.2.0
+        version: 0.2.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@tanstack/react-query':
         specifier: ^5.101.4
         version: 5.101.4(react@19.2.8)
@@ -300,8 +300,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@manoj-malviya-96/atom@0.1.7':
-    resolution: {integrity: sha512-8bRTU3Uu0j79kLZTe8t+ZShELa0h3HAwjfZ1LVTDQO4AdRqISibC5LUJ4jmx9Xo/FfWg4Fw/pOQmgPtEqU8NCw==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.1.7/56d3e7110617b6b6b274cfb317def9075250756b}
+  '@manoj-malviya-96/atom@0.2.0':
+    resolution: {integrity: sha512-wGrlOhdk9UknQ6pwdvRqvNtFMhe7E4wADCBNnJAxE+0/PV88Jux3vh0QQ2lptzV2toY26TWNOYWxNao1lIu1qQ==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.2.0/b6be4f45b4bf78a7f91618ae3a97ba5d56620e36}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -792,7 +792,7 @@ snapshots:
   '@img/sharp-win32-x64@0.35.3':
     optional: true
 
-  '@manoj-malviya-96/atom@0.1.7(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@manoj-malviya-96/atom@0.2.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
