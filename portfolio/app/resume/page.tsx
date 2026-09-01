@@ -1,10 +1,11 @@
 import { Flex, Screen, Typography } from "@manoj-malviya-96/atom";
+import Education from "@/lib/about_me/education";
 import { GithubMetricsCard, ScholarMetricsCard } from "@/lib/about_me/metrics";
 import WorkHistory from "@/lib/about_me/work_history";
 
 export default function About() {
 	return (
-		<Screen gap="xl" className="theme-dark">
+		<Screen gap="xl">
 			<Flex as="header" direction="col" gap="sm">
 				<Typography variant="overline">Experience</Typography>
 				<Typography variant="heading">Resume</Typography>
@@ -27,6 +28,10 @@ export default function About() {
 					<GithubMetricsCard />
 					<ScholarMetricsCard />
 				</Flex>
+			</Flex>
+			<Flex as="section" direction="col" gap="md">
+				<Typography variant="overline">Education</Typography>
+				<Education />
 			</Flex>
 		</Screen>
 	);
