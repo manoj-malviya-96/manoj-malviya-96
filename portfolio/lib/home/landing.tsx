@@ -3,11 +3,7 @@ import { Badge, Flex, Grid, Typography } from "@manoj-malviya-96/atom";
 import { LinkIcon } from "lucide-react";
 import { WORK_EXPERIENCE_BY_RECENCY } from "@/lib/about_me/work_experience";
 import StatGrid from "@/lib/home/stat_grid";
-import { project as BlackholeProject } from "@/lib/projects/list/blackhole";
-import {
-	MEDIUM_URL,
-	project as TopOptProject,
-} from "@/lib/projects/list/topopt";
+import { getMeta } from "@/lib/projects/registry";
 import { Link, MeshCanvas } from "@/lib/ui";
 import { uniqueBy, yearsSince } from "@/lib/utils";
 
@@ -242,14 +238,14 @@ const LOOP: ReadonlyArray<{
 
 const FEATURED_WORK = [
 	{
-		title: TopOptProject.metadata.title,
+		title: getMeta("topopt_py").title,
 		blurb:
 			"Made a 40-year-old optimization algorithm fast again, out of pure spite for slow for-loops.",
-		href: MEDIUM_URL,
+		href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
 		cta: "Read on Medium",
 	},
 	{
-		title: BlackholeProject.metadata.title,
+		title: getMeta("blackhole").title,
 		blurb:
 			"Built a real-time gravitational lensing simulator, because pre-rendered gravity felt like cheating.",
 		href: "https://github.com/manoj-malviya-96/blackhole",

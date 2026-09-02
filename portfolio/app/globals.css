@@ -83,12 +83,6 @@ img {
 	gap: var(--space-lg);
 }
 
-/* Matches atom's ratio="video" (16 / 9) — Flex has no ratio prop, only Image/ImageCarousel do. */
-.project-cover-placeholder {
-	aspect-ratio: 16 / 9;
-	width: 100%;
-}
-
 /*
  * Todo integrate in atom: Grid/Flex take a single static `columns`/`direction`/`gap` value with no
  * breakpoint variants, so every responsive layout change below is a plain CSS override of the class

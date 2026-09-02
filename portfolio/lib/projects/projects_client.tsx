@@ -1,21 +1,43 @@
 "use client";
 
-import { InputField, List, Typography } from "@manoj-malviya-96/atom";
+import {
+	InputField,
+	List,
+	Typography,
+	useResolvedTheme,
+} from "@manoj-malviya-96/atom";
 import Fuse, { type IFuseOptions } from "fuse.js";
 import { useSearchParams } from "next/navigation";
-import type { ComponentType } from "react";
 import { useMemo, useState } from "react";
-import { ALL_PROJECTS } from "@/lib/projects/list";
-import type { ProjectEffort, ProjectTag } from "@/lib/projects/list/types";
+import ProjectCard from "@/lib/projects/project_card";
+import { getMeta } from "@/lib/projects/registry";
+import {
+	PROJECT_IDS,
+	type ProjectEffort,
+	type ProjectId,
+	type ProjectMeta,
+} from "@/lib/projects/types";
 
 const QUERY_PARAM = "q";
 
-const SEARCH_ICON = `data:image/svg+xml,${encodeURIComponent(
-	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#3a3a3f" fill-opacity="0.6"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>',
-)}`;
+/**
+ * InputField's `icon` takes a URL, not a node, so lucide's component can't be
+ * passed through — this inlines lucide's own search glyph and re-colours it per
+ * theme, since a data-URI SVG can't inherit currentColor.
+ */
+function searchIcon(stroke: string): string {
+	return `data:image/svg+xml,${encodeURIComponent(
+		`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+	)}`;
+}
 
 export default function ProjectsClient() {
 	const searchParams = useSearchParams();
+	const theme = useResolvedTheme();
+	const icon = useMemo(
+		() => searchIcon(theme === "dark" ? "#f5f5f7" : "#3a3a3f"),
+		[theme],
+	);
 	const [query, setQuery] = useState(searchParams.get(QUERY_PARAM) ?? "");
 	const matches = useSearch(query);
 
@@ -27,7 +49,12 @@ export default function ProjectsClient() {
 		} else {
 			params.delete(QUERY_PARAM);
 		}
-		window.history.replaceState(null, "", `?${params.toString()}`);
+		const query = params.toString();
+		window.history.replaceState(
+			null,
+			"",
+			query ? `?${query}` : location.pathname,
+		);
 	};
 
 	return (
@@ -36,7 +63,7 @@ export default function ProjectsClient() {
 				<InputField
 					type="search"
 					variant="filled"
-					icon={SEARCH_ICON}
+					icon={icon}
 					value={query}
 					onChange={(e) => search(e.target.value)}
 					placeholder="Search projects (title, tags, description)"
@@ -50,9 +77,9 @@ export default function ProjectsClient() {
 					</Typography>
 				</li>
 			) : (
-				matches.map(({ id, Card }) => (
+				matches.map(({ id }) => (
 					<li key={id} id={id}>
-						<Card />
+						<ProjectCard project={id} />
 					</li>
 				))
 			)}
@@ -60,14 +87,7 @@ export default function ProjectsClient() {
 	);
 }
 
-type SearchableProject = {
-	id: string;
-	Card: ComponentType;
-	title: string;
-	description: string;
-	tags: readonly ProjectTag[];
-	effort: ProjectEffort;
-};
+type SearchableProject = ProjectMeta & { id: ProjectId };
 
 const EFFORT_RANK: Record<ProjectEffort, number> = {
 	high: 3,
@@ -75,9 +95,10 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-const BY_EFFORT: SearchableProject[] = ALL_PROJECTS.map(
-	({ id, Card, metadata }) => ({ id, Card, ...metadata }),
-).sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
+const BY_EFFORT: SearchableProject[] = PROJECT_IDS.map((id) => ({
+	id,
+	...getMeta(id),
+})).sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
 
 const FUSE_OPTIONS: IFuseOptions<SearchableProject> = {
 	threshold: 0.35,

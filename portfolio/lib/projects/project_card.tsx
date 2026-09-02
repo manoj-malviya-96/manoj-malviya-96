@@ -9,39 +9,18 @@ import {
 	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
-import type { ReactNode } from "react";
+import { getBody, getLinks, getMedia, getMeta } from "@/lib/projects/registry";
 import type {
+	ProjectBody,
+	ProjectId,
+	ProjectLink,
 	ProjectMedia,
-	ProjectMeta,
-	ProjectSteps,
-} from "@/lib/projects/list/types";
-import type { ExternalURL } from "@/lib/types";
+} from "@/lib/projects/types";
 import { Link } from "@/lib/ui";
 
-type GithubRepo = `https://github.com/${string}/${string}`;
-type MediumPost = `https://medium.com/@${string}/${string}`;
+export default function ProjectCard({ project }: { project: ProjectId }) {
+	const { title, hook, tags } = getMeta(project);
 
-export type ProjectCTA =
-	| { kind: "github"; href: GithubRepo }
-	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL };
-
-type ProjectCardProps = ProjectMeta & {
-	children?: ReactNode;
-	ctas?: readonly ProjectCTA[];
-};
-
-export default function ProjectCard({
-	title,
-	description,
-	eyebrow,
-	hook,
-	tags,
-	steps,
-	media,
-	children,
-	ctas,
-}: ProjectCardProps) {
 	return (
 		<Grid
 			columns={2}
@@ -52,48 +31,35 @@ export default function ProjectCard({
 			radius="lg"
 		>
 			<Flex direction="col" gap="sm" vAlign="center">
-				<ProjectCover media={media} title={title} />
-				{eyebrow && (
-					<Typography variant="overline" className="font-mono">
-						{eyebrow}
-					</Typography>
-				)}
+				<ProjectCover media={getMedia(project)} />
 				<Typography variant="title">{title}</Typography>
 				<Typography variant="body" muted>
-					{hook ?? description}
+					{hook}
 				</Typography>
 			</Flex>
 			<Flex direction="col" gap="md">
-				{steps ? <CaseSteps steps={steps} /> : children}
-				{tags.length > 0 && (
-					<List direction="row" gap="sm">
-						{tags.map((tag) => (
-							<li key={tag}>
-								<Badge color="blue">{tag}</Badge>
-							</li>
-						))}
-					</List>
-				)}
-				{ctas && (
-					<Flex direction="row" gap="md" wrap>
-						{ctas.map((cta) => (
-							<CTALink cta={cta} key={cta.href} />
-						))}
-					</Flex>
-				)}
+				<ProjectBodyView body={getBody(project)} />
+				<ProjectTags tags={tags} />
+				<ProjectLinks project={project} />
 			</Flex>
 		</Grid>
 	);
 }
 
-function ProjectCover({
-	media,
-	title,
-}: {
-	media?: ProjectMedia | undefined;
-	title: string;
-}) {
-	if (media?.kind === "video") {
+export function ProjectTags({ tags }: { tags: readonly string[] }) {
+	return (
+		<List direction="row" gap="sm">
+			{tags.map((tag) => (
+				<li key={tag}>
+					<Badge color="blue">{tag}</Badge>
+				</li>
+			))}
+		</List>
+	);
+}
+
+function ProjectCover({ media }: { media: ProjectMedia }) {
+	if (media.kind === "video") {
 		return (
 			<Video
 				src={media.src}
@@ -108,46 +74,37 @@ function ProjectCover({
 			/>
 		);
 	}
-	if (media) {
-		return (
-			<Image
-				// next/image needs an intrinsic size, which only an imported image
-				// carries; passing width/height for a remote URL is not an option
-				// here because Atom already claims those props for its size scale.
-				// So remote covers go through a plain <img> instead.
-				{...(typeof media.src === "string" ? {} : { as: NextImage })}
-				src={media.src}
-				alt={media.alt}
-				fit="cover"
-				ratio="video"
-				radius="md"
-			/>
-		);
-	}
 	return (
-		<Flex
-			direction="col"
-			hAlign="center"
-			vAlign="center"
-			backgroundColor="raised"
+		<Image
+			// next/image needs an intrinsic size, which only an imported image
+			// carries; passing width/height for a remote URL is not an option
+			// here because Atom already claims those props for its size scale.
+			// So remote covers go through a plain <img> instead.
+			{...(typeof media.src === "string" ? {} : { as: NextImage })}
+			src={media.src}
+			alt={media.alt}
+			fit="cover"
+			ratio="video"
 			radius="md"
-			className="project-cover-placeholder"
-		>
-			<Typography variant="title" className="font-mono" muted aria-hidden>
-				{title.slice(0, 2).toUpperCase()}
-			</Typography>
-		</Flex>
+		/>
 	);
 }
 
-function CaseSteps({ steps }: { steps: ProjectSteps }) {
-	return (
-		<Grid columns={3} gap="md" className="case-steps">
-			<Step label="Problem" body={steps.problem} />
-			<Step label="Approach" body={steps.approach} />
-			<Step label="Outcome" body={steps.outcome} />
-		</Grid>
-	);
+function ProjectBodyView({ body }: { body: ProjectBody }) {
+	switch (body.kind) {
+		case "steps":
+			return (
+				<Grid columns={3} gap="md" className="case-steps">
+					<Step label="Problem" body={body.problem} />
+					<Step label="Approach" body={body.approach} />
+					<Step label="Outcome" body={body.outcome} />
+				</Grid>
+			);
+		case "narrative":
+			return body.content;
+		default:
+			return assertNever(body);
+	}
 }
 
 function Step({ label, body }: { label: string; body: string }) {
@@ -161,29 +118,34 @@ function Step({ label, body }: { label: string; body: string }) {
 	);
 }
 
-function CTALink({ cta }: { cta: ProjectCTA }) {
+function ProjectLinks({ project }: { project: ProjectId }) {
 	return (
-		<Link
-			url={cta.href}
-			openNewTab
-			muted
-			variant="button"
-			buttonVariant="plain"
-		>
-			{ctaLabel(cta)}
-		</Link>
+		<Flex direction="row" gap="md" wrap>
+			{getLinks(project).map((link) => (
+				<Link
+					key={link.href}
+					url={link.href}
+					openNewTab
+					muted
+					variant="button"
+					buttonVariant="plain"
+				>
+					{linkLabel(link)}
+				</Link>
+			))}
+		</Flex>
 	);
 }
 
-function ctaLabel(cta: ProjectCTA): string {
-	switch (cta.kind) {
+function linkLabel(link: ProjectLink): string {
+	switch (link.kind) {
 		case "github":
 			return "GitHub";
 		case "medium":
 			return "Blog";
 		case "demo":
-			return `${cta.label ?? "Demo"}`;
+			return link.label ?? "Demo";
 		default:
-			assertNever(cta);
+			return assertNever(link);
 	}
 }

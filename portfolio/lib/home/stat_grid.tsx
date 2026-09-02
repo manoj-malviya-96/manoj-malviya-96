@@ -4,7 +4,8 @@ import { Badge, Grid, Stat } from "@manoj-malviya-96/atom";
 import { useGithubQuery } from "@/lib/about_me/github";
 import { useGoogleScholarQuery } from "@/lib/about_me/google_scholar";
 import type { ProgrammingLanguage } from "@/lib/about_me/types";
-import { ALL_PROJECTS } from "@/lib/projects/list";
+import { getMeta } from "@/lib/projects/registry";
+import { PROJECT_IDS } from "@/lib/projects/types";
 
 const LANGUAGE_TAGS = new Set<ProgrammingLanguage>([
 	"typescript",
@@ -16,7 +17,7 @@ const LANGUAGE_TAGS = new Set<ProgrammingLanguage>([
 ]);
 
 const LANGUAGE_COUNT = new Set(
-	ALL_PROJECTS.flatMap((project) => project.metadata.tags).filter((tag) =>
+	PROJECT_IDS.flatMap((project) => getMeta(project).tags).filter((tag) =>
 		LANGUAGE_TAGS.has(tag as ProgrammingLanguage),
 	),
 ).size;
@@ -29,7 +30,7 @@ export default function StatGrid() {
 
 	return (
 		<Grid columns={4} gap="md" className="stat-grid">
-			<Stat label="Projects shipped" value={ALL_PROJECTS.length} />
+			<Stat label="Projects shipped" value={PROJECT_IDS.length} />
 			<Stat label="Languages" value={LANGUAGE_COUNT} />
 			<Stat
 				label="GitHub contributions"
