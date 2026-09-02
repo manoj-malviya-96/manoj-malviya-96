@@ -5,7 +5,7 @@ import {
 	Grid,
 	Image,
 	List,
-	Typography,
+	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
@@ -32,10 +32,10 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 		>
 			<Flex direction="col" gap="sm" vAlign="center">
 				<ProjectCover media={getMedia(project)} />
-				<Typography variant="title">{title}</Typography>
-				<Typography variant="body" muted>
+				<Text variant="title">{title}</Text>
+				<Text variant="body" muted>
 					{hook}
-				</Typography>
+				</Text>
 			</Flex>
 			<Flex direction="col" gap="md">
 				<ProjectBodyView body={getBody(project)} />
@@ -110,10 +110,10 @@ function ProjectBodyView({ body }: { body: ProjectBody }) {
 function Step({ label, body }: { label: string; body: string }) {
 	return (
 		<Flex direction="col" gap="xs">
-			<Typography variant="caption" className="font-mono" muted>
+			<Text variant="caption" className="font-mono" muted>
 				{label}
-			</Typography>
-			<Typography variant="body">{body}</Typography>
+			</Text>
+			<Text variant="body">{body}</Text>
 		</Flex>
 	);
 }

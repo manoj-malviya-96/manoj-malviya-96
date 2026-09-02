@@ -3,7 +3,7 @@
 import {
 	InputField,
 	List,
-	Typography,
+	Text,
 	useResolvedTheme,
 } from "@manoj-malviya-96/atom";
 import Fuse, { type IFuseOptions } from "fuse.js";
@@ -72,9 +72,7 @@ export default function ProjectsClient() {
 			</li>
 			{matches.length === 0 ? (
 				<li>
-					<Typography variant="caption">
-						No projects match that search.
-					</Typography>
+					<Text variant="caption">No projects match that search.</Text>
 				</li>
 			) : (
 				matches.map(({ id }) => (

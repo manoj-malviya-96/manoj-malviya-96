@@ -1,13 +1,6 @@
 "use client";
 
-import {
-	Divider,
-	Flex,
-	Grid,
-	Image,
-	List,
-	Typography,
-} from "@manoj-malviya-96/atom";
+import { Divider, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import {
 	EmailAddress,
@@ -46,12 +39,12 @@ export default function Footer() {
 			</Grid>
 			<Divider direction="horizontal" />
 			<Flex direction="row" hAlign="between" gap="sm" wrap>
-				<Typography variant="caption" className="font-mono">
+				<Text variant="caption" className="font-mono">
 					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
-				</Typography>
-				<Typography variant="caption" className="font-mono">
+				</Text>
+				<Text variant="caption" className="font-mono">
 					BERLIN, DE
-				</Typography>
+				</Text>
 			</Flex>
 		</Flex>
 	);
@@ -72,11 +65,11 @@ function About() {
 				radius="md"
 				style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
 			/>
-			<Typography variant="title">Manoj Malviya</Typography>
-			<Typography variant="body">
+			<Text variant="title">Manoj Malviya</Text>
+			<Text variant="body">
 				Product-minded engineer building things that work today and still work
 				next year. Occasionally simulates a black hole for fun.
-			</Typography>
+			</Text>
 		</Flex>
 	);
 }
@@ -91,7 +84,7 @@ const QUICK_LINKS = [
 function QuickLinks() {
 	return (
 		<Flex direction="col" gap="md">
-			<Typography variant="title">Quick Links</Typography>
+			<Text variant="title">Quick Links</Text>
 			<List direction="col" gap="xs">
 				{QUICK_LINKS.map(({ label, url }) => (
 					<li key={label}>
@@ -118,10 +111,10 @@ function SocialLinks() {
 	return (
 		<Flex direction="col" gap="md">
 			<Flex direction="col" gap="xs">
-				<Typography variant="title">Connect</Typography>
-				<Typography variant="body">
+				<Text variant="title">Connect</Text>
+				<Text variant="body">
 					Feel free to reach out to me on any of the platforms below.
-				</Typography>
+				</Text>
 			</Flex>
 			<List direction="row" gap="md">
 				{SOCIALS.map(({ name, icon: SocialIcon }) => (

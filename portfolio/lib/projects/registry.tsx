@@ -1,4 +1,4 @@
-import { assertNever, Typography } from "@manoj-malviya-96/atom";
+import { assertNever, Text } from "@manoj-malviya-96/atom";
 import type {
 	ProjectBody,
 	ProjectId,
@@ -111,7 +111,7 @@ export function getBody(project: ProjectId): ProjectBody {
 			return {
 				kind: "narrative",
 				content: (
-					<Typography variant="body">
+					<Text variant="body">
 						It’s simple, informative, and it works — which is exactly the point.
 						I built this site to show what I can do, highlight the projects I’m
 						proud of, and keep everything organized as a living project catalog.{" "}
@@ -125,14 +125,14 @@ export function getBody(project: ProjectId): ProjectBody {
 							</Link>
 						</strong>
 						.
-					</Typography>
+					</Text>
 				),
 			};
 		case "muviz":
 			return {
 				kind: "narrative",
 				content: (
-					<Typography variant="body">
+					<Text variant="body">
 						I’ve been obsessed with music visualizers since the Winamp
 						days—there’s just something ridiculously satisfying about watching
 						visuals snap to the beat. That itch is exactly why I’m building
@@ -143,7 +143,7 @@ export function getBody(project: ProjectId): ProjectBody {
 						in memory, so the frontend can focus on what it does best: rendering
 						smooth, reactive visuals. Using ThreeJS for rendering means it can
 						handle complex effects without breaking a sweat.
-					</Typography>
+					</Text>
 				),
 			};
 		case "honeycomb":

@@ -1,4 +1,4 @@
-import { Flex, Grid, Image, Typography } from "@manoj-malviya-96/atom";
+import { Flex, Grid, Image, Text } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import {
 	EXPERIENCE_BY_RECENCY,
@@ -31,9 +31,9 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 			padding="lg"
 			backgroundColor="surface"
 		>
-			<Typography variant="caption" className="font-mono" muted>
+			<Text variant="caption" className="font-mono" muted>
 				{formatDate(start)} — {end ? formatDate(end) : "Present"}
-			</Typography>
+			</Text>
 			<Flex direction="row" gap="md" vAlign="center" hAlign="center">
 				<Image
 					as={NextImage}
@@ -45,15 +45,15 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 					style={{ width: LOGO_SIZE, height: LOGO_SIZE }}
 				/>
 				<Flex direction="col" gap="xs">
-					<Typography variant="body" bold>
+					<Text variant="body" bold>
 						{position}{" "}
-						<Typography variant="caption" muted>
+						<Text variant="caption" muted>
 							· {name}
-						</Typography>
-					</Typography>
-					<Typography variant="body" muted>
+						</Text>
+					</Text>
+					<Text variant="body" muted>
 						{summary}
-					</Typography>
+					</Text>
 				</Flex>
 			</Flex>
 		</Grid>

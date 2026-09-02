@@ -1,4 +1,4 @@
-import { Flex, Grid, Stat, Typography } from "@manoj-malviya-96/atom";
+import { Flex, Grid, Stat, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 
 export type StatItem = {
@@ -27,10 +27,10 @@ export default function StatCard({
 		<Flex direction="col" gap="md" padding="lg" radius="md">
 			<Flex direction="col" gap="xs">
 				<Flex direction="row" hAlign="between" vAlign="center" gap="sm">
-					<Typography variant="title">{title}</Typography>
+					<Text variant="title">{title}</Text>
 					{cta}
 				</Flex>
-				<Typography variant="caption">{error ?? description}</Typography>
+				<Text variant="caption">{error ?? description}</Text>
 			</Flex>
 			<Grid columns={2} gap="xs">
 				{stats.map((stat) => (
