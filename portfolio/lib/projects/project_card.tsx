@@ -129,9 +129,8 @@ function ProjectLinks({ project }: { project: ProjectId }) {
 					muted
 					variant="button"
 					buttonVariant="plain"
-				>
-					{linkLabel(link)}
-				</Link>
+					label={linkLabel(link)}
+				/>
 			))}
 		</Flex>
 	);
