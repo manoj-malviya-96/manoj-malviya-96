@@ -29,7 +29,7 @@ export default function ThemeToggle() {
 
 	return (
 		<Button
-			icon={isDark ? <Sun /> : <Moon />}
+			icon={isDark ? <Sun size="sm" /> : <Moon size="sm" />}
 			aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
 			onClick={toggle}
 			variant="plain"
