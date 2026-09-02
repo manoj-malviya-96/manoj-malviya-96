@@ -1,6 +1,7 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
-import { Badge, Flex, Grid, Typography } from "@manoj-malviya-96/atom";
+import { Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { LinkIcon } from "lucide-react";
+import NextLink from "next/link";
 import {
 	EXPERIENCE_BY_RECENCY,
 	getEmployer,
@@ -35,27 +36,26 @@ function Hero() {
 				backgroundColor="surface"
 				className="landing-hero"
 			>
-				<Typography variant="overline" className="font-mono">
+				<Text variant="overline" className="font-mono">
 					Software engineer, product-brained — Berlin, DE
-				</Typography>
-				<Typography variant="hero">
+				</Text>
+				<Text variant="hero">
 					I care about your users as much as your query plans
-				</Typography>
-				<Typography variant="subtitle">
+				</Text>
+				<Text variant="subtitle">
 					Seven years across hardware, creative tools, and ML — turning
 					&quot;wouldn&apos;t it be nice if—&quot; into things that ship, and
 					keep working. Mechanical engineer by degree, software engineer by
 					trade, product person by compulsion.
-				</Typography>
+				</Text>
 				<Flex direction="row" gap="xl" vAlign="center" hAlign="start" wrap>
 					<Link
 						url="#loop"
 						variant="button"
 						buttonVariant="filled"
 						color="primary"
-					>
-						See how I work
-					</Link>
+						label="See how I work"
+					/>
 					<Link url="/resume" variant="inline">
 						Resume
 					</Link>
@@ -76,15 +76,15 @@ function Hero() {
 				}}
 			>
 				<Flex as="span" direction="row" gap="sm" vAlign="center" wrap>
-					<Typography variant="body">
+					<Text variant="body">
 						<strong>{YEARS_EXPERIENCE}+</strong> yrs shaping product & systems
-					</Typography>
-					<Typography variant="body" muted>
+					</Text>
+					<Text variant="body" muted>
 						·
-					</Typography>
-					<Typography variant="body">
+					</Text>
+					<Text variant="body">
 						<strong>2×</strong> faster — topopt-py, modernized
-					</Typography>
+					</Text>
 				</Flex>
 				<Flex as="span" direction="row" gap="sm" wrap>
 					{STACK.map((tech) => (
@@ -102,15 +102,15 @@ function Loop() {
 	return (
 		<Flex as="section" id="loop" direction="col" gap="xl">
 			<Flex direction="col" gap="sm">
-				<Typography variant="overline" className="font-mono">
+				<Text variant="overline" className="font-mono">
 					How I work
-				</Typography>
-				<Typography variant="heading">
+				</Text>
+				<Text variant="heading">
 					Requirements in. Shipped, measured software out.
-				</Typography>
-				<Typography variant="body" muted>
+				</Text>
+				<Text variant="body" muted>
 					No middle-management jargon required — I just refuse to skip steps.
-				</Typography>
+				</Text>
 			</Flex>
 			<Grid columns={4} gap="md" className="loop-grid">
 				{LOOP.map(({ color, stage, copy }) => (
@@ -129,7 +129,7 @@ function Loop() {
 						<Badge color={color} style={{ width: "max-content" }}>
 							{stage}
 						</Badge>
-						<Typography variant="body">{copy}</Typography>
+						<Text variant="body">{copy}</Text>
 					</Flex>
 				))}
 			</Grid>
@@ -141,34 +141,40 @@ function FeaturedWork() {
 	return (
 		<Flex as="section" direction="col" gap="lg">
 			<Flex direction="col" gap="sm">
-				<Typography variant="overline" className="font-mono">
+				<Text variant="overline" className="font-mono">
 					A few things I&apos;ve shipped
-				</Typography>
-				<Typography variant="heading">Proof, briefly.</Typography>
-				<Typography variant="body" muted>
+				</Text>
+				<Text variant="heading">Proof, briefly.</Text>
+				<Text variant="body" muted>
 					The rest — plus the messy parts — live on the full work page.
-				</Typography>
+				</Text>
 			</Flex>
 			<Grid columns={2} gap="md" className="mini-work-grid">
-				{FEATURED_WORK.map(({ title, blurb, href, cta }) => (
-					<Link
-						key={title}
-						url={href}
-						openNewTab={href.startsWith("http")}
-						variant="button"
-						padding="lg"
-						radius="sm"
-						color="secondary"
-						direction="col" /* @ts-ignore fix in atom */
-						hAlign="start"
-					>
-						<Typography variant="title">{title}</Typography>
-						<Typography variant="body" muted grow>
-							{blurb}
-						</Typography>
-						<Typography variant="label">{cta}</Typography>
-					</Link>
-				))}
+				{FEATURED_WORK.map(({ title, blurb, href, cta }) => {
+					const external = href.startsWith("http");
+					return (
+						<Flex
+							key={title}
+							as={external ? "a" : NextLink}
+							href={href}
+							{...(external
+								? { target: "_blank", rel: "noopener noreferrer" }
+								: {})}
+							direction="col"
+							gap="sm"
+							padding="lg"
+							radius="sm"
+							backgroundColor="raised"
+							hAlign="start"
+						>
+							<Text variant="title">{title}</Text>
+							<Text variant="body" muted grow>
+								{blurb}
+							</Text>
+							<Text variant="label">{cta}</Text>
+						</Flex>
+					);
+				})}
 			</Grid>
 			<StatGrid />
 			<WorkExHistory />
@@ -186,30 +192,29 @@ function WorkExHistory() {
 			padding="lg"
 		>
 			<Flex direction="row" gap="sm" wrap>
-				<Typography variant="body">
+				<Text variant="body">
 					Most recently at <strong>{getEmployer(TRACK[0]).name}</strong>
-				</Typography>
-				<Typography variant="body" muted>
+				</Text>
+				<Text variant="body" muted>
 					·
-				</Typography>
-				<Typography variant="body">
+				</Text>
+				<Text variant="body">
 					previously <strong>{getEmployer(TRACK[1]).name}</strong>
-				</Typography>
-				<Typography variant="body" muted>
+				</Text>
+				<Text variant="body" muted>
 					·
-				</Typography>
-				<Typography variant="body">
+				</Text>
+				<Text variant="body">
 					<strong>{getEmployer(TRACK[2]).name}</strong> before that
-				</Typography>
+				</Text>
 			</Flex>
 			<Link
 				url="/resume"
 				icon={<LinkIcon />}
 				variant="button"
 				color="secondary"
-			>
-				Full history
-			</Link>
+				label="Full history"
+			/>
 		</Flex>
 	);
 }
