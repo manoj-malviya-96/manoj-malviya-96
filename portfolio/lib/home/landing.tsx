@@ -1,11 +1,16 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
 import { Badge, Flex, Grid, Typography } from "@manoj-malviya-96/atom";
 import { LinkIcon } from "lucide-react";
-import { WORK_EXPERIENCE_BY_RECENCY } from "@/lib/about_me/work_experience";
+import {
+	EXPERIENCE_BY_RECENCY,
+	getEmployer,
+	getExperience,
+	YEARS_EXPERIENCE,
+} from "@/lib/about_me/work_experience";
 import StatGrid from "@/lib/home/stat_grid";
 import { getMeta } from "@/lib/projects/registry";
 import { Link, MeshCanvas } from "@/lib/ui";
-import { uniqueBy, yearsSince } from "@/lib/utils";
+import { uniqueBy } from "@/lib/utils";
 
 export default function Landing() {
 	return (
@@ -182,19 +187,19 @@ function WorkExHistory() {
 		>
 			<Flex direction="row" gap="sm" wrap>
 				<Typography variant="body">
-					Most recently at <strong>{TRACK[0].company}</strong>
+					Most recently at <strong>{getEmployer(TRACK[0]).name}</strong>
 				</Typography>
 				<Typography variant="body" muted>
 					·
 				</Typography>
 				<Typography variant="body">
-					previously <strong>{TRACK[1].company}</strong>
+					previously <strong>{getEmployer(TRACK[1]).name}</strong>
 				</Typography>
 				<Typography variant="body" muted>
 					·
 				</Typography>
 				<Typography variant="body">
-					<strong>{TRACK[2].company}</strong> before that
+					<strong>{getEmployer(TRACK[2]).name}</strong> before that
 				</Typography>
 			</Flex>
 			<Link
@@ -256,13 +261,6 @@ const FEATURED_WORK = [
 const STACK = ["C++", "Swift", "TypeScript", "Python", "OpenGL"] as const;
 
 const TRACK = uniqueBy(
-	WORK_EXPERIENCE_BY_RECENCY,
-	(entry) => entry.company,
+	[...EXPERIENCE_BY_RECENCY],
+	(experience) => getExperience(experience).organization,
 ).slice(0, 3);
-
-const EXPERIENCE_START = WORK_EXPERIENCE_BY_RECENCY.reduce(
-	(earliest, entry) =>
-		entry.startDate < earliest ? entry.startDate : earliest,
-	WORK_EXPERIENCE_BY_RECENCY[0].startDate,
-);
-const YEARS_EXPERIENCE = yearsSince(EXPERIENCE_START);
