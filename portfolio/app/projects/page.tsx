@@ -11,8 +11,7 @@ export default function Page() {
 				</Typography>
 				<Typography variant="heading">Worked end to end.</Typography>
 				<Typography variant="subtitle">
-					A case study where I have one written up — a GitHub link where I
-					don&apos;t.
+					Source, demo, or write-up — each one links to where it actually lives.
 				</Typography>
 			</Flex>
 			<Suspense

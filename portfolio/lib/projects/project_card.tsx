@@ -20,13 +20,11 @@ import { Link } from "@/lib/ui";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
-type CaseStudyPath = `/projects/${string}`;
 
 export type ProjectCTA =
 	| { kind: "github"; href: GithubRepo }
 	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL }
-	| { kind: "case-study"; label?: string; href: CaseStudyPath };
+	| { kind: "demo"; label?: string; href: ExternalURL };
 
 type ProjectCardProps = ProjectMeta & {
 	children?: ReactNode;
@@ -167,7 +165,7 @@ function CTALink({ cta }: { cta: ProjectCTA }) {
 	return (
 		<Link
 			url={cta.href}
-			openNewTab={cta.kind !== "case-study"}
+			openNewTab
 			muted
 			variant="button"
 			buttonVariant="plain"
@@ -179,8 +177,6 @@ function CTALink({ cta }: { cta: ProjectCTA }) {
 
 function ctaLabel(cta: ProjectCTA): string {
 	switch (cta.kind) {
-		case "case-study":
-			return `${cta.label ?? "Read the case study"}`;
 		case "github":
 			return "GitHub";
 		case "medium":
