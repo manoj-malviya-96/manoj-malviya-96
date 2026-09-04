@@ -104,7 +104,16 @@ function ProjectBodyView({ body }: { body: ProjectBody }) {
 				</Grid>
 			);
 		case "narrative":
-			return body.content;
+			return (
+				<Flex direction="col" gap="sm">
+					{body.paragraphs.map((paragraph, index) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: paragraphs are a fixed, order-authored list — index is stable.
+						<Text key={index} variant="body">
+							{paragraph}
+						</Text>
+					))}
+				</Flex>
+			);
 		default:
 			return assertNever(body);
 	}
@@ -149,6 +158,8 @@ function linkLabel(link: ProjectLink): string {
 			return "Blog";
 		case "demo":
 			return link.label ?? "Demo";
+		case "external":
+			return link.label;
 		default:
 			return assertNever(link);
 	}

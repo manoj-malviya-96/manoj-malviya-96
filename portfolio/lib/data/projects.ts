@@ -1,10 +1,8 @@
-import {assertNever, Text} from "@manoj-malviya-96/atom";
+import {assertNever} from "@manoj-malviya-96/atom";
 import type {StaticImageData as LocalImage} from "next/image";
-import type {ReactNode} from "react";
 import type {ProgrammingFrameworks, ProgrammingLanguage, SoftSkills, SoftwareConcepts,} from "@/lib/data/tags";
 import type {ValuesOf} from "@/lib/helper";
 import type {ExternalURL} from "@/lib/types";
-import {Link} from "@/lib/ui";
 
 /**
  * Every project, in authoring order. Adding one here is the only edit that is not
@@ -42,7 +40,7 @@ export type ProjectMedia =
 
 export type ProjectBody =
     | { kind: "steps"; problem: string; approach: string; outcome: string }
-    | { kind: "narrative"; content: ReactNode };
+    | { kind: "narrative"; paragraphs: readonly string[] };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -50,7 +48,8 @@ type MediumPost = `https://medium.com/@${string}/${string}`;
 export type ProjectLink =
     | { kind: "github"; href: GithubRepo }
     | { kind: "medium"; href: MediumPost }
-    | { kind: "demo"; label?: string; href: ExternalURL };
+    | { kind: "demo"; label?: string; href: ExternalURL }
+    | { kind: "external"; label: string; href: ExternalURL };
 
 const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
 
@@ -154,41 +153,18 @@ export function getBody(project: ProjectId): ProjectBody {
         case "portfolio":
             return {
                 kind: "narrative",
-                content: (
-                    <Text variant="body">
-                        It’s simple, informative, and it works — which is exactly the point.
-                        I built this site to show what I can do, highlight the projects I’m
-                        proud of, and keep everything organized as a living project catalog.{" "}
-                        <br/>
-                        If you haven’t yet, check out the interactive landing page — it’s
-                        where I let things get a bit more playful.
-                        <br/> <br/> Curious about the previous iteration? Check it out{" "}
-                        <strong>
-                            <Link url="https://manoj-malviya-96.github.io/" openNewTab>
-                                here
-                            </Link>
-                        </strong>
-                        .
-                    </Text>
-                ),
+                paragraphs: [
+                    "It’s simple, informative, and it works — which is exactly the point. I built this site to show what I can do, highlight the projects I’m proud of, and keep everything organized as a living project catalog.",
+                    "If you haven’t yet, check out the interactive landing page — it’s where I let things get a bit more playful.",
+                ],
             };
         case "muviz":
             return {
                 kind: "narrative",
-                content: (
-                    <Text variant="body">
-                        I’ve been obsessed with music visualizers since the Winamp
-                        days—there’s just something ridiculously satisfying about watching
-                        visuals snap to the beat. That itch is exactly why I’m building
-                        Muviz: a web visualizer that stays fast without skimping on
-                        features. <br/> <br/>
-                        Under the hood, it uses a <strong>Cpp feature extractor </strong>{" "}
-                        that analyzes the full audio track in one pass and keeps the results
-                        in memory, so the frontend can focus on what it does best: rendering
-                        smooth, reactive visuals. Using ThreeJS for rendering means it can
-                        handle complex effects without breaking a sweat.
-                    </Text>
-                ),
+                paragraphs: [
+                    "I’ve been obsessed with music visualizers since the Winamp days—there’s just something ridiculously satisfying about watching visuals snap to the beat. That itch is exactly why I’m building Muviz: a web visualizer that stays fast without skimping on features.",
+                    "Under the hood, it uses a Cpp feature extractor that analyzes the full audio track in one pass and keeps the results in memory, so the frontend can focus on what it does best: rendering smooth, reactive visuals. Using ThreeJS for rendering means it can handle complex effects without breaking a sweat.",
+                ],
             };
         case "honeycomb":
             return {
@@ -231,6 +207,11 @@ export function getLinks(project: ProjectId): readonly ProjectLink[] {
                 {
                     kind: "github",
                     href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
+                },
+                {
+                    kind: "external",
+                    label: "Previous version",
+                    href: "https://manoj-malviya-96.github.io/",
                 },
             ];
         case "muviz":
