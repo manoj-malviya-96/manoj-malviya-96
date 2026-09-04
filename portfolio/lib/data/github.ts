@@ -7,7 +7,7 @@ export function useGithubQuery() {
     });
 }
 
-export interface GitHubMetrics {
+interface GitHubMetrics {
     totalContribution: number;
     currentYearContribution: number;
     dailyAverage: number;

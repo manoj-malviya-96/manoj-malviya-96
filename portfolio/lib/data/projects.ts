@@ -17,7 +17,7 @@ export const AllProjectIds = [
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
-export type SoftwareConcepts =
+type SoftwareConcepts =
     | "web"
     | "mobile"
     | "ai"
@@ -30,14 +30,14 @@ export type SoftwareConcepts =
     | "simulation"
     | "micro-services";
 
-export type SoftSkills =
+type SoftSkills =
     | "communication"
     | "ui/ux"
     | "project-management"
     | "devops"
     | "testing";
 
-export type ProgrammingFrameworks =
+type ProgrammingFrameworks =
     | "react"
     | "nextjs"
     | "qt/qml"

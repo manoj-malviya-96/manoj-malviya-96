@@ -46,7 +46,7 @@ export default function ProjectCard({project}: { project: ProjectId }) {
     );
 }
 
-export function ProjectTags({tags}: { tags: ProjectMeta["tags"] }) {
+function ProjectTags({tags}: { tags: ProjectMeta["tags"] }) {
     return (
         <List direction="row" gap="sm">
             {tags.map((tag) => (

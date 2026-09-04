@@ -5,7 +5,7 @@ import type {ValuesOf} from "@/lib/helper";
 import type {MonthAndYear} from "@/lib/types";
 import {yearsSince} from "@/lib/utils";
 
-export const EXPERIENCE_IDS = [
+const EXPERIENCE_IDS = [
     "noah-labs-lead",
     "form-labs-rd",
     "form-labs-se",
@@ -15,7 +15,7 @@ export const EXPERIENCE_IDS = [
 
 export type ExperienceId = ValuesOf<typeof EXPERIENCE_IDS>;
 
-export type EmploymentType =
+type EmploymentType =
     | "Full-time"
     | "Part-time"
     | "Internship"

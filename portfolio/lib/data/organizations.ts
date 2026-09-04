@@ -3,7 +3,7 @@ import type {StaticImageData as LocalImage} from "next/image";
 import type {ValuesOf} from "@/lib/helper";
 import type {ExternalURL} from "@/lib/types";
 
-export const ORGANIZATION_IDS = [
+const ORGANIZATION_IDS = [
     "noah-labs",
     "flow-key",
     "form-labs",

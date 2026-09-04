@@ -21,7 +21,7 @@ interface GoogleScholarResponse {
     }>;
 }
 
-export interface ScholarMetrics {
+interface ScholarMetrics {
     citations: number;
     hIndex: number;
     publications: number;

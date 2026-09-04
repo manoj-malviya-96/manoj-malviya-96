@@ -1,7 +1,7 @@
 import { Flex, Grid, Stat, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 
-export type StatItem = {
+type StatItem = {
 	label: string;
 	value: ReactNode;
 };
@@ -16,7 +16,7 @@ type StatCardProps = {
 
 const MISSING_VALUE = "—";
 
-export default function StatCard({
+function StatCard({
 	title,
 	description,
 	stats,
