@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, getThemeColor, useTheme } from "@manoj-malviya-96/atom";
-import { useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 
 type CanvasSize = { width: number; height: number };
 type Vertex = { x: number; y: number };
@@ -12,6 +12,12 @@ type HexGrid = {
 	edges: Edge[];
 	center: Vertex;
 	hexSize: number;
+};
+
+// Unit-space (hexSize=1, origin-anchored) shared-corner topology — see buildHexTopology.
+type HexTopology = {
+	directions: Vertex[];
+	edges: Edge[];
 };
 
 type Pointer = {
@@ -36,9 +42,12 @@ const HEX_SIZE_MAX = 88;
 // Keeps the anchor hex's outer edge near the true viewport corner, so the cluster reads as
 // emanating from it rather than floating in the middle of the box.
 const HEX_ANCHOR_INSET = 1.35;
-// Quarter-pixel buckets: merges corners shared by adjacent hexes without relying on exact
-// floating-point equality between two independently-computed trig results.
-const VERTEX_DEDUPE_PRECISION = 4;
+// Radius 2 around the anchor cell — a compact 19-hex disk (1 + 3·r·(r+1)), enough to read as a
+// small cluster without turning into a field.
+const HEX_RING_RADIUS = 2;
+// Topology is built once in unit hex space, so genuinely distinct corners are always far more
+// than a millionth apart — this only needs to be finer than independent-trig floating error.
+const TOPOLOGY_DEDUPE_PRECISION = 1e6;
 
 const LINE_ALPHA = 0.14;
 const GLOW_RADIUS_FACTOR = 3.2;
@@ -62,9 +71,9 @@ const MAX_DPR = 2;
 const COARSE_MAX_DPR = 1;
 const RESIZE_SETTLE_MS = 150;
 
-// Radius 2 around the anchor cell — a compact 19-hex disk (1 + 3·r·(r+1)), enough to read as a
-// small cluster without turning into a field.
-const HEX_RING_RADIUS = 2;
+// ---------------------------------------------------------------------------
+// Pure geometry
+// ---------------------------------------------------------------------------
 
 // Every axial cell within `radius` steps of the origin, walked as concentric hexagonal rings.
 function hexDisk(radius: number): Array<readonly [number, number]> {
@@ -78,8 +87,6 @@ function hexDisk(radius: number): Array<readonly [number, number]> {
 	}
 	return cells;
 }
-
-const HEX_CELLS = hexDisk(HEX_RING_RADIUS);
 
 function hexSizeFor(size: CanvasSize): number {
 	const scaled = Math.min(size.width, size.height) * HEX_SIZE_RATIO;
@@ -113,38 +120,34 @@ function hexCorner(center: Vertex, size: number, i: number): Vertex {
 }
 
 function vertexKey(v: Vertex): string {
-	return `${Math.round(v.x * VERTEX_DEDUPE_PRECISION)}:${Math.round(v.y * VERTEX_DEDUPE_PRECISION)}`;
+	return `${Math.round(v.x * TOPOLOGY_DEDUPE_PRECISION)}:${Math.round(v.y * TOPOLOGY_DEDUPE_PRECISION)}`;
 }
 
-// `hexSize` is the animated (breathing) size, recomputed fresh every frame from the viewport plus
-// the current breath phase — cheap enough at 19 cells that there's no need to cache topology
-// across frames the way a full-viewport mesh would. Adjacent hexes share corners and edges; both
-// are deduplicated so a shared edge isn't stroked twice (which would draw it brighter than the rest).
-function buildHexGrid(size: CanvasSize, hexSize: number): HexGrid {
-	const center: Vertex = {
-		x: size.width - hexSize * HEX_ANCHOR_INSET,
-		y: size.height - hexSize * HEX_ANCHOR_INSET,
-	};
-
-	const vertices: Vertex[] = [];
-	const vertexIndex = new Map<string, number>();
+// Shared-corner topology depends only on the axial layout, never on viewport size or the animated
+// hexSize (both just translate/scale every vertex uniformly) — so it's built once, here, instead
+// of being rediscovered by hashing every corner on every animation frame. Adjacent hexes share
+// corners and edges; both are deduplicated so a shared edge isn't stroked twice (which would draw
+// it brighter than the rest of the mesh).
+function buildHexTopology(): HexTopology {
+	const directions: Vertex[] = [];
+	const directionIndex = new Map<string, number>();
 	const seenEdges = new Set<string>();
 	const edges: Edge[] = [];
 
 	const indexOf = (v: Vertex): number => {
 		const key = vertexKey(v);
-		const found = vertexIndex.get(key);
+		const found = directionIndex.get(key);
 		if (found !== undefined) return found;
-		const idx = vertices.length;
-		vertices.push(v);
-		vertexIndex.set(key, idx);
+		const idx = directions.length;
+		directions.push(v);
+		directionIndex.set(key, idx);
 		return idx;
 	};
 
-	for (const [q, r] of HEX_CELLS) {
-		const cellCenter = hexCenter(center, hexSize, q, r);
+	for (const [q, r] of hexDisk(HEX_RING_RADIUS)) {
+		const cellCenter = hexCenter({ x: 0, y: 0 }, 1, q, r);
 		const corners = Array.from({ length: 6 }, (_, i) =>
-			indexOf(hexCorner(cellCenter, hexSize, i)),
+			indexOf(hexCorner(cellCenter, 1, i)),
 		);
 		for (let i = 0; i < 6; i++) {
 			const from = corners[i];
@@ -156,7 +159,23 @@ function buildHexGrid(size: CanvasSize, hexSize: number): HexGrid {
 		}
 	}
 
-	return { vertices, edges, center, hexSize };
+	return { directions, edges };
+}
+
+const HEX_TOPOLOGY = buildHexTopology();
+
+// Projects the precomputed topology into pixel space for the current viewport and animated
+// hexSize — plain per-vertex arithmetic, no hashing or corner-dedup work in the render hot path.
+function projectHexGrid(size: CanvasSize, hexSize: number): HexGrid {
+	const anchor: Vertex = {
+		x: size.width - hexSize * HEX_ANCHOR_INSET,
+		y: size.height - hexSize * HEX_ANCHOR_INSET,
+	};
+	const vertices = HEX_TOPOLOGY.directions.map((d) => ({
+		x: anchor.x + hexSize * d.x,
+		y: anchor.y + hexSize * d.y,
+	}));
+	return { vertices, edges: HEX_TOPOLOGY.edges, center: anchor, hexSize };
 }
 
 function easePointer(pointer: Pointer): void {
@@ -165,6 +184,10 @@ function easePointer(pointer: Pointer): void {
 	pointer.strength +=
 		(pointer.targetStrength - pointer.strength) * STRENGTH_EASE;
 }
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
 
 function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
 	ctx.beginPath();
@@ -220,8 +243,8 @@ function renderHexMesh(
 
 	const glowRadius = grid.hexSize * GLOW_RADIUS_FACTOR;
 
-	// Glow brightens in step with the same breath that grows the cluster (see buildHexGrid's
-	// caller), so size and light read as one motion. It steps aside as the pointer glow
+	// Glow brightens in step with the same breath that grows the cluster (see useMeshRenderer's
+	// draw loop), so size and light read as one motion. It steps aside as the pointer glow
 	// (spatially gated to the corner, see POINTER_CAPTURE_RADIUS) takes over, so only one light
 	// source reads at a time.
 	const ambientAlpha =
@@ -237,11 +260,41 @@ function renderHexMesh(
 	}
 }
 
-export default function MeshCanvas() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
-	const baseHexSizeRef = useRef(0);
+// ---------------------------------------------------------------------------
+// Hooks
+// ---------------------------------------------------------------------------
+
+// Resolves to the current --content color, re-read whenever the theme toggles.
+function useAmbientColor(): RefObject<string> {
+	const colorRef = useRef("#8a8a8a");
+	const theme = useTheme();
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
+	useEffect(() => {
+		colorRef.current = getThemeColor("content");
+	}, [theme]);
+
+	return colorRef;
+}
+
+// Coarse (touch) pointers get a lower devicePixelRatio cap, keeping the canvas backing store
+// smaller on hardware that's typically weaker and battery-constrained.
+function useMaxDevicePixelRatio(): RefObject<number> {
+	const maxDprRef = useRef(MAX_DPR);
+
+	useEffect(() => {
+		maxDprRef.current = window.matchMedia("(pointer: coarse)").matches
+			? COARSE_MAX_DPR
+			: MAX_DPR;
+	}, []);
+
+	return maxDprRef;
+}
+
+// Tracks the cursor only while it's near the true viewport corner and converts it into
+// canvas-local coordinates; easing (including fading out on idle) happens once per frame in the
+// render loop, not here, since that also has to run while the pointer isn't moving at all.
+function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
 	const pointerRef = useRef<Pointer>({
 		x: 0,
 		y: 0,
@@ -250,25 +303,47 @@ export default function MeshCanvas() {
 		strength: 0,
 		targetStrength: 0,
 	});
-	const colorRef = useRef("#8a8a8a");
+
+	useEffect(() => {
+		// Listens on window (not the canvas) because the canvas is pointer-events:none — the
+		// corner offset below converts a viewport-space cursor position into canvas-local space.
+		function onPointerMove(e: PointerEvent): void {
+			const pointer = pointerRef.current;
+			const size = sizeRef.current;
+			const cornerDistance = Math.hypot(
+				window.innerWidth - e.clientX,
+				window.innerHeight - e.clientY,
+			);
+			pointer.targetStrength = cornerDistance < POINTER_CAPTURE_RADIUS ? 1 : 0;
+			if (pointer.targetStrength > 0) {
+				pointer.targetX = e.clientX - (window.innerWidth - size.width);
+				pointer.targetY = e.clientY - (window.innerHeight - size.height);
+			}
+		}
+		window.addEventListener("pointermove", onPointerMove, { passive: true });
+		return () => window.removeEventListener("pointermove", onPointerMove);
+	}, [sizeRef]);
+
+	return pointerRef;
+}
+
+// Owns the canvas: debounced resize (immediate on first mount), and an animation loop — paused
+// for prefers-reduced-motion and while the tab is hidden — that projects and draws the breathing
+// hex mesh each frame. Returns the resize handler to wire into <Canvas onResize>.
+function useMeshRenderer(
+	canvasRef: RefObject<HTMLCanvasElement | null>,
+	colorRef: RefObject<string>,
+	maxDprRef: RefObject<number>,
+): (size: CanvasSize) => void {
+	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
+	const baseHexSizeRef = useRef(0);
 	const drawRef = useRef<(t: number) => void>(() => {});
-	const maxDprRef = useRef(MAX_DPR);
 	const resizeTimerRef = useRef<number | null>(null);
 	const hasMountedRef = useRef(false);
-	const theme = useTheme();
+	const pointerRef = usePointerCorner(sizeRef);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
-	useEffect(() => {
-		colorRef.current = getThemeColor("content");
-	}, [theme]);
-
-	useEffect(() => {
-		maxDprRef.current = window.matchMedia("(pointer: coarse)").matches
-			? COARSE_MAX_DPR
-			: MAX_DPR;
-	}, []);
-
-	const applyResize = (size: CanvasSize) => {
+	function applyResize(size: CanvasSize): void {
 		sizeRef.current = size;
 		baseHexSizeRef.current = hexSizeFor(size);
 		ctxRef.current = canvasRef.current?.getContext("2d") ?? null;
@@ -276,8 +351,9 @@ export default function MeshCanvas() {
 		const dpr = Math.min(window.devicePixelRatio || 1, maxDprRef.current);
 		ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
 		drawRef.current(performance.now());
-	};
-	const handleResize = (size: CanvasSize) => {
+	}
+
+	function handleResize(size: CanvasSize): void {
 		if (!hasMountedRef.current) {
 			hasMountedRef.current = true;
 			applyResize(size);
@@ -290,7 +366,7 @@ export default function MeshCanvas() {
 			resizeTimerRef.current = null;
 			applyResize(size);
 		}, RESIZE_SETTLE_MS);
-	};
+	}
 
 	useEffect(() => {
 		const reduceMotion = window.matchMedia(
@@ -298,24 +374,7 @@ export default function MeshCanvas() {
 		).matches;
 		let raf: number | null = null;
 
-		// Listens on window (not the canvas) because the canvas is pointer-events:none — the
-		// corner offset below converts a viewport-space cursor position into canvas-local space.
-		const onPointerMove = (e: PointerEvent) => {
-			const pointer = pointerRef.current;
-			const size = sizeRef.current;
-			const cornerDistance = Math.hypot(
-				window.innerWidth - e.clientX,
-				window.innerHeight - e.clientY,
-			);
-			pointer.targetStrength = cornerDistance < POINTER_CAPTURE_RADIUS ? 1 : 0;
-			if (pointer.targetStrength > 0) {
-				pointer.targetX = e.clientX - (window.innerWidth - size.width);
-				pointer.targetY = e.clientY - (window.innerHeight - size.height);
-			}
-		};
-		window.addEventListener("pointermove", onPointerMove, { passive: true });
-
-		const draw = (t: number) => {
+		function draw(t: number): void {
 			const ctx = ctxRef.current;
 			const size = sizeRef.current;
 			if (ctx && baseHexSizeRef.current > 0) {
@@ -323,22 +382,22 @@ export default function MeshCanvas() {
 				const hexSize =
 					baseHexSizeRef.current *
 					lerp(HEX_SCALE_MIN, HEX_SCALE_MAX, breathPhase(t));
-				const grid = buildHexGrid(size, hexSize);
+				const grid = projectHexGrid(size, hexSize);
 				renderHexMesh(ctx, size, grid, colorRef.current, t, pointerRef.current);
 			}
 			if (!reduceMotion) raf = requestAnimationFrame(draw);
-		};
+		}
 		drawRef.current = draw;
 
-		const onVisibility = () => {
+		function onVisibilityChange(): void {
 			if (document.hidden) {
 				if (raf) cancelAnimationFrame(raf);
 				raf = null;
 			} else if (!reduceMotion && raf === null) {
 				raf = requestAnimationFrame(draw);
 			}
-		};
-		document.addEventListener("visibilitychange", onVisibility);
+		}
+		document.addEventListener("visibilitychange", onVisibilityChange);
 
 		if (reduceMotion) {
 			draw(0);
@@ -347,15 +406,27 @@ export default function MeshCanvas() {
 		}
 
 		return () => {
-			window.removeEventListener("pointermove", onPointerMove);
-			document.removeEventListener("visibilitychange", onVisibility);
+			document.removeEventListener("visibilitychange", onVisibilityChange);
 			if (raf) cancelAnimationFrame(raf);
 			if (resizeTimerRef.current !== null) {
 				window.clearTimeout(resizeTimerRef.current);
 			}
 			drawRef.current = () => {};
 		};
-	}, []);
+	}, [colorRef, pointerRef]);
+
+	return handleResize;
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+export default function MeshCanvas() {
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const colorRef = useAmbientColor();
+	const maxDprRef = useMaxDevicePixelRatio();
+	const handleResize = useMeshRenderer(canvasRef, colorRef, maxDprRef);
 
 	return (
 		<Canvas
