@@ -83,29 +83,13 @@ function ProjectCover({media}: { media: ProjectMedia }) {
 }
 
 function ProjectBodyView({body}: { body: ProjectBody }) {
-    switch (body.kind) {
-        case "steps":
-            return (
-                <Grid columns={3} gap="md" className="case-steps">
-                    <Step label="Problem" body={body.problem}/>
-                    <Step label="Approach" body={body.approach}/>
-                    <Step label="Outcome" body={body.outcome}/>
-                </Grid>
-            );
-        case "narrative":
-            return (
-                <Flex direction="col" gap="sm">
-                    {body.paragraphs.map((paragraph, index) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: paragraphs are a fixed, order-authored list — index is stable.
-                        <Text key={index} variant="body">
-                            {paragraph}
-                        </Text>
-                    ))}
-                </Flex>
-            );
-        default:
-            return assertNever(body);
-    }
+    return (
+        <Grid columns={3} gap="md" className="case-steps">
+            <Step label="Why" body={body.why}/>
+            <Step label="How" body={body.how}/>
+            <Step label="What" body={body.what}/>
+        </Grid>
+    );
 }
 
 function Step({label, body}: { label: string; body: string }) {

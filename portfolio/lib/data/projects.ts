@@ -74,9 +74,7 @@ export type ProjectMedia =
     | { kind: "image"; src: LocalImage | string; alt: string }
     | { kind: "video"; src: string; alt: string };
 
-export type ProjectBody =
-    | { kind: "steps"; problem: string; approach: string; outcome: string }
-    | { kind: "narrative"; paragraphs: readonly string[] };
+export type ProjectBody = { why: string; how: string; what: string };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -188,48 +186,33 @@ export function getBody(project: ProjectId): ProjectBody {
     switch (project) {
         case "portfolio":
             return {
-                kind: "narrative",
-                paragraphs: [
-                    "It’s simple, informative, and it works — which is exactly the point. I built this site to show what I can do, highlight the projects I’m proud of, and keep everything organized as a living project catalog.",
-                    "If you haven’t yet, check out the interactive landing page — it’s where I let things get a bit more playful.",
-                ],
+                why: "A resume and a pile of scattered repos don't show how something actually works, or feels to use.",
+                how: "Built with Next.js and TypeScript on top of a design system I maintain separately, topped with an interactive landing page.",
+                what: "A living catalog of my projects — simple, informative, and it works.",
             };
         case "muviz":
             return {
-                kind: "narrative",
-                paragraphs: [
-                    "I’ve been obsessed with music visualizers since the Winamp days—there’s just something ridiculously satisfying about watching visuals snap to the beat. That itch is exactly why I’m building Muviz: a web visualizer that stays fast without skimping on features.",
-                    "Under the hood, it uses a Cpp feature extractor that analyzes the full audio track in one pass and keeps the results in memory, so the frontend can focus on what it does best: rendering smooth, reactive visuals. Using ThreeJS for rendering means it can handle complex effects without breaking a sweat.",
-                ],
+                why: "Winamp-era visualizers were mesmerizing, but nothing on the web today renders anything close without dropping frames.",
+                how: "A C++ feature extractor analyzes the full track in one pass and caches the result, freeing the ThreeJS frontend to focus purely on rendering.",
+                what: "A fast, reactive 3D visualizer that handles complex effects without breaking a sweat.",
             };
         case "honeycomb":
             return {
-                kind: "steps",
-                problem:
-                    "Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",
-                approach:
-                    "A fast, memory-friendly skeleton algorithm, exported to a VTK mesh for downstream geometry work.",
-                outcome:
-                    "Open-source constructor and visualizer, ready for CAD workflows.",
+                why: "Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",
+                how: "A fast, memory-friendly skeleton algorithm, exported to a VTK mesh for downstream geometry work.",
+                what: "Open-source constructor and visualizer, ready for CAD workflows.",
             };
         case "topopt_py":
             return {
-                kind: "steps",
-                problem:
-                    "Classic topology-optimization research code was too slow to be useful beyond a demo.",
-                approach:
-                    "Vectorized the core solver in NumPy instead of rewriting the whole thing in C++.",
-                outcome: "2× faster, scales to more elements, without leaving Python.",
+                why: "Classic topology-optimization research code was too slow to be useful beyond a demo.",
+                how: "Vectorized the core solver in NumPy instead of rewriting the whole thing in C++.",
+                what: "2× faster, scales to more elements, without leaving Python.",
             };
         case "blackhole":
             return {
-                kind: "steps",
-                problem:
-                    "Gravitational lensing is usually only shown offline, in pre-rendered clips.",
-                approach:
-                    "Hand-rolled the ray-bending shader in raw OpenGL, tuned for real-time frame budgets.",
-                outcome:
-                    "Interactive simulation you can orbit and pull apart yourself.",
+                why: "Gravitational lensing is usually only shown offline, in pre-rendered clips.",
+                how: "Hand-rolled the ray-bending shader in raw OpenGL, tuned for real-time frame budgets.",
+                what: "Interactive simulation you can orbit and pull apart yourself.",
             };
         default:
             return assertNever(project);
