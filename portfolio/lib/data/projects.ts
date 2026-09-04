@@ -1,13 +1,8 @@
 import {assertNever} from "@manoj-malviya-96/atom";
 import type {StaticImageData as LocalImage} from "next/image";
-import type {ProgrammingFrameworks, ProgrammingLanguage, SoftSkills, SoftwareConcepts,} from "@/lib/data/tags";
 import type {ValuesOf} from "@/lib/helper";
 import type {ExternalURL} from "@/lib/types";
 
-/**
- * Every project, in authoring order. Adding one here is the only edit that is not
- * compiler-guided — the getters below then fail until each is answered.
- */
 export const AllProjectIds = [
     "portfolio",
     "muviz",
@@ -17,6 +12,47 @@ export const AllProjectIds = [
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
+
+export type SoftwareConcepts =
+    | "web"
+    | "mobile"
+    | "ai"
+    | "rendering"
+    | "open-source"
+    | "high-performance"
+    | "gpu"
+    | "optimization"
+    | "cad"
+    | "simulation"
+    | "micro-services";
+
+export type SoftSkills =
+    | "communication"
+    | "ui/ux"
+    | "project-management"
+    | "devops"
+    | "testing";
+
+export type ProgrammingFrameworks =
+    | "react"
+    | "nextjs"
+    | "qt/qml"
+    | "tailwind"
+    | "vtk"
+    | "numpy"
+    | "pytorch"
+    | "tensorflow"
+    | "wasm"
+    | "threejs"
+    | "opengl";
+
+export type ProgrammingLanguage =
+    | "typescript"
+    | "python"
+    | "rust"
+    | "go"
+    | "c++"
+    | "swift";
 
 export type ProjectTag =
     | ProgrammingFrameworks
