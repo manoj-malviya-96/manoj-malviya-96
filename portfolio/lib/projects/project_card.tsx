@@ -140,7 +140,7 @@ function ProjectLinks({ project }: { project: ProjectId }) {
 	const links = getLinks(project);
 
 	return (
-		<Flex direction="row" gap="md" wrap>
+		<Flex direction="row" gap="md" wrap padding={{x: "xs "}}>
 			{links.map((link) => {
 				const LinkIcon = linkIcon(link);
 				const label = linkLabel(link);

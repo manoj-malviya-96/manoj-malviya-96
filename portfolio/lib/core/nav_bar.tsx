@@ -15,7 +15,7 @@ const NAV_LINKS = [
 export default function NavBar() {
 	const pathname = usePathname();
 	const { y, visible } = useNavBarScroll();
-	const hasBackground = pathname !== "/" || y > 0;
+	const hasBackground = y > 20;
 
 	return (
 		<Header

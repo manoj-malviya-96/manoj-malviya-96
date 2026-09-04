@@ -43,20 +43,25 @@ const MeshTune = {
         ringRadius: 10,
         dedupePrecision: 1e6,
     },
-    breath: {
+    // Ambient glow brightness pulses on this period; the grid's geometry stays fixed-size.
+    glowPulse: {
         periodMs: 18000,
-        scaleMin: 0.86,
+    },
+    // The grid scrolls diagonally toward the top-left, looping once per period. The loop distance
+    // is a hex-lattice translation (see DRIFT_DIRECTION), so the wrap is seamless — the pattern is
+    // identical before and after, unlike a snap-back to a fixed start position.
+    drift: {
+        periodMs: 60000,
     },
     glow: {
         lineAlpha: 0.9,
         radiusFactor: 9.0,
         ambientAlphaMin: 0.16,
         ambientAlphaMax: 0.5,
-        pointerAlphaBoost: 0.28,
+        pointerAlphaBoost: 0.4,
         alphaEpsilon: 0.05,
     },
     pointer: {
-        captureRadius: 500,
         ease: 0.27,
         strengthEase: 0.08,
     },
@@ -88,8 +93,21 @@ function lerp(min: number, max: number, t: number): number {
     return min + (max - min) * t;
 }
 
-function breathPhase(t: number): number {
-    return (1 - Math.cos((t / MeshTune.breath.periodMs) * Math.PI * 2)) / 2;
+function pulsePhase(t: number): number {
+    return (1 - Math.cos((t / MeshTune.glowPulse.periodMs) * Math.PI * 2)) / 2;
+}
+
+// A hex-lattice translation (one cell center to the next along the q axis, negated): shifting the
+// whole disk by this vector (scaled by hexSize) maps the infinite tiling onto itself, which is what
+// makes looping the drift at exactly that distance seamless instead of a visible reset.
+const DRIFT_DIRECTION: Vertex = {x: -1.5, y: -Math.sqrt(3) / 2};
+
+function driftOffset(hexSize: number, t: number): Vertex {
+    const progress = (t % MeshTune.drift.periodMs) / MeshTune.drift.periodMs;
+    return {
+        x: DRIFT_DIRECTION.x * hexSize * progress,
+        y: DRIFT_DIRECTION.y * hexSize * progress,
+    };
 }
 
 function hexCenter(anchor: Vertex, size: number, q: number, r: number): Vertex {
@@ -148,10 +166,10 @@ function buildHexTopology(): HexTopology {
 const HEX_TOPOLOGY = buildHexTopology();
 
 
-function projectHexGrid(size: CanvasSize, hexSize: number): HexGrid {
+function projectHexGrid(size: CanvasSize, hexSize: number, offset: Vertex): HexGrid {
     const anchor: Vertex = {
-        x: size.width - hexSize * MeshTune.hex.anchorInset,
-        y: size.height - hexSize * MeshTune.hex.anchorInset,
+        x: size.width - hexSize * MeshTune.hex.anchorInset + offset.x,
+        y: size.height - hexSize * MeshTune.hex.anchorInset + offset.y,
     };
     const vertices = HEX_TOPOLOGY.directions.map((d) => ({
         x: anchor.x + hexSize * d.x,
@@ -224,7 +242,7 @@ function renderHexMesh(
         lerp(
             MeshTune.glow.ambientAlphaMin,
             MeshTune.glow.ambientAlphaMax,
-            breathPhase(t),
+            pulsePhase(t),
         ) *
         (1 - pointer.strength);
     if (ambientAlpha > MeshTune.glow.alphaEpsilon) {
@@ -261,9 +279,9 @@ function useMaxDevicePixelRatio(): RefObject<number> {
     return maxDprRef;
 }
 
-// Tracks the cursor only while it's near the true viewport corner and converts it into
-// canvas-local coordinates; easing (including fading out on idle) happens once per frame in the
-// render loop, not here, since that also has to run while the pointer isn't moving at all.
+// Tracks the cursor only while it's over the mesh's own box and converts it into canvas-local
+// coordinates; easing (including fading out on idle) happens once per frame in the render loop,
+// not here, since that also has to run while the pointer isn't moving at all.
 function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
     const pointerRef = useRef<Pointer>({
         x: 0,
@@ -275,20 +293,20 @@ function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
     });
 
     useEffect(() => {
-        // Listens on window (not the canvas) because the canvas is pointer-events:none — the
-        // corner offset below converts a viewport-space cursor position into canvas-local space.
+        // Listens on window (not the canvas) because the canvas is pointer-events:none — the box
+        // is anchored bottom-right, so its viewport bounds are derived from the window size here
+        // rather than read from the (unhittable) element.
         function onPointerMove(e: PointerEvent): void {
             const pointer = pointerRef.current;
             const size = sizeRef.current;
-            const cornerDistance = Math.hypot(
-                window.innerWidth - e.clientX,
-                window.innerHeight - e.clientY,
-            );
-            pointer.targetStrength =
-                cornerDistance < MeshTune.pointer.captureRadius ? 1 : 0;
-            if (pointer.targetStrength > 0) {
-                pointer.targetX = e.clientX - (window.innerWidth - size.width);
-                pointer.targetY = e.clientY - (window.innerHeight - size.height);
+            const localX = e.clientX - (window.innerWidth - size.width);
+            const localY = e.clientY - (window.innerHeight - size.height);
+            const inside =
+                localX >= 0 && localX <= size.width && localY >= 0 && localY <= size.height;
+            pointer.targetStrength = inside ? 1 : 0;
+            if (inside) {
+                pointer.targetX = localX;
+                pointer.targetY = localY;
             }
         }
 
@@ -351,12 +369,8 @@ function useMeshRenderer(
             const size = sizeRef.current;
             if (ctx && baseHexSizeRef.current > 0) {
                 easePointer(pointerRef.current);
-                // The breath's "full size" is the base hex size itself — there's no separate max
-                // scale to tune, only how far below it the contracted end sits.
-                const hexSize =
-                    baseHexSizeRef.current *
-                    lerp(MeshTune.breath.scaleMin, 1, breathPhase(t));
-                const grid = projectHexGrid(size, hexSize);
+                const hexSize = baseHexSizeRef.current;
+                const grid = projectHexGrid(size, hexSize, driftOffset(hexSize, t));
                 renderHexMesh(ctx, size, grid, colorRef.current, t, pointerRef.current);
             }
             if (!reduceMotion) raf = requestAnimationFrame(draw);

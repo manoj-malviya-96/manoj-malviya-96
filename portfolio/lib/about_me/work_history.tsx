@@ -8,8 +8,8 @@ import {
 	getExperience,
 } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
+import type {ComponentProps} from "react";
 
-const LOGO_SIZE = "4.5rem";
 
 export default function WorkHistory() {
 	return (
@@ -21,6 +21,10 @@ export default function WorkHistory() {
 	);
 }
 
+function NextImageForWork(props: ComponentProps<typeof NextImage>){
+	return <NextImage width={500} height={500} {...props} />
+}
+
 function TrackRow({ experience }: { experience: ExperienceId }) {
 	const { position, start, end, type, skills, summary } =
 		getExperience(experience);
@@ -30,13 +34,12 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 		<Grid columns={2} className="track-row" padding="lg" bg="surface">
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
-					as={NextImage}
+					as={NextImageForWork}
 					src={logo}
 					alt={`${name} logo`}
 					fit="contain"
 					ratio="square"
 					radius="md"
-					style={{ width: LOGO_SIZE, height: LOGO_SIZE }}
 				/>
 				<Text variant="title" muted>
 					{name}
