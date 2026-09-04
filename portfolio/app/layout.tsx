@@ -1,4 +1,4 @@
-import { Screen } from "@manoj-malviya-96/atom";
+import { Flex, Screen } from "@manoj-malviya-96/atom";
 import type { Metadata } from "next";
 import {
 	IBM_Plex_Mono,
@@ -69,10 +69,15 @@ export default function RootLayout({
 			<body
 				className={`${bodyFont.variable} ${monoFont.variable} ${displayFont.variable} ${bodyFont.className}`}
 			>
+				<a href="#main-content" className="skip-link">
+					Skip to content
+				</a>
 				<ReactQueryProvider>
 					<Screen>
 						<NavBar />
-						{children}
+						<Flex id="main-content" direction="col" gap="lg">
+							{children}
+						</Flex>
 						<Footer />
 					</Screen>
 				</ReactQueryProvider>

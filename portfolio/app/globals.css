@@ -22,6 +22,24 @@ h3 {
     letter-spacing: -0.01em;
 }
 
+/* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
+.skip-link {
+    position: fixed;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    z-index: 10;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    backdrop-filter: var(--material-blur);
+    color: var(--color-content);
+    transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+    transform: translateY(0);
+}
+
 
 html[data-theme="light"] {
     color-scheme: light;
