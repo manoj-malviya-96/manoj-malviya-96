@@ -62,20 +62,6 @@ img {
 	margin-inline: auto;
 }
 
-/* Todo integrate in atom: no arbitrary max-width prop (Size is a fixed sm–xl/full token scale), and
-   reusing --material-blur outside a floating component (Popover/Dialog/Menu) is a deliberate stretch —
-   these are opaque-ish page surfaces sitting on a fixed-position canvas, not overlays, but they need the
-   same contrast treatment. Worth a real "material surface" variant on Flex/backgroundColor upstream. */
-.landing-hero,
-.mesh-surface {
-	backdrop-filter: var(--material-blur);
-}
-
-.landing-hero {
-	max-width: 90vw;
-	user-select: none;
-}
-
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {
@@ -154,9 +140,5 @@ img {
 
 	.gap-responsive-lg {
 		gap: var(--space-xl);
-	}
-
-	.landing-hero {
-		max-width: 38rem;
 	}
 }
