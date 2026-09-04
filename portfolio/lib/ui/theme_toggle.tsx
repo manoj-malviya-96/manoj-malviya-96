@@ -1,7 +1,7 @@
 "use client";
 
 import {Button, setTheme, useTheme} from "@manoj-malviya-96/atom";
-import {IconMoon, IconSun} from "@manoj-malviya-96/atom/icons";
+import {IconLightbulb, IconMoon} from "@manoj-malviya-96/atom/icons";
 import {useEffect, useState} from "react";
 
 export default function ThemeToggle() {
@@ -26,7 +26,7 @@ export default function ThemeToggle() {
 
     return (
         <Button
-            icon={isDark ? <IconSun size="sm"/> : <IconMoon size="sm"/>}
+            icon={isDark ? <IconLightbulb size="sm"/> : <IconMoon size="sm"/>}
             aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
             onClick={toggle}
             variant="plain"

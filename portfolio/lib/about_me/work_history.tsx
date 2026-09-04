@@ -3,7 +3,7 @@ import NextImage from "next/image";
 import {type Experience, EXPERIENCE_BY_RECENCY, type ExperienceId, getEmployer, getExperience,} from "@/lib/data";
 import {formatDate} from "@/lib/utils";
 
-const LOGO_SIZE = "2.5rem";
+const LOGO_SIZE = "4.5rem";
 
 export default function WorkHistory() {
     return (
@@ -22,7 +22,7 @@ function TrackRow({experience}: { experience: ExperienceId }) {
 
     return (
         <Grid columns={2} className="track-row" padding="lg" bg="surface">
-            <Flex direction="col" gap="sm" vAlign="center" hAlign="center">
+            <Flex direction="col" gap="xs" vAlign="start" hAlign="start">
                 <Image
                     as={NextImage}
                     src={logo}
@@ -32,7 +32,10 @@ function TrackRow({experience}: { experience: ExperienceId }) {
                     radius="md"
                     style={{width: LOGO_SIZE, height: LOGO_SIZE}}
                 />
-                <Text variant="caption" className="font-mono" muted>
+                <Text variant="title" muted>
+                    {name}
+                </Text>
+                <Text variant="caption" muted>
                     {formatDate(start)} — {end ? formatDate(end) : "Present"}
                 </Text>
             </Flex>
@@ -40,9 +43,6 @@ function TrackRow({experience}: { experience: ExperienceId }) {
                 <Flex direction="row" gap="sm" wrap vAlign="center">
                     <Text variant="body" bold>
                         {position}
-                    </Text>
-                    <Text variant="caption" muted>
-                        · {name}
                     </Text>
                     <Badge>{type}</Badge>
                 </Flex>

@@ -1,17 +1,12 @@
 "use client";
 
 import {InputField, List, Text} from "@manoj-malviya-96/atom";
+import {iconMagnifyingGlassUrl} from "@manoj-malviya-96/atom/icons";
 import Fuse, {type IFuseOptions} from "fuse.js";
 import {useSearchParams} from "next/navigation";
 import {useMemo, useState} from "react";
+import {AllProjectIds, getMeta, type ProjectEffort, type ProjectId, type ProjectMeta,} from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
-import {
-    AllProjectIds,
-    getMeta,
-    type ProjectEffort,
-    type ProjectId,
-    type ProjectMeta,
-} from "@/lib/data";
 
 const QUERY_PARAM = "q";
 
@@ -40,24 +35,24 @@ export default function ProjectsClient() {
         <>
             <InputField
                 type="search"
+                icon={iconMagnifyingGlassUrl}
                 value={query}
                 onChange={(e) => search(e.target.value)}
                 placeholder="Search projects (title, tags, description)"
                 aria-label="Search projects"
             />
-            <List direction="col" gap="xl">
-                {matches.length === 0 ? (
-                    <li>
-                        <Text variant="caption">No projects match that search.</Text>
-                    </li>
-                ) : (
-                    matches.map(({id}) => (
+            {matches.length === 0 && (
+                <Text variant="caption">No projects match that search.</Text>
+            )}
+            {matches.length !== 0 && (
+                <List direction="col" gap="xl">
+                    {matches.map(({id}) => (
                         <li key={id} id={id}>
                             <ProjectCard project={id}/>
                         </li>
-                    ))
-                )}
-            </List>
+                    ))}
+                </List>
+            )}
         </>
     );
 }

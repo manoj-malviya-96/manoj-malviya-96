@@ -41,13 +41,13 @@ export function getOrganization(organization: OrganizationId): Organization {
             };
         case "penn-state":
             return {
-                name: "Penn State University",
+                name: "Penn State",
                 url: "https://www.psu.edu/",
                 logo: require("./pennstate-blue.png"),
             };
         case "iit-j":
             return {
-                name: "Indian Institute of Technology Jodhpur",
+                name: "IITJ",
                 url: "https://www.iitj.ac.in/",
                 logo: require("./iitj.png"),
             };
