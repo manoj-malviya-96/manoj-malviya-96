@@ -1,17 +1,18 @@
-import { Flex, Progress, Screen, Typography } from "@manoj-malviya-96/atom";
+import { Flex, Progress, Text } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
 
 export default function Page() {
 	return (
-		<Screen gap="xl" className="theme-light">
+		<>
 			<Flex as="header" direction="col" gap="sm">
-				<Typography variant="overline">Selected work</Typography>
-				<Typography variant="heading">Projects</Typography>
-				<Typography variant="subtitle">
-					A collection of my favorite projects that I have worked on over the
-					years.
-				</Typography>
+				<Text variant="overline" className="font-mono">
+					Selected work
+				</Text>
+				<Text variant="heading">Worked end to end.</Text>
+				<Text variant="subtitle">
+					Source, demo, or write-up — each one links to where it actually lives.
+				</Text>
 			</Flex>
 			<Suspense
 				fallback={
@@ -20,6 +21,6 @@ export default function Page() {
 			>
 				<ProjectsClient />
 			</Suspense>
-		</Screen>
+		</>
 	);
 }
