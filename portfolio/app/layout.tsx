@@ -10,7 +10,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
     title: "Manoj Malviya",
-    description: "Portfolio of Manoj Malviya - Product Builder & Tinkerer",
+    description:
+        "Manoj Malviya — senior product engineer building health-tech, CAD, and real-time systems end to end.",
     robots: {
         index: true, // Make sure this is true
         follow: true,
