@@ -1,44 +1,74 @@
-.theme-light {
-	color-scheme: light;
-}
-
-.theme-dark {
-	color-scheme: dark;
-}
-
-html:has(.theme-light) {
-	color-scheme: light;
-}
-
-html:has(.theme-dark) {
-	color-scheme: dark;
-}
-
 html {
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
+	color-scheme: light dark;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+}
+
+/* Todo integrate in atom: Typography has no font-family prop (variant only picks size + heading level) — a mono utility class is the only way to get a monospace eyebrow/caption. */
+.font-mono {
+	font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.wordmark {
+	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+	font-weight: 800;
+	font-size: 0.95rem;
+	letter-spacing: -0.01em;
+}
+
+/* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
+.skip-link {
+	position: fixed;
+	top: var(--space-sm);
+	left: var(--space-sm);
+	z-index: 10;
+	padding: var(--space-sm) var(--space-md);
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface);
+	backdrop-filter: var(--material-blur);
+	color: var(--color-content);
+	transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+	transform: translateY(0);
+}
+
+html[data-theme="light"] {
+	color-scheme: light;
+}
+
+html[data-theme="dark"] {
+	color-scheme: dark;
 }
 
 img {
 	content-visibility: auto;
 }
 
-.neural-canvas {
-	position: fixed;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	pointer-events: none;
+/* Screen's own class is CSS-Modules-hashed at build time, so this can't target it by
+   class name — passed in via Screen's own `className` prop instead (see layout.tsx).
+   Clears the sticky Header above it and clamps the page to A4 portrait width (210mm),
+   centered, so the site reads like one continuous document — the same width as the
+   resume PDF it links to, not a full-bleed app shell. */
+.page-shell {
+	max-width: 67rem;
+	margin-inline: auto;
 }
 
-/* atom's Screen owns width/gutter/min-height; this only clears the sticky Header above it. */
-.screen {
-	padding-block: 9rem 6rem;
-}
-
-.home-screen {
-	min-height: 100dvh;
+/* Todo integrate in atom: no arbitrary max-width prop (Size is a fixed sm–xl/full token scale), and
+   reusing --material-blur outside a floating component (Popover/Dialog/Menu) is a deliberate stretch —
+   these are opaque-ish page surfaces sitting on a fixed-position canvas, not overlays, but they need the
+   same contrast treatment. Worth a real "material surface" variant on Flex/backgroundColor upstream. */
+.landing-hero,
+.mesh-surface {
+	backdrop-filter: var(--material-blur);
 }
 
 .landing-hero {
@@ -46,42 +76,87 @@ img {
 	user-select: none;
 }
 
-.footer {
-	border-top: 1px solid var(--color-faint);
+/* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
+   what Grid's `columns` prop (a count, 1–6) can express. */
+.track-list {
+	display: grid;
+	gap: 1px;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
 }
 
-.gap-responsive-lg {
+.track-row {
+	grid-template-columns: 9.5rem 1fr;
 	gap: var(--space-lg);
+}
+
+/*
+ * Todo integrate in atom: Grid/Flex take a single static `columns`/`direction`/`gap` value with no
+ * breakpoint variants, so every responsive layout change below is a plain CSS override of the class
+ * atom already generated. A `columns={{base, md, lg}}`-style prop would remove this whole section.
+ */
+.edu-grid {
+	grid-template-columns: 1fr;
+}
+
+.footer-grid {
+	grid-template-columns: 1fr;
 }
 
 .direction-responsive-row {
 	flex-direction: column;
 }
 
-.hide-below-lg {
-	display: none;
+.gap-responsive-lg {
+	gap: var(--space-lg);
 }
 
 @media (min-width: 640px) {
-	.footer {
-		padding: 4rem var(--space-xl);
+	.edu-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 768px) {
+	.footer-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 920px) {
+	.track-row {
+		grid-template-columns: 1fr;
+	}
+
+	.loop-grid,
+	.stat-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.mini-work-grid,
+	.case-grid,
+	.case-steps {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 600px) {
+	.loop-grid,
+	.stat-grid {
+		grid-template-columns: 1fr;
 	}
 }
 
 @media (min-width: 1024px) {
-	.gap-responsive-lg {
-		gap: var(--space-xl);
-	}
-
 	.direction-responsive-row {
 		flex-direction: row;
 	}
 
-	.hide-below-lg {
-		display: block;
+	.gap-responsive-lg {
+		gap: var(--space-xl);
 	}
 
 	.landing-hero {
-		max-width: 1000px;
+		max-width: 38rem;
 	}
 }
