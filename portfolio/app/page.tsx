@@ -38,6 +38,7 @@ function Hero() {
                 padding="xl"
                 radius="lg"
                 bg="surface"
+                blur
             >
                 <Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
                 <Text variant="hero">
@@ -46,9 +47,9 @@ function Hero() {
                 <Text variant="subtitle">
                     Seven years turning ambiguous problems into shipped product —
                     patient-monitoring platforms, CAD tools thousands of engineers rely
-                    on, real-time rendering and audio systems. I own it end to end:
-                    system design, the algorithm underneath, and the interface someone
-                    actually has to use.
+                    on, real-time rendering and audio systems. I own it end to end: system
+                    design, the algorithm underneath, and the interface someone actually
+                    has to use.
                 </Text>
                 <Flex
                     as="span"
