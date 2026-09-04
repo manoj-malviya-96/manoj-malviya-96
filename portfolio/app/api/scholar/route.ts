@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { SocialUsersID } from "@/lib/data";
 import getConfig from "@/lib/core/config";
+import { SocialUsersID } from "@/lib/data";
 
 export async function GET() {
 	const { scholarTargetUrl } = getConfig();
