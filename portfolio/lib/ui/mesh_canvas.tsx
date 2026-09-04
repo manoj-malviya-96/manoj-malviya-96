@@ -4,21 +4,14 @@ import { Canvas, getThemeColor, useTheme } from "@manoj-malviya-96/atom";
 import { useEffect, useRef } from "react";
 
 type CanvasSize = { width: number; height: number };
-
-type Point = {
-	baseX: number;
-	baseY: number;
-	x: number;
-	y: number;
-	phase: number;
-	speed: number;
-};
-
+type Vertex = { x: number; y: number };
 type Edge = { from: number; to: number };
 
-type Grid = {
-	points: Point[];
+type HexGrid = {
+	vertices: Vertex[];
 	edges: Edge[];
+	center: Vertex;
+	hexSize: number;
 };
 
 type Pointer = {
@@ -28,127 +21,135 @@ type Pointer = {
 	targetY: number;
 	strength: number;
 	targetStrength: number;
-	lastMove: number;
-	pushEnabled: boolean;
 };
 
-const CELL_SIZE = 130;
-const JITTER = 0.35;
-const DRIFT_RADIUS = 4;
-const DRIFT_X_SPEED = 0.0002;
-const DRIFT_Y_SPEED = 0.00016;
-const POINTER_RADIUS = 170;
-const POINTER_PUSH = 36;
-const POINTER_STRENGTH_EPSILON = 0.001;
-const LINE_ALPHA = 0.16;
+// Bounded corner box: scales with viewport on small screens, caps out so it never dominates large ones.
+const CORNER_BOX_SIZE = "min(58vw, 58vh, 620px)";
+// Radial fade rooted at the true corner (100% 100%) so the box blends into the page instead of
+// presenting a hard rectangle.
+const CORNER_FADE_MASK =
+	"radial-gradient(circle at 100% 100%, black 0%, black 42%, transparent 82%)";
+
+const HEX_SIZE_RATIO = 0.16;
+const HEX_SIZE_MIN = 40;
+const HEX_SIZE_MAX = 88;
+// Keeps the anchor hex's outer edge near the true viewport corner, so the cluster reads as
+// emanating from it rather than floating in the middle of the box.
+const HEX_ANCHOR_INSET = 1.35;
+// Quarter-pixel buckets: merges corners shared by adjacent hexes without relying on exact
+// floating-point equality between two independently-computed trig results.
+const VERTEX_DEDUPE_PRECISION = 4;
+
+const LINE_ALPHA = 0.14;
+const GLOW_RADIUS_FACTOR = 3.2;
+const AMBIENT_PERIOD_MS = 9000;
+const AMBIENT_ALPHA_BASE = 0.1;
+const AMBIENT_ALPHA_AMPLITUDE = 0.05;
+const POINTER_ALPHA_BOOST = 0.28;
+// Viewport-space distance from the true corner that wakes the pointer glow. Gating this
+// spatially (rather than by recency of movement, as a full-viewport mesh would) keeps the
+// ambient glow visible while the cursor is anywhere else on the page.
+const POINTER_CAPTURE_RADIUS = 260;
 const POINTER_EASE = 0.12;
-const STRENGTH_EASE = 0.06;
-const IDLE_TIMEOUT_MS = 500;
+const STRENGTH_EASE = 0.08;
+const GLOW_ALPHA_EPSILON = 0.005;
+
 const MAX_DPR = 2;
 const COARSE_MAX_DPR = 1;
 const RESIZE_SETTLE_MS = 150;
-const AMBIENT_PERIOD_MS = 32000;
-const AMBIENT_ORBIT_FRACTION = 0.32;
-const AMBIENT_GLOW_RADIUS = 260;
-const AMBIENT_ALPHA_BOOST = 0.22;
-const POINTER_ALPHA_BOOST = 0.3;
-const GLOW_ALPHA_EPSILON = 0.005;
 
-function buildPoints(cols: number, rows: number): Point[] {
-	const points: Point[] = [];
-	for (let j = 0; j < rows; j++) {
-		for (let i = 0; i < cols; i++) {
-			const x = i * CELL_SIZE + (Math.random() - 0.5) * CELL_SIZE * JITTER;
-			const y = j * CELL_SIZE + (Math.random() - 0.5) * CELL_SIZE * JITTER;
-			points.push({
-				baseX: x,
-				baseY: y,
-				x,
-				y,
-				phase: Math.random() * Math.PI * 2,
-				speed: 0.15 + Math.random() * 0.15,
-			});
-		}
-	}
-	return points;
+// Axial offsets for a single hex plus its ring of 6 neighbors — the same six directions apply
+// under any orientation, only the axial-to-pixel formulas below are orientation-specific.
+const HEX_RING_OFFSETS: ReadonlyArray<readonly [number, number]> = [
+	[0, 0],
+	[1, 0],
+	[1, -1],
+	[0, -1],
+	[-1, 0],
+	[-1, 1],
+	[0, 1],
+];
+
+function hexSizeFor(size: CanvasSize): number {
+	const scaled = Math.min(size.width, size.height) * HEX_SIZE_RATIO;
+	return Math.min(HEX_SIZE_MAX, Math.max(HEX_SIZE_MIN, scaled));
 }
 
-// Grid connectivity only depends on cols/rows, so it's decided once per resize
-// instead of re-deriving which lines to draw for every point on every animation frame.
-function buildEdges(cols: number, rows: number): Edge[] {
+// Flat-top axial-to-pixel conversion (redblobgames convention).
+function hexCenter(anchor: Vertex, size: number, q: number, r: number): Vertex {
+	return {
+		x: anchor.x + size * 1.5 * q,
+		y: anchor.y + size * Math.sqrt(3) * (r + q / 2),
+	};
+}
+
+function hexCorner(center: Vertex, size: number, i: number): Vertex {
+	const angle = (Math.PI / 180) * (60 * i);
+	return {
+		x: center.x + size * Math.cos(angle),
+		y: center.y + size * Math.sin(angle),
+	};
+}
+
+function vertexKey(v: Vertex): string {
+	return `${Math.round(v.x * VERTEX_DEDUPE_PRECISION)}:${Math.round(v.y * VERTEX_DEDUPE_PRECISION)}`;
+}
+
+// Topology depends only on canvas size, so it's rebuilt once per resize (applyResize) — never
+// recomputed per animation frame. Adjacent hexes share corners and edges; both are deduplicated
+// so a shared edge isn't stroked twice (which would draw it brighter than the rest of the mesh).
+function buildHexGrid(size: CanvasSize): HexGrid {
+	const hexSize = hexSizeFor(size);
+	const center: Vertex = {
+		x: size.width - hexSize * HEX_ANCHOR_INSET,
+		y: size.height - hexSize * HEX_ANCHOR_INSET,
+	};
+
+	const vertices: Vertex[] = [];
+	const vertexIndex = new Map<string, number>();
+	const seenEdges = new Set<string>();
 	const edges: Edge[] = [];
-	for (let j = 0; j < rows; j++) {
-		for (let i = 0; i < cols; i++) {
-			const idx = j * cols + i;
-			if (i < cols - 1) edges.push({ from: idx, to: idx + 1 });
-			if (j < rows - 1) edges.push({ from: idx, to: idx + cols });
-			if (i < cols - 1 && j < rows - 1) {
-				edges.push(
-					(i + j) % 2 === 0
-						? { from: idx, to: idx + cols + 1 }
-						: { from: idx + 1, to: idx + cols },
-				);
-			}
+
+	const indexOf = (v: Vertex): number => {
+		const key = vertexKey(v);
+		const found = vertexIndex.get(key);
+		if (found !== undefined) return found;
+		const idx = vertices.length;
+		vertices.push(v);
+		vertexIndex.set(key, idx);
+		return idx;
+	};
+
+	for (const [q, r] of HEX_RING_OFFSETS) {
+		const cellCenter = hexCenter(center, hexSize, q, r);
+		const corners = Array.from({ length: 6 }, (_, i) =>
+			indexOf(hexCorner(cellCenter, hexSize, i)),
+		);
+		for (let i = 0; i < 6; i++) {
+			const from = corners[i];
+			const to = corners[(i + 1) % 6];
+			const edgeKey = from < to ? `${from}-${to}` : `${to}-${from}`;
+			if (seenEdges.has(edgeKey)) continue;
+			seenEdges.add(edgeKey);
+			edges.push({ from, to });
 		}
 	}
-	return edges;
+
+	return { vertices, edges, center, hexSize };
 }
 
-function buildGrid(width: number, height: number): Grid {
-	const cols = Math.ceil(width / CELL_SIZE) + 1;
-	const rows = Math.ceil(height / CELL_SIZE) + 1;
-	return { points: buildPoints(cols, rows), edges: buildEdges(cols, rows) };
-}
-
-function easePointer(pointer: Pointer, t: number): void {
+function easePointer(pointer: Pointer): void {
 	pointer.x += (pointer.targetX - pointer.x) * POINTER_EASE;
 	pointer.y += (pointer.targetY - pointer.y) * POINTER_EASE;
-	if (t - pointer.lastMove > IDLE_TIMEOUT_MS) pointer.targetStrength = 0;
 	pointer.strength +=
 		(pointer.targetStrength - pointer.strength) * STRENGTH_EASE;
 }
 
-// Pure physics step: decides where every point sits this frame. Rendering (I/O) is a separate step.
-function updatePoints(points: Point[], t: number, pointer: Pointer): void {
-	const pointerActive = pointer.strength > POINTER_STRENGTH_EPSILON;
-	for (const p of points) {
-		let x =
-			p.baseX + Math.sin(t * DRIFT_X_SPEED * p.speed + p.phase) * DRIFT_RADIUS;
-		let y =
-			p.baseY + Math.cos(t * DRIFT_Y_SPEED * p.speed + p.phase) * DRIFT_RADIUS;
-
-		if (pointerActive && pointer.pushEnabled) {
-			const dx = x - pointer.x;
-			const dy = y - pointer.y;
-			const dist = Math.hypot(dx, dy);
-			if (dist < POINTER_RADIUS && dist > POINTER_STRENGTH_EPSILON) {
-				const falloff = (1 - dist / POINTER_RADIUS) * pointer.strength;
-				x += (dx / dist) * POINTER_PUSH * falloff;
-				y += (dy / dist) * POINTER_PUSH * falloff;
-			}
-		}
-		p.x = x;
-		p.y = y;
-	}
-}
-
-// Slow elliptical orbit, centered on the canvas, that repeats exactly every AMBIENT_PERIOD_MS.
-function ambientLightPosition(
-	t: number,
-	size: CanvasSize,
-): { x: number; y: number } {
-	const angle = (t / AMBIENT_PERIOD_MS) * Math.PI * 2;
-	return {
-		x: size.width / 2 + Math.cos(angle) * size.width * AMBIENT_ORBIT_FRACTION,
-		y: size.height / 2 + Math.sin(angle) * size.height * AMBIENT_ORBIT_FRACTION,
-	};
-}
-
-function traceEdges(ctx: CanvasRenderingContext2D, grid: Grid): void {
+function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
 	ctx.beginPath();
 	for (const edge of grid.edges) {
-		const from = grid.points[edge.from];
-		const to = grid.points[edge.to];
+		const from = grid.vertices[edge.from];
+		const to = grid.vertices[edge.to];
 		ctx.moveTo(from.x, from.y);
 		ctx.lineTo(to.x, to.y);
 	}
@@ -158,7 +159,7 @@ function traceEdges(ctx: CanvasRenderingContext2D, grid: Grid): void {
 // from `color` to transparent over `radius`, so the highlight falls off smoothly for free.
 function drawGlowPass(
 	ctx: CanvasRenderingContext2D,
-	grid: Grid,
+	grid: HexGrid,
 	center: { x: number; y: number },
 	radius: number,
 	color: string,
@@ -180,10 +181,17 @@ function drawGlowPass(
 	ctx.stroke();
 }
 
-function renderMesh(
+function breathingAlpha(t: number): number {
+	return (
+		AMBIENT_ALPHA_BASE +
+		Math.sin((t / AMBIENT_PERIOD_MS) * Math.PI * 2) * AMBIENT_ALPHA_AMPLITUDE
+	);
+}
+
+function renderHexMesh(
 	ctx: CanvasRenderingContext2D,
 	size: CanvasSize,
-	grid: Grid,
+	grid: HexGrid,
 	color: string,
 	t: number,
 	pointer: Pointer,
@@ -196,24 +204,19 @@ function renderMesh(
 	traceEdges(ctx, grid);
 	ctx.stroke();
 
-	// Two light sources brighten nearby lines, crossfaded by how engaged the pointer is: a
-	// slow autonomous loop keeps the mesh alive when idle, and the cursor/touch position takes
-	// over as it moves — so the highlight follows the user instead of just wandering underneath.
-	const ambientAlpha = AMBIENT_ALPHA_BOOST * (1 - pointer.strength);
+	const glowRadius = grid.hexSize * GLOW_RADIUS_FACTOR;
+
+	// A fixed breathing glow keeps the corner alive at rest; it steps aside as the pointer glow
+	// (spatially gated to the corner, see POINTER_CAPTURE_RADIUS) takes over, so only one light
+	// source reads at a time.
+	const ambientAlpha = breathingAlpha(t) * (1 - pointer.strength);
 	if (ambientAlpha > GLOW_ALPHA_EPSILON) {
-		drawGlowPass(
-			ctx,
-			grid,
-			ambientLightPosition(t, size),
-			AMBIENT_GLOW_RADIUS,
-			color,
-			ambientAlpha,
-		);
+		drawGlowPass(ctx, grid, grid.center, glowRadius, color, ambientAlpha);
 	}
 
 	const pointerAlpha = POINTER_ALPHA_BOOST * pointer.strength;
 	if (pointerAlpha > GLOW_ALPHA_EPSILON) {
-		drawGlowPass(ctx, grid, pointer, POINTER_RADIUS, color, pointerAlpha);
+		drawGlowPass(ctx, grid, pointer, glowRadius, color, pointerAlpha);
 	}
 }
 
@@ -221,7 +224,12 @@ export default function MeshCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
-	const gridRef = useRef<Grid>({ points: [], edges: [] });
+	const gridRef = useRef<HexGrid>({
+		vertices: [],
+		edges: [],
+		center: { x: 0, y: 0 },
+		hexSize: 0,
+	});
 	const pointerRef = useRef<Pointer>({
 		x: 0,
 		y: 0,
@@ -229,8 +237,6 @@ export default function MeshCanvas() {
 		targetY: 0,
 		strength: 0,
 		targetStrength: 0,
-		lastMove: 0,
-		pushEnabled: false,
 	});
 	const colorRef = useRef("#8a8a8a");
 	const drawRef = useRef<(t: number) => void>(() => {});
@@ -252,7 +258,7 @@ export default function MeshCanvas() {
 
 	const applyResize = (size: CanvasSize) => {
 		sizeRef.current = size;
-		gridRef.current = buildGrid(size.width, size.height);
+		gridRef.current = buildHexGrid(size);
 		ctxRef.current = canvasRef.current?.getContext("2d") ?? null;
 		if (!ctxRef.current) return;
 		const dpr = Math.min(window.devicePixelRatio || 1, maxDprRef.current);
@@ -280,25 +286,29 @@ export default function MeshCanvas() {
 		).matches;
 		let raf: number | null = null;
 
+		// Listens on window (not the canvas) because the canvas is pointer-events:none — the
+		// corner offset below converts a viewport-space cursor position into canvas-local space.
 		const onPointerMove = (e: PointerEvent) => {
 			const pointer = pointerRef.current;
-			pointer.targetX = e.clientX;
-			pointer.targetY = e.clientY;
-			pointer.targetStrength = 1;
-			pointer.lastMove = performance.now();
-			// Touch has no hover state and a scroll-drag fires pointermove too, so touch only
-			// drives the glow below — physically pushing the grid on every scroll would be jarring.
-			pointer.pushEnabled = e.pointerType !== "touch";
+			const size = sizeRef.current;
+			const cornerDistance = Math.hypot(
+				window.innerWidth - e.clientX,
+				window.innerHeight - e.clientY,
+			);
+			pointer.targetStrength = cornerDistance < POINTER_CAPTURE_RADIUS ? 1 : 0;
+			if (pointer.targetStrength > 0) {
+				pointer.targetX = e.clientX - (window.innerWidth - size.width);
+				pointer.targetY = e.clientY - (window.innerHeight - size.height);
+			}
 		};
 		window.addEventListener("pointermove", onPointerMove, { passive: true });
 
 		const draw = (t: number) => {
 			const ctx = ctxRef.current;
 			const grid = gridRef.current;
-			if (ctx && grid.points.length > 0) {
-				easePointer(pointerRef.current, t);
-				updatePoints(grid.points, t, pointerRef.current);
-				renderMesh(
+			if (ctx && grid.vertices.length > 0) {
+				easePointer(pointerRef.current);
+				renderHexMesh(
 					ctx,
 					sizeRef.current,
 					grid,
@@ -342,10 +352,18 @@ export default function MeshCanvas() {
 		<Canvas
 			ref={canvasRef}
 			onResize={handleResize}
-			width="full"
-			height="full"
 			aria-hidden="true"
-			style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none" }}
+			style={{
+				position: "fixed",
+				right: 0,
+				bottom: 0,
+				width: CORNER_BOX_SIZE,
+				height: CORNER_BOX_SIZE,
+				zIndex: -1,
+				pointerEvents: "none",
+				maskImage: CORNER_FADE_MASK,
+				WebkitMaskImage: CORNER_FADE_MASK,
+			}}
 		/>
 	);
 }
