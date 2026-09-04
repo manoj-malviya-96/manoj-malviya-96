@@ -42,8 +42,7 @@ const HEX_SIZE_MAX = 88;
 // Keeps the anchor hex's outer edge near the true viewport corner, so the cluster reads as
 // emanating from it rather than floating in the middle of the box.
 const HEX_ANCHOR_INSET = 1.35;
-// Radius 2 around the anchor cell — a compact 19-hex disk (1 + 3·r·(r+1)), enough to read as a
-// small cluster without turning into a field.
+// Cells within this many rings of the anchor cell — a disk of 1 + 3·r·(r+1) hexes.
 const HEX_RING_RADIUS = 2;
 // Topology is built once in unit hex space, so genuinely distinct corners are always far more
 // than a millionth apart — this only needs to be finer than independent-trig floating error.
@@ -70,10 +69,6 @@ const GLOW_ALPHA_EPSILON = 0.005;
 const MAX_DPR = 2;
 const COARSE_MAX_DPR = 1;
 const RESIZE_SETTLE_MS = 150;
-
-// ---------------------------------------------------------------------------
-// Pure geometry
-// ---------------------------------------------------------------------------
 
 // Every axial cell within `radius` steps of the origin, walked as concentric hexagonal rings.
 function hexDisk(radius: number): Array<readonly [number, number]> {
@@ -164,8 +159,8 @@ function buildHexTopology(): HexTopology {
 
 const HEX_TOPOLOGY = buildHexTopology();
 
-// Projects the precomputed topology into pixel space for the current viewport and animated
-// hexSize — plain per-vertex arithmetic, no hashing or corner-dedup work in the render hot path.
+// Plain per-vertex arithmetic, no hashing or corner-dedup work — that's all one-time, in
+// buildHexTopology above — so this is cheap to call fresh every animation frame.
 function projectHexGrid(size: CanvasSize, hexSize: number): HexGrid {
 	const anchor: Vertex = {
 		x: size.width - hexSize * HEX_ANCHOR_INSET,
@@ -185,10 +180,6 @@ function easePointer(pointer: Pointer): void {
 		(pointer.targetStrength - pointer.strength) * STRENGTH_EASE;
 }
 
-// ---------------------------------------------------------------------------
-// Rendering
-// ---------------------------------------------------------------------------
-
 function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
 	ctx.beginPath();
 	for (const edge of grid.edges) {
@@ -199,8 +190,6 @@ function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
 	}
 }
 
-// One brightened pass over the mesh: a radial gradient centered on `center` fades the stroke
-// from `color` to transparent over `radius`, so the highlight falls off smoothly for free.
 function drawGlowPass(
 	ctx: CanvasRenderingContext2D,
 	grid: HexGrid,
@@ -260,11 +249,6 @@ function renderHexMesh(
 	}
 }
 
-// ---------------------------------------------------------------------------
-// Hooks
-// ---------------------------------------------------------------------------
-
-// Resolves to the current --content color, re-read whenever the theme toggles.
 function useAmbientColor(): RefObject<string> {
 	const colorRef = useRef("#8a8a8a");
 	const theme = useTheme();
@@ -327,9 +311,8 @@ function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
 	return pointerRef;
 }
 
-// Owns the canvas: debounced resize (immediate on first mount), and an animation loop — paused
-// for prefers-reduced-motion and while the tab is hidden — that projects and draws the breathing
-// hex mesh each frame. Returns the resize handler to wire into <Canvas onResize>.
+// Returns the resize handler to wire into <Canvas onResize> — the caller owns the element/JSX,
+// this hook owns everything about what's drawn on it.
 function useMeshRenderer(
 	canvasRef: RefObject<HTMLCanvasElement | null>,
 	colorRef: RefObject<string>,
@@ -418,10 +401,6 @@ function useMeshRenderer(
 	return handleResize;
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 export default function MeshCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const colorRef = useAmbientColor();
@@ -433,6 +412,8 @@ export default function MeshCanvas() {
 			ref={canvasRef}
 			onResize={handleResize}
 			aria-hidden="true"
+			// atom marks `style` deprecated-as-policy (last resort when no prop fits) — fixed
+			// corner positioning and a CSS mask have no dedicated atom prop, so this is that case.
 			style={{
 				position: "fixed",
 				right: 0,
