@@ -29,46 +29,66 @@ type Pointer = {
 	targetStrength: number;
 };
 
-// Bounded corner box: scales with viewport on small screens, caps out so it never dominates large ones.
-const CORNER_BOX_SIZE = "min(58vw, 58vh, 620px)";
-// Radial fade rooted at the true corner (100% 100%) so the box blends into the page instead of
-// presenting a hard rectangle.
-const CORNER_FADE_MASK =
-	"radial-gradient(circle at 100% 100%, black 0%, black 42%, transparent 82%)";
-
-const HEX_SIZE_RATIO = 0.16;
-const HEX_SIZE_MIN = 40;
-const HEX_SIZE_MAX = 88;
-// Keeps the anchor hex's outer edge near the true viewport corner, so the cluster reads as
-// emanating from it rather than floating in the middle of the box.
-const HEX_ANCHOR_INSET = 1.35;
-// Cells within this many rings of the anchor cell — a disk of 1 + 3·r·(r+1) hexes.
-const HEX_RING_RADIUS = 2;
-// Topology is built once in unit hex space, so genuinely distinct corners are always far more
-// than a millionth apart — this only needs to be finer than independent-trig floating error.
-const TOPOLOGY_DEDUPE_PRECISION = 1e6;
-
-const LINE_ALPHA = 0.14;
-const GLOW_RADIUS_FACTOR = 3.2;
-// One slow breath drives both size and glow together — the cluster grows out from the corner
-// as it brightens, and eases back in as it dims, rather than two motions ticking independently.
-const BREATH_PERIOD_MS = 18000;
-const HEX_SCALE_MIN = 0.86;
-const HEX_SCALE_MAX = 1;
-const AMBIENT_ALPHA_MIN = 0.06;
-const AMBIENT_ALPHA_MAX = 0.16;
-const POINTER_ALPHA_BOOST = 0.28;
-// Viewport-space distance from the true corner that wakes the pointer glow. Gating this
-// spatially (rather than by recency of movement, as a full-viewport mesh would) keeps the
-// ambient glow visible while the cursor is anywhere else on the page.
-const POINTER_CAPTURE_RADIUS = 260;
-const POINTER_EASE = 0.12;
-const STRENGTH_EASE = 0.08;
-const GLOW_ALPHA_EPSILON = 0.005;
-
-const MAX_DPR = 2;
-const COARSE_MAX_DPR = 1;
-const RESIZE_SETTLE_MS = 150;
+// Every tunable number/string the mesh reads, grouped by what they shape — one scoped identifier
+// instead of two dozen module-level constants. HEX_SCALE_MAX isn't here: the breath animates
+// between hex.sizeMin/sizeMax's result and that result itself, so "full size" is always 1, not a
+// separate knob (see useMeshRenderer's draw loop).
+const MeshTune = {
+	corner: {
+		// Scales with viewport on small screens, caps out so it never dominates large ones.
+		boxSize: "min(67vw, 67vh, 620px)",
+		// Rooted at the true corner (100% 100%) so the box blends into the page instead of
+		// presenting a hard rectangle.
+		fadeMask:
+			"radial-gradient(circle at 100% 100%, black 0%, black 42%, transparent 82%)",
+	},
+	hex: {
+		sizeRatio: 0.16,
+		sizeMin: 80,
+		sizeMax: 160,
+		// Keeps the anchor hex's outer edge near the true viewport corner, so the cluster reads
+		// as emanating from it rather than floating in the middle of the box.
+		anchorInset: 12.35,
+		// Cells within this many rings of the anchor cell — a disk of 1 + 3·r·(r+1) hexes.
+		ringRadius: 20,
+		// Topology is built once in unit hex space, so genuinely distinct corners are always far
+		// more than a millionth apart — this only needs to be finer than independent-trig
+		// floating error, not tuned for visual effect.
+		dedupePrecision: 1e6,
+	},
+	breath: {
+		// One slow breath drives both size and glow together — the cluster grows out from the
+		// corner as it brightens, and eases back in as it dims, rather than two motions ticking
+		// independently.
+		periodMs: 18000,
+		scaleMin: 0.86,
+	},
+	glow: {
+		lineAlpha: 0.14,
+		radiusFactor: 3.2,
+		ambientAlphaMin: 0.06,
+		ambientAlphaMax: 0.16,
+		pointerAlphaBoost: 0.28,
+		// Below this, a glow pass would be invisible — skip drawing it rather than tuning how it
+		// looks.
+		alphaEpsilon: 0.005,
+	},
+	pointer: {
+		// Viewport-space distance from the true corner that wakes the pointer glow. Gating this
+		// spatially (rather than by recency of movement, as a full-viewport mesh would) keeps the
+		// ambient glow visible while the cursor is anywhere else on the page.
+		captureRadius: 260,
+		ease: 0.12,
+		strengthEase: 0.08,
+	},
+	canvas: {
+		maxDpr: 2,
+		// Coarse (touch) pointers get a lower cap, keeping the canvas backing store smaller on
+		// hardware that's typically weaker and battery-constrained.
+		coarseMaxDpr: 1,
+		resizeSettleMs: 150,
+	},
+} as const;
 
 // Every axial cell within `radius` steps of the origin, walked as concentric hexagonal rings.
 function hexDisk(radius: number): Array<readonly [number, number]> {
@@ -84,8 +104,8 @@ function hexDisk(radius: number): Array<readonly [number, number]> {
 }
 
 function hexSizeFor(size: CanvasSize): number {
-	const scaled = Math.min(size.width, size.height) * HEX_SIZE_RATIO;
-	return Math.min(HEX_SIZE_MAX, Math.max(HEX_SIZE_MIN, scaled));
+	const scaled = Math.min(size.width, size.height) * MeshTune.hex.sizeRatio;
+	return Math.min(MeshTune.hex.sizeMax, Math.max(MeshTune.hex.sizeMin, scaled));
 }
 
 function lerp(min: number, max: number, t: number): number {
@@ -95,7 +115,7 @@ function lerp(min: number, max: number, t: number): number {
 // Eases to a stop at both extremes (unlike a raw sine, which moves fastest at rest position) —
 // reads as an actual breath in/out rather than a mechanical oscillation.
 function breathPhase(t: number): number {
-	return (1 - Math.cos((t / BREATH_PERIOD_MS) * Math.PI * 2)) / 2;
+	return (1 - Math.cos((t / MeshTune.breath.periodMs) * Math.PI * 2)) / 2;
 }
 
 // Flat-top axial-to-pixel conversion (redblobgames convention).
@@ -115,7 +135,8 @@ function hexCorner(center: Vertex, size: number, i: number): Vertex {
 }
 
 function vertexKey(v: Vertex): string {
-	return `${Math.round(v.x * TOPOLOGY_DEDUPE_PRECISION)}:${Math.round(v.y * TOPOLOGY_DEDUPE_PRECISION)}`;
+	const p = MeshTune.hex.dedupePrecision;
+	return `${Math.round(v.x * p)}:${Math.round(v.y * p)}`;
 }
 
 // Shared-corner topology depends only on the axial layout, never on viewport size or the animated
@@ -139,7 +160,7 @@ function buildHexTopology(): HexTopology {
 		return idx;
 	};
 
-	for (const [q, r] of hexDisk(HEX_RING_RADIUS)) {
+	for (const [q, r] of hexDisk(MeshTune.hex.ringRadius)) {
 		const cellCenter = hexCenter({ x: 0, y: 0 }, 1, q, r);
 		const corners = Array.from({ length: 6 }, (_, i) =>
 			indexOf(hexCorner(cellCenter, 1, i)),
@@ -163,8 +184,8 @@ const HEX_TOPOLOGY = buildHexTopology();
 // buildHexTopology above — so this is cheap to call fresh every animation frame.
 function projectHexGrid(size: CanvasSize, hexSize: number): HexGrid {
 	const anchor: Vertex = {
-		x: size.width - hexSize * HEX_ANCHOR_INSET,
-		y: size.height - hexSize * HEX_ANCHOR_INSET,
+		x: size.width - hexSize * MeshTune.hex.anchorInset,
+		y: size.height - hexSize * MeshTune.hex.anchorInset,
 	};
 	const vertices = HEX_TOPOLOGY.directions.map((d) => ({
 		x: anchor.x + hexSize * d.x,
@@ -174,10 +195,10 @@ function projectHexGrid(size: CanvasSize, hexSize: number): HexGrid {
 }
 
 function easePointer(pointer: Pointer): void {
-	pointer.x += (pointer.targetX - pointer.x) * POINTER_EASE;
-	pointer.y += (pointer.targetY - pointer.y) * POINTER_EASE;
+	pointer.x += (pointer.targetX - pointer.x) * MeshTune.pointer.ease;
+	pointer.y += (pointer.targetY - pointer.y) * MeshTune.pointer.ease;
 	pointer.strength +=
-		(pointer.targetStrength - pointer.strength) * STRENGTH_EASE;
+		(pointer.targetStrength - pointer.strength) * MeshTune.pointer.strengthEase;
 }
 
 function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
@@ -190,6 +211,8 @@ function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
 	}
 }
 
+// One brightened pass over the mesh: a radial gradient centered on `center` fades the stroke
+// from `color` to transparent over `radius`, so the highlight falls off smoothly for free.
 function drawGlowPass(
 	ctx: CanvasRenderingContext2D,
 	grid: HexGrid,
@@ -226,25 +249,29 @@ function renderHexMesh(
 	ctx.lineWidth = 1;
 
 	ctx.strokeStyle = color;
-	ctx.globalAlpha = LINE_ALPHA;
+	ctx.globalAlpha = MeshTune.glow.lineAlpha;
 	traceEdges(ctx, grid);
 	ctx.stroke();
 
-	const glowRadius = grid.hexSize * GLOW_RADIUS_FACTOR;
+	const glowRadius = grid.hexSize * MeshTune.glow.radiusFactor;
 
 	// Glow brightens in step with the same breath that grows the cluster (see useMeshRenderer's
 	// draw loop), so size and light read as one motion. It steps aside as the pointer glow
-	// (spatially gated to the corner, see POINTER_CAPTURE_RADIUS) takes over, so only one light
-	// source reads at a time.
+	// (spatially gated to the corner, see MeshTune.pointer.captureRadius) takes over, so only one
+	// light source reads at a time.
 	const ambientAlpha =
-		lerp(AMBIENT_ALPHA_MIN, AMBIENT_ALPHA_MAX, breathPhase(t)) *
+		lerp(
+			MeshTune.glow.ambientAlphaMin,
+			MeshTune.glow.ambientAlphaMax,
+			breathPhase(t),
+		) *
 		(1 - pointer.strength);
-	if (ambientAlpha > GLOW_ALPHA_EPSILON) {
+	if (ambientAlpha > MeshTune.glow.alphaEpsilon) {
 		drawGlowPass(ctx, grid, grid.center, glowRadius, color, ambientAlpha);
 	}
 
-	const pointerAlpha = POINTER_ALPHA_BOOST * pointer.strength;
-	if (pointerAlpha > GLOW_ALPHA_EPSILON) {
+	const pointerAlpha = MeshTune.glow.pointerAlphaBoost * pointer.strength;
+	if (pointerAlpha > MeshTune.glow.alphaEpsilon) {
 		drawGlowPass(ctx, grid, pointer, glowRadius, color, pointerAlpha);
 	}
 }
@@ -261,15 +288,13 @@ function useAmbientColor(): RefObject<string> {
 	return colorRef;
 }
 
-// Coarse (touch) pointers get a lower devicePixelRatio cap, keeping the canvas backing store
-// smaller on hardware that's typically weaker and battery-constrained.
 function useMaxDevicePixelRatio(): RefObject<number> {
-	const maxDprRef = useRef(MAX_DPR);
+	const maxDprRef = useRef<number>(MeshTune.canvas.maxDpr);
 
 	useEffect(() => {
 		maxDprRef.current = window.matchMedia("(pointer: coarse)").matches
-			? COARSE_MAX_DPR
-			: MAX_DPR;
+			? MeshTune.canvas.coarseMaxDpr
+			: MeshTune.canvas.maxDpr;
 	}, []);
 
 	return maxDprRef;
@@ -298,7 +323,8 @@ function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
 				window.innerWidth - e.clientX,
 				window.innerHeight - e.clientY,
 			);
-			pointer.targetStrength = cornerDistance < POINTER_CAPTURE_RADIUS ? 1 : 0;
+			pointer.targetStrength =
+				cornerDistance < MeshTune.pointer.captureRadius ? 1 : 0;
 			if (pointer.targetStrength > 0) {
 				pointer.targetX = e.clientX - (window.innerWidth - size.width);
 				pointer.targetY = e.clientY - (window.innerHeight - size.height);
@@ -348,7 +374,7 @@ function useMeshRenderer(
 		resizeTimerRef.current = window.setTimeout(() => {
 			resizeTimerRef.current = null;
 			applyResize(size);
-		}, RESIZE_SETTLE_MS);
+		}, MeshTune.canvas.resizeSettleMs);
 	}
 
 	useEffect(() => {
@@ -362,9 +388,11 @@ function useMeshRenderer(
 			const size = sizeRef.current;
 			if (ctx && baseHexSizeRef.current > 0) {
 				easePointer(pointerRef.current);
+				// The breath's "full size" is the base hex size itself — there's no separate max
+				// scale to tune, only how far below it the contracted end sits.
 				const hexSize =
 					baseHexSizeRef.current *
-					lerp(HEX_SCALE_MIN, HEX_SCALE_MAX, breathPhase(t));
+					lerp(MeshTune.breath.scaleMin, 1, breathPhase(t));
 				const grid = projectHexGrid(size, hexSize);
 				renderHexMesh(ctx, size, grid, colorRef.current, t, pointerRef.current);
 			}
@@ -418,12 +446,12 @@ export default function MeshCanvas() {
 				position: "fixed",
 				right: 0,
 				bottom: 0,
-				width: CORNER_BOX_SIZE,
-				height: CORNER_BOX_SIZE,
+				width: MeshTune.corner.boxSize,
+				height: MeshTune.corner.boxSize,
 				zIndex: -1,
 				pointerEvents: "none",
-				maskImage: CORNER_FADE_MASK,
-				WebkitMaskImage: CORNER_FADE_MASK,
+				maskImage: MeshTune.corner.fadeMask,
+				WebkitMaskImage: MeshTune.corner.fadeMask,
 			}}
 		/>
 	);
