@@ -21,13 +21,7 @@ const nextConfig: NextConfig = {
 	},
 
 	experimental: {
-		optimizePackageImports: [
-			"@fortawesome/react-fontawesome",
-			"@fortawesome/free-solid-svg-icons",
-			"@fortawesome/free-brands-svg-icons",
-			"@fortawesome/fontawesome-svg-core",
-			"fuse.js",
-		],
+		optimizePackageImports: ["lucide-react", "fuse.js"],
 	},
 };
 
