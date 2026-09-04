@@ -11,13 +11,13 @@ import {
     YEARS_EXPERIENCE,
 } from "@/lib/data";
 import StatGrid from "@/lib/home/stat_grid";
-import {Eyebrow, Link, Section, SectionHeader} from "@/lib/ui";
+import {Eyebrow, Link, MeshCanvas, Section, SectionHeader} from "@/lib/ui";
 import {uniqueBy} from "@/lib/utils";
 
 export default function Landing() {
     return (
         <>
-            {/*<MeshCanvas/>*/}
+            <MeshCanvas/>
             <Hero/>
             <Loop/>
             <FeaturedWork/>
@@ -39,15 +39,16 @@ function Hero() {
                 radius="lg"
                 bg="surface"
             >
-                <Eyebrow>Software engineer, product-brained 📍 Berlin, DE</Eyebrow>
+                <Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
                 <Text variant="hero">
-                    I care about your users as much as your query plans
+                    I start with the problem. The stack comes second.
                 </Text>
                 <Text variant="subtitle">
-                    Seven years across hardware, creative tools, and ML — turning
-                    &quot;wouldn&apos;t it be nice if—&quot; into things that ship, and
-                    keep working. Mechanical engineer by degree, software engineer by
-                    trade, product person by compulsion.
+                    Seven years turning ambiguous problems into shipped product —
+                    patient-monitoring platforms, CAD tools thousands of engineers rely
+                    on, real-time rendering and audio systems. I own it end to end:
+                    system design, the algorithm underneath, and the interface someone
+                    actually has to use.
                 </Text>
                 <Flex
                     as="span"
@@ -76,8 +77,8 @@ function Hero() {
                 </Flex>
             </Flex>
             <Text variant="body">
-                <Badge color="green">{YEARS_EXPERIENCE}+</Badge> yrs shaping product &
-                systems
+                <Badge color="green">{YEARS_EXPERIENCE}+</Badge> yrs owning product end
+                to end
             </Text>
         </Section>
     );
@@ -194,15 +195,15 @@ const FEATURED_WORK = [
     {
         title: getMeta("topopt_py").title,
         blurb:
-            "Made a 40-year-old optimization algorithm fast again, out of pure spite for slow for-loops.",
+            "Vectorized a 40-year-old topology-optimization solver in NumPy — same Python, 2x the throughput, no C++ rewrite.",
         href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
         cta: "Read on Medium",
     },
     {
-        title: getMeta("blackhole").title,
+        title: getMeta("atom").title,
         blurb:
-            "Built a real-time gravitational lensing simulator, because pre-rendered gravity felt like cheating.",
-        href: "https://github.com/manoj-malviya-96/blackhole",
+            "Built the CSS-first React design system this entire site runs on — one primitive, real-browser tests, enforced size budgets.",
+        href: "https://github.com/manoj-malviya-96/atom",
         cta: "View on GitHub",
     },
 ] as const;

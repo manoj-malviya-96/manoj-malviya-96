@@ -24,11 +24,12 @@ export default function About() {
 					/>
 				</Flex>
 				<Text variant="subtitle">
-					I build fast, reliable products—from pixel-perfect UIs to
-					performance-critical engines (yes, I care about the last millisecond).
-					I lead across CAD/CAM, rendering, and optimization in hardware–softw
-					are ecosystems, turning gnarly workflows into intuitive experiences
-					and measurable product impact.
+					Seven years solving problems that sit between hardware and
+					software — CAD tools engineers depend on, patient-monitoring
+					platforms that can&apos;t afford downtime, real-time rendering that
+					has to hit budget every frame. I own the full path: system design,
+					the algorithm underneath, and the interface someone actually has to
+					use.
 				</Text>
 			</Flex>
 			<Flex as="section" direction="col" gap="lg">

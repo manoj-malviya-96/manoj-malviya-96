@@ -45,7 +45,7 @@ export function getExperience(experience: ExperienceId): Experience {
                 type: "Full-time",
                 skills: ["mobile", "web", "ai", "project-management"],
                 summary:
-                    "Leading product across mobile and web for cardiac telemonitoring — a patient-facing app spanning remote monitoring, connected devices, and on-device audio ML, plus a clinician platform with real-time alerts and patented voice-based heart-failure detection, and the APIs, data pipelines, and release automation underneath",
+                    "Heart-failure patients need monitoring that doesn't feel like a hospital follow-up. I lead product for both sides of that: a patient app with remote monitoring, connected devices, and on-device audio ML, and a clinician platform built around patented voice-based heart-failure detection and real-time alerts — plus the APIs, data pipelines, and release process that keep it all shipping safely",
             };
         case "form-labs-rd":
             return {
@@ -57,7 +57,7 @@ export function getExperience(experience: ExperienceId): Experience {
                 type: "Full-time",
                 skills: ["optimization", "cad", "high-performance"],
                 summary:
-                    "Redesigned the core 3D-printing support-structure algorithm into a patent-pending topology optimization method — ~20% lower end-user cost, ~17% better reliability, ~50% more feature usage — and cut print-time-estimate error ~20% while halving its compute",
+                    "Formlabs' support-structure algorithm was costing users material and failed prints. I redesigned it into a patent-pending topology-optimization method — ~20% cheaper prints, ~17% more reliable, ~50% more feature adoption — and rebuilt the print-time estimator to be ~20% more accurate on half the compute",
             };
         case "form-labs-se":
             return {
@@ -69,7 +69,7 @@ export function getExperience(experience: ExperienceId): Experience {
                 type: "Full-time",
                 skills: ["ui/ux", "cad", "qt/qml", "project-management"],
                 summary:
-                    "UI/UX tech lead for PreForm: shipped CAD features (model labeling, grouping, part cages) to a ~95% CSAT, lifted large-scene performance up to 60%, and rebuilt the Qt/QML component framework for ~30–50% faster load times",
+                    "As UI/UX tech lead for PreForm, I owned CAD features engineers actually rely on — model labeling, grouping, part cages — shipped to a ~95% CSAT. Rebuilt the Qt/QML component framework underneath for ~30–50% faster load times, and pushed large-scene performance up 60%",
             };
         case "flow-key-se":
             return {
@@ -81,7 +81,7 @@ export function getExperience(experience: ExperienceId): Experience {
                 type: "Contract",
                 skills: ["c++", "micro-services", "ai", "rendering"],
                 summary:
-                    "Built a C++/Qt microservice for music-score rendering that took complex scores from ~30s to ~200ms, unlocking real-time interactive notation, and refactored the audio-to-MIDI model to ~50ms inference at ~98% accuracy",
+                    "Complex music scores took ~30 seconds to render — too slow for interactive notation. I built a C++/Qt microservice that cut that to ~200ms, and refactored the audio-to-MIDI model for ~50ms inference at ~98% accuracy",
             };
         case "penn-state-gra":
             return {
@@ -93,7 +93,7 @@ export function getExperience(experience: ExperienceId): Experience {
                 type: "Full-time",
                 skills: ["ai", "optimization"],
                 summary:
-                    "Automated embedding design for 3D-printed parts, built eye-tracking and ML tooling for design-process research, and pioneered a deep-learning generative model for topology optimization with ~3× faster design iterations. Coauthored 8 peer-reviewed publications",
+                    "Automated embedding design for 3D-printed parts so it no longer needed an expert in the loop, built eye-tracking and ML tooling to study how engineers actually design, and pioneered a deep-learning generative model for topology optimization — ~3× faster design iterations. Coauthored 8 peer-reviewed publications",
             };
         default:
             return assertNever(experience);

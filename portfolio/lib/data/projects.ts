@@ -5,10 +5,14 @@ import type {ExternalURL} from "@/lib/types";
 
 export const AllProjectIds = [
     "portfolio",
+    "atom",
     "muviz",
     "honeycomb",
     "topopt_py",
     "blackhole",
+    "ev_sim",
+    "mesha",
+    "simphy",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
@@ -86,6 +90,7 @@ export type ProjectLink =
     | { kind: "external"; label: string; href: ExternalURL };
 
 const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
+const OG = "https://opengraph.githubassets.com/1/manoj-malviya-96";
 
 export function getMeta(project: ProjectId): ProjectMeta {
     switch (project) {
@@ -93,16 +98,25 @@ export function getMeta(project: ProjectId): ProjectMeta {
             return {
                 title: "Portfolio",
                 description:
-                    "A modern portfolio website to showcase my projects and skills, built with Next.js, TypeScript, and a design system I maintain separately.",
+                    "This site: a Next.js App Router build on top of atom, a design system I wrote and maintain separately, with a fuzzy-searchable project catalog.",
                 hook: "The portfolio, describing itself.",
                 tags: ["web", "open-source", "nextjs", "typescript", "ui/ux"],
                 effort: "medium",
+            };
+        case "atom":
+            return {
+                title: "Atom",
+                description:
+                    "A minimal, CSS-first, type-safe React UI library — one primitive and one stylesheet that every other component composes from. Styling and motion live in CSS, not JS, with enforced size budgets and real-browser tests.",
+                hook: "One primitive. The whole design system composes from it.",
+                tags: ["react", "typescript", "web", "open-source", "ui/ux"],
+                effort: "high",
             };
         case "muviz":
             return {
                 title: "Muviz",
                 description:
-                    "A fast, feature-rich music visualizer for reactive, beautiful 3D visualizations",
+                    "A GPU-driven 3D music visualizer: a C++ audio pipeline compiled to WebAssembly feeds a Three.js renderer, so the browser never touches raw audio math.",
                 hook: "Winamp nostalgia, rebuilt for the GPU.",
                 tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
                 effort: "high",
@@ -111,7 +125,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
             return {
                 title: "HoneyMesh",
                 description:
-                    "Generate and visualize honeycomb lattice structures for scientific and educational use.",
+                    "A C++ skeletonization algorithm that generates honeycomb lattice structures and exports them straight to a VTK mesh for CAD and simulation workflows.",
                 hook: "Because hexagons are just better, structurally speaking.",
                 tags: [
                     "rendering",
@@ -135,10 +149,37 @@ export function getMeta(project: ProjectId): ProjectMeta {
             return {
                 title: "Blackhole",
                 description:
-                    "A simulation that simulates and visualizers gravitational effects around black holes.",
+                    "A real-time GLSL raymarcher that integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing at interactive frame rates.",
                 hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
                 tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
                 effort: "high",
+            };
+        case "ev_sim":
+            return {
+                title: "EV Charging Simulator",
+                description:
+                    "A Monte Carlo simulator for EV charging-lot demand — Poisson-process car arrivals, per-interval power draw, and the resulting concurrency factor — with a React front end for running scenarios.",
+                hook: "How many chargers do you actually need? Simulate it first.",
+                tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
+                effort: "medium",
+            };
+        case "mesha":
+            return {
+                title: "Mesha",
+                description:
+                    "An in-progress 3D mesh-repair tool: a C++/Qt backend exposed as both a CLI and a WebSocket service, with a Tauri + Next.js editor on top.",
+                hook: "Mesh repair, from the command line to a real editor.",
+                tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
+                effort: "low",
+            };
+        case "simphy":
+            return {
+                title: "Simphy",
+                description:
+                    "An early-stage physics simulation sandbox — C++ core, no rendering layer committed yet. Active work in progress.",
+                hook: "Simulating the universe. Literally, eventually.",
+                tags: ["simulation", "c++", "open-source"],
+                effort: "low",
             };
         default:
             return assertNever(project);
@@ -152,6 +193,12 @@ export function getMedia(project: ProjectId): ProjectMedia {
                 kind: "video",
                 src: `${BLOB}/portfolio.webm`,
                 alt: "This portfolio’s interactive landing page in motion.",
+            };
+        case "atom":
+            return {
+                kind: "image",
+                src: `${OG}/atom`,
+                alt: "The atom design-system repository.",
             };
         case "muviz":
             return {
@@ -177,6 +224,24 @@ export function getMedia(project: ProjectId): ProjectMedia {
                 src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
                 alt: "Cover art for the black hole renderer.",
             };
+        case "ev_sim":
+            return {
+                kind: "image",
+                src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+                alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
+            };
+        case "mesha":
+            return {
+                kind: "image",
+                src: `${OG}/mesha`,
+                alt: "The Mesha mesh-repair-tool repository.",
+            };
+        case "simphy":
+            return {
+                kind: "image",
+                src: `${OG}/simphy`,
+                alt: "The Simphy repository.",
+            };
         default:
             return assertNever(project);
     }
@@ -187,32 +252,56 @@ export function getBody(project: ProjectId): ProjectBody {
         case "portfolio":
             return {
                 why: "A resume and a pile of scattered repos don't show how something actually works, or feels to use.",
-                how: "Built with Next.js and TypeScript on top of a design system I maintain separately, topped with an interactive landing page.",
-                what: "A living catalog of my projects — simple, informative, and it works.",
+                how: "Next.js App Router with server components, Fuse.js-powered fuzzy search over the project catalog, and atom — a CSS-first design system I built from scratch — for every pixel.",
+                what: "A living catalog of my projects — fast, searchable, and self-describing.",
+            };
+        case "atom":
+            return {
+                why: "Every side project needed its own UI kit — mismatched buttons and spacing, or a generic component library fighting the app instead of fitting it.",
+                how: "Styling and motion live in CSS, not JavaScript, so screens stay instant. A small, fixed set of parts — a component ships only when more than one real app needs it. Real-browser tests via Vitest, and a size-budget check enforced in CI on every PR.",
+                what: "The design system running this site, its project catalog, and everything else I ship — published on GitHub Packages.",
             };
         case "muviz":
             return {
                 why: "Winamp-era visualizers were mesmerizing, but nothing on the web today renders anything close without dropping frames.",
-                how: "A C++ feature extractor analyzes the full track in one pass and caches the result, freeing the ThreeJS frontend to focus purely on rendering.",
+                how: "A C++ feature extractor compiled to WebAssembly runs a full spectral-analysis pass over the track once and caches the result, so the Three.js frontend never does audio math — it only renders.",
                 what: "A fast, reactive 3D visualizer that handles complex effects without breaking a sweat.",
             };
         case "honeycomb":
             return {
                 why: "Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",
-                how: "A fast, memory-friendly skeleton algorithm, exported to a VTK mesh for downstream geometry work.",
+                how: "A memory-efficient skeletonization algorithm builds the lattice topology in C++, then exports directly to a VTK mesh — no manual triangulation, no format-conversion step.",
                 what: "Open-source constructor and visualizer, ready for CAD workflows.",
             };
         case "topopt_py":
             return {
                 why: "Classic topology-optimization research code was too slow to be useful beyond a demo.",
-                how: "Vectorized the core solver in NumPy instead of rewriting the whole thing in C++.",
+                how: "Vectorized the solver's inner loop — sparse assembly and filtering as array operations in NumPy instead of nested Python loops — without dropping to C++.",
                 what: "2× faster, scales to more elements, without leaving Python.",
             };
         case "blackhole":
             return {
                 why: "Gravitational lensing is usually only shown offline, in pre-rendered clips.",
-                how: "Hand-rolled the ray-bending shader in raw OpenGL, tuned for real-time frame budgets.",
+                how: "Hand-rolled a raymarching shader in raw OpenGL that numerically integrates light-ray geodesics per pixel, tuned to hold frame budget at interactive rates.",
                 what: "Interactive simulation you can orbit and pull apart yourself.",
+            };
+        case "ev_sim":
+            return {
+                why: "Sizing an EV charging lot is a probability problem, not a guess — too few chargers and drivers queue, too many and the capex is wasted.",
+                how: "Modeled car arrivals per charge-point as a Poisson process (hourly arrival probability split across 15-minute intervals), ran it seeded and unseeded to compare variance, and tracked energy consumed, theoretical vs. actual peak power, and the resulting concurrency factor.",
+                what: "A request/response simulator — tune charge-point count and power draw on one panel, read the results as charts on the other.",
+            };
+        case "mesha":
+            return {
+                why: "Broken meshes — non-manifold edges, holes, self-intersections — are a constant tax in CAD and 3D-printing pipelines, and most repair tools are closed black boxes.",
+                how: "A C++/Qt backend exposes mesh repair as both a CLI and a WebSocket service, decoupled from any UI. A Tauri + Next.js frontend gives it an actual editor instead of a terminal.",
+                what: "The scaffolding is live end to end — CLI, server, editor shell. The repair algorithm itself is the next milestone.",
+            };
+        case "simphy":
+            return {
+                why: "Wanted a from-scratch physics sandbox — n-body gravity, particle systems — without a game engine sitting in the way.",
+                how: "Early days: C++ core is scaffolded, no rendering layer committed yet.",
+                what: "In progress — check back, or watch the repo.",
             };
         default:
             return assertNever(project);
@@ -231,6 +320,18 @@ export function getLinks(project: ProjectId): readonly ProjectLink[] {
                     kind: "external",
                     label: "Previous version",
                     href: "https://manoj-malviya-96.github.io/",
+                },
+            ];
+        case "atom":
+            return [
+                {
+                    kind: "github",
+                    href: "https://github.com/manoj-malviya-96/atom",
+                },
+                {
+                    kind: "demo",
+                    label: "Playground",
+                    href: "https://atom-two-tan.vercel.app",
                 },
             ];
         case "muviz":
@@ -260,6 +361,32 @@ export function getLinks(project: ProjectId): readonly ProjectLink[] {
                 {
                     kind: "github",
                     href: "https://github.com/manoj-malviya-96/blackhole/tree/master",
+                },
+            ];
+        case "ev_sim":
+            return [
+                {
+                    kind: "github",
+                    href: "https://github.com/manoj-malviya-96/ev-sim",
+                },
+            ];
+        case "mesha":
+            return [
+                {
+                    kind: "github",
+                    href: "https://github.com/manoj-malviya-96/mesha",
+                },
+                {
+                    kind: "demo",
+                    label: "Preview",
+                    href: "https://mesha3.vercel.app",
+                },
+            ];
+        case "simphy":
+            return [
+                {
+                    kind: "github",
+                    href: "https://github.com/manoj-malviya-96/simphy",
                 },
             ];
         default:

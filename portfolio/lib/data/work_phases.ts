@@ -19,25 +19,25 @@ export function getPhase(phase: PhaseId): Phase {
             return {
                 label: "Discover",
                 color: "blue",
-                copy: "Before I open Figma or an editor, I want to know what's actually broken — for the user, not just the backlog.",
+                copy: "Before I write a line of code, I find out what's actually broken for the user — not just what's sitting in the backlog.",
             };
         case "design":
             return {
                 label: "Design",
                 color: "indigo",
-                copy: "A user flow and a database schema are just two ways of drawing the same decision. I try to get both right the first time. I don't always.",
+                copy: "A user flow and a data model are the same decision, drawn two different ways. I sketch both before committing to either.",
             };
         case "build":
             return {
                 label: "Build",
                 color: "green",
-                copy: "Correct, fast, maintainable — validated at the edges, profiled before optimized, built so future-me doesn't curse present-me.",
+                copy: "Correct first, fast second, maintainable always — validated at the edges, profiled before anything gets optimized.",
             };
         case "measure":
             return {
                 label: "Measure",
                 color: "orange",
-                copy: "Ship it, then actually look. About half of what I've built worked as planned. The other half taught me something more useful.",
+                copy: "Ship it, then look. The data decides if it worked — not the sprint review.",
             };
         default:
             return assertNever(phase);
