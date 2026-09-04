@@ -1,6 +1,7 @@
 "use client";
 
 import {Flex, Header, useScrollEffect} from "@manoj-malviya-96/atom";
+import {Mail} from "lucide-react";
 import {usePathname} from "next/navigation";
 import {EmailAddress} from "@/lib/about_me/profile";
 import {Link, ThemeToggle} from "@/lib/ui";
@@ -57,7 +58,10 @@ export default function NavBar() {
                         url={EmailAddress}
                         variant="button"
                         color="primary"
+                        icon={<Mail size="sm"/>}
                         label="Contact"
+                        aria-label="Contact"
+                        collapse
                     />
                 </Flex>
             }
