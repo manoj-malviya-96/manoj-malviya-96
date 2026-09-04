@@ -6,7 +6,6 @@ import {
     getLinks,
     getMedia,
     getMeta,
-    type ProjectBody,
     type ProjectId,
     type ProjectLink,
     type ProjectMedia,
@@ -16,6 +15,7 @@ import {Link} from "@/lib/ui";
 
 export default function ProjectCard({project}: { project: ProjectId }) {
     const {title, hook, tags} = getMeta(project);
+    const body = getBody(project);
 
     return (
         <Grid
@@ -30,13 +30,17 @@ export default function ProjectCard({project}: { project: ProjectId }) {
                 <ProjectCover media={getMedia(project)}/>
                 <ProjectLinks project={project}/>
             </Flex>
-            <Flex direction="col" gap="sm">
-                <Text variant="title">{title}</Text>
-                <ProjectTags tags={tags}/>
-                <Text variant="body" muted>
-                    {hook}
-                </Text>
-                <ProjectBodyView body={getBody(project)}/>
+            <Flex direction="col" gap="md">
+                <Flex as="span" direction="col" gap="xs">
+                    <Text variant="title">{title}</Text>
+                    <Text variant="body" muted>
+                        {hook}
+                    </Text>
+                    <ProjectTags tags={tags}/>
+                </Flex>
+                <Step label="Why" body={body.why}/>
+                <Step label="How" body={body.how}/>
+                <Step label="What" body={body.what}/>
             </Flex>
         </Grid>
     );
@@ -82,20 +86,10 @@ function ProjectCover({media}: { media: ProjectMedia }) {
     );
 }
 
-function ProjectBodyView({body}: { body: ProjectBody }) {
-    return (
-        <Grid columns={3} gap="md" className="case-steps">
-            <Step label="Why" body={body.why}/>
-            <Step label="How" body={body.how}/>
-            <Step label="What" body={body.what}/>
-        </Grid>
-    );
-}
-
 function Step({label, body}: { label: string; body: string }) {
     return (
         <Flex direction="col" gap="xs">
-            <Text variant="caption" className="font-mono" muted>
+            <Text variant="overline" muted>
                 {label}
             </Text>
             <Text variant="body">{body}</Text>
