@@ -42,9 +42,13 @@ const VERTEX_DEDUPE_PRECISION = 4;
 
 const LINE_ALPHA = 0.14;
 const GLOW_RADIUS_FACTOR = 3.2;
-const AMBIENT_PERIOD_MS = 9000;
-const AMBIENT_ALPHA_BASE = 0.1;
-const AMBIENT_ALPHA_AMPLITUDE = 0.05;
+// One slow breath drives both size and glow together — the cluster grows out from the corner
+// as it brightens, and eases back in as it dims, rather than two motions ticking independently.
+const BREATH_PERIOD_MS = 18000;
+const HEX_SCALE_MIN = 0.86;
+const HEX_SCALE_MAX = 1;
+const AMBIENT_ALPHA_MIN = 0.06;
+const AMBIENT_ALPHA_MAX = 0.16;
 const POINTER_ALPHA_BOOST = 0.28;
 // Viewport-space distance from the true corner that wakes the pointer glow. Gating this
 // spatially (rather than by recency of movement, as a full-viewport mesh would) keeps the
@@ -58,21 +62,38 @@ const MAX_DPR = 2;
 const COARSE_MAX_DPR = 1;
 const RESIZE_SETTLE_MS = 150;
 
-// Axial offsets for a single hex plus its ring of 6 neighbors — the same six directions apply
-// under any orientation, only the axial-to-pixel formulas below are orientation-specific.
-const HEX_RING_OFFSETS: ReadonlyArray<readonly [number, number]> = [
-	[0, 0],
-	[1, 0],
-	[1, -1],
-	[0, -1],
-	[-1, 0],
-	[-1, 1],
-	[0, 1],
-];
+// Radius 2 around the anchor cell — a compact 19-hex disk (1 + 3·r·(r+1)), enough to read as a
+// small cluster without turning into a field.
+const HEX_RING_RADIUS = 2;
+
+// Every axial cell within `radius` steps of the origin, walked as concentric hexagonal rings.
+function hexDisk(radius: number): Array<readonly [number, number]> {
+	const cells: Array<readonly [number, number]> = [];
+	for (let q = -radius; q <= radius; q++) {
+		const rMin = Math.max(-radius, -q - radius);
+		const rMax = Math.min(radius, -q + radius);
+		for (let r = rMin; r <= rMax; r++) {
+			cells.push([q, r]);
+		}
+	}
+	return cells;
+}
+
+const HEX_CELLS = hexDisk(HEX_RING_RADIUS);
 
 function hexSizeFor(size: CanvasSize): number {
 	const scaled = Math.min(size.width, size.height) * HEX_SIZE_RATIO;
 	return Math.min(HEX_SIZE_MAX, Math.max(HEX_SIZE_MIN, scaled));
+}
+
+function lerp(min: number, max: number, t: number): number {
+	return min + (max - min) * t;
+}
+
+// Eases to a stop at both extremes (unlike a raw sine, which moves fastest at rest position) —
+// reads as an actual breath in/out rather than a mechanical oscillation.
+function breathPhase(t: number): number {
+	return (1 - Math.cos((t / BREATH_PERIOD_MS) * Math.PI * 2)) / 2;
 }
 
 // Flat-top axial-to-pixel conversion (redblobgames convention).
@@ -95,11 +116,11 @@ function vertexKey(v: Vertex): string {
 	return `${Math.round(v.x * VERTEX_DEDUPE_PRECISION)}:${Math.round(v.y * VERTEX_DEDUPE_PRECISION)}`;
 }
 
-// Topology depends only on canvas size, so it's rebuilt once per resize (applyResize) — never
-// recomputed per animation frame. Adjacent hexes share corners and edges; both are deduplicated
-// so a shared edge isn't stroked twice (which would draw it brighter than the rest of the mesh).
-function buildHexGrid(size: CanvasSize): HexGrid {
-	const hexSize = hexSizeFor(size);
+// `hexSize` is the animated (breathing) size, recomputed fresh every frame from the viewport plus
+// the current breath phase — cheap enough at 19 cells that there's no need to cache topology
+// across frames the way a full-viewport mesh would. Adjacent hexes share corners and edges; both
+// are deduplicated so a shared edge isn't stroked twice (which would draw it brighter than the rest).
+function buildHexGrid(size: CanvasSize, hexSize: number): HexGrid {
 	const center: Vertex = {
 		x: size.width - hexSize * HEX_ANCHOR_INSET,
 		y: size.height - hexSize * HEX_ANCHOR_INSET,
@@ -120,7 +141,7 @@ function buildHexGrid(size: CanvasSize): HexGrid {
 		return idx;
 	};
 
-	for (const [q, r] of HEX_RING_OFFSETS) {
+	for (const [q, r] of HEX_CELLS) {
 		const cellCenter = hexCenter(center, hexSize, q, r);
 		const corners = Array.from({ length: 6 }, (_, i) =>
 			indexOf(hexCorner(cellCenter, hexSize, i)),
@@ -181,13 +202,6 @@ function drawGlowPass(
 	ctx.stroke();
 }
 
-function breathingAlpha(t: number): number {
-	return (
-		AMBIENT_ALPHA_BASE +
-		Math.sin((t / AMBIENT_PERIOD_MS) * Math.PI * 2) * AMBIENT_ALPHA_AMPLITUDE
-	);
-}
-
 function renderHexMesh(
 	ctx: CanvasRenderingContext2D,
 	size: CanvasSize,
@@ -206,10 +220,13 @@ function renderHexMesh(
 
 	const glowRadius = grid.hexSize * GLOW_RADIUS_FACTOR;
 
-	// A fixed breathing glow keeps the corner alive at rest; it steps aside as the pointer glow
+	// Glow brightens in step with the same breath that grows the cluster (see buildHexGrid's
+	// caller), so size and light read as one motion. It steps aside as the pointer glow
 	// (spatially gated to the corner, see POINTER_CAPTURE_RADIUS) takes over, so only one light
 	// source reads at a time.
-	const ambientAlpha = breathingAlpha(t) * (1 - pointer.strength);
+	const ambientAlpha =
+		lerp(AMBIENT_ALPHA_MIN, AMBIENT_ALPHA_MAX, breathPhase(t)) *
+		(1 - pointer.strength);
 	if (ambientAlpha > GLOW_ALPHA_EPSILON) {
 		drawGlowPass(ctx, grid, grid.center, glowRadius, color, ambientAlpha);
 	}
@@ -224,12 +241,7 @@ export default function MeshCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
-	const gridRef = useRef<HexGrid>({
-		vertices: [],
-		edges: [],
-		center: { x: 0, y: 0 },
-		hexSize: 0,
-	});
+	const baseHexSizeRef = useRef(0);
 	const pointerRef = useRef<Pointer>({
 		x: 0,
 		y: 0,
@@ -258,7 +270,7 @@ export default function MeshCanvas() {
 
 	const applyResize = (size: CanvasSize) => {
 		sizeRef.current = size;
-		gridRef.current = buildHexGrid(size);
+		baseHexSizeRef.current = hexSizeFor(size);
 		ctxRef.current = canvasRef.current?.getContext("2d") ?? null;
 		if (!ctxRef.current) return;
 		const dpr = Math.min(window.devicePixelRatio || 1, maxDprRef.current);
@@ -305,17 +317,14 @@ export default function MeshCanvas() {
 
 		const draw = (t: number) => {
 			const ctx = ctxRef.current;
-			const grid = gridRef.current;
-			if (ctx && grid.vertices.length > 0) {
+			const size = sizeRef.current;
+			if (ctx && baseHexSizeRef.current > 0) {
 				easePointer(pointerRef.current);
-				renderHexMesh(
-					ctx,
-					sizeRef.current,
-					grid,
-					colorRef.current,
-					t,
-					pointerRef.current,
-				);
+				const hexSize =
+					baseHexSizeRef.current *
+					lerp(HEX_SCALE_MIN, HEX_SCALE_MAX, breathPhase(t));
+				const grid = buildHexGrid(size, hexSize);
+				renderHexMesh(ctx, size, grid, colorRef.current, t, pointerRef.current);
 			}
 			if (!reduceMotion) raf = requestAnimationFrame(draw);
 		};
