@@ -37,7 +37,7 @@ export function formatDate(date: MonthAndYear): string {
 	return `${MONTH_ABBREVIATIONS[Number.parseInt(month, 10) - 1]} ${year}`;
 }
 
-export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
+function monthsBetween(start: MonthAndYear, end?: MonthAndYear): number {
 	const [startYear, startMonth] = start.split("-").map(Number);
 
 	let endMonth: number, endYear: number;
@@ -57,10 +57,19 @@ export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
 		);
 	}
 
+	return months;
+}
+
+export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
+	const months = monthsBetween(start, end);
 	const years = Math.floor(months / 12);
 	const remainingMonths = months % 12;
 
 	if (years === 0) return `${remainingMonths} mo`;
 	if (remainingMonths === 0) return `${years} yr`;
 	return `${years} yr ${remainingMonths} mo`;
+}
+
+export function yearsSince(start: MonthAndYear): number {
+	return Math.floor(monthsBetween(start) / 12);
 }
