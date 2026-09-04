@@ -1,153 +1,155 @@
-import { faGithub, faMedium } from "@fortawesome/free-brands-svg-icons";
 import {
+	assertNever,
 	Badge,
-	Button,
 	Flex,
+	Grid,
 	Image,
 	List,
-	Typography,
+	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
-import type { ReactNode } from "react";
-import type { ProjectMeta } from "@/lib/projects/list/types";
-import type { ExternalURL } from "@/lib/types";
-import { Icon } from "@/lib/ui";
-import type { MediaContent } from "@/lib/ui/media";
-import { mergeCls } from "@/lib/utils";
+import {
+	getBody,
+	getLinks,
+	getMedia,
+	getMeta,
+	type ProjectBody,
+	type ProjectId,
+	type ProjectLink,
+	type ProjectMedia,
+} from "@/lib/data";
+import { Link } from "@/lib/ui";
 
-type GithubRepo = `https://github.com/${string}/${string}`;
-type MediumPost = `https://medium.com/@${string}/${string}`;
+export default function ProjectCard({ project }: { project: ProjectId }) {
+	const { title, hook, tags } = getMeta(project);
 
-export type ProjectCTA =
-	| { kind: "github"; href: GithubRepo }
-	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL };
-
-type ProjectCardProps = ProjectMeta & {
-	children: ReactNode;
-	images: readonly MediaContent[];
-	ctas?: readonly ProjectCTA[];
-};
-
-export default function ProjectCard({
-	title,
-	description,
-	children,
-	tags,
-	images,
-	ctas,
-}: ProjectCardProps) {
 	return (
-		<Flex
-			direction="col"
+		<Grid
+			columns={2}
 			gap="lg"
-			hAlign="center"
-			vAlign="center"
+			className="case-grid"
+			bg="surface"
 			padding="lg"
-			radius="md"
-			backgroundColor="surface"
-			className={mergeCls(images.length <= 1 && "direction-responsive-row")}
+			radius="lg"
 		>
-			<Flex direction="col" gap="md" grow>
-				<Typography variant="title">{title}</Typography>
-				{description && (
-					<Typography variant="caption">{description}</Typography>
-				)}
-
-				{tags.length > 0 && (
-					<List direction="row" gap="sm">
-						{tags.map((tag) => (
-							<li key={tag}>
-								<Badge color="blue">{tag}</Badge>
-							</li>
-						))}
-					</List>
-				)}
-
-				{children}
-
-				{ctas && (
-					<Flex direction="row" gap="md">
-						{ctas.map((cta) => (
-							<CTALink cta={cta} key={cta.href} />
-						))}
-					</Flex>
-				)}
+			<Flex direction="col" gap="sm" vAlign="center">
+				<ProjectCover media={getMedia(project)} />
+				<Text variant="title">{title}</Text>
+				<Text variant="body" muted>
+					{hook}
+				</Text>
 			</Flex>
-			<Flex direction="row" gap="md" grow>
-				{images.map((media) => (
-					<Media key={mediaKey(media)} media={media} alt={`${title} image`} />
-				))}
+			<Flex direction="col" gap="md">
+				<ProjectBodyView body={getBody(project)} />
+				<ProjectTags tags={tags} />
+				<ProjectLinks project={project} />
 			</Flex>
+		</Grid>
+	);
+}
+
+export function ProjectTags({ tags }: { tags: readonly string[] }) {
+	return (
+		<List direction="row" gap="sm">
+			{tags.map((tag) => (
+				<li key={tag}>
+					<Badge color="blue">{tag}</Badge>
+				</li>
+			))}
+		</List>
+	);
+}
+
+function ProjectCover({ media }: { media: ProjectMedia }) {
+	if (media.kind === "video") {
+		return (
+			<Video
+				src={media.src}
+				aria-label={media.alt}
+				fit="cover"
+				ratio="video"
+				radius="md"
+				autoPlay
+				muted
+				loop
+				playsInline
+			/>
+		);
+	}
+	return (
+		<Image
+			// next/image needs an intrinsic size, which only an imported image
+			// carries; passing width/height for a remote URL is not an option
+			// here because Atom already claims those props for its size scale.
+			// So remote covers go through a plain <img> instead.
+			{...(typeof media.src === "string" ? {} : { as: NextImage })}
+			src={media.src}
+			alt={media.alt}
+			fit="cover"
+			ratio="video"
+			radius="md"
+		/>
+	);
+}
+
+function ProjectBodyView({ body }: { body: ProjectBody }) {
+	switch (body.kind) {
+		case "steps":
+			return (
+				<Grid columns={3} gap="md" className="case-steps">
+					<Step label="Problem" body={body.problem} />
+					<Step label="Approach" body={body.approach} />
+					<Step label="Outcome" body={body.outcome} />
+				</Grid>
+			);
+		case "narrative":
+			return body.content;
+		default:
+			return assertNever(body);
+	}
+}
+
+function Step({ label, body }: { label: string; body: string }) {
+	return (
+		<Flex direction="col" gap="xs">
+			<Text variant="caption" className="font-mono" muted>
+				{label}
+			</Text>
+			<Text variant="body">{body}</Text>
 		</Flex>
 	);
 }
 
-function CTALink({ cta }: { cta: ProjectCTA }) {
-	const onClick = () => window.open(cta.href, "_blank", "noopener,noreferrer");
-
-	if (cta.kind === "demo") {
-		return <Button onClick={onClick}>{ctaLabel(cta)}</Button>;
-	}
+function ProjectLinks({ project }: { project: ProjectId }) {
 	return (
-		<Button icon={<Icon icon={ctaIcon(cta.kind)} />} onClick={onClick}>
-			{ctaLabel(cta)}
-		</Button>
+		<Flex direction="row" gap="md" wrap>
+			{getLinks(project).map((link) => (
+				<Link
+					key={link.href}
+					url={link.href}
+					openNewTab
+					// Todo integrate in atom: Button (which Link variant="button" renders through)
+					// dropped `muted` — plain variant has no color prop and no de-emphasis equivalent.
+					style={{ color: "var(--color-muted)" }}
+					variant="button"
+					buttonVariant="plain"
+					label={linkLabel(link)}
+				/>
+			))}
+		</Flex>
 	);
 }
 
-function ctaIcon(kind: "github" | "medium") {
-	return kind === "github" ? faGithub : faMedium;
-}
-
-function ctaLabel(cta: ProjectCTA): string {
-	switch (cta.kind) {
+function linkLabel(link: ProjectLink): string {
+	switch (link.kind) {
 		case "github":
 			return "GitHub";
 		case "medium":
 			return "Blog";
 		case "demo":
-			return cta.label ?? "Demo";
+			return link.label ?? "Demo";
+		default:
+			return assertNever(link);
 	}
-}
-
-const MEDIA_SIZE = 720;
-
-function mediaKey(media: MediaContent): string {
-	return typeof media === "string" ? media : media.src;
-}
-
-function Media({ media, alt }: { media: MediaContent; alt: string }) {
-	if (typeof media === "string" && media.endsWith(".webm")) {
-		return (
-			<Video
-				autoPlay
-				loop
-				muted
-				playsInline
-				width={MEDIA_SIZE}
-				height={MEDIA_SIZE}
-				fit="cover"
-				ratio="square"
-				radius="md"
-				aria-label={alt}
-			>
-				<source src={media} type="video/webm" />
-			</Video>
-		);
-	}
-
-	return (
-		<Image
-			as={NextImage}
-			src={media}
-			alt={alt}
-			fill
-			fit="cover"
-			ratio="square"
-			radius="md"
-			style={{ position: "relative", width: MEDIA_SIZE, height: MEDIA_SIZE }}
-		/>
-	);
 }
