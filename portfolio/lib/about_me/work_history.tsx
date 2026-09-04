@@ -44,7 +44,7 @@ function TrackRow({experience}: { experience: ExperienceId }) {
                     <Text variant="caption" muted>
                         · {name}
                     </Text>
-                    <Badge color="orange">{type}</Badge>
+                    <Badge>{type}</Badge>
                 </Flex>
                 <Text variant="body" muted>
                     {summary}
@@ -59,7 +59,7 @@ function ExperienceSkills({skills}: { skills: Experience["skills"] }) {
     return (
         <List direction="row" gap="sm">
             {skills.map((skill) => (
-                <Badge as="li" key={skill}>
+                <Badge as="li" key={skill} color="blue">
                     {skill}
                 </Badge>
             ))}
