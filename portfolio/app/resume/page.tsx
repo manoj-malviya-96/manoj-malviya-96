@@ -8,19 +8,27 @@ export default function About() {
 	return (
 		<>
 			<Flex as="header" direction="col" gap="xl">
-				<Text variant="overline" className="font-mono">
-					Track record
-				</Text>
-				<Text variant="heading">Résumé</Text>
+				<Flex direction="row" hAlign="between" vAlign="start" gap="lg" wrap>
+					<Flex direction="col" gap="xl">
+						<Text variant="overline" className="font-mono">
+							Track record
+						</Text>
+						<Text variant="heading">Résumé</Text>
+					</Flex>
+					<Link
+						url={ResumePDF}
+						openNewTab
+						variant="button"
+						color="primary"
+						label="Download PDF"
+					/>
+				</Flex>
 				<Text variant="subtitle">
 					I build fast, reliable products—from pixel-perfect UIs to
 					performance-critical engines (yes, I care about the last millisecond).
 					I lead across CAD/CAM, rendering, and optimization in hardware–softw
 					are ecosystems, turning gnarly workflows into intuitive experiences
 					and measurable product impact.
-					<Link url={ResumePDF} openNewTab variant="inline">
-						{"  "} Download PDF
-					</Link>
 				</Text>
 			</Flex>
 			<Flex as="section" direction="col" gap="lg">
