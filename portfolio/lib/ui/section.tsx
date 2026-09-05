@@ -11,9 +11,6 @@ export function Section({id, gap = "lg", className, children, ...rest}: SectionP
     return (
         <Flex as="section" id={id} direction="col" gap={gap}
               padding={{y: 'lg'}}
-              height={{
-                  min: "xl"
-              }}
               className={className}
               {...rest}>
             {children}

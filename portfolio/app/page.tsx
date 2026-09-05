@@ -160,6 +160,7 @@ function WorkExHistory() {
                 icon={<IconLink/>}
                 variant="button"
                 color="secondary"
+                collapse
                 label="Full history"
             />
         </Flex>

@@ -131,6 +131,13 @@ img {
 	.stat-grid {
 		grid-template-columns: 1fr;
 	}
+
+	/* Todo integrate in atom: height's min/max bounds are fixed rem tokens with no breakpoint
+	   variant, so --size-xl (72rem) pins the hero to a min-height taller than most phone
+	   screens. Let it size to content on narrow viewports instead. */
+	.hero-section {
+		min-height: auto;
+	}
 }
 
 @media (min-width: 1024px) {
