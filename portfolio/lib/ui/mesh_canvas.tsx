@@ -1,351 +1,427 @@
 "use client";
 
-import { Canvas, getThemeColor, useTheme } from "@manoj-malviya-96/atom";
-import { useEffect, useRef } from "react";
+import {Canvas, getThemeColor, useTheme} from "@manoj-malviya-96/atom";
+import {type RefObject, useEffect, useRef} from "react";
 
 type CanvasSize = { width: number; height: number };
-
-type Point = {
-	baseX: number;
-	baseY: number;
-	x: number;
-	y: number;
-	phase: number;
-	speed: number;
-};
-
+type Vertex = { x: number; y: number };
 type Edge = { from: number; to: number };
 
-type Grid = {
-	points: Point[];
-	edges: Edge[];
+type HexGrid = {
+    vertices: Vertex[];
+    edges: Edge[];
+    center: Vertex;
+    hexSize: number;
+};
+
+type HexTopology = {
+    directions: Vertex[];
+    edges: Edge[];
 };
 
 type Pointer = {
-	x: number;
-	y: number;
-	targetX: number;
-	targetY: number;
-	strength: number;
-	targetStrength: number;
-	lastMove: number;
-	pushEnabled: boolean;
+    x: number;
+    y: number;
+    targetX: number;
+    targetY: number;
+    strength: number;
+    targetStrength: number;
 };
 
-const CELL_SIZE = 130;
-const JITTER = 0.35;
-const DRIFT_RADIUS = 4;
-const DRIFT_X_SPEED = 0.0002;
-const DRIFT_Y_SPEED = 0.00016;
-const POINTER_RADIUS = 170;
-const POINTER_PUSH = 36;
-const POINTER_STRENGTH_EPSILON = 0.001;
-const LINE_ALPHA = 0.16;
-const POINTER_EASE = 0.12;
-const STRENGTH_EASE = 0.06;
-const IDLE_TIMEOUT_MS = 500;
-const MAX_DPR = 2;
-const COARSE_MAX_DPR = 1;
-const RESIZE_SETTLE_MS = 150;
-const AMBIENT_PERIOD_MS = 32000;
-const AMBIENT_ORBIT_FRACTION = 0.32;
-const AMBIENT_GLOW_RADIUS = 260;
-const AMBIENT_ALPHA_BOOST = 0.22;
-const POINTER_ALPHA_BOOST = 0.3;
-const GLOW_ALPHA_EPSILON = 0.005;
+const MeshTune = {
+    corner: {
+        boxSize: "min(89vw, 89vh, 1920px)",
+        fadeMask:
+            "radial-gradient(circle at 100% 100%, black 0%, black 8%, transparent 67%)",
+    },
+    hex: {
+        sizeRatio: 0.46,
+        sizeMin: 80,
+        sizeMax: 160,
+        anchorInset: 1.35,
+        ringRadius: 10,
+        dedupePrecision: 1e6,
+    },
+    glowPulse: {
+        periodMs: 18000,
+    },
+    drift: {
+        periodMs: 30000,
+    },
+    glow: {
+        lineAlpha: 0.9,
+        radiusFactor: 9.0,
+        pointerRadiusFactor: 5.5,
+        ambientAlphaMin: 0.16,
+        ambientAlphaMax: 0.5,
+        pointerAlphaBoost: 0.85,
+        alphaEpsilon: 0.05,
+    },
+    pointer: {
+        ease: 0.27,
+        strengthEase: 0.14,
+    },
+    canvas: {
+        maxDpr: 2,
+        coarseMaxDpr: 1,
+        resizeSettleMs: 250,
+    },
+} as const;
 
-function buildPoints(cols: number, rows: number): Point[] {
-	const points: Point[] = [];
-	for (let j = 0; j < rows; j++) {
-		for (let i = 0; i < cols; i++) {
-			const x = i * CELL_SIZE + (Math.random() - 0.5) * CELL_SIZE * JITTER;
-			const y = j * CELL_SIZE + (Math.random() - 0.5) * CELL_SIZE * JITTER;
-			points.push({
-				baseX: x,
-				baseY: y,
-				x,
-				y,
-				phase: Math.random() * Math.PI * 2,
-				speed: 0.15 + Math.random() * 0.15,
-			});
-		}
-	}
-	return points;
+function hexDisk(radius: number): Array<readonly [number, number]> {
+    const cells: Array<readonly [number, number]> = [];
+    for (let q = -radius; q <= radius; q++) {
+        const rMin = Math.max(-radius, -q - radius);
+        const rMax = Math.min(radius, -q + radius);
+        for (let r = rMin; r <= rMax; r++) {
+            cells.push([q, r]);
+        }
+    }
+    return cells;
 }
 
-// Grid connectivity only depends on cols/rows, so it's decided once per resize
-// instead of re-deriving which lines to draw for every point on every animation frame.
-function buildEdges(cols: number, rows: number): Edge[] {
-	const edges: Edge[] = [];
-	for (let j = 0; j < rows; j++) {
-		for (let i = 0; i < cols; i++) {
-			const idx = j * cols + i;
-			if (i < cols - 1) edges.push({ from: idx, to: idx + 1 });
-			if (j < rows - 1) edges.push({ from: idx, to: idx + cols });
-			if (i < cols - 1 && j < rows - 1) {
-				edges.push(
-					(i + j) % 2 === 0
-						? { from: idx, to: idx + cols + 1 }
-						: { from: idx + 1, to: idx + cols },
-				);
-			}
-		}
-	}
-	return edges;
+function hexSizeFor(size: CanvasSize): number {
+    const scaled = Math.min(size.width, size.height) * MeshTune.hex.sizeRatio;
+    return Math.min(MeshTune.hex.sizeMax, Math.max(MeshTune.hex.sizeMin, scaled));
 }
 
-function buildGrid(width: number, height: number): Grid {
-	const cols = Math.ceil(width / CELL_SIZE) + 1;
-	const rows = Math.ceil(height / CELL_SIZE) + 1;
-	return { points: buildPoints(cols, rows), edges: buildEdges(cols, rows) };
+function lerp(min: number, max: number, t: number): number {
+    return min + (max - min) * t;
 }
 
-function easePointer(pointer: Pointer, t: number): void {
-	pointer.x += (pointer.targetX - pointer.x) * POINTER_EASE;
-	pointer.y += (pointer.targetY - pointer.y) * POINTER_EASE;
-	if (t - pointer.lastMove > IDLE_TIMEOUT_MS) pointer.targetStrength = 0;
-	pointer.strength +=
-		(pointer.targetStrength - pointer.strength) * STRENGTH_EASE;
+function pulsePhase(t: number): number {
+    return (1 - Math.cos((t / MeshTune.glowPulse.periodMs) * Math.PI * 2)) / 2;
 }
 
-// Pure physics step: decides where every point sits this frame. Rendering (I/O) is a separate step.
-function updatePoints(points: Point[], t: number, pointer: Pointer): void {
-	const pointerActive = pointer.strength > POINTER_STRENGTH_EPSILON;
-	for (const p of points) {
-		let x =
-			p.baseX + Math.sin(t * DRIFT_X_SPEED * p.speed + p.phase) * DRIFT_RADIUS;
-		let y =
-			p.baseY + Math.cos(t * DRIFT_Y_SPEED * p.speed + p.phase) * DRIFT_RADIUS;
+const DRIFT_DIRECTION: Vertex = {x: -1.5, y: -Math.sqrt(3) / 2};
 
-		if (pointerActive && pointer.pushEnabled) {
-			const dx = x - pointer.x;
-			const dy = y - pointer.y;
-			const dist = Math.hypot(dx, dy);
-			if (dist < POINTER_RADIUS && dist > POINTER_STRENGTH_EPSILON) {
-				const falloff = (1 - dist / POINTER_RADIUS) * pointer.strength;
-				x += (dx / dist) * POINTER_PUSH * falloff;
-				y += (dy / dist) * POINTER_PUSH * falloff;
-			}
-		}
-		p.x = x;
-		p.y = y;
-	}
+function driftOffset(hexSize: number, t: number): Vertex {
+    const progress = (t % MeshTune.drift.periodMs) / MeshTune.drift.periodMs;
+    return {
+        x: DRIFT_DIRECTION.x * hexSize * progress,
+        y: DRIFT_DIRECTION.y * hexSize * progress,
+    };
 }
 
-// Slow elliptical orbit, centered on the canvas, that repeats exactly every AMBIENT_PERIOD_MS.
-function ambientLightPosition(
-	t: number,
-	size: CanvasSize,
-): { x: number; y: number } {
-	const angle = (t / AMBIENT_PERIOD_MS) * Math.PI * 2;
-	return {
-		x: size.width / 2 + Math.cos(angle) * size.width * AMBIENT_ORBIT_FRACTION,
-		y: size.height / 2 + Math.sin(angle) * size.height * AMBIENT_ORBIT_FRACTION,
-	};
+function hexCenter(anchor: Vertex, size: number, q: number, r: number): Vertex {
+    return {
+        x: anchor.x + size * 1.5 * q,
+        y: anchor.y + size * Math.sqrt(3) * (r + q / 2),
+    };
 }
 
-function traceEdges(ctx: CanvasRenderingContext2D, grid: Grid): void {
-	ctx.beginPath();
-	for (const edge of grid.edges) {
-		const from = grid.points[edge.from];
-		const to = grid.points[edge.to];
-		ctx.moveTo(from.x, from.y);
-		ctx.lineTo(to.x, to.y);
-	}
+function hexCorner(center: Vertex, size: number, i: number): Vertex {
+    const angle = (Math.PI / 180) * (60 * i);
+    return {
+        x: center.x + size * Math.cos(angle),
+        y: center.y + size * Math.sin(angle),
+    };
+}
+
+function vertexKey(v: Vertex): string {
+    const p = MeshTune.hex.dedupePrecision;
+    return `${Math.round(v.x * p)}:${Math.round(v.y * p)}`;
+}
+
+function buildHexTopology(): HexTopology {
+    const directions: Vertex[] = [];
+    const directionIndex = new Map<string, number>();
+    const seenEdges = new Set<string>();
+    const edges: Edge[] = [];
+
+    const indexOf = (v: Vertex): number => {
+        const key = vertexKey(v);
+        const found = directionIndex.get(key);
+        if (found !== undefined) return found;
+        const idx = directions.length;
+        directions.push(v);
+        directionIndex.set(key, idx);
+        return idx;
+    };
+
+    for (const [q, r] of hexDisk(MeshTune.hex.ringRadius)) {
+        const cellCenter = hexCenter({x: 0, y: 0}, 1, q, r);
+        const corners = Array.from({length: 6}, (_, i) =>
+            indexOf(hexCorner(cellCenter, 1, i)),
+        );
+        for (let i = 0; i < 6; i++) {
+            const from = corners[i];
+            const to = corners[(i + 1) % 6];
+            const edgeKey = from < to ? `${from}-${to}` : `${to}-${from}`;
+            if (seenEdges.has(edgeKey)) continue;
+            seenEdges.add(edgeKey);
+            edges.push({from, to});
+        }
+    }
+
+    return {directions, edges};
+}
+
+const HEX_TOPOLOGY = buildHexTopology();
+
+
+function projectHexGrid(size: CanvasSize, hexSize: number, offset: Vertex): HexGrid {
+    const anchor: Vertex = {
+        x: size.width - hexSize * MeshTune.hex.anchorInset + offset.x,
+        y: size.height - hexSize * MeshTune.hex.anchorInset + offset.y,
+    };
+    const vertices = HEX_TOPOLOGY.directions.map((d) => ({
+        x: anchor.x + hexSize * d.x,
+        y: anchor.y + hexSize * d.y,
+    }));
+    return {vertices, edges: HEX_TOPOLOGY.edges, center: anchor, hexSize};
+}
+
+function easePointer(pointer: Pointer): void {
+    pointer.x += (pointer.targetX - pointer.x) * MeshTune.pointer.ease;
+    pointer.y += (pointer.targetY - pointer.y) * MeshTune.pointer.ease;
+    pointer.strength +=
+        (pointer.targetStrength - pointer.strength) * MeshTune.pointer.strengthEase;
+}
+
+function traceEdges(ctx: CanvasRenderingContext2D, grid: HexGrid): void {
+    ctx.beginPath();
+    for (const edge of grid.edges) {
+        const from = grid.vertices[edge.from];
+        const to = grid.vertices[edge.to];
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+    }
 }
 
 // One brightened pass over the mesh: a radial gradient centered on `center` fades the stroke
 // from `color` to transparent over `radius`, so the highlight falls off smoothly for free.
 function drawGlowPass(
-	ctx: CanvasRenderingContext2D,
-	grid: Grid,
-	center: { x: number; y: number },
-	radius: number,
-	color: string,
-	alpha: number,
+    ctx: CanvasRenderingContext2D,
+    grid: HexGrid,
+    center: { x: number; y: number },
+    radius: number,
+    color: string,
+    alpha: number,
 ): void {
-	const glow = ctx.createRadialGradient(
-		center.x,
-		center.y,
-		0,
-		center.x,
-		center.y,
-		radius,
-	);
-	glow.addColorStop(0, color);
-	glow.addColorStop(1, "transparent");
-	ctx.strokeStyle = glow;
-	ctx.globalAlpha = alpha;
-	traceEdges(ctx, grid);
-	ctx.stroke();
+    const glow = ctx.createRadialGradient(
+        center.x,
+        center.y,
+        0,
+        center.x,
+        center.y,
+        radius,
+    );
+    glow.addColorStop(0, color);
+    glow.addColorStop(1, "transparent");
+    ctx.strokeStyle = glow;
+    ctx.globalAlpha = alpha;
+    traceEdges(ctx, grid);
+    ctx.stroke();
 }
 
-function renderMesh(
-	ctx: CanvasRenderingContext2D,
-	size: CanvasSize,
-	grid: Grid,
-	color: string,
-	t: number,
-	pointer: Pointer,
+function renderHexMesh(
+    ctx: CanvasRenderingContext2D,
+    size: CanvasSize,
+    grid: HexGrid,
+    color: string,
+    t: number,
+    pointer: Pointer,
 ): void {
-	ctx.clearRect(0, 0, size.width, size.height);
-	ctx.lineWidth = 1;
+    ctx.clearRect(0, 0, size.width, size.height);
+    ctx.lineWidth = 1;
 
-	ctx.strokeStyle = color;
-	ctx.globalAlpha = LINE_ALPHA;
-	traceEdges(ctx, grid);
-	ctx.stroke();
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = MeshTune.glow.lineAlpha;
+    traceEdges(ctx, grid);
+    ctx.stroke();
 
-	// Two light sources brighten nearby lines, crossfaded by how engaged the pointer is: a
-	// slow autonomous loop keeps the mesh alive when idle, and the cursor/touch position takes
-	// over as it moves — so the highlight follows the user instead of just wandering underneath.
-	const ambientAlpha = AMBIENT_ALPHA_BOOST * (1 - pointer.strength);
-	if (ambientAlpha > GLOW_ALPHA_EPSILON) {
-		drawGlowPass(
-			ctx,
-			grid,
-			ambientLightPosition(t, size),
-			AMBIENT_GLOW_RADIUS,
-			color,
-			ambientAlpha,
-		);
-	}
+    const ambientAlpha =
+        lerp(
+            MeshTune.glow.ambientAlphaMin,
+            MeshTune.glow.ambientAlphaMax,
+            pulsePhase(t),
+        ) *
+        (1 - pointer.strength);
+    if (ambientAlpha > MeshTune.glow.alphaEpsilon) {
+        const ambientRadius = grid.hexSize * MeshTune.glow.radiusFactor;
+        drawGlowPass(ctx, grid, grid.center, ambientRadius, color, ambientAlpha);
+    }
 
-	const pointerAlpha = POINTER_ALPHA_BOOST * pointer.strength;
-	if (pointerAlpha > GLOW_ALPHA_EPSILON) {
-		drawGlowPass(ctx, grid, pointer, POINTER_RADIUS, color, pointerAlpha);
-	}
+    const pointerAlpha = MeshTune.glow.pointerAlphaBoost * pointer.strength;
+    if (pointerAlpha > MeshTune.glow.alphaEpsilon) {
+        const pointerRadius = grid.hexSize * MeshTune.glow.pointerRadiusFactor;
+        drawGlowPass(ctx, grid, pointer, pointerRadius, color, pointerAlpha);
+    }
+}
+
+function useAmbientColor(): RefObject<string> {
+    const colorRef = useRef("#8a8a8a");
+    const theme = useTheme();
+
+    // biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
+    useEffect(() => {
+        colorRef.current = getThemeColor("content");
+    }, [theme]);
+
+    return colorRef;
+}
+
+function useMaxDevicePixelRatio(): RefObject<number> {
+    const maxDprRef = useRef<number>(MeshTune.canvas.maxDpr);
+
+    useEffect(() => {
+        maxDprRef.current = window.matchMedia("(pointer: coarse)").matches
+            ? MeshTune.canvas.coarseMaxDpr
+            : MeshTune.canvas.maxDpr;
+    }, []);
+
+    return maxDprRef;
+}
+
+// Tracks the cursor only while it's over the mesh's own box and converts it into canvas-local
+// coordinates; easing (including fading out on idle) happens once per frame in the render loop,
+// not here, since that also has to run while the pointer isn't moving at all.
+function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
+    const pointerRef = useRef<Pointer>({
+        x: 0,
+        y: 0,
+        targetX: 0,
+        targetY: 0,
+        strength: 0,
+        targetStrength: 0,
+    });
+
+    useEffect(() => {
+        function onPointerMove(e: PointerEvent): void {
+            const pointer = pointerRef.current;
+            const size = sizeRef.current;
+            const localX = e.clientX - (window.innerWidth - size.width);
+            const localY = e.clientY - (window.innerHeight - size.height);
+            const inside =
+                localX >= 0 && localX <= size.width && localY >= 0 && localY <= size.height;
+            pointer.targetStrength = inside ? 1 : 0;
+            if (inside) {
+                pointer.targetX = localX;
+                pointer.targetY = localY;
+            }
+        }
+
+        window.addEventListener("pointermove", onPointerMove, {passive: true});
+        return () => window.removeEventListener("pointermove", onPointerMove);
+    }, [sizeRef]);
+
+    return pointerRef;
+}
+
+
+function useMeshRenderer(
+    canvasRef: RefObject<HTMLCanvasElement | null>,
+    colorRef: RefObject<string>,
+    maxDprRef: RefObject<number>,
+): (size: CanvasSize) => void {
+    const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+    const sizeRef = useRef<CanvasSize>({width: 0, height: 0});
+    const baseHexSizeRef = useRef(0);
+    const drawRef = useRef<(t: number) => void>(() => {
+    });
+    const resizeTimerRef = useRef<number | null>(null);
+    const hasMountedRef = useRef(false);
+    const pointerRef = usePointerCorner(sizeRef);
+
+    function applyResize(size: CanvasSize): void {
+        sizeRef.current = size;
+        baseHexSizeRef.current = hexSizeFor(size);
+        ctxRef.current = canvasRef.current?.getContext("2d") ?? null;
+        if (!ctxRef.current) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, maxDprRef.current);
+        ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawRef.current(performance.now());
+    }
+
+    function handleResize(size: CanvasSize): void {
+        if (!hasMountedRef.current) {
+            hasMountedRef.current = true;
+            applyResize(size);
+            return;
+        }
+        if (resizeTimerRef.current !== null) {
+            window.clearTimeout(resizeTimerRef.current);
+        }
+        resizeTimerRef.current = window.setTimeout(() => {
+            resizeTimerRef.current = null;
+            applyResize(size);
+        }, MeshTune.canvas.resizeSettleMs);
+    }
+
+    useEffect(() => {
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+        let raf: number | null = null;
+
+        function draw(t: number): void {
+            const ctx = ctxRef.current;
+            const size = sizeRef.current;
+            if (ctx && baseHexSizeRef.current > 0) {
+                easePointer(pointerRef.current);
+                const hexSize = baseHexSizeRef.current;
+                const grid = projectHexGrid(size, hexSize, driftOffset(hexSize, t));
+                renderHexMesh(ctx, size, grid, colorRef.current, t, pointerRef.current);
+            }
+            if (!reduceMotion) raf = requestAnimationFrame(draw);
+        }
+
+        drawRef.current = draw;
+
+        function onVisibilityChange(): void {
+            if (document.hidden) {
+                if (raf) cancelAnimationFrame(raf);
+                raf = null;
+            } else if (!reduceMotion && raf === null) {
+                raf = requestAnimationFrame(draw);
+            }
+        }
+
+        document.addEventListener("visibilitychange", onVisibilityChange);
+
+        if (reduceMotion) {
+            draw(0);
+        } else {
+            raf = requestAnimationFrame(draw);
+        }
+
+        return () => {
+            document.removeEventListener("visibilitychange", onVisibilityChange);
+            if (raf) cancelAnimationFrame(raf);
+            if (resizeTimerRef.current !== null) {
+                window.clearTimeout(resizeTimerRef.current);
+            }
+            drawRef.current = () => {
+            };
+        };
+    }, [colorRef, pointerRef]);
+
+    return handleResize;
 }
 
 export default function MeshCanvas() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
-	const gridRef = useRef<Grid>({ points: [], edges: [] });
-	const pointerRef = useRef<Pointer>({
-		x: 0,
-		y: 0,
-		targetX: 0,
-		targetY: 0,
-		strength: 0,
-		targetStrength: 0,
-		lastMove: 0,
-		pushEnabled: false,
-	});
-	const colorRef = useRef("#8a8a8a");
-	const drawRef = useRef<(t: number) => void>(() => {});
-	const maxDprRef = useRef(MAX_DPR);
-	const resizeTimerRef = useRef<number | null>(null);
-	const hasMountedRef = useRef(false);
-	const theme = useTheme();
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const colorRef = useAmbientColor();
+    const maxDprRef = useMaxDevicePixelRatio();
+    const handleResize = useMeshRenderer(canvasRef, colorRef, maxDprRef);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
-	useEffect(() => {
-		colorRef.current = getThemeColor("content");
-	}, [theme]);
-
-	useEffect(() => {
-		maxDprRef.current = window.matchMedia("(pointer: coarse)").matches
-			? COARSE_MAX_DPR
-			: MAX_DPR;
-	}, []);
-
-	const applyResize = (size: CanvasSize) => {
-		sizeRef.current = size;
-		gridRef.current = buildGrid(size.width, size.height);
-		ctxRef.current = canvasRef.current?.getContext("2d") ?? null;
-		if (!ctxRef.current) return;
-		const dpr = Math.min(window.devicePixelRatio || 1, maxDprRef.current);
-		ctxRef.current.setTransform(dpr, 0, 0, dpr, 0, 0);
-		drawRef.current(performance.now());
-	};
-	const handleResize = (size: CanvasSize) => {
-		if (!hasMountedRef.current) {
-			hasMountedRef.current = true;
-			applyResize(size);
-			return;
-		}
-		if (resizeTimerRef.current !== null) {
-			window.clearTimeout(resizeTimerRef.current);
-		}
-		resizeTimerRef.current = window.setTimeout(() => {
-			resizeTimerRef.current = null;
-			applyResize(size);
-		}, RESIZE_SETTLE_MS);
-	};
-
-	useEffect(() => {
-		const reduceMotion = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
-		let raf: number | null = null;
-
-		const onPointerMove = (e: PointerEvent) => {
-			const pointer = pointerRef.current;
-			pointer.targetX = e.clientX;
-			pointer.targetY = e.clientY;
-			pointer.targetStrength = 1;
-			pointer.lastMove = performance.now();
-			// Touch has no hover state and a scroll-drag fires pointermove too, so touch only
-			// drives the glow below — physically pushing the grid on every scroll would be jarring.
-			pointer.pushEnabled = e.pointerType !== "touch";
-		};
-		window.addEventListener("pointermove", onPointerMove, { passive: true });
-
-		const draw = (t: number) => {
-			const ctx = ctxRef.current;
-			const grid = gridRef.current;
-			if (ctx && grid.points.length > 0) {
-				easePointer(pointerRef.current, t);
-				updatePoints(grid.points, t, pointerRef.current);
-				renderMesh(
-					ctx,
-					sizeRef.current,
-					grid,
-					colorRef.current,
-					t,
-					pointerRef.current,
-				);
-			}
-			if (!reduceMotion) raf = requestAnimationFrame(draw);
-		};
-		drawRef.current = draw;
-
-		const onVisibility = () => {
-			if (document.hidden) {
-				if (raf) cancelAnimationFrame(raf);
-				raf = null;
-			} else if (!reduceMotion && raf === null) {
-				raf = requestAnimationFrame(draw);
-			}
-		};
-		document.addEventListener("visibilitychange", onVisibility);
-
-		if (reduceMotion) {
-			draw(0);
-		} else {
-			raf = requestAnimationFrame(draw);
-		}
-
-		return () => {
-			window.removeEventListener("pointermove", onPointerMove);
-			document.removeEventListener("visibilitychange", onVisibility);
-			if (raf) cancelAnimationFrame(raf);
-			if (resizeTimerRef.current !== null) {
-				window.clearTimeout(resizeTimerRef.current);
-			}
-			drawRef.current = () => {};
-		};
-	}, []);
-
-	return (
-		<Canvas
-			ref={canvasRef}
-			onResize={handleResize}
-			width="full"
-			height="full"
-			aria-hidden="true"
-			style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none" }}
-		/>
-	);
+    return (
+        <Canvas
+            ref={canvasRef}
+            onResize={handleResize}
+            aria-hidden="true"
+            style={{
+                position: "fixed",
+                right: 0,
+                bottom: 0,
+                width: MeshTune.corner.boxSize,
+                height: MeshTune.corner.boxSize,
+                zIndex: -1,
+                pointerEvents: "none",
+                maskImage: MeshTune.corner.fadeMask,
+                WebkitMaskImage: MeshTune.corner.fadeMask,
+            }}
+        />
+    );
 }

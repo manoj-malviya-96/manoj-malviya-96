@@ -1,9 +1,16 @@
-import { type ClassValue, clsx } from "clsx";
 import type { MonthAndYear } from "@/lib/types";
 
-export function mergeCls(...inputs: ClassValue[]) {
-	return clsx(inputs);
+export function conditionalProps(
+	isTrue: boolean,
+	propsWhenTrue: Record<string, unknown>,
+) {
+	if (!isTrue) {
+		return {};
+	}
+	return propsWhenTrue;
 }
+
+export type ValuesOf<T extends readonly unknown[]> = T[number];
 
 export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
 	const seen = new Set<K>();
@@ -18,7 +25,7 @@ export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
 	});
 }
 
-export const MONTH_ABBREVIATIONS = [
+const MONTH_ABBREVIATIONS = [
 	"Jan",
 	"Feb",
 	"Mar",
@@ -32,6 +39,7 @@ export const MONTH_ABBREVIATIONS = [
 	"Nov",
 	"Dec",
 ] as const;
+
 export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
 	return `${MONTH_ABBREVIATIONS[Number.parseInt(month, 10) - 1]} ${year}`;
@@ -58,16 +66,6 @@ function monthsBetween(start: MonthAndYear, end?: MonthAndYear): number {
 	}
 
 	return months;
-}
-
-export function calculateDuration(start: MonthAndYear, end?: MonthAndYear) {
-	const months = monthsBetween(start, end);
-	const years = Math.floor(months / 12);
-	const remainingMonths = months % 12;
-
-	if (years === 0) return `${remainingMonths} mo`;
-	if (remainingMonths === 0) return `${years} yr`;
-	return `${years} yr ${remainingMonths} mo`;
 }
 
 export function yearsSince(start: MonthAndYear): number {

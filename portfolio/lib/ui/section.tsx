@@ -7,9 +7,12 @@ type SectionProps = {
     id: SectionId;
 } & Omit<ComponentProps<typeof Flex>, "id">;
 
-export function Section({id, gap = "lg", className, children}: SectionProps) {
+export function Section({id, gap = "lg", className, children, ...rest}: SectionProps) {
     return (
-        <Flex as="section" id={id} direction="col" gap={gap} className={className}>
+        <Flex as="section" id={id} direction="col" gap={gap}
+              padding={{y: 'lg'}}
+              className={className}
+              {...rest}>
             {children}
         </Flex>
     );
