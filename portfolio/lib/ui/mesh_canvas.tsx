@@ -14,7 +14,6 @@ type HexGrid = {
     hexSize: number;
 };
 
-// Unit-space (hexSize=1, origin-anchored) shared-corner topology — see buildHexTopology.
 type HexTopology = {
     directions: Vertex[];
     edges: Edge[];
@@ -31,9 +30,9 @@ type Pointer = {
 
 const MeshTune = {
     corner: {
-        boxSize: "min(67vw, 67vh, 1080px)",
+        boxSize: "min(89vw, 89vh, 1920px)",
         fadeMask:
-            "radial-gradient(circle at 100% 100%, black 0%, black 22%, transparent 67%)",
+            "radial-gradient(circle at 100% 100%, black 0%, black 8%, transparent 67%)",
     },
     hex: {
         sizeRatio: 0.46,
@@ -43,27 +42,24 @@ const MeshTune = {
         ringRadius: 10,
         dedupePrecision: 1e6,
     },
-    // Ambient glow brightness pulses on this period; the grid's geometry stays fixed-size.
     glowPulse: {
         periodMs: 18000,
     },
-    // The grid scrolls diagonally toward the top-left, looping once per period. The loop distance
-    // is a hex-lattice translation (see DRIFT_DIRECTION), so the wrap is seamless — the pattern is
-    // identical before and after, unlike a snap-back to a fixed start position.
     drift: {
-        periodMs: 60000,
+        periodMs: 30000,
     },
     glow: {
         lineAlpha: 0.9,
         radiusFactor: 9.0,
+        pointerRadiusFactor: 5.5,
         ambientAlphaMin: 0.16,
         ambientAlphaMax: 0.5,
-        pointerAlphaBoost: 0.4,
+        pointerAlphaBoost: 0.85,
         alphaEpsilon: 0.05,
     },
     pointer: {
         ease: 0.27,
-        strengthEase: 0.08,
+        strengthEase: 0.14,
     },
     canvas: {
         maxDpr: 2,
@@ -97,9 +93,6 @@ function pulsePhase(t: number): number {
     return (1 - Math.cos((t / MeshTune.glowPulse.periodMs) * Math.PI * 2)) / 2;
 }
 
-// A hex-lattice translation (one cell center to the next along the q axis, negated): shifting the
-// whole disk by this vector (scaled by hexSize) maps the infinite tiling onto itself, which is what
-// makes looping the drift at exactly that distance seamless instead of a visible reset.
 const DRIFT_DIRECTION: Vertex = {x: -1.5, y: -Math.sqrt(3) / 2};
 
 function driftOffset(hexSize: number, t: number): Vertex {
@@ -163,6 +156,7 @@ function buildHexTopology(): HexTopology {
 
     return {directions, edges};
 }
+
 const HEX_TOPOLOGY = buildHexTopology();
 
 
@@ -237,7 +231,6 @@ function renderHexMesh(
     traceEdges(ctx, grid);
     ctx.stroke();
 
-    const glowRadius = grid.hexSize * MeshTune.glow.radiusFactor;
     const ambientAlpha =
         lerp(
             MeshTune.glow.ambientAlphaMin,
@@ -246,12 +239,14 @@ function renderHexMesh(
         ) *
         (1 - pointer.strength);
     if (ambientAlpha > MeshTune.glow.alphaEpsilon) {
-        drawGlowPass(ctx, grid, grid.center, glowRadius, color, ambientAlpha);
+        const ambientRadius = grid.hexSize * MeshTune.glow.radiusFactor;
+        drawGlowPass(ctx, grid, grid.center, ambientRadius, color, ambientAlpha);
     }
 
     const pointerAlpha = MeshTune.glow.pointerAlphaBoost * pointer.strength;
     if (pointerAlpha > MeshTune.glow.alphaEpsilon) {
-        drawGlowPass(ctx, grid, pointer, glowRadius, color, pointerAlpha);
+        const pointerRadius = grid.hexSize * MeshTune.glow.pointerRadiusFactor;
+        drawGlowPass(ctx, grid, pointer, pointerRadius, color, pointerAlpha);
     }
 }
 
@@ -293,9 +288,6 @@ function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
     });
 
     useEffect(() => {
-        // Listens on window (not the canvas) because the canvas is pointer-events:none — the box
-        // is anchored bottom-right, so its viewport bounds are derived from the window size here
-        // rather than read from the (unhittable) element.
         function onPointerMove(e: PointerEvent): void {
             const pointer = pointerRef.current;
             const size = sizeRef.current;
@@ -317,8 +309,7 @@ function usePointerCorner(sizeRef: RefObject<CanvasSize>): RefObject<Pointer> {
     return pointerRef;
 }
 
-// Returns the resize handler to wire into <Canvas onResize> — the caller owns the element/JSX,
-// this hook owns everything about what's drawn on it.
+
 function useMeshRenderer(
     canvasRef: RefObject<HTMLCanvasElement | null>,
     colorRef: RefObject<string>,
@@ -420,8 +411,6 @@ export default function MeshCanvas() {
             ref={canvasRef}
             onResize={handleResize}
             aria-hidden="true"
-            // atom marks `style` deprecated-as-policy (last resort when no prop fits) — fixed
-            // corner positioning and a CSS mask have no dedicated atom prop, so this is that case.
             style={{
                 position: "fixed",
                 right: 0,
