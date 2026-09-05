@@ -29,15 +29,10 @@ export default function RootLayout({
 				<title>Manoj Malviya</title>
 			</head>
 			<body>
-				<a href="#main-content" className="skip-link">
-					Skip to content
-				</a>
 				<ReactQueryProvider>
 					<Screen as="main" variant="page">
 						<NavBar />
-						<Flex id="main-content" direction="col" gap="lg">
-							{children}
-						</Flex>
+						{children}
 						<Footer />
 					</Screen>
 				</ReactQueryProvider>
