@@ -140,7 +140,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 		case "topopt_py":
 			return {
 				title: "topopt-py",
-				description: "Fastest 2D Topology Optimization Solver in Python",
+				description: "A 2D topology-optimization solver, rewritten for speed.",
 				hook: "A 40-year-old optimization algorithm, dragged into this decade.",
 				tags: ["simulation", "optimization", "high-performance", "python"],
 				effort: "high",
@@ -263,7 +263,7 @@ export function getBody(project: ProjectId): ProjectBody {
 			};
 		case "muviz":
 			return {
-				why: "Winamp-era visualizers were mesmerizing, but nothing on the web today renders anything close without dropping frames.",
+				why: "Winamp-era visualizers were mesmerizing, but nothing on the web today renders anything close to it without dropping frames.",
 				how: "A C++ feature extractor compiled to WebAssembly runs a full spectral-analysis pass over the track once and caches the result, so the Three.js frontend never does audio math — it only renders.",
 				what: "A fast, reactive 3D visualizer that handles complex effects without breaking a sweat.",
 			};

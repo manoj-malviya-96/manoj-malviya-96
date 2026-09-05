@@ -110,7 +110,7 @@ function SocialLinks() {
 			<Flex direction="col" gap="xs">
 				<Text variant="title">Connect</Text>
 				<Text variant="body">
-					Feel free to reach out to me on any of the platforms below.
+					Reach out on any of the platforms below.
 				</Text>
 			</Flex>
 			<List direction="row" gap="md">

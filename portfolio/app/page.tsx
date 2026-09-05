@@ -48,7 +48,7 @@ function Hero() {
                 I start with the problem. The stack comes second.
             </Text>
             <Text variant="subtitle">
-                Seven years turning ambiguous problems into shipped product
+                Seven years turning ambiguous problems into shipped products:
                 patient-monitoring platforms, CAD tools thousands of engineers rely
                 on, real-time rendering and audio systems. I own it end to end: system
                 design, the algorithm underneath, and the interface someone actually

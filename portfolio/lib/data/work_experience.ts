@@ -69,7 +69,7 @@ export function getExperience(experience: ExperienceId): Experience {
 				type: "Full-time",
 				skills: ["ui/ux", "cad", "qt/qml", "project-management"],
 				summary:
-					"As UI/UX tech lead for PreForm, I owned CAD features engineers actually rely on — model labeling, grouping, part cages — shipped to a ~95% CSAT. Rebuilt the Qt/QML component framework underneath for ~30–50% faster load times, and pushed large-scene performance up 60%",
+					"As UI/UX tech lead for PreForm, I owned CAD features engineers actually rely on — model labeling, grouping, part cages — shipped at ~95% CSAT. Rebuilt the Qt/QML component framework underneath for ~30–50% faster load times, and pushed large-scene performance up 60%",
 			};
 		case "flow-key-se":
 			return {
@@ -93,7 +93,7 @@ export function getExperience(experience: ExperienceId): Experience {
 				type: "Full-time",
 				skills: ["ai", "optimization"],
 				summary:
-					"Automated embedding design for 3D-printed parts so it no longer needed an expert in the loop, built eye-tracking and ML tooling to study how engineers actually design, and pioneered a deep-learning generative model for topology optimization — ~3× faster design iterations. Coauthored 8 peer-reviewed publications",
+					"Embedding design for 3D-printed parts needed an expert in the loop — I automated it away, built eye-tracking and ML tooling to study how engineers actually design, and pioneered a deep-learning generative model for topology optimization: ~3× faster design iterations. Coauthored 8 peer-reviewed publications",
 			};
 		default:
 			return assertNever(experience);
