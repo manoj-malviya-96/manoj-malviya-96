@@ -16,7 +16,6 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import {
-	getBody,
 	getLinks,
 	getMedia,
 	getMeta,
@@ -26,35 +25,42 @@ import {
 	type ProjectMeta,
 } from "@/lib/data";
 import { Link } from "@/lib/ui";
+import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, tags } = getMeta(project);
-	const body = getBody(project);
+	const { title, hook, dates, tags } = getMeta(project);
+	const media = getMedia(project);
 
 	return (
 		<Grid
-			columns={2}
+			columns={media ? 2 : 1}
 			gap="lg"
 			className="case-grid"
 			bg="surface"
 			padding="lg"
 			radius="lg"
 		>
-			<Flex direction="col" gap="md" vAlign="center">
-				<ProjectCover media={getMedia(project)} />
-				<ProjectLinks project={project} />
-			</Flex>
+			{media && (
+				<Flex direction="col" gap="md" vAlign="center">
+					<ProjectCover media={media} />
+					<ProjectLinks project={project} />
+				</Flex>
+			)}
 			<Flex direction="col" gap="md">
 				<Flex as="span" direction="col" gap="xs">
-					<Text variant="title">{title}</Text>
+					<Flex direction="row" gap="sm" vAlign="end">
+						<Text variant="title">{title}</Text>
+						<Text variant="caption" muted>
+							{dates}
+						</Text>
+					</Flex>
 					<Text variant="body" muted>
 						{hook}
 					</Text>
 					<ProjectTags tags={tags} />
 				</Flex>
-				<Step label="Why" body={body.why} />
-				<Step label="How" body={body.how} />
-				<Step label="What" body={body.what} />
+				{!media && <ProjectLinks project={project} />}
+				{getProjectContent(project)}
 			</Flex>
 		</Grid>
 	);
@@ -125,22 +131,11 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 	);
 }
 
-function Step({ label, body }: { label: string; body: string }) {
-	return (
-		<Flex direction="col" gap="xs">
-			<Text variant="overline" muted>
-				{label}
-			</Text>
-			<Text variant="body">{body}</Text>
-		</Flex>
-	);
-}
-
 function ProjectLinks({ project }: { project: ProjectId }) {
 	const links = getLinks(project);
 
 	return (
-		<Flex direction="row" gap="md" wrap padding={{x: "xs"}}>
+		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
 			{links.map((link) => {
 				const LinkIcon = linkIcon(link);
 				const label = linkLabel(link);
