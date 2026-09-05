@@ -8,8 +8,6 @@ import {
 	getExperience,
 } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
-import type {ComponentProps} from "react";
-
 
 export default function WorkHistory() {
 	return (
@@ -21,10 +19,6 @@ export default function WorkHistory() {
 	);
 }
 
-function NextImageForWork(props: ComponentProps<typeof NextImage>){
-	return <NextImage width={500} height={500} {...props} />
-}
-
 function TrackRow({ experience }: { experience: ExperienceId }) {
 	const { position, start, end, type, skills, summary } =
 		getExperience(experience);
@@ -34,7 +28,7 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 		<Grid columns={2} className="track-row" padding="lg" bg="surface">
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
-					as={NextImageForWork}
+					as={NextImage}
 					src={logo}
 					alt={`${name} logo`}
 					fit="contain"

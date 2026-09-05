@@ -1,5 +1,6 @@
 import type { StaticImageData as LocalImage } from "next/image";
 import type { ExternalURL } from "@/lib/types";
+import userAvatar from "./manoj-1.png";
 
 export const SocialUsersID = {
 	Github: "manoj-malviya-96",
@@ -27,4 +28,4 @@ export const ResumePDF: ExternalURL =
 
 export const EmailAddress = "mailto:malviyamanoj1896@gmail.com";
 
-export const UserAvatar: LocalImage = require("./manoj-1.png");
+export const UserAvatar: LocalImage = userAvatar;
