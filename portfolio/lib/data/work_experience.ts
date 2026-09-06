@@ -7,7 +7,6 @@ import {
 import type { ProjectTag } from "@/lib/data/projects";
 import type { MonthAndYear } from "@/lib/types";
 import type { ValuesOf } from "@/lib/utils";
-import { yearsSince } from "@/lib/utils";
 
 const EXPERIENCE_IDS = [
 	"noah-labs-lead",
@@ -115,12 +114,3 @@ export const EXPERIENCE_BY_RECENCY: readonly ExperienceId[] = [
 	if (!right.end) return 1;
 	return left.end < right.end ? 1 : -1;
 });
-
-const EXPERIENCE_START = EXPERIENCE_IDS.reduce<MonthAndYear>(
-	(earliest, experience) => {
-		const { start } = getExperience(experience);
-		return start < earliest ? start : earliest;
-	},
-	getExperience(EXPERIENCE_IDS[0]).start,
-);
-export const YEARS_EXPERIENCE = yearsSince(EXPERIENCE_START);

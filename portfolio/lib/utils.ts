@@ -44,30 +44,3 @@ export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
 	return `${MONTH_ABBREVIATIONS[Number.parseInt(month, 10) - 1]} ${year}`;
 }
-
-function monthsBetween(start: MonthAndYear, end?: MonthAndYear): number {
-	const [startYear, startMonth] = start.split("-").map(Number);
-
-	let endMonth: number, endYear: number;
-	if (end) {
-		[endYear, endMonth] = end.split("-").map(Number);
-	} else {
-		const now = new Date();
-		endMonth = now.getMonth() + 1;
-		endYear = now.getFullYear();
-	}
-
-	const months = (endYear - startYear) * 12 + (endMonth - startMonth);
-
-	if (months < 0) {
-		throw new Error(
-			`Invalid date range: end date '${end || "now"}' is before start date '${start}'`,
-		);
-	}
-
-	return months;
-}
-
-export function yearsSince(start: MonthAndYear): number {
-	return Math.floor(monthsBetween(start) / 12);
-}
