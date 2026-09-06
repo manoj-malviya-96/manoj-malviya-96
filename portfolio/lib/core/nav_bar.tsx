@@ -17,9 +17,6 @@ export default function NavBar() {
 
 	return (
 		<Header
-			padding={{
-				x: "md",
-			}}
 			data-hidden={visible ? undefined : true}
 			left={
 				<Link url="/" className="wordmark">

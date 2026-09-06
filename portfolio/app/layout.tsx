@@ -1,9 +1,9 @@
+import { Screen } from "@manoj-malviya-96/atom";
 import type { Metadata } from "next";
 import type React from "react";
 import Footer from "@/lib/core/footer";
 import NavBar from "@/lib/core/nav_bar";
 import { ReactQueryProvider } from "@/lib/core/react_query";
-
 import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
 
@@ -29,9 +29,11 @@ export default function RootLayout({
 			</head>
 			<body>
 				<ReactQueryProvider>
-					<NavBar />
-					{children}
-					<Footer />
+					<Screen as="main" variant="page">
+						<NavBar />
+						{children}
+						<Footer />
+					</Screen>
 				</ReactQueryProvider>
 			</body>
 		</html>

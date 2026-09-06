@@ -1,4 +1,4 @@
-import { Badge, Flex, Grid, Screen, Text } from "@manoj-malviya-96/atom";
+import { Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { IconLink } from "@manoj-malviya-96/atom/icons";
 import {
 	EXPERIENCE_BY_RECENCY,
@@ -13,12 +13,12 @@ import { uniqueBy } from "@/lib/utils";
 
 export default function Landing() {
 	return (
-		<Screen as="main" variant="page">
+		<>
 			<MeshCanvas />
 			<Hero />
 			<Loop />
 			<FeaturedWork />
-		</Screen>
+		</>
 	);
 }
 
