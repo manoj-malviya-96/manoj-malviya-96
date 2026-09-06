@@ -64,6 +64,12 @@ img {
 
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
+/* Anchor-scroll targets clear the sticky Header (see .header in atom's styles) instead of
+   landing flush under it. */
+.case-grid {
+	scroll-margin-top: var(--space-xl);
+}
+
 .track-list {
 	display: grid;
 	gap: 1px;
@@ -147,5 +153,14 @@ img {
 
 	.gap-responsive-lg {
 		gap: var(--space-xl);
+	}
+
+	/* Todo integrate in atom: Layer only supports position "relative"/"absolute" (src/core/layer.tsx),
+	   no "sticky" — this is the one place that needs it, so it's a plain style escape hatch. Floats
+	   below the sticky Header's own stuck height (padding + margin + content), only once there's a
+	   row to float alongside. */
+	.project-toc {
+		position: sticky;
+		top: calc(var(--space-sm) * 2 + 3rem);
 	}
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { InputField, List, Text } from "@manoj-malviya-96/atom";
+import { Flex, InputField, List, Text } from "@manoj-malviya-96/atom";
 import { iconMagnifyingGlassUrl } from "@manoj-malviya-96/atom/icons";
 import Fuse, { type IFuseOptions } from "fuse.js";
 import { useSearchParams } from "next/navigation";
@@ -13,6 +13,7 @@ import {
 	type ProjectMeta,
 } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
+import { Link } from "@/lib/ui";
 
 const QUERY_PARAM = "q";
 
@@ -38,28 +39,57 @@ export default function ProjectsClient() {
 	};
 
 	return (
-		<>
-			<InputField
-				type="search"
-				icon={iconMagnifyingGlassUrl}
-				value={query}
-				onChange={(e) => search(e.target.value)}
-				placeholder="Search projects (title, tags, description)"
-				aria-label="Search projects"
-			/>
-			{matches.length === 0 && (
-				<Text variant="caption">No projects match that search.</Text>
-			)}
-			{matches.length !== 0 && (
-				<List direction="col" gap="xl">
-					{matches.map(({ id }) => (
-						<li key={id} id={id}>
-							<ProjectCard project={id} />
-						</li>
-					))}
-				</List>
-			)}
-		</>
+		<Flex
+			direction="row"
+			gap="xl"
+			vAlign="start"
+			className="direction-responsive-row"
+		>
+			<ProjectsToc />
+			<Flex direction="col" gap="lg" grow>
+				<InputField
+					type="search"
+					icon={iconMagnifyingGlassUrl}
+					value={query}
+					onChange={(e) => search(e.target.value)}
+					placeholder="Search projects (title, tags, description)"
+					aria-label="Search projects"
+				/>
+				{matches.length === 0 && (
+					<Text variant="caption">No projects match that search.</Text>
+				)}
+				{matches.length !== 0 && (
+					<List direction="col" gap="xl">
+						{matches.map(({ id }) => (
+							<li key={id}>
+								<ProjectCard project={id} />
+							</li>
+						))}
+					</List>
+				)}
+			</Flex>
+		</Flex>
+	);
+}
+
+// The table of contents always lists every project, regardless of the active
+// search filter, so it stays a stable index rather than shifting under the user.
+function ProjectsToc() {
+	return (
+		<Flex
+			as="nav"
+			aria-label="Project sections"
+			direction="col"
+			gap="sm"
+			width="sm"
+			className="project-toc"
+		>
+			{BY_EFFORT.map(({ id, title }) => (
+				<Link key={id} url={`#${id}`}>
+					{title}
+				</Link>
+			))}
+		</Flex>
 	);
 }
 
