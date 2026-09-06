@@ -59,8 +59,8 @@ export default function NavBar() {
 	);
 }
 
-const TOP_BAND = 0.3 as const;
-const INTENT_PX_PER_MS = 0.3 as const;
+const TOP_BAND = 0.1 as const;
+const INTENT_PX_PER_MS = 0.4 as const;
 type NavBarScroll = { y: number; visible: boolean };
 
 function useNavBarScroll(): NavBarScroll {
