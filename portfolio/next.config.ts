@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
 	},
 
 	experimental: {
-		optimizePackageImports: ["lucide-react", "fuse.js"],
+		optimizePackageImports: ["lucide-react"],
 	},
 };
 

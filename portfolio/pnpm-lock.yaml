@@ -14,9 +14,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.102.8
         version: 5.102.8(react@19.2.8)
-      fuse.js:
-        specifier: ^7.5.0
-        version: 7.5.0
       knip:
         specifier: ^6.34.0
         version: 6.34.0
@@ -773,10 +770,6 @@ packages:
     engines: {node: '>=18.3.0'}
     hasBin: true
 
-  fuse.js@7.5.0:
-    resolution: {integrity: sha512-sQtrEfA+ez/3G0cCZecF70oqpCRttCexYUG4mUrtWL49ULUzUyxokt5kyqwtKzj1270RaKih+hcP3qLcumccow==}
-    engines: {node: '>=10'}
-
   get-tsconfig@4.14.3:
     resolution: {integrity: sha512-++QEw4DIY7WGoukz+/+A/8dGYPT9l9yIadnmSgZ8Rjr3YVSVDipQSO9CdnJo9ePqFqUUqh+wk9uIaoiAwsiPkA==}
 
@@ -1368,8 +1361,6 @@ snapshots:
     dependencies:
       fd-package-json: 2.0.0
       package-manager-detector: 1.8.0
-
-  fuse.js@7.5.0: {}
 
   get-tsconfig@4.14.3:
     dependencies:

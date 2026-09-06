@@ -77,14 +77,28 @@ img {
 	grid-template-columns: 1fr;
 }
 
+.project-toc {
+	grid-template-columns: 1fr;
+}
+
 @media (min-width: 640px) {
 	.edu-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.project-toc {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 @media (min-width: 768px) {
 	.footer-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.project-toc {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
@@ -104,16 +118,5 @@ img {
 	.loop-grid,
 	.stat-grid {
 		grid-template-columns: 1fr;
-	}
-}
-
-@media (min-width: 1024px) {
-	/* Todo integrate in atom: Layer only supports position "relative"/"absolute" (src/core/layer.tsx),
-	   no "sticky" — this is the one place that needs it, so it's a plain style escape hatch. Floats
-	   below the sticky Header's own stuck height (padding + margin + content), only once there's a
-	   row to float alongside. */
-	.project-toc {
-		position: sticky;
-		top: calc(var(--space-sm) * 2 + 3rem);
 	}
 }
