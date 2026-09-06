@@ -109,9 +109,7 @@ function SocialLinks() {
 		<Flex direction="col" gap="md">
 			<Flex direction="col" gap="xs">
 				<Text variant="title">Connect</Text>
-				<Text variant="body">
-					Reach out on any of the platforms below.
-				</Text>
+				<Text variant="body">Reach out on any of the platforms below.</Text>
 			</Flex>
 			<List direction="row" gap="md">
 				{SOCIALS.map(({ name, icon: SocialIcon }) => (
