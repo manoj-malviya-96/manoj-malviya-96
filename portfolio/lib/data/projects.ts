@@ -194,7 +194,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 	}
 }
 
-export function getMedia(project: ProjectId): ProjectMedia | undefined {
+export function getMedia(project: ProjectId): ProjectMedia {
 	switch (project) {
 		case "portfolio":
 			return {
@@ -245,7 +245,11 @@ export function getMedia(project: ProjectId): ProjectMedia | undefined {
 				alt: "The Mesha mesh-repair-tool repository.",
 			};
 		case "simphy":
-			return undefined;
+			return {
+				kind: "image",
+				src: `${OG}/mesha`,
+				alt: "The Mesha mesh-repair-tool repository.",
+			};
 		default:
 			return assertNever(project);
 	}
