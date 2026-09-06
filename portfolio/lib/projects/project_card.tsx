@@ -1,10 +1,8 @@
 import {
 	assertNever,
-	Badge,
+	Divider,
 	Flex,
-	Grid,
 	Image,
-	List,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -32,50 +30,48 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 	const media = getMedia(project);
 
 	return (
-		<Grid
+		<Flex
 			id={project}
-			columns={media ? 2 : 1}
+			direction="col"
 			gap="lg"
-			className="case-grid"
 			bg="surface"
 			padding="lg"
 			radius="lg"
 		>
-			<Flex direction="col" gap="md">
-				<Flex as="span" direction="col" gap="xs">
-					<Flex direction="row" gap="sm" vAlign="end">
-						<Text variant="title">{title}</Text>
-						<Text variant="caption" muted>
-							{dates}
-						</Text>
-					</Flex>
-					<ProjectTags tags={tags} />
-					<Text variant="subtitle" bold>
+			<Flex as="span" direction="col" gap="xs">
+				<Text variant="heading">{title}</Text>
+				<ProjectTags tags={tags} date={dates} />
+				<Divider direction="horizontal" style={{ opacity: "30%" }} />
+			</Flex>
+			<Flex direction="row" gap="lg" wrap>
+				<Flex direction="col" gap="md" grow>
+					<Text variant="title" bold>
 						{hook}
 					</Text>
-				</Flex>
-				{!media && <ProjectLinks project={project} />}
-				{getProjectContent(project)}
-			</Flex>
-			{media && (
-				<Flex direction="col" gap="md" vAlign="center">
-					<ProjectCover media={media} />
+					{getProjectContent(project)}
 					<ProjectLinks project={project} />
 				</Flex>
-			)}
-		</Grid>
+				{media && (
+					<Flex as="span" direction="col" gap="md" vAlign="center" grow>
+						<ProjectCover media={media} />
+					</Flex>
+				)}
+			</Flex>
+		</Flex>
 	);
 }
 
-function ProjectTags({ tags }: { tags: ProjectMeta["tags"] }) {
+function ProjectTags({
+	tags,
+	date,
+}: {
+	tags: ProjectMeta["tags"];
+	date: string;
+}) {
 	return (
-		<List direction="row" gap="sm">
-			{tags.map((tag) => (
-				<Badge as="li" key={tag} color="blue">
-					{tag}
-				</Badge>
-			))}
-		</List>
+		<Text variant="caption" muted>
+			{[date, ...tags].join(" · ")}
+		</Text>
 	);
 }
 
