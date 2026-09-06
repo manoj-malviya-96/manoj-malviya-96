@@ -134,6 +134,7 @@ function WorkExHistory() {
 			radius="lg"
 			bg="surface"
 			blur
+			wrap
 		>
 			<Flex direction="row" gap="sm" wrap>
 				<Text variant="body">
