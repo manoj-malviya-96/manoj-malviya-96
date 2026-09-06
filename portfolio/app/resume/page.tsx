@@ -2,7 +2,7 @@ import { Flex, Text } from "@manoj-malviya-96/atom";
 import Education from "@/lib/about_me/education";
 import WorkHistory from "@/lib/about_me/work_history";
 import { ResumePDF } from "@/lib/data";
-import { Link } from "@/lib/ui";
+import { Eyebrow, Link } from "@/lib/ui";
 
 export default function About() {
 	return (
@@ -10,9 +10,7 @@ export default function About() {
 			<Flex as="header" direction="col" gap="xl">
 				<Flex direction="row" hAlign="between" vAlign="start" gap="lg" wrap>
 					<Flex direction="col" gap="xl">
-						<Text variant="overline" className="font-mono">
-							Track record
-						</Text>
+						<Eyebrow>Track record</Eyebrow>
 						<Text variant="heading">Résumé</Text>
 					</Flex>
 					<Link
@@ -33,18 +31,14 @@ export default function About() {
 			</Flex>
 			<Flex as="section" direction="col" gap="lg">
 				<Flex direction="col" gap="sm">
-					<Text variant="overline" className="font-mono">
-						Experience
-					</Text>
+					<Eyebrow>Experience</Eyebrow>
 					<Text variant="heading">Where the last seven years went.</Text>
 				</Flex>
 				<WorkHistory />
 			</Flex>
 			<Flex as="section" direction="col" gap="xl">
 				<Flex direction="col" gap="sm">
-					<Text variant="overline" className="font-mono">
-						Education
-					</Text>
+					<Eyebrow>Education</Eyebrow>
 					<Text variant="heading">Where the engineering started.</Text>
 				</Flex>
 				<Education />

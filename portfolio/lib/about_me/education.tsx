@@ -21,7 +21,7 @@ export default function Education() {
 						<Text variant="body" muted>
 							{degree}, {field} · {formatDate(graduation)}
 						</Text>
-						<Text variant="caption" className="font-mono" muted>
+						<Text variant="caption" mono muted>
 							{focus}
 						</Text>
 					</Flex>

@@ -36,10 +36,10 @@ export default function Footer() {
 			</Grid>
 			<Divider direction="horizontal" />
 			<Flex direction="row" hAlign="between" gap="sm" wrap>
-				<Text variant="caption" className="font-mono">
+				<Text variant="caption" mono>
 					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
 				</Text>
-				<Text variant="caption" className="font-mono">
+				<Text variant="caption" mono>
 					BERLIN, DE
 				</Text>
 			</Flex>

@@ -51,7 +51,7 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 
 export function Eyebrow({ children }: { children: ReactNode }) {
 	return (
-		<Text variant="overline" className="font-mono">
+		<Text variant="overline" mono>
 			{children}
 		</Text>
 	);
