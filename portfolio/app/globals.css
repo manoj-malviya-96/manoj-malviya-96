@@ -10,11 +10,9 @@ h3 {
 	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
 }
 
-/* Todo integrate in atom: Typography has no font-family prop (variant only picks size + heading level) — a mono utility class is the only way to get a monospace eyebrow/caption. */
-.font-mono {
-	font-family: var(--font-mono), ui-monospace, monospace;
-}
-
+/* Todo integrate in atom: Link renders a plain Atom, not a Text, so it has no bold/font-size/
+   tracking props — a brand wordmark needs all three, and none of them are reachable without
+   this class. */
 .wordmark {
 	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
 	font-weight: 800;
@@ -52,24 +50,8 @@ img {
 	content-visibility: auto;
 }
 
-/* Screen's own class is CSS-Modules-hashed at build time, so this can't target it by
-   class name — passed in via Screen's own `className` prop instead (see layout.tsx).
-   Clears the sticky Header above it and clamps the page to A4 portrait width (210mm),
-   centered, so the site reads like one continuous document — the same width as the
-   resume PDF it links to, not a full-bleed app shell. */
-.page-shell {
-	max-width: 67rem;
-	margin-inline: auto;
-}
-
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
-/* Anchor-scroll targets clear the sticky Header (see .header in atom's styles) instead of
-   landing flush under it. */
-.case-grid {
-	scroll-margin-top: var(--space-xl);
-}
-
 .track-list {
 	display: grid;
 	gap: 1px;
@@ -95,14 +77,6 @@ img {
 	grid-template-columns: 1fr;
 }
 
-.direction-responsive-row {
-	flex-direction: column;
-}
-
-.gap-responsive-lg {
-	gap: var(--space-lg);
-}
-
 @media (min-width: 640px) {
 	.edu-grid {
 		grid-template-columns: repeat(2, 1fr);
@@ -124,12 +98,6 @@ img {
 	.stat-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
-
-	.mini-work-grid,
-	.case-grid,
-	.case-steps {
-		grid-template-columns: 1fr;
-	}
 }
 
 @media (max-width: 600px) {
@@ -137,24 +105,9 @@ img {
 	.stat-grid {
 		grid-template-columns: 1fr;
 	}
-
-	/* Todo integrate in atom: height's min/max bounds are fixed rem tokens with no breakpoint
-	   variant, so --size-xl (72rem) pins the hero to a min-height taller than most phone
-	   screens. Let it size to content on narrow viewports instead. */
-	.hero-section {
-		min-height: auto;
-	}
 }
 
 @media (min-width: 1024px) {
-	.direction-responsive-row {
-		flex-direction: row;
-	}
-
-	.gap-responsive-lg {
-		gap: var(--space-xl);
-	}
-
 	/* Todo integrate in atom: Layer only supports position "relative"/"absolute" (src/core/layer.tsx),
 	   no "sticky" — this is the one place that needs it, so it's a plain style escape hatch. Floats
 	   below the sticky Header's own stuck height (padding + margin + content), only once there's a
