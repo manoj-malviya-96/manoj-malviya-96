@@ -1,6 +1,6 @@
 import type { MonthAndYear } from "@/lib/types";
 
-export function conditionalProps(
+function _conditionalProps(
 	isTrue: boolean,
 	propsWhenTrue: Record<string, unknown>,
 ) {

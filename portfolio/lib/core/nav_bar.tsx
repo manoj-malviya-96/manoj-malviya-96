@@ -5,7 +5,6 @@ import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { usePathname } from "next/navigation";
 import { EmailAddress } from "@/lib/data";
 import { Link, ThemeToggle } from "@/lib/ui";
-import { conditionalProps } from "@/lib/utils";
 
 const NAV_LINKS = [
 	{ url: "/projects", label: "Work" },
@@ -14,8 +13,7 @@ const NAV_LINKS = [
 
 export default function NavBar() {
 	const pathname = usePathname();
-	const { y, visible } = useNavBarScroll();
-	const hasBackground = y > 20;
+	const { visible } = useNavBarScroll();
 
 	return (
 		<Header
@@ -23,11 +21,6 @@ export default function NavBar() {
 				x: "md",
 			}}
 			data-hidden={visible ? undefined : true}
-			{...conditionalProps(hasBackground, {
-				bg: "surface",
-				blur: true,
-				radius: "lg",
-			})}
 			left={
 				<Link url="/" className="wordmark">
 					Manoj Malviya
@@ -69,8 +62,8 @@ export default function NavBar() {
 	);
 }
 
-const TOP_BAND = 0.3;
-const INTENT_PX_PER_MS = 0.3;
+const TOP_BAND = 0.3 as const;
+const INTENT_PX_PER_MS = 0.3 as const;
 type NavBarScroll = { y: number; visible: boolean };
 
 function useNavBarScroll(): NavBarScroll {
