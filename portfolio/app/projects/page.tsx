@@ -1,10 +1,10 @@
-import { Flex, Progress, Text } from "@manoj-malviya-96/atom";
+import { Flex, Progress, Screen, Text } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
 
 export default function Page() {
 	return (
-		<>
+		<Screen as="main" variant="page">
 			<Flex as="header" direction="col" gap="sm">
 				<Text variant="overline" className="font-mono">
 					Selected work
@@ -34,6 +34,6 @@ export default function Page() {
 			>
 				<ProjectsClient />
 			</Suspense>
-		</>
+		</Screen>
 	);
 }

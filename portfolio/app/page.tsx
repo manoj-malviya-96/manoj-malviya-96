@@ -1,5 +1,5 @@
-import {Atom, Badge, Flex, Grid, Text} from "@manoj-malviya-96/atom";
-import {IconLink} from "@manoj-malviya-96/atom/icons";
+import { Screen, Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { IconLink } from "@manoj-malviya-96/atom/icons";
 import {
     EXPERIENCE_BY_RECENCY,
     getEmployer,
@@ -10,17 +10,17 @@ import {
     YEARS_EXPERIENCE,
 } from "@/lib/data";
 import StatGrid from "@/lib/home/stat_grid";
-import {Eyebrow, Link, MeshCanvas, Section, SectionHeader} from "@/lib/ui";
-import {uniqueBy} from "@/lib/utils";
+import { Eyebrow, Link, MeshCanvas, Section, SectionHeader } from "@/lib/ui";
+import { uniqueBy } from "@/lib/utils";
 
 export default function Landing() {
     return (
-        <>
-            <MeshCanvas/>
-            <Hero/>
-            <Loop/>
-            <FeaturedWork/>
-        </>
+        <Screen as="main" variant="page">
+            <MeshCanvas />
+            <Hero />
+            <Loop />
+            <FeaturedWork />
+        </Screen>
     );
 }
 
@@ -35,7 +35,7 @@ function Hero() {
                 max: "lg",
             }}
             height={{
-                min: "xl"
+                min: "xl",
             }}
             padding="lg"
             radius="lg"
@@ -49,10 +49,10 @@ function Hero() {
             </Text>
             <Text variant="subtitle">
                 Seven years turning ambiguous problems into shipped products:
-                patient-monitoring platforms, CAD tools thousands of engineers rely
-                on, real-time rendering and audio systems. I own it end to end: system
-                design, the algorithm underneath, and the interface someone actually
-                has to use.
+                patient-monitoring platforms, CAD tools thousands of engineers
+                rely on, real-time rendering and audio systems. I own it end to
+                end: system design, the algorithm underneath, and the interface
+                someone actually has to use.
             </Text>
             <Flex
                 as="span"
@@ -100,9 +100,16 @@ function Loop() {
     );
 }
 
-function LoopCard({color, label, copy}: ReturnType<typeof getPhase>) {
+function LoopCard({ color, label, copy }: ReturnType<typeof getPhase>) {
     return (
-        <Flex direction="col" gap="md" padding="lg" radius="lg" bg="surface" blur>
+        <Flex
+            direction="col"
+            gap="md"
+            padding="lg"
+            radius="lg"
+            bg="surface"
+            blur
+        >
             <Badge color={color} width="fit">
                 {label}
             </Badge>
@@ -119,12 +126,11 @@ function FeaturedWork() {
                 title="Proof, briefly."
                 caption="The rest — plus the messy parts — live on the full work page."
             />
-            <StatGrid/>
-            <WorkExHistory/>
+            <StatGrid />
+            <WorkExHistory />
         </Section>
     );
 }
-
 
 function WorkExHistory() {
     return (
@@ -140,7 +146,8 @@ function WorkExHistory() {
         >
             <Flex direction="row" gap="sm" wrap>
                 <Text variant="body">
-                    Most recently at <strong>{getEmployer(TRACK[0]).name}</strong>
+                    Most recently at{" "}
+                    <strong>{getEmployer(TRACK[0]).name}</strong>
                 </Text>
                 <Text variant="body" muted>
                     ·
@@ -157,7 +164,7 @@ function WorkExHistory() {
             </Flex>
             <Link
                 url="/resume"
-                icon={<IconLink/>}
+                icon={<IconLink />}
                 variant="button"
                 color="secondary"
                 collapse
