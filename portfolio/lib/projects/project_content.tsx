@@ -7,6 +7,7 @@ import {
 	List,
 	Text,
 } from "@manoj-malviya-96/atom";
+import { BarChart } from "@manoj-malviya-96/atom/charts";
 import type { ReactNode } from "react";
 import type { ProjectId } from "@/lib/data";
 
@@ -65,6 +66,25 @@ export function getProjectContent(project: ProjectId): ReactNode {
 	);
 }`}
 					</Code>
+					<List as="ul" direction="col" gap="xs">
+						{statusItem(
+							"blue",
+							"210",
+							"browser tests, run in real Chromium — not jsdom.",
+						)}
+						{statusItem(
+							"blue",
+							"111",
+							"components, all composed from that one primitive.",
+						)}
+					</List>
+					<Text variant="caption" muted>
+						Size budget, enforced by CI on every build:
+					</Text>
+					<BarChart
+						categories={["Core", "Charts", "CSS"]}
+						series={[{ label: "Budget (KB)", data: [20, 10.5, 10] }]}
+					/>
 				</Flex>
 			);
 		case "muviz":
