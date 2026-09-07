@@ -25,7 +25,7 @@ export default function NavBar() {
 				</Link>
 			}
 			center={
-				<Flex as="nav" direction="row" gap="md">
+				<Flex as="nav" direction="row" gap="xs">
 					{NAV_LINKS.map(({ url, label }) => {
 						const isCurrent = pathname === url;
 						return (

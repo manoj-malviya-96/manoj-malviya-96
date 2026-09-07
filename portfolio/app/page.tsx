@@ -30,15 +30,10 @@ function Hero() {
 			direction="col"
 			gap="xl"
 			width={{
-				max: "lg",
+				max: "md",
 			}}
-			height={{
-				min: "xl",
-			}}
-			padding="lg"
-			radius="lg"
-			bg="surface"
-			shadow
+			variant="plain"
+			padding="md"
 			vAlign="between"
 		>
 			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
