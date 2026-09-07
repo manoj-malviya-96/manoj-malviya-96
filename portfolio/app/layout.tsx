@@ -1,4 +1,4 @@
-import { Screen } from "@manoj-malviya-96/atom";
+import { Screen } from "@manoj-malviya-96/atom/features";
 import type { Metadata } from "next";
 import type React from "react";
 import Footer from "@/lib/core/footer";

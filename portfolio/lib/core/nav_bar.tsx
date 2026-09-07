@@ -1,6 +1,7 @@
 "use client";
 
-import { Flex, Header, useScrollEffect } from "@manoj-malviya-96/atom";
+import { Flex, useScrollEffect } from "@manoj-malviya-96/atom";
+import { Header } from "@manoj-malviya-96/atom/features";
 import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { usePathname } from "next/navigation";
 import { EmailAddress } from "@/lib/data";
