@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@manoj-malviya-96/atom':
-        specifier: ^0.2.3
-        version: 0.2.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: ^0.2.4
+        version: 0.2.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@tanstack/react-query':
         specifier: ^5.102.8
         version: 5.102.8(react@19.2.8)
@@ -291,8 +291,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@manoj-malviya-96/atom@0.2.3':
-    resolution: {integrity: sha512-aJqpFmLBdzeNJk7sfuGcWtsl9YODsO2fMApOsyHDzNqKUXZ5haJ3Gr4xej0mlGFBuX3bjHKoXEbVc/fdOxBK7Q==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.2.3/6449c275cca0df108eed6a4dae13ff1613a98e00}
+  '@manoj-malviya-96/atom@0.2.4':
+    resolution: {integrity: sha512-2h4OF59UYIeW8ihENkQe4dzf8qZ+qrC0u3jea3scDofm6FLkQIi8rt6A0l+2yXVRgAsiVG2uhIZkbNJx3tBL/g==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.2.4/2fcf22e69421f849e9ebd2f9e1959dd721b4442f}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -735,8 +735,8 @@ packages:
   babel-plugin-react-compiler@1.0.0:
     resolution: {integrity: sha512-Ixm8tFfoKKIPYdCCKYTsqv+Fd4IJ0DQqMyEimo+pxUOMUR9cVPlwTrFt9Avu+3cb6Zp3mAzl+t1MrG2fxxKsxw==}
 
-  baseline-browser-mapping@2.11.20:
-    resolution: {integrity: sha512-H0ulySigv6icDJ1F7SjtdCD6PrhTpdYCmP0CactWy1+ekh0AFd0o1Wn5T8b+hnTmdBx19u9yhL6wvCylXMY7zw==}
+  baseline-browser-mapping@2.11.21:
+    resolution: {integrity: sha512-uh8vpY/1/YyFkunIDFH/12p7/7VdPKA1hejMVEbdkEaWnUz0Hesvx5EbiU6XxjyHZIOju+ZMbQJkRh+es3/spQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -1088,7 +1088,7 @@ snapshots:
   '@img/sharp-win32-x64@0.35.4':
     optional: true
 
-  '@manoj-malviya-96/atom@0.2.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@manoj-malviya-96/atom@0.2.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
@@ -1338,7 +1338,7 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.8
 
-  baseline-browser-mapping@2.11.20: {}
+  baseline-browser-mapping@2.11.21: {}
 
   caniuse-lite@1.0.30001810: {}
 
@@ -1390,7 +1390,7 @@ snapshots:
     dependencies:
       '@next/env': 16.3.4
       '@swc/helpers': 0.5.23
-      baseline-browser-mapping: 2.11.20
+      baseline-browser-mapping: 2.11.21
       caniuse-lite: 1.0.30001810
       postcss: 8.5.23
       react: 19.2.8
