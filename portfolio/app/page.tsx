@@ -110,7 +110,7 @@ function LoopCard({
 	const PhaseIcon = phaseIcon(id);
 	return (
 		<Flex direction="col" gap="md" padding="lg" radius="lg" bg="surface" blur>
-			<Badge color={color} width="fit">
+			<Badge color={color} width="fit" padding="sm">
 				<PhaseIcon size="sm" />
 				{label}
 			</Badge>

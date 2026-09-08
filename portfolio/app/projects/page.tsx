@@ -1,17 +1,17 @@
-import { Flex, Progress, Text } from "@manoj-malviya-96/atom";
+import { Flex, Progress } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
-import { Eyebrow } from "@/lib/shared";
+import { SectionHeader } from "@/lib/shared";
 
 export default function Page() {
 	return (
 		<>
 			<Flex as="header" direction="col" gap="sm">
-				<Eyebrow>Selected work</Eyebrow>
-				<Text variant="heading">Worked end to end.</Text>
-				<Text variant="subtitle">
-					Source, demo, or write-up — each one links to where it actually lives.
-				</Text>
+				<SectionHeader
+					eyebrow="Selected work"
+					title="Worked end to end."
+					caption="Source, demo, or write-up — each one links to where it actually lives."
+				/>
 			</Flex>
 
 			<Suspense
