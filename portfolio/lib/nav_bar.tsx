@@ -12,32 +12,11 @@ import {
 	IconCircleHalfStroke,
 	IconEnvelope,
 } from "@manoj-malviya-96/atom/icons";
+import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { EmailAddress } from "@/lib/data";
 import { Link } from "@/lib/shared";
-
-function Logo() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 64 64"
-			xmlns="http://www.w3.org/2000/svg"
-			aria-hidden="true"
-		>
-			<rect width="64" height="64" rx="12" fill="#111111" />
-			<path
-				d="M20 44 L20 20 L32 34 L44 20 L44 44"
-				fill="none"
-				stroke="#FFFFFF"
-				strokeWidth="6.2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	);
-}
 
 const NAV_LINKS = [
 	{ url: "/projects", label: "Work" },
@@ -54,7 +33,7 @@ export default function NavBar() {
 			left={
 				<Link url="/" className="wordmark">
 					<Flex as="span" direction="row" gap="xs" vAlign="center">
-						<Logo />
+						<NextImage src="/icon.svg" alt="Logo" width={24} height={24} />
 						Manoj Malviya
 					</Flex>
 				</Link>
