@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge, Grid, Stat } from "@manoj-malviya-96/atom";
+import { IconArrowUp } from "@manoj-malviya-96/atom/icons";
 import { useGithubQuery, useGoogleScholarQuery } from "@/lib/data";
 
 export default function ShowAndTellGrid() {
@@ -14,7 +15,8 @@ export default function ShowAndTellGrid() {
 				value={statValue(4, githubQuery.data?.totalContribution)}
 				trend={
 					<Badge color="green">
-						+{statValue(4, githubQuery.data?.currentYearContribution)} this year
+						<IconArrowUp size="sm" />+
+						{statValue(4, githubQuery.data?.currentYearContribution)} this year
 					</Badge>
 				}
 			/>
@@ -23,7 +25,8 @@ export default function ShowAndTellGrid() {
 				value={statValue(3, scholarQuery.data?.citations)}
 				trend={
 					<Badge color="green">
-						+{statValue(3, scholarQuery.data?.recentYearCitations)} this yr
+						<IconArrowUp size="sm" />+
+						{statValue(3, scholarQuery.data?.recentYearCitations)} this yr
 					</Badge>
 				}
 			/>

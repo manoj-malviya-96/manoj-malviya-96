@@ -1,11 +1,18 @@
 import { Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
-import { IconLink } from "@manoj-malviya-96/atom/icons";
+import {
+	IconChartLine,
+	IconCode,
+	IconLink,
+	IconMagnifyingGlass,
+	IconPalette,
+} from "@manoj-malviya-96/atom/icons";
 import {
 	EXPERIENCE_BY_RECENCY,
 	getEmployer,
 	getExperience,
 	getPhase,
 	PHASE_IDS,
+	type PhaseId,
 } from "@/lib/data";
 import { dottedConcatString, uniqueBy } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
@@ -87,22 +94,42 @@ function Loop() {
 			/>
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
-					<LoopCard key={id} {...getPhase(id)} />
+					<LoopCard key={id} id={id} {...getPhase(id)} />
 				))}
 			</Grid>
 		</Section>
 	);
 }
 
-function LoopCard({ color, label, copy }: ReturnType<typeof getPhase>) {
+function LoopCard({
+	id,
+	color,
+	label,
+	copy,
+}: { id: PhaseId } & ReturnType<typeof getPhase>) {
+	const PhaseIcon = phaseIcon(id);
 	return (
 		<Flex direction="col" gap="md" padding="lg" radius="lg" bg="surface" blur>
 			<Badge color={color} width="fit">
+				<PhaseIcon size="sm" />
 				{label}
 			</Badge>
 			<Text variant="body">{copy}</Text>
 		</Flex>
 	);
+}
+
+function phaseIcon(id: PhaseId) {
+	switch (id) {
+		case "discover":
+			return IconMagnifyingGlass;
+		case "design":
+			return IconPalette;
+		case "build":
+			return IconCode;
+		case "measure":
+			return IconChartLine;
+	}
 }
 
 function FeaturedWork() {
