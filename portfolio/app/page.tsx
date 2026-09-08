@@ -1,4 +1,11 @@
-import { Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import {
+	assertNever,
+	Badge,
+	Flex,
+	Grid,
+	invoke,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconChartLine,
 	IconCode,
@@ -17,7 +24,7 @@ import {
 import { dottedConcatString, uniqueBy } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
-import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import { Eyebrow, Link, Section, SectionHeader, styled } from "@/lib/shared";
 
 export default function Landing() {
 	return (
@@ -32,20 +39,7 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<Section
-			id="home-hero"
-			as="header"
-			direction="col"
-			gap="lg"
-			width={{
-				max: "lg",
-			}}
-			variant="plain"
-			padding={{
-				y: "lg",
-			}}
-			vAlign="between"
-		>
+		<HeroSection id="home-hero">
 			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
 			<Text variant="hero">Engineering Intelligent Products</Text>
 			<Text variant="subtitle">
@@ -80,7 +74,7 @@ function Hero() {
 					label="Past work"
 				/>
 			</Flex>
-		</Section>
+		</HeroSection>
 	);
 }
 
@@ -107,29 +101,29 @@ function LoopCard({
 	label,
 	copy,
 }: { id: PhaseId } & ReturnType<typeof getPhase>) {
-	const PhaseIcon = phaseIcon(id);
+	const PhaseIcon = invoke(() => {
+		switch (id) {
+			case "discover":
+				return IconMagnifyingGlass;
+			case "design":
+				return IconPalette;
+			case "build":
+				return IconCode;
+			case "measure":
+				return IconChartLine;
+			default:
+				assertNever(id);
+		}
+	});
 	return (
-		<Flex direction="col" gap="md" padding="lg" radius="lg" bg="surface" blur>
+		<StyledFlex direction="col">
 			<Badge color={color} width="fit" padding="sm">
 				<PhaseIcon size="sm" />
 				{label}
 			</Badge>
 			<Text variant="body">{copy}</Text>
-		</Flex>
+		</StyledFlex>
 	);
-}
-
-function phaseIcon(id: PhaseId) {
-	switch (id) {
-		case "discover":
-			return IconMagnifyingGlass;
-		case "design":
-			return IconPalette;
-		case "build":
-			return IconCode;
-		case "measure":
-			return IconChartLine;
-	}
 }
 
 function FeaturedWork() {
@@ -156,17 +150,7 @@ function WorkExHistory() {
 	);
 
 	return (
-		<Flex
-			direction="row"
-			hAlign="between"
-			vAlign="center"
-			gap="md"
-			padding="lg"
-			radius="lg"
-			bg="surface"
-			blur
-			wrap
-		>
+		<StyledFlex direction="row">
 			{stringToRender}
 			<Link
 				url="/resume"
@@ -176,6 +160,31 @@ function WorkExHistory() {
 				collapse
 				label="Full history"
 			/>
-		</Flex>
+		</StyledFlex>
 	);
 }
+
+const StyledFlex = styled(Flex)({
+	hAlign: "between",
+	vAlign: "center",
+	gap: "md",
+	padding: "lg",
+	radius: "lg",
+	bg: "surface",
+	blur: true,
+	wrap: true,
+});
+
+const HeroSection = styled(Section)({
+	as: "header",
+	direction: "col",
+	gap: "lg",
+	width: {
+		max: "lg",
+	},
+	variant: "plain",
+	padding: {
+		y: "lg",
+	},
+	vAlign: "between",
+});

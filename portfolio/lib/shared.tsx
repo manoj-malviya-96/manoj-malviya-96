@@ -4,7 +4,7 @@ import { Link as AtomLink, Flex, Text } from "@manoj-malviya-96/atom";
 import NextLink from "next/link";
 import type { ComponentProps, ComponentType, ReactNode } from "react";
 
-function styled<P extends object>(Component: ComponentType<P>) {
+export function styled<P extends object>(Component: ComponentType<P>) {
 	return function preset<D extends Partial<P>>(defaultProps: D) {
 		return function Styled(props: Omit<P, keyof D> & Partial<D>) {
 			return <Component {...defaultProps} {...(props as P)} />;
