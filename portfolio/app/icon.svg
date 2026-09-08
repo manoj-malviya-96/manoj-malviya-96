@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <title>Manoj Malviya</title>
+  <rect width="64" height="64" rx="12" fill="#111111"/>
+
+  <!-- Left bracket < : muted, far from M -->
+  <path d="M11 28 L7 32 L11 36" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+
+  <!-- Right bracket > : muted, far from M -->
+  <path d="M53 28 L57 32 L53 36" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+
+  <!-- M, bigger, Aptos-style: bold humanist strokes, slightly splayed verticals -->
+  <path d="M20 44 L20 20 L32 34 L44 20 L44 44"
+        fill="none" stroke="#FFFFFF" stroke-width="6.2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

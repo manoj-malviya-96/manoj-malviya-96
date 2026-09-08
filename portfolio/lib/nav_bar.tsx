@@ -17,6 +17,28 @@ import { useEffect, useState } from "react";
 import { EmailAddress } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
+function Logo() {
+	return (
+		<svg
+			width="20"
+			height="20"
+			viewBox="0 0 64 64"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+		>
+			<rect width="64" height="64" rx="12" fill="#111111" />
+			<path
+				d="M20 44 L20 20 L32 34 L44 20 L44 44"
+				fill="none"
+				stroke="#FFFFFF"
+				strokeWidth="6.2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+}
+
 const NAV_LINKS = [
 	{ url: "/projects", label: "Work" },
 	{ url: "/resume", label: "Résumé" },
@@ -31,7 +53,10 @@ export default function NavBar() {
 			data-hidden={visible ? undefined : true}
 			left={
 				<Link url="/" className="wordmark">
-					Manoj Malviya
+					<Flex as="span" direction="row" gap="xs" vAlign="center">
+						<Logo />
+						Manoj Malviya
+					</Flex>
 				</Link>
 			}
 			center={
