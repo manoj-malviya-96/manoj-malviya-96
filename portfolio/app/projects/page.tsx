@@ -1,7 +1,7 @@
 import { Flex, Progress, Text } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsClient from "@/lib/projects/projects_client";
-import { Eyebrow } from "@/lib/ui";
+import { Eyebrow } from "@/lib/shared";
 
 export default function Page() {
 	return (

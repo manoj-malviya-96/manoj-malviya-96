@@ -257,7 +257,6 @@ function useAmbientColor(): RefObject<string> {
 	const colorRef = useRef("#8a8a8a");
 	const theme = useTheme();
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: theme isn't read here, it's the re-run trigger — colorRef must be re-resolved whenever data-theme changes.
 	useEffect(() => {
 		colorRef.current = getThemeColor("content");
 	}, [theme]);

@@ -1,7 +1,7 @@
 import { assertNever } from "@manoj-malviya-96/atom";
 import type { OrganizationId } from "@/lib/data/organizations";
+import type { ValuesOf } from "@/lib/helper";
 import type { MonthAndYear } from "@/lib/types";
-import type { ValuesOf } from "@/lib/utils";
 
 export const DEGREE_IDS = ["penn-state-ms", "iitj-btech"] as const;
 export type DegreeId = ValuesOf<typeof DEGREE_IDS>;

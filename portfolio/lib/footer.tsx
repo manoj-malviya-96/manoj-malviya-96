@@ -16,7 +16,7 @@ import {
 	type SocialMedia,
 	UserAvatar,
 } from "@/lib/data";
-import { Link } from "@/lib/ui";
+import { Link } from "@/lib/shared";
 
 export default function Footer() {
 	return (

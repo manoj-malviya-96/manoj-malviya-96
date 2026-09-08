@@ -1,6 +1,6 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
 import { assertNever } from "@manoj-malviya-96/atom";
-import type { ValuesOf } from "@/lib/utils";
+import type { ValuesOf } from "@/lib/helper";
 
 /** The "how I work" loop, in the order it's presented. */
 export const PHASE_IDS = ["discover", "design", "build", "measure"] as const;

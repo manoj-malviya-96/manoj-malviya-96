@@ -7,7 +7,7 @@ import {
 	getEmployer,
 	getExperience,
 } from "@/lib/data";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/helper";
 
 export default function WorkHistory() {
 	return (

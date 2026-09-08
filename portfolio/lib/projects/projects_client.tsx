@@ -7,7 +7,7 @@ import {
 	type ProjectMeta,
 } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
-import { Link } from "@/lib/ui";
+import { Link } from "@/lib/shared";
 
 export default function ProjectsClient() {
 	return (

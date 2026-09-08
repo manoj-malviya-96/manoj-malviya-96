@@ -1,6 +1,6 @@
 import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { DEGREE_IDS, getDegree, getOrganization } from "@/lib/data";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/helper";
 
 export default function Education() {
 	return (

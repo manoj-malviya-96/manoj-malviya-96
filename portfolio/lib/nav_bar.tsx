@@ -1,11 +1,21 @@
 "use client";
 
-import { Flex, useScrollEffect } from "@manoj-malviya-96/atom";
+import {
+	Button,
+	Flex,
+	setTheme,
+	useScrollEffect,
+	useTheme,
+} from "@manoj-malviya-96/atom";
 import { Header } from "@manoj-malviya-96/atom/features";
-import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
+import {
+	IconCircleHalfStroke,
+	IconEnvelope,
+} from "@manoj-malviya-96/atom/icons";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { EmailAddress } from "@/lib/data";
-import { Link, ThemeToggle } from "@/lib/ui";
+import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
 	{ url: "/projects", label: "Work" },
@@ -60,8 +70,8 @@ export default function NavBar() {
 	);
 }
 
-const TOP_BAND = 0.1 as const;
-const INTENT_PX_PER_MS = 0.4 as const;
+const TOP_BAND = 0.05 as const;
+const INTENT_PX_PER_MS = 0.3 as const;
 type NavBarScroll = { y: number; visible: boolean };
 
 function useNavBarScroll(): NavBarScroll {
@@ -76,5 +86,36 @@ function useNavBarScroll(): NavBarScroll {
 			return { y, visible };
 		},
 		{ y: 0, visible: true },
+	);
+}
+
+function ThemeToggle() {
+	const theme = useTheme();
+	const [systemPrefersDark, setSystemPrefersDark] = useState(false);
+
+	useEffect(() => {
+		const query = window.matchMedia("(prefers-color-scheme: dark)");
+		setSystemPrefersDark(query.matches);
+		const onChange = (e: MediaQueryListEvent) =>
+			setSystemPrefersDark(e.matches);
+		query.addEventListener("change", onChange);
+		return () => query.removeEventListener("change", onChange);
+	}, []);
+
+	const isDark = theme === "dark" || (theme === "system" && systemPrefersDark);
+
+	const toggle = () => {
+		const next = isDark ? "light" : "dark";
+		setTheme(next);
+	};
+
+	return (
+		<Button
+			icon={<IconCircleHalfStroke size="sm" />}
+			aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+			onClick={toggle}
+			variant="muted"
+			size="sm"
+		/>
 	);
 }

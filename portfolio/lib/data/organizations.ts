@@ -1,7 +1,7 @@
 import { assertNever } from "@manoj-malviya-96/atom";
 import type { StaticImageData as LocalImage } from "next/image";
+import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
-import type { ValuesOf } from "@/lib/utils";
 import flowkeyLogo from "./flowkey-dark.png";
 import formlabsLogo from "./formlabs-black.png";
 import iitjLogo from "./iitj.png";

@@ -5,8 +5,8 @@ import {
 	type OrganizationId,
 } from "@/lib/data/organizations";
 import type { ProjectTag } from "@/lib/data/projects";
+import type { ValuesOf } from "@/lib/helper";
 import type { MonthAndYear } from "@/lib/types";
-import type { ValuesOf } from "@/lib/utils";
 
 const EXPERIENCE_IDS = [
 	"noah-labs-lead",

@@ -1,15 +1,5 @@
 import type { MonthAndYear } from "@/lib/types";
 
-function _conditionalProps(
-	isTrue: boolean,
-	propsWhenTrue: Record<string, unknown>,
-) {
-	if (!isTrue) {
-		return {};
-	}
-	return propsWhenTrue;
-}
-
 export type ValuesOf<T extends readonly unknown[]> = T[number];
 
 export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
@@ -23,6 +13,10 @@ export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
 			return true;
 		}
 	});
+}
+
+export function dottedConcatString(inputs: string[]) {
+	return inputs.join(" · ");
 }
 
 const MONTH_ABBREVIATIONS = [

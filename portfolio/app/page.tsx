@@ -7,9 +7,10 @@ import {
 	getPhase,
 	PHASE_IDS,
 } from "@/lib/data";
+import { uniqueBy } from "@/lib/helper";
+import MeshCanvas from "@/lib/home/mesh_canvas";
 import StatGrid from "@/lib/home/stat_grid";
-import { Eyebrow, Link, MeshCanvas, Section, SectionHeader } from "@/lib/ui";
-import { uniqueBy } from "@/lib/utils";
+import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (

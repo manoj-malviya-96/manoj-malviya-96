@@ -22,7 +22,8 @@ import {
 	type ProjectMedia,
 	type ProjectMeta,
 } from "@/lib/data";
-import { Link } from "@/lib/ui";
+import { dottedConcatString } from "@/lib/helper";
+import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
@@ -52,7 +53,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 					<ProjectLinks project={project} />
 				</Flex>
 				{media && (
-					<Flex as="span" direction="col" gap="md" vAlign="center" grow>
+					<Flex as="span" direction="col" gap="md" vAlign="start" grow>
 						<ProjectCover media={media} />
 					</Flex>
 				)}
@@ -70,7 +71,7 @@ function ProjectTags({
 }) {
 	return (
 		<Text variant="caption" muted>
-			{[date, ...tags].join(" · ")}
+			{dottedConcatString([date, ...tags])}
 		</Text>
 	);
 }

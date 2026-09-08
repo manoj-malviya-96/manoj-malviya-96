@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import getConfig from "@/lib/core/config";
+import getConfig from "@/lib/config";
 import { SocialUsersID } from "@/lib/data";
 
 export async function GET() {

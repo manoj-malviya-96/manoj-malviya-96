@@ -1,8 +1,8 @@
 import { Flex, Text } from "@manoj-malviya-96/atom";
-import Education from "@/lib/about_me/education";
-import WorkHistory from "@/lib/about_me/work_history";
 import { ResumePDF } from "@/lib/data";
-import { Eyebrow, Link } from "@/lib/ui";
+import Education from "@/lib/resume/education";
+import WorkHistory from "@/lib/resume/work_history";
+import { Eyebrow, Link } from "@/lib/shared";
 
 export default function About() {
 	return (
