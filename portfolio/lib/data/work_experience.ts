@@ -24,7 +24,6 @@ export type Experience = {
 	organization: OrganizationId;
 	position: string;
 	start: MonthAndYear;
-	/** `null` means ongoing — a stated fact rather than a forgotten field. */
 	end: MonthAndYear | null;
 	location: string;
 	type: EmploymentType;
