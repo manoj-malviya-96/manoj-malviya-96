@@ -38,6 +38,12 @@ h3 {
 	transform: translateY(0);
 }
 
+@media (max-width: 480px) {
+	.wordmark-text {
+		display: none;
+	}
+}
+
 html[data-theme="light"] {
 	color-scheme: light;
 }
@@ -62,6 +68,13 @@ img {
 .track-row {
 	grid-template-columns: 9.5rem 1fr;
 	gap: var(--space-lg);
+}
+
+/* Todo integrate in atom: no prop resets a flex item's default min-width:auto, so a wide
+   child (a long code line, a chart canvas) inflates the row past its container instead of
+   shrinking or wrapping onto its own line. */
+.project-panel {
+	min-width: 0;
 }
 
 /*
@@ -106,6 +119,13 @@ img {
 @media (max-width: 920px) {
 	.track-row {
 		grid-template-columns: 1fr;
+	}
+
+	/* Todo integrate in atom: ratio-square sizes the logo to 100% of its grid column, which is
+	   fine at the 9.5rem desktop track-row column but blows up to full card width once that
+	   column collapses to 1fr. */
+	.track-logo {
+		width: 3rem;
 	}
 
 	.loop-grid,

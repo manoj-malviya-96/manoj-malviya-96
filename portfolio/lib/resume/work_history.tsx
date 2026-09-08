@@ -35,6 +35,7 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 					fit="contain"
 					ratio="square"
 					radius="md"
+					className="track-logo"
 				/>
 				<Text variant="title" muted>
 					{name}

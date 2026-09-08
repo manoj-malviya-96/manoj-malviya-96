@@ -45,7 +45,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				<Divider direction="horizontal" style={{ opacity: "30%" }} />
 			</Flex>
 			<Flex direction="row" gap="lg" wrap>
-				<Flex direction="col" gap="md" grow>
+				<Flex direction="col" gap="md" grow className="project-panel">
 					<Text variant="title" bold>
 						{hook}
 					</Text>
@@ -53,7 +53,14 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 					<ProjectLinks project={project} />
 				</Flex>
 				{media && (
-					<Flex as="span" direction="col" gap="md" vAlign="start" grow>
+					<Flex
+						as="span"
+						direction="col"
+						gap="md"
+						vAlign="start"
+						grow
+						className="project-panel"
+					>
 						<ProjectCover media={media} />
 					</Flex>
 				)}

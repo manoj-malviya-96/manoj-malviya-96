@@ -34,7 +34,7 @@ export default function NavBar() {
 				<Link url="/" className="wordmark">
 					<Flex as="span" direction="row" gap="xs" vAlign="center">
 						<NextImage src="/icon.svg" alt="Logo" width={24} height={24} />
-						Manoj Malviya
+						<span className="wordmark-text">Manoj Malviya</span>
 					</Flex>
 				</Link>
 			}
