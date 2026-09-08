@@ -97,7 +97,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Portfolio",
 				description:
-					"This site: a Next.js App Router build on top of atom, a design system I wrote and maintain separately, with a fuzzy-searchable project catalog.",
+					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
 				hook: "The portfolio, describing itself.",
 				dates: "2025",
 				tags: ["web", "open-source", "nextjs", "typescript", "ui/ux"],
@@ -107,7 +107,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Atom",
 				description:
-					"A minimal, CSS-first, type-safe React UI library — one primitive and one stylesheet that every other component composes from. Styling and motion live in CSS, not JS, with enforced size budgets and real-browser tests.",
+					"A minimal, CSS-first React UI library: one primitive, one stylesheet, everything composes from it. Styling and motion live in CSS, not JS — with enforced size budgets and real-browser tests.",
 				hook: "One primitive. The whole design system composes from it.",
 				dates: "2024–2025",
 				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
@@ -117,7 +117,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Muviz",
 				description:
-					"A GPU-driven 3D music visualizer: a C++ audio pipeline compiled to WebAssembly feeds a Three.js renderer, so the browser never touches raw audio math.",
+					"A GPU-driven 3D music visualizer. A C++ audio pipeline, compiled to WebAssembly, feeds a Three.js renderer — the browser never touches raw audio math.",
 				hook: "Winamp nostalgia, rebuilt for the GPU.",
 				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
@@ -127,7 +127,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "HoneyMesh",
 				description:
-					"A C++ skeletonization algorithm that generates honeycomb lattice structures and exports them straight to a VTK mesh for CAD and simulation workflows.",
+					"A C++ skeletonization algorithm that generates honeycomb lattices and exports straight to a VTK mesh for CAD and simulation.",
 				hook: "Because hexagons are just better, structurally speaking.",
 				dates: "2022",
 				tags: [
@@ -153,7 +153,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Blackhole",
 				description:
-					"A real-time GLSL raymarcher that integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing at interactive frame rates.",
+					"A real-time GLSL raymarcher: integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing, at interactive frame rates.",
 				hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
 				dates: "2023",
 				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
@@ -163,7 +163,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "EV Charging Simulator",
 				description:
-					"A Monte Carlo simulator for EV charging-lot demand — Poisson-process car arrivals, per-interval power draw, and the resulting concurrency factor — with a React front end for running scenarios.",
+					"A Monte Carlo simulator for EV charging-lot demand: Poisson-process arrivals, per-interval power draw, concurrency factor — with a React front end for running scenarios.",
 				hook: "How many chargers do you actually need? Simulate it first.",
 				dates: "2024",
 				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
@@ -183,7 +183,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Simphy",
 				description:
-					"An early-stage physics simulation sandbox — C++ core, no rendering layer committed yet. Active work in progress.",
+					"An early-stage physics-simulation sandbox: C++ core, no rendering layer yet.",
 				hook: "Simulating the universe. Literally, eventually.",
 				dates: "2025",
 				tags: ["simulation", "c++", "open-source"],
@@ -247,8 +247,8 @@ export function getMedia(project: ProjectId): ProjectMedia {
 		case "simphy":
 			return {
 				kind: "image",
-				src: `${OG}/mesha`,
-				alt: "The Mesha mesh-repair-tool repository.",
+				src: `${OG}/simphy`,
+				alt: "The Simphy physics-simulation-sandbox repository.",
 			};
 		default:
 			return assertNever(project);

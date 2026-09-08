@@ -7,9 +7,9 @@ import {
 	getPhase,
 	PHASE_IDS,
 } from "@/lib/data";
-import { uniqueBy } from "@/lib/helper";
+import { dottedConcatString, uniqueBy } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
-import StatGrid from "@/lib/home/stat_grid";
+import ShowAndTellGrid from "@/lib/home/show_tell";
 import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
@@ -29,24 +29,24 @@ function Hero() {
 			id="home-hero"
 			as="header"
 			direction="col"
-			gap="xl"
+			gap="lg"
 			width={{
-				max: "md",
+				max: "lg",
 			}}
 			variant="plain"
-			padding="md"
+			padding={{
+				y: "lg",
+			}}
 			vAlign="between"
 		>
 			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
-			<Text variant="hero">
-				I start with the problem. The stack comes second.
-			</Text>
+			<Text variant="hero">Engineering Intelligent Products</Text>
 			<Text variant="subtitle">
-				Seven years turning ambiguous problems into shipped products:
-				patient-monitoring platforms, CAD tools thousands of engineers rely on,
-				real-time rendering and audio systems. I own it end to end: system
-				design, the algorithm underneath, and the interface someone actually has
-				to use.
+				Over <Badge as="span">7+ years </Badge>, I’ve worked across research,
+				software, AI, and computational design to build products that push the
+				boundaries of what’s possible. I love taking complex problems from first
+				principles and turning them into fast, intuitive, real-world
+				experiences.
 			</Text>
 			<Flex
 				as="span"
@@ -82,8 +82,8 @@ function Loop() {
 		<Section id="home-loop">
 			<SectionHeader
 				eyebrow="How I work"
-				title="Requirements in. Shipped, measured software out."
-				caption="No middle-management jargon required — I just refuse to skip steps."
+				title="Complex problems in. Intelligent products out."
+				caption="Understand the problem. Build the right thing. Measure the result."
 			/>
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
@@ -109,17 +109,25 @@ function FeaturedWork() {
 	return (
 		<Section id="home-feature" gap="lg">
 			<SectionHeader
-				eyebrow="A few things I've shipped"
+				eyebrow="Shipped work"
 				title="Proof, briefly."
-				caption="The rest — plus the messy parts — live on the full work page."
+				caption="The messy parts live on the full work page."
 			/>
-			<StatGrid />
 			<WorkExHistory />
+			<ShowAndTellGrid />
 		</Section>
 	);
 }
 
 function WorkExHistory() {
+	const workExp = uniqueBy(
+		[...EXPERIENCE_BY_RECENCY],
+		(experience) => getExperience(experience).organization,
+	).slice(0, 3);
+	const stringToRender = dottedConcatString(
+		workExp.map((experience) => getEmployer(experience).name),
+	);
+
 	return (
 		<Flex
 			direction="row"
@@ -132,23 +140,7 @@ function WorkExHistory() {
 			blur
 			wrap
 		>
-			<Flex direction="row" gap="sm" wrap>
-				<Text variant="body">
-					Most recently at <strong>{getEmployer(TRACK[0]).name}</strong>
-				</Text>
-				<Text variant="body" muted>
-					·
-				</Text>
-				<Text variant="body">
-					previously <strong>{getEmployer(TRACK[1]).name}</strong>
-				</Text>
-				<Text variant="body" muted>
-					·
-				</Text>
-				<Text variant="body">
-					<strong>{getEmployer(TRACK[2]).name}</strong> before that
-				</Text>
-			</Flex>
+			{stringToRender}
 			<Link
 				url="/resume"
 				icon={<IconLink />}
@@ -160,8 +152,3 @@ function WorkExHistory() {
 		</Flex>
 	);
 }
-
-const TRACK = uniqueBy(
-	[...EXPERIENCE_BY_RECENCY],
-	(experience) => getExperience(experience).organization,
-).slice(0, 3);
