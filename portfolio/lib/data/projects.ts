@@ -1,7 +1,7 @@
 import { assertNever } from "@manoj-malviya-96/atom";
 import type { StaticImageData as LocalImage } from "next/image";
+import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
-import type { ValuesOf } from "@/lib/utils";
 
 export const AllProjectIds = [
 	"portfolio",
@@ -70,6 +70,7 @@ export type ProjectMeta = {
 	title: string;
 	description: string;
 	hook: string;
+	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
 };
@@ -77,8 +78,6 @@ export type ProjectMeta = {
 export type ProjectMedia =
 	| { kind: "image"; src: LocalImage | string; alt: string }
 	| { kind: "video"; src: string; alt: string };
-
-export type ProjectBody = { why: string; how: string; what: string };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -98,8 +97,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Portfolio",
 				description:
-					"This site: a Next.js App Router build on top of atom, a design system I wrote and maintain separately, with a fuzzy-searchable project catalog.",
+					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
 				hook: "The portfolio, describing itself.",
+				dates: "2025",
 				tags: ["web", "open-source", "nextjs", "typescript", "ui/ux"],
 				effort: "medium",
 			};
@@ -107,8 +107,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Atom",
 				description:
-					"A minimal, CSS-first, type-safe React UI library — one primitive and one stylesheet that every other component composes from. Styling and motion live in CSS, not JS, with enforced size budgets and real-browser tests.",
+					"A minimal, CSS-first React UI library: one primitive, one stylesheet, everything composes from it. Styling and motion live in CSS, not JS — with enforced size budgets and real-browser tests.",
 				hook: "One primitive. The whole design system composes from it.",
+				dates: "2024–2025",
 				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 				effort: "high",
 			};
@@ -116,8 +117,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Muviz",
 				description:
-					"A GPU-driven 3D music visualizer: a C++ audio pipeline compiled to WebAssembly feeds a Three.js renderer, so the browser never touches raw audio math.",
+					"A GPU-driven 3D music visualizer. A C++ audio pipeline, compiled to WebAssembly, feeds a Three.js renderer — the browser never touches raw audio math.",
 				hook: "Winamp nostalgia, rebuilt for the GPU.",
+				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 				effort: "high",
 			};
@@ -125,8 +127,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "HoneyMesh",
 				description:
-					"A C++ skeletonization algorithm that generates honeycomb lattice structures and exports them straight to a VTK mesh for CAD and simulation workflows.",
+					"A C++ skeletonization algorithm that generates honeycomb lattices and exports straight to a VTK mesh for CAD and simulation.",
 				hook: "Because hexagons are just better, structurally speaking.",
+				dates: "2022",
 				tags: [
 					"rendering",
 					"high-performance",
@@ -142,6 +145,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				title: "topopt-py",
 				description: "A 2D topology-optimization solver, rewritten for speed.",
 				hook: "A 40-year-old optimization algorithm, dragged into this decade.",
+				dates: "2021",
 				tags: ["simulation", "optimization", "high-performance", "python"],
 				effort: "high",
 			};
@@ -149,8 +153,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Blackhole",
 				description:
-					"A real-time GLSL raymarcher that integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing at interactive frame rates.",
+					"A real-time GLSL raymarcher: integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing, at interactive frame rates.",
 				hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
+				dates: "2023",
 				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 				effort: "high",
 			};
@@ -158,8 +163,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "EV Charging Simulator",
 				description:
-					"A Monte Carlo simulator for EV charging-lot demand — Poisson-process car arrivals, per-interval power draw, and the resulting concurrency factor — with a React front end for running scenarios.",
+					"A Monte Carlo simulator for EV charging-lot demand: Poisson-process arrivals, per-interval power draw, concurrency factor — with a React front end for running scenarios.",
 				hook: "How many chargers do you actually need? Simulate it first.",
+				dates: "2024",
 				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 				effort: "medium",
 			};
@@ -169,6 +175,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				description:
 					"An in-progress 3D mesh-repair tool: a C++/Qt backend exposed as both a CLI and a WebSocket service, with a Tauri + Next.js editor on top.",
 				hook: "Mesh repair, from the command line to a real editor.",
+				dates: "2025",
 				tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 				effort: "low",
 			};
@@ -176,8 +183,9 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Simphy",
 				description:
-					"An early-stage physics simulation sandbox — C++ core, no rendering layer committed yet. Active work in progress.",
+					"An early-stage physics-simulation sandbox: C++ core, no rendering layer yet.",
 				hook: "Simulating the universe. Literally, eventually.",
+				dates: "2025",
 				tags: ["simulation", "c++", "open-source"],
 				effort: "low",
 			};
@@ -240,68 +248,7 @@ export function getMedia(project: ProjectId): ProjectMedia {
 			return {
 				kind: "image",
 				src: `${OG}/simphy`,
-				alt: "The Simphy repository.",
-			};
-		default:
-			return assertNever(project);
-	}
-}
-
-export function getBody(project: ProjectId): ProjectBody {
-	switch (project) {
-		case "portfolio":
-			return {
-				why: "A resume and a pile of scattered repos don't show how something actually works, or feels to use.",
-				how: "Next.js App Router with server components, Fuse.js-powered fuzzy search over the project catalog, and atom — a CSS-first design system I built from scratch — for every pixel.",
-				what: "A living catalog of my projects — fast, searchable, and self-describing.",
-			};
-		case "atom":
-			return {
-				why: "Every side project needed its own UI kit — mismatched buttons and spacing, or a generic component library fighting the app instead of fitting it.",
-				how: "Styling and motion live in CSS, not JavaScript, so screens stay instant. A small, fixed set of parts — a component ships only when more than one real app needs it. Real-browser tests via Vitest, and a size-budget check enforced in CI on every PR.",
-				what: "The design system running this site, its project catalog, and everything else I ship — published on GitHub Packages.",
-			};
-		case "muviz":
-			return {
-				why: "Winamp-era visualizers were mesmerizing, but nothing on the web today renders anything close to it without dropping frames.",
-				how: "A C++ feature extractor compiled to WebAssembly runs a full spectral-analysis pass over the track once and caches the result, so the Three.js frontend never does audio math — it only renders.",
-				what: "A fast, reactive 3D visualizer that handles complex effects without breaking a sweat.",
-			};
-		case "honeycomb":
-			return {
-				why: "Honeycomb lattices are a go-to structure in engineering, but tooling to generate them is scarce.",
-				how: "A memory-efficient skeletonization algorithm builds the lattice topology in C++, then exports directly to a VTK mesh — no manual triangulation, no format-conversion step.",
-				what: "Open-source constructor and visualizer, ready for CAD workflows.",
-			};
-		case "topopt_py":
-			return {
-				why: "Classic topology-optimization research code was too slow to be useful beyond a demo.",
-				how: "Vectorized the solver's inner loop — sparse assembly and filtering as array operations in NumPy instead of nested Python loops — without dropping to C++.",
-				what: "2× faster, scales to more elements, without leaving Python.",
-			};
-		case "blackhole":
-			return {
-				why: "Gravitational lensing is usually only shown offline, in pre-rendered clips.",
-				how: "Hand-rolled a raymarching shader in raw OpenGL that numerically integrates light-ray geodesics per pixel, tuned to hold frame budget at interactive rates.",
-				what: "Interactive simulation you can orbit and pull apart yourself.",
-			};
-		case "ev_sim":
-			return {
-				why: "Sizing an EV charging lot is a probability problem, not a guess — too few chargers and drivers queue, too many and the capex is wasted.",
-				how: "Modeled car arrivals per charge-point as a Poisson process (hourly arrival probability split across 15-minute intervals), ran it seeded and unseeded to compare variance, and tracked energy consumed, theoretical vs. actual peak power, and the resulting concurrency factor.",
-				what: "A request/response simulator — tune charge-point count and power draw on one panel, read the results as charts on the other.",
-			};
-		case "mesha":
-			return {
-				why: "Broken meshes — non-manifold edges, holes, self-intersections — are a constant tax in CAD and 3D-printing pipelines, and most repair tools are closed black boxes.",
-				how: "A C++/Qt backend exposes mesh repair as both a CLI and a WebSocket service, decoupled from any UI. A Tauri + Next.js frontend gives it an actual editor instead of a terminal.",
-				what: "The scaffolding is live end to end — CLI, server, editor shell. The repair algorithm itself is the next milestone.",
-			};
-		case "simphy":
-			return {
-				why: "Wanted a from-scratch physics sandbox — n-body gravity, particle systems — without a game engine sitting in the way.",
-				how: "Early days: C++ core is scaffolded, no rendering layer committed yet.",
-				what: "In progress — check back, or watch the repo.",
+				alt: "The Simphy physics-simulation-sandbox repository.",
 			};
 		default:
 			return assertNever(project);

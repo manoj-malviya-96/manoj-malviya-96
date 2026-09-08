@@ -2,6 +2,10 @@
 
 import { Divider, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
 import {
+	IconBriefcase,
+	IconCode,
+	IconEnvelope,
+	IconFileLines,
 	IconGithub,
 	IconGraduationCap,
 	IconInstagram,
@@ -16,7 +20,7 @@ import {
 	type SocialMedia,
 	UserAvatar,
 } from "@/lib/data";
-import { Link } from "@/lib/ui";
+import { Link } from "@/lib/shared";
 
 export default function Footer() {
 	return (
@@ -36,10 +40,10 @@ export default function Footer() {
 			</Grid>
 			<Divider direction="horizontal" />
 			<Flex direction="row" hAlign="between" gap="sm" wrap>
-				<Text variant="caption" className="font-mono">
+				<Text variant="caption" mono>
 					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
 				</Text>
-				<Text variant="caption" className="font-mono">
+				<Text variant="caption" mono>
 					BERLIN, DE
 				</Text>
 			</Flex>
@@ -71,24 +75,29 @@ function About() {
 	);
 }
 
-const QUICK_LINKS = [
-	{ label: "Work Experience", url: "/resume" },
-	{ label: "Projects & Blogs", url: "/projects" },
-	{ label: "Resume PDF", url: ResumePDF },
-	{ label: "Contact", url: EmailAddress },
-] as const;
+const QUICK_LINKS: ReadonlyArray<{
+	label: string;
+	url: string;
+	icon: typeof IconBriefcase;
+}> = [
+	{ label: "Work Experience", url: "/resume", icon: IconBriefcase },
+	{ label: "Projects & Blogs", url: "/projects", icon: IconCode },
+	{ label: "Resume PDF", url: ResumePDF, icon: IconFileLines },
+	{ label: "Contact", url: EmailAddress, icon: IconEnvelope },
+];
 
 function QuickLinks() {
 	return (
 		<Flex direction="col" gap="md">
 			<Text variant="title">Quick Links</Text>
 			<List direction="col" gap="xs">
-				{QUICK_LINKS.map(({ label, url }) => (
-					<li key={label}>
+				{QUICK_LINKS.map(({ label, url, icon: LinkIcon }) => (
+					<Flex as="li" direction="row" gap="xs" vAlign="center" key={label}>
+						<LinkIcon size="sm" />
 						<Link url={url} openNewTab={url.startsWith("http")}>
 							{label}
 						</Link>
-					</li>
+					</Flex>
 				))}
 			</List>
 		</Flex>
@@ -109,9 +118,7 @@ function SocialLinks() {
 		<Flex direction="col" gap="md">
 			<Flex direction="col" gap="xs">
 				<Text variant="title">Connect</Text>
-				<Text variant="body">
-					Reach out on any of the platforms below.
-				</Text>
+				<Text variant="body">Reach out on any of the platforms below.</Text>
 			</Flex>
 			<List direction="row" gap="md">
 				{SOCIALS.map(({ name, icon: SocialIcon }) => (

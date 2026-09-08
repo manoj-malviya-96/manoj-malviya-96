@@ -1,10 +1,9 @@
-import { Flex, Screen } from "@manoj-malviya-96/atom";
+import { Screen } from "@manoj-malviya-96/atom/features";
 import type { Metadata } from "next";
 import type React from "react";
-import Footer from "@/lib/core/footer";
-import NavBar from "@/lib/core/nav_bar";
-import { ReactQueryProvider } from "@/lib/core/react_query";
-
+import Footer from "@/lib/footer";
+import NavBar from "@/lib/nav_bar";
+import { ReactQueryProvider } from "@/lib/react_query";
 import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
 

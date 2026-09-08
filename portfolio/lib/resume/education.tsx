@@ -1,6 +1,7 @@
 import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { IconGraduationCap } from "@manoj-malviya-96/atom/icons";
 import { DEGREE_IDS, getDegree, getOrganization } from "@/lib/data";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/helper";
 
 export default function Education() {
 	return (
@@ -17,11 +18,14 @@ export default function Education() {
 						radius="lg"
 						bg="surface"
 					>
-						<Text variant="title">{getOrganization(organization).name}</Text>
+						<Flex direction="row" gap="xs" vAlign="center">
+							<IconGraduationCap size="sm" />
+							<Text variant="title">{getOrganization(organization).name}</Text>
+						</Flex>
 						<Text variant="body" muted>
 							{degree}, {field} · {formatDate(graduation)}
 						</Text>
-						<Text variant="caption" className="font-mono" muted>
+						<Text variant="caption" mono muted>
 							{focus}
 						</Text>
 					</Flex>

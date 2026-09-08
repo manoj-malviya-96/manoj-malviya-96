@@ -1,6 +1,6 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
 import { assertNever } from "@manoj-malviya-96/atom";
-import type { ValuesOf } from "@/lib/utils";
+import type { ValuesOf } from "@/lib/helper";
 
 /** The "how I work" loop, in the order it's presented. */
 export const PHASE_IDS = ["discover", "design", "build", "measure"] as const;
@@ -19,25 +19,25 @@ export function getPhase(phase: PhaseId): Phase {
 			return {
 				label: "Discover",
 				color: "blue",
-				copy: "Before I write a line of code, I find out what's actually broken for the user — not just what's sitting in the backlog.",
+				copy: "Understand the problem, not just the requirement..",
 			};
 		case "design":
 			return {
 				label: "Design",
 				color: "indigo",
-				copy: "A user flow and a data model are the same decision, drawn two different ways. I sketch both before committing to either.",
+				copy: "Model the problem before modeling the system",
 			};
 		case "build":
 			return {
 				label: "Build",
 				color: "green",
-				copy: "Correct first, fast second, maintainable always — validated at the edges, profiled before anything gets optimized.",
+				copy: "Correct first. Fast second. Maintainable always.",
 			};
 		case "measure":
 			return {
 				label: "Measure",
 				color: "orange",
-				copy: "Ship it, then look. The data decides if it worked — not the sprint review.",
+				copy: "Ship it. Measure it. Learn from it.",
 			};
 		default:
 			return assertNever(phase);

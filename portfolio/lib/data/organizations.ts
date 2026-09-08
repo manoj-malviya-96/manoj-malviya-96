@@ -1,12 +1,12 @@
 import { assertNever } from "@manoj-malviya-96/atom";
 import type { StaticImageData as LocalImage } from "next/image";
+import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
-import type { ValuesOf } from "@/lib/utils";
-import noahLabsLogo from "./noahlabs-logo.png";
 import flowkeyLogo from "./flowkey-dark.png";
 import formlabsLogo from "./formlabs-black.png";
-import pennStateLogo from "./pennstate-blue.png";
 import iitjLogo from "./iitj.png";
+import noahLabsLogo from "./noahlabs-logo.png";
+import pennStateLogo from "./pennstate-blue.png";
 
 const ORGANIZATION_IDS = [
 	"noah-labs",

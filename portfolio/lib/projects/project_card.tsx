@@ -1,10 +1,8 @@
 import {
 	assertNever,
-	Badge,
+	Divider,
 	Flex,
-	Grid,
 	Image,
-	List,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -16,7 +14,6 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import {
-	getBody,
 	getLinks,
 	getMedia,
 	getMeta,
@@ -25,50 +22,64 @@ import {
 	type ProjectMedia,
 	type ProjectMeta,
 } from "@/lib/data";
-import { Link } from "@/lib/ui";
+import { dottedConcatString } from "@/lib/helper";
+import { Link } from "@/lib/shared";
+import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, tags } = getMeta(project);
-	const body = getBody(project);
+	const { title, hook, dates, tags } = getMeta(project);
+	const media = getMedia(project);
 
 	return (
-		<Grid
-			columns={2}
+		<Flex
+			id={project}
+			direction="col"
 			gap="lg"
-			className="case-grid"
 			bg="surface"
 			padding="lg"
 			radius="lg"
 		>
-			<Flex direction="col" gap="md" vAlign="center">
-				<ProjectCover media={getMedia(project)} />
-				<ProjectLinks project={project} />
+			<Flex as="span" direction="col" gap="xs">
+				<Text variant="heading">{title}</Text>
+				<ProjectTags tags={tags} date={dates} />
+				<Divider direction="horizontal" style={{ opacity: "30%" }} />
 			</Flex>
-			<Flex direction="col" gap="md">
-				<Flex as="span" direction="col" gap="xs">
-					<Text variant="title">{title}</Text>
-					<Text variant="body" muted>
+			<Flex direction="row" gap="lg" wrap>
+				<Flex direction="col" gap="md" grow className="project-panel">
+					<Text variant="title" bold>
 						{hook}
 					</Text>
-					<ProjectTags tags={tags} />
+					{getProjectContent(project)}
+					<ProjectLinks project={project} />
 				</Flex>
-				<Step label="Why" body={body.why} />
-				<Step label="How" body={body.how} />
-				<Step label="What" body={body.what} />
+				{media && (
+					<Flex
+						as="span"
+						direction="col"
+						gap="md"
+						vAlign="start"
+						grow
+						className="project-panel"
+					>
+						<ProjectCover media={media} />
+					</Flex>
+				)}
 			</Flex>
-		</Grid>
+		</Flex>
 	);
 }
 
-function ProjectTags({ tags }: { tags: ProjectMeta["tags"] }) {
+function ProjectTags({
+	tags,
+	date,
+}: {
+	tags: ProjectMeta["tags"];
+	date: string;
+}) {
 	return (
-		<List direction="row" gap="sm">
-			{tags.map((tag) => (
-				<Badge as="li" key={tag} color="blue">
-					{tag}
-				</Badge>
-			))}
-		</List>
+		<Text variant="caption" muted>
+			{dottedConcatString([date, ...tags])}
+		</Text>
 	);
 }
 
@@ -125,22 +136,11 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 	);
 }
 
-function Step({ label, body }: { label: string; body: string }) {
-	return (
-		<Flex direction="col" gap="xs">
-			<Text variant="overline" muted>
-				{label}
-			</Text>
-			<Text variant="body">{body}</Text>
-		</Flex>
-	);
-}
-
 function ProjectLinks({ project }: { project: ProjectId }) {
 	const links = getLinks(project);
 
 	return (
-		<Flex direction="row" gap="md" wrap padding={{x: "xs"}}>
+		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
 			{links.map((link) => {
 				const LinkIcon = linkIcon(link);
 				const label = linkLabel(link);

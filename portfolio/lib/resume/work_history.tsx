@@ -1,4 +1,5 @@
 import { Badge, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
+import { IconBriefcase } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import {
 	EXPERIENCE_BY_RECENCY,
@@ -7,7 +8,7 @@ import {
 	getEmployer,
 	getExperience,
 } from "@/lib/data";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/helper";
 
 export default function WorkHistory() {
 	return (
@@ -34,6 +35,7 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 					fit="contain"
 					ratio="square"
 					radius="md"
+					className="track-logo"
 				/>
 				<Text variant="title" muted>
 					{name}
@@ -47,7 +49,10 @@ function TrackRow({ experience }: { experience: ExperienceId }) {
 					<Text variant="body" bold>
 						{position}
 					</Text>
-					<Badge>{type}</Badge>
+					<Badge>
+						<IconBriefcase size="sm" />
+						{type}
+					</Badge>
 				</Flex>
 				<Text variant="body" muted>
 					{summary}
