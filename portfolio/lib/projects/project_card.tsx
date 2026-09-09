@@ -15,7 +15,6 @@ import {
 import NextImage from "next/image";
 import {
 	getLinks,
-	getMedia,
 	getMeta,
 	type ProjectId,
 	type ProjectLink,
@@ -27,8 +26,7 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, dates, tags } = getMeta(project);
-	const media = getMedia(project);
+	const { title, hook, dates, tags, media } = getMeta(project);
 
 	return (
 		<Flex
@@ -56,18 +54,16 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 					</Text>
 					{getProjectContent(project)}
 				</Flex>
-				{media && (
-					<Flex
-						as="span"
-						direction="col"
-						gap="md"
-						vAlign="start"
-						grow
-						className="project-panel"
-					>
-						<ProjectCover media={media} />
-					</Flex>
-				)}
+				<Flex
+					as="span"
+					direction="col"
+					gap="md"
+					vAlign="start"
+					grow
+					className="project-panel"
+				>
+					<ProjectCover media={media} />
+				</Flex>
 			</Flex>
 		</Flex>
 	);
