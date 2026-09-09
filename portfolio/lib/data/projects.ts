@@ -120,7 +120,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "Muviz",
 				description:
-					"A GPU-driven 3D music visualizer. A C++ audio pipeline, compiled to WebAssembly, feeds a Three.js renderer — the browser never touches raw audio math.",
+					"A fast, feature-rich music visualizer for reactive beautiful visualizations",
 				hook: "Winamp nostalgia, rebuilt for the GPU.",
 				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
