@@ -2,6 +2,7 @@ import { assertNever } from "@manoj-malviya-96/atom";
 import type { StaticImageData as LocalImage } from "next/image";
 import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
+import trussOptScreenshot from "./truss-opt-screenshot.png";
 
 export const AllProjectIds = [
 	"portfolio",
@@ -13,6 +14,7 @@ export const AllProjectIds = [
 	"ev_sim",
 	"mesha",
 	"simphy",
+	"truss_opt",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
@@ -81,11 +83,12 @@ export type ProjectMedia =
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
+type InternalPath = `/${string}`;
 
 export type ProjectLink =
 	| { kind: "github"; href: GithubRepo }
 	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL }
+	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
 	| { kind: "external"; label: string; href: ExternalURL };
 
 const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
@@ -189,6 +192,16 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				tags: ["simulation", "c++", "open-source"],
 				effort: "low",
 			};
+		case "truss_opt":
+			return {
+				title: "Truss Optimizer",
+				description:
+					"A 2D truss topology optimizer: draw a cantilever lattice, place supports and loads, then run an optimality-criteria solver that redistributes material to the members carrying the load. Extracted out of Simphy since it's small enough to live as a demo here, running through this site's own API.",
+				hook: "Draw a truss. Watch it optimize itself.",
+				dates: "2025",
+				tags: ["simulation", "optimization", "web", "react", "typescript"],
+				effort: "medium",
+			};
 		default:
 			return assertNever(project);
 	}
@@ -249,6 +262,12 @@ export function getMedia(project: ProjectId): ProjectMedia {
 				kind: "image",
 				src: `${OG}/simphy`,
 				alt: "The Simphy physics-simulation-sandbox repository.",
+			};
+		case "truss_opt":
+			return {
+				kind: "image",
+				src: trussOptScreenshot,
+				alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
 			};
 		default:
 			return assertNever(project);
@@ -334,6 +353,14 @@ export function getLinks(project: ProjectId): readonly ProjectLink[] {
 				{
 					kind: "github",
 					href: "https://github.com/manoj-malviya-96/simphy",
+				},
+			];
+		case "truss_opt":
+			return [
+				{
+					kind: "demo",
+					label: "Try it",
+					href: "/demos/truss-opt",
 				},
 			];
 		default:

@@ -178,6 +178,14 @@ export function getProjectContent(project: ProjectId): ReactNode {
 					</Text>
 				</Flex>
 			);
+		case "truss_opt":
+			return (
+				<Text variant="body">
+					Place supports and loads on a cantilever lattice and this site's own
+					API route solves the FEA and runs an optimality-criteria search to
+					redistribute material — the browser only ever draws the answer.
+				</Text>
+			);
 		default:
 			return assertNever(project);
 	}
