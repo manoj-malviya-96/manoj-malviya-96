@@ -27,89 +27,11 @@ function statusItem(
 export function getProjectContent(project: ProjectId): ReactNode {
 	switch (project) {
 		case "portfolio":
-			return (
-				<Flex direction="col" gap="sm">
-					<Text variant="body">
-						Every project I've built, in one catalog — searchable by title,
-						tags, or description as you type. Fuse.js runs client-side, so
-						there's no server round trip.
-					</Text>
-					<Code language="tsx">
-						{`const FUSE_OPTIONS: IFuseOptions<SearchableProject> = {
-	threshold: 0.35,
-	keys: [
-		{ name: "title", weight: 0.35 },
-		{ name: "description", weight: 0.25 },
-		{ name: "tags", weight: 0.2 },
-	],
-};`}
-					</Code>
-				</Flex>
-			);
+			return <PortfolioContent />;
 		case "atom":
-			return (
-				<Flex direction="col" gap="sm">
-					<Text variant="body">
-						One primitive holds up everything else. The tag badges on every card
-						on this page, this one included, are the same function:
-					</Text>
-					<Code language="tsx">
-						{`function ProjectTags({ tags }) {
-	return (
-		<List direction="row" gap="sm">
-			{tags.map((tag) => (
-				<Badge as="li" key={tag} color="blue">
-					{tag}
-				</Badge>
-			))}
-		</List>
-	);
-}`}
-					</Code>
-					<List as="ul" direction="col" gap="xs">
-						{statusItem(
-							"blue",
-							"210",
-							"browser tests, run in real Chromium — not jsdom.",
-						)}
-						{statusItem(
-							"blue",
-							"111",
-							"components, all composed from that one primitive.",
-						)}
-					</List>
-					<Text variant="caption" muted>
-						Size budget, enforced by CI on every build:
-					</Text>
-					<BarChart
-						categories={["Core", "Charts", "CSS"]}
-						series={[{ label: "Budget (KB)", data: [20, 10.5, 10] }]}
-					/>
-				</Flex>
-			);
+			return <AtomContent />;
 		case "muviz":
-			return (
-				<Flex direction="col" gap="sm">
-					<Text variant="body">
-						Reacts to whatever you're playing, in real time — no dropped frames,
-						even on complex tracks.
-					</Text>
-					<List direction="col" gap="xs">
-						<li>
-							<Text variant="body" muted>
-								A C++ feature extractor, compiled to WebAssembly, runs the
-								spectral analysis once and caches it.
-							</Text>
-						</li>
-						<li>
-							<Text variant="body" muted>
-								Three.js renders every frame off that cache — no audio math on
-								the main thread.
-							</Text>
-						</li>
-					</List>
-				</Flex>
-			);
+			return <MuvizContent />;
 		case "honeycomb":
 			return (
 				<Text variant="body">
@@ -189,4 +111,70 @@ export function getProjectContent(project: ProjectId): ReactNode {
 		default:
 			return assertNever(project);
 	}
+}
+
+function AtomContent() {
+	return (
+		<Flex direction="col" gap="sm">
+			<Text variant="body">I made a ver</Text>
+			<List as="ul" direction="col" gap="xs">
+				{statusItem(
+					"blue",
+					"210",
+					"browser tests, run in real Chromium — not jsdom.",
+				)}
+				{statusItem(
+					"blue",
+					"111",
+					"components, all composed from that one primitive.",
+				)}
+			</List>
+			<Text variant="caption" muted>
+				Size budget, enforced by CI on every build:
+			</Text>
+			<BarChart
+				categories={["Core", "Charts", "CSS"]}
+				series={[{ label: "Budget (KB)", data: [20, 10.5, 10] }]}
+			/>
+		</Flex>
+	);
+}
+
+function MuvizContent() {
+	return (
+		<Flex direction="col" gap="sm">
+			<Text variant="body" muted>
+				I’ve been obsessed with music visualizers since the Winamp days—there’s
+				just something ridiculously satisfying about watching visuals snap to
+				the beat. That itch is exactly why I’m building Muviz: a web visualizer
+				that stays fast without skimping on features.
+			</Text>
+			<List direction="col" gap="xs">
+				<li>
+					<Text variant="body" muted>
+						A C++ feature extractor, compiled to WebAssembly, runs the spectral
+						analysis once and caches it.
+					</Text>
+				</li>
+				<li>
+					<Text variant="body" muted>
+						Three.js renders every frame off that cache — no audio math on the
+						main thread.
+					</Text>
+				</li>
+			</List>
+		</Flex>
+	);
+}
+
+function PortfolioContent() {
+	return (
+		<Flex direction="col" gap="sm">
+			<Text variant="body">
+				Every project I've built, in one catalog — searchable by title, tags, or
+				description as you type. Fuse.js runs client-side, so there's no server
+				round trip.
+			</Text>
+		</Flex>
+	);
 }
