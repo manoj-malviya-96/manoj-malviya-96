@@ -30,6 +30,8 @@ type SoftwareConcepts =
 	| "optimization"
 	| "cad"
 	| "simulation"
+	| "ui-development"
+	| "a/b testing"
 	| "micro-services";
 
 type SoftSkills =
@@ -104,7 +106,15 @@ export function getMeta(project: ProjectId): ProjectMeta {
 					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
 				hook: "The portfolio, describing itself.",
 				dates: "2025",
-				tags: ["web", "open-source", "nextjs", "typescript", "ui/ux"],
+				tags: [
+					"web",
+					"open-source",
+					"nextjs",
+					"react",
+					"typescript",
+					"ui/ux",
+					"rendering",
+				],
 				effort: "medium",
 				media: {
 					kind: "video",
