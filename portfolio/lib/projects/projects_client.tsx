@@ -15,7 +15,7 @@ export default function ProjectsClient() {
 			<ProjectsToc />
 			<List direction="col" gap="xl">
 				{/* TODO use DynamicList when its ready */}
-				{BY_EFFORT.map(({ id }) => (
+				{RANKED_PROJECTS_TO_SHOW.map(({ id }) => (
 					<li key={id}>
 						<ProjectCard project={id} />
 					</li>
@@ -34,7 +34,7 @@ function ProjectsToc() {
 			gap="sm"
 			className="project-toc"
 		>
-			{BY_EFFORT.map(({ id, title }) => (
+			{RANKED_PROJECTS_TO_SHOW.map(({ id, title }) => (
 				<Link key={id} url={`#${id}`}>
 					{title}
 				</Link>
@@ -51,7 +51,14 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-const BY_EFFORT: ProjectSummary[] = AllProjectIds.map((id) => ({
-	id,
-	...getMeta(id),
-})).sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
+const PROJECTS_TO_HIDE: ProjectId[] = ["blackhole"] as const;
+const PROJECTS_TO_SHOW: ProjectId[] = AllProjectIds.filter(
+	(id) => !PROJECTS_TO_HIDE.includes(id),
+);
+
+const RANKED_PROJECTS_TO_SHOW: ProjectSummary[] = PROJECTS_TO_SHOW.map(
+	(id) => ({
+		id,
+		...getMeta(id),
+	}),
+).sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
