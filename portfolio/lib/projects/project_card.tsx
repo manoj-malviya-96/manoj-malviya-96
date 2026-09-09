@@ -39,9 +39,14 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			padding="lg"
 			radius="lg"
 		>
-			<Flex as="span" direction="col" gap="xs">
-				<Text variant="heading">{title}</Text>
-				<ProjectTags tags={tags} date={dates} />
+			<Flex as="span" direction="col" gap="xs" vAlign="start">
+				<Flex as="span" direction="row" hAlign="between" vAlign="center">
+					<Flex as="span" direction="col" gap="xs">
+						<Text variant="heading">{title}</Text>
+						<ProjectTags tags={tags} date={dates} />
+					</Flex>
+					<ProjectLinks project={project} />
+				</Flex>
 				<Divider direction="horizontal" style={{ opacity: "30%" }} />
 			</Flex>
 			<Flex direction="row" gap="lg" wrap>
@@ -50,7 +55,6 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 						{hook}
 					</Text>
 					{getProjectContent(project)}
-					<ProjectLinks project={project} />
 				</Flex>
 				{media && (
 					<Flex
@@ -150,7 +154,6 @@ function ProjectLinks({ project }: { project: ProjectId }) {
 						url={link.href}
 						openNewTab
 						variant="button"
-						buttonVariant="plain"
 						label={label}
 						size="sm"
 						icon={<LinkIcon size="sm" />}
