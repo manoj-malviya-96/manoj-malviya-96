@@ -28,34 +28,49 @@ export function LatticeOutput({
 				onPlaceNode={onPlaceNode}
 			/>
 
-			{result && (
-				<Layer type="absolute" right="md" bottom="md">
-					<Flex direction="row" gap="md">
-						<Stat label="Volume" value={result.totalVolume.toFixed(1)} />
-						<Stat
-							label="Strain energy"
-							value={result.strainEnergy.toFixed(2)}
-						/>
-					</Flex>
-				</Layer>
-			)}
+			<Layer
+				type="absolute"
+				right="md"
+				bottom="md"
+				className="lattice-overlay"
+				data-hidden={result ? undefined : true}
+			>
+				<Flex direction="row" gap="md">
+					<Stat label="Volume" value={result?.totalVolume.toFixed(1) ?? ""} />
+					<Stat
+						label="Strain energy"
+						value={result?.strainEnergy.toFixed(2) ?? ""}
+					/>
+				</Flex>
+			</Layer>
 
-			{isPending && (
-				<Layer type="absolute" right="md" top="md">
-					<Text variant="caption" muted>
-						Solving…
-					</Text>
-				</Layer>
-			)}
+			<Layer
+				type="absolute"
+				right="md"
+				top="md"
+				className="lattice-overlay"
+				data-hidden={isPending ? undefined : true}
+			>
+				<Text variant="caption" muted>
+					Solving…
+				</Text>
+			</Layer>
 
-			{mouseMode !== "none" && (
-				<Layer type="absolute" top="md" left="md">
-					<Text variant="caption" muted>
-						Click a node to{" "}
-						{mouseMode === "fixed" ? "toggle a support" : "cycle its load"}.
-					</Text>
-				</Layer>
-			)}
+			<Layer
+				type="absolute"
+				top="md"
+				left="md"
+				className="lattice-overlay"
+				data-hidden={mouseMode !== "none" ? undefined : true}
+			>
+				<Text variant="caption" muted>
+					Click a node to {mouseModeHint(mouseMode)}.
+				</Text>
+			</Layer>
 		</Layer>
 	);
+}
+
+function mouseModeHint(mouseMode: MouseMode): string {
+	return mouseMode === "fixed" ? "toggle a support" : "cycle its load";
 }
