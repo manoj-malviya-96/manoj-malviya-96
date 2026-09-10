@@ -1,28 +1,15 @@
 import {
 	assertNever,
 	Badge,
-	Code,
 	type ColorToken,
 	Flex,
 	List,
 	Text,
 } from "@manoj-malviya-96/atom";
-import { BarChart } from "@manoj-malviya-96/atom/charts";
+import { IconCircleInfo } from "@manoj-malviya-96/atom/icons";
 import type { ReactNode } from "react";
 import type { ProjectId } from "@/lib/data";
-
-function statusItem(
-	color: ColorToken,
-	status: string,
-	body: ReactNode,
-): ReactNode {
-	return (
-		<Flex as="li" direction="row" gap="xs" vAlign="start">
-			<Badge color={color}>{status}</Badge>
-			<Text variant="body">{body}</Text>
-		</Flex>
-	);
-}
+import { IconBadge, Link } from "@/lib/shared";
 
 export function getProjectContent(project: ProjectId): ReactNode {
 	switch (project) {
@@ -115,42 +102,49 @@ export function getProjectContent(project: ProjectId): ReactNode {
 
 function AtomContent() {
 	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="body">
-				I am obsessed with a lightweight design system to build all of my
-				projects on top of it. I love the philosophy of{" "}
-			</Text>
-			<Text variant="caption" muted>
-				Size budget, enforced by CI on every build:
-			</Text>
-		</Flex>
+		<Text variant="body" muted>
+			I've always been picky about how a UI library feels to build with —{" "}
+			<Link url="https://atomicdesign.bradfrost.com/chapter-2/">
+				atomic design's
+			</Link>{" "}
+			idea of composing everything from one small primitive stuck with me, and
+			so did Apple's discipline: constrained, simple, obviously right.
+			<TwoLineBreak />
+			Every real-world design system I reached for was one extreme or the other
+			- a bloated component set, or untyped CSS that fights you the moment the
+			app grows.
+			<TwoLineBreak />
+			<strong>Atom</strong> is my attempt at both at once. Core idea is to use
+			CSS as much as possible, enforce type safety. Currently its under{" "}
+			<Badge color="green">20KB</Badge> - at least 1/5th of industry standard
+			with type safety and performance built in at cost of constrained design
+			system.
+			<TwoLineBreak />
+			<IconBadge colsor="blue">
+				<IconCircleInfo />
+				This website is built using atom@latest
+			</IconBadge>
+		</Text>
 	);
 }
 
 function MuvizContent() {
 	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="body" muted>
-				I’ve been obsessed with music visualizers since the Winamp days—there’s
-				just something ridiculously satisfying about watching visuals snap to
-				the beat. That itch is exactly why I’m building Muviz: a web visualizer
-				that stays fast without skimping on features.
-			</Text>
-			<List direction="col" gap="xs">
-				<li>
-					<Text variant="body" muted>
-						A C++ feature extractor, compiled to WebAssembly, runs the spectral
-						analysis once and caches it.
-					</Text>
-				</li>
-				<li>
-					<Text variant="body" muted>
-						Three.js renders every frame off that cache — no audio math on the
-						main thread.
-					</Text>
-				</li>
-			</List>
-		</Flex>
+		<Text variant="body" muted>
+			I've been obsessed with music visualizers since the Winamp days — there's
+			something satisfying about watching visuals snap to the beat. That's why
+			I'm building Muviz: a web visualizer that stays fast without skimping on
+			features.
+			<TwoLineBreak />A C++ pipeline (FFT, onset detection, rhythm/brightness
+			features) compiles to WebAssembly and runs once per track, off the main
+			thread in a Web Worker.
+			<TwoLineBreak />
+			Results cache in IndexedDB by content hash, so re-adding a track skips
+			analysis entirely.
+			<TwoLineBreak />
+			The three.js scene is a pure function of (features, playback time) —
+			scrubbing or replaying a track just resamples it, no re-analysis.
+		</Text>
 	);
 }
 
@@ -163,5 +157,26 @@ function PortfolioContent() {
 				round trip.
 			</Text>
 		</Flex>
+	);
+}
+
+function statusItem(
+	color: ColorToken,
+	status: string,
+	body: ReactNode,
+): ReactNode {
+	return (
+		<Flex as="li" direction="row" gap="xs" vAlign="start">
+			<Badge color={color}>{status}</Badge>
+			<Text variant="body">{body}</Text>
+		</Flex>
+	);
+}
+
+function TwoLineBreak() {
+	return (
+		<>
+			<br /> <br />
+		</>
 	);
 }

@@ -16,8 +16,282 @@ export const AllProjectIds = [
 	"simphy",
 	"truss_opt",
 ] as const;
-
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
+
+export function getMeta(project: ProjectId): ProjectMeta {
+	switch (project) {
+		case "portfolio":
+			return {
+				title: "Portfolio",
+				summary: "The portfolio, describing itself.",
+				dates: "2025",
+				tags: [
+					"web",
+					"open-source",
+					"nextjs",
+					"react",
+					"typescript",
+					"ui/ux",
+					"rendering",
+				],
+				effort: "medium",
+				media: {
+					kind: "video",
+					src: getBlobUrl("portfolio.webm"),
+					alt: "This portfolio’s interactive landing page in motion.",
+				},
+			};
+		case "atom":
+			return {
+				title: "Atom",
+				summary: "Fast, Typed and Extremely Small React UI Library",
+				dates: "2024–2025",
+				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
+				effort: "high",
+			};
+		case "muviz":
+			return {
+				title: "Muviz",
+				summary: "Winamp nostalgia, rebuilt for the GPU.",
+				dates: "2023",
+				tags: [
+					"web",
+					"wasm",
+					"c++",
+					"typescript",
+					"dsp",
+					"react",
+					"ui/ux",
+					"threejs",
+				],
+				effort: "high",
+				media: {
+					kind: "video",
+					src: getBlobUrl("muviz.webm"),
+					alt: "Muviz reacting to a track in real time.",
+				},
+			};
+		case "honeycomb":
+			return {
+				title: "HoneyMesh",
+				summary: "Because hexagons are just better, structurally speaking.",
+				dates: "2022",
+				tags: [
+					"rendering",
+					"high-performance",
+					"open-source",
+					"c++",
+					"vtk",
+					"cad",
+				],
+				effort: "medium",
+				media: {
+					kind: "video",
+					src: getBlobUrl("honeycomb_demo.webm"),
+					alt: "A honeycomb lattice generated and rendered in VTK.",
+				},
+			};
+		case "topopt_py":
+			return {
+				title: "topopt-py",
+				summary:
+					"A 40-year-old optimization algorithm, dragged into this decade.",
+				dates: "2021",
+				tags: ["simulation", "optimization", "high-performance", "python"],
+				effort: "high",
+				media: {
+					kind: "video",
+					src: getBlobUrl("optimization.webm"),
+					alt: "A topology optimization converging on a solution.",
+				},
+			};
+		case "blackhole":
+			return {
+				title: "Blackhole",
+				summary:
+					"Gravity, rendered in real time, because I couldn't wait for the movie.",
+				dates: "2023",
+				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
+				effort: "high",
+				media: {
+					kind: "image",
+					src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
+					alt: "Cover art for the black hole renderer.",
+				},
+			};
+		case "ev_sim":
+			return {
+				title: "EV Charging Simulator",
+				summary: "How many chargers do you actually need? Simulate it first.",
+				dates: "2024",
+				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
+				effort: "medium",
+				media: {
+					kind: "image",
+					src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+					alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
+				},
+			};
+		case "mesha":
+			return {
+				title: "Mesha",
+				summary: "Mesh repair, from the command line to a real editor.",
+				dates: "2025",
+				tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
+				effort: "low",
+				media: {
+					kind: "image",
+					src: getOgUrl("mesha"),
+					alt: "The Mesha mesh-repair-tool repository.",
+				},
+			};
+		case "simphy":
+			return {
+				title: "Simphy",
+				summary: "Simulating the universe. Literally, eventually.",
+				dates: "2025",
+				tags: ["simulation", "c++", "open-source"],
+				effort: "low",
+				media: {
+					kind: "image",
+					src: getOgUrl("simphy"),
+					alt: "The Simphy physics-simulation-sandbox repository.",
+				},
+			};
+		case "truss_opt":
+			return {
+				title: "Truss Optimizer",
+				summary: "Draw a truss. Watch it optimize itself.",
+				dates: "2025",
+				tags: ["simulation", "optimization", "web", "react", "typescript"],
+				effort: "medium",
+				media: {
+					kind: "image",
+					src: trussOptScreenshot,
+					alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
+				},
+			};
+		default:
+			return assertNever(project);
+	}
+}
+
+export function getLinks(project: ProjectId): ProjectLinkSet {
+	switch (project) {
+		case "portfolio":
+			return {
+				primary: {
+					kind: "github",
+					href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
+				},
+				others: [
+					{
+						kind: "external",
+						label: "Previous version",
+						href: "https://manoj-malviya-96.github.io/",
+					},
+				],
+			};
+		case "atom":
+			return {
+				others: [
+					{
+						kind: "github",
+						href: "https://github.com/manoj-malviya-96/atom",
+					},
+				],
+				primary: {
+					kind: "demo",
+					label: "Showcase",
+					href: "https://atom-two-tan.vercel.app",
+				},
+			};
+		case "muviz":
+			return {
+				primary: {
+					kind: "demo",
+					label: "App",
+					href: "https://muviz.vercel.app/",
+				},
+				others: [
+					{
+						kind: "github",
+						href: "https://github.com/manoj-malviya-96/muviz",
+					},
+				],
+			};
+		case "honeycomb":
+			return {
+				others: [],
+				primary: {
+					kind: "github",
+					href: "https://github.com/manoj-malviya-96/honeycomb/tree/master",
+				},
+			};
+		case "topopt_py":
+			return {
+				others: [
+					{
+						kind: "github",
+						href: "https://github.com/manoj-malviya-96/topopt-py/tree/master",
+					},
+				],
+				primary: {
+					kind: "medium",
+					href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
+				},
+			};
+		case "blackhole":
+			return {
+				others: [],
+				primary: {
+					kind: "github",
+					href: "https://github.com/manoj-malviya-96/blackhole/tree/master",
+				},
+			};
+		case "ev_sim":
+			return {
+				others: [],
+				primary: {
+					kind: "github",
+					href: "https://github.com/manoj-malviya-96/ev-sim",
+				},
+			};
+		case "mesha":
+			return {
+				others: [
+					{
+						kind: "github",
+						href: "https://github.com/manoj-malviya-96/mesha",
+					},
+				],
+				primary: {
+					kind: "demo",
+					label: "Preview",
+					href: "https://mesha3.vercel.app",
+				},
+			};
+		case "simphy":
+			return {
+				others: [],
+				primary: {
+					kind: "github",
+					href: "https://github.com/manoj-malviya-96/simphy",
+				},
+			};
+		case "truss_opt":
+			return {
+				others: [],
+				primary: {
+					kind: "demo",
+					label: "Try it",
+					href: "/demos/truss-opt",
+				},
+			};
+		default:
+			return assertNever(project);
+	}
+}
 
 type SoftwareConcepts =
 	| "web"
@@ -32,6 +306,7 @@ type SoftwareConcepts =
 	| "simulation"
 	| "ui-development"
 	| "a/b testing"
+	| "dsp"
 	| "micro-services";
 
 type SoftSkills =
@@ -76,12 +351,11 @@ export type ProjectMedia =
 
 export type ProjectMeta = {
 	title: string;
-	description: string;
-	hook: string;
+	summary: string;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	media: ProjectMedia;
+	media?: ProjectMedia;
 };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
@@ -94,270 +368,18 @@ export type ProjectLink =
 	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
 	| { kind: "external"; label: string; href: ExternalURL };
 
+export type ProjectLinkSet = {
+	primary: ProjectLink;
+	others: readonly ProjectLink[];
+};
+
 const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
 const OG = "https://opengraph.githubassets.com/1/manoj-malviya-96";
 
-export function getMeta(project: ProjectId): ProjectMeta {
-	switch (project) {
-		case "portfolio":
-			return {
-				title: "Portfolio",
-				description:
-					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
-				hook: "The portfolio, describing itself.",
-				dates: "2025",
-				tags: [
-					"web",
-					"open-source",
-					"nextjs",
-					"react",
-					"typescript",
-					"ui/ux",
-					"rendering",
-				],
-				effort: "medium",
-				media: {
-					kind: "video",
-					src: `${BLOB}/portfolio.webm`,
-					alt: "This portfolio’s interactive landing page in motion.",
-				},
-			};
-		case "atom":
-			return {
-				title: "Atom",
-				description:
-					"A minimal, CSS-first React UI library: one primitive, one stylesheet, everything composes from it. Styling and motion live in CSS, not JS — with enforced size budgets and real-browser tests.",
-				hook: "One primitive. The whole design system composes from it.",
-				dates: "2024–2025",
-				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
-				effort: "high",
-				media: {
-					kind: "image",
-					src: `${OG}/atom`,
-					alt: "The atom design-system repository.",
-				},
-			};
-		case "muviz":
-			return {
-				title: "Muviz",
-				description:
-					"A fast, feature-rich music visualizer for reactive beautiful visualizations",
-				hook: "Winamp nostalgia, rebuilt for the GPU.",
-				dates: "2023",
-				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
-				effort: "high",
-				media: {
-					kind: "video",
-					src: `${BLOB}/muviz.webm`,
-					alt: "Muviz reacting to a track in real time.",
-				},
-			};
-		case "honeycomb":
-			return {
-				title: "HoneyMesh",
-				description:
-					"A C++ skeletonization algorithm that generates honeycomb lattices and exports straight to a VTK mesh for CAD and simulation.",
-				hook: "Because hexagons are just better, structurally speaking.",
-				dates: "2022",
-				tags: [
-					"rendering",
-					"high-performance",
-					"open-source",
-					"c++",
-					"vtk",
-					"cad",
-				],
-				effort: "medium",
-				media: {
-					kind: "video",
-					src: `${BLOB}/honeycomb_demo.webm`,
-					alt: "A honeycomb lattice generated and rendered in VTK.",
-				},
-			};
-		case "topopt_py":
-			return {
-				title: "topopt-py",
-				description: "A 2D topology-optimization solver, rewritten for speed.",
-				hook: "A 40-year-old optimization algorithm, dragged into this decade.",
-				dates: "2021",
-				tags: ["simulation", "optimization", "high-performance", "python"],
-				effort: "high",
-				media: {
-					kind: "video",
-					src: `${BLOB}/optimization.webm`,
-					alt: "A topology optimization converging on a solution.",
-				},
-			};
-		case "blackhole":
-			return {
-				title: "Blackhole",
-				description:
-					"A real-time GLSL raymarcher: integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing, at interactive frame rates.",
-				hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
-				dates: "2023",
-				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
-				effort: "high",
-				media: {
-					kind: "image",
-					src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
-					alt: "Cover art for the black hole renderer.",
-				},
-			};
-		case "ev_sim":
-			return {
-				title: "EV Charging Simulator",
-				description:
-					"A Monte Carlo simulator for EV charging-lot demand: Poisson-process arrivals, per-interval power draw, concurrency factor — with a React front end for running scenarios.",
-				hook: "How many chargers do you actually need? Simulate it first.",
-				dates: "2024",
-				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
-				effort: "medium",
-				media: {
-					kind: "image",
-					src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
-					alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
-				},
-			};
-		case "mesha":
-			return {
-				title: "Mesha",
-				description:
-					"An in-progress 3D mesh-repair tool: a C++/Qt backend exposed as both a CLI and a WebSocket service, with a Tauri + Next.js editor on top.",
-				hook: "Mesh repair, from the command line to a real editor.",
-				dates: "2025",
-				tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
-				effort: "low",
-				media: {
-					kind: "image",
-					src: `${OG}/mesha`,
-					alt: "The Mesha mesh-repair-tool repository.",
-				},
-			};
-		case "simphy":
-			return {
-				title: "Simphy",
-				description:
-					"An early-stage physics-simulation sandbox: C++ core, no rendering layer yet.",
-				hook: "Simulating the universe. Literally, eventually.",
-				dates: "2025",
-				tags: ["simulation", "c++", "open-source"],
-				effort: "low",
-				media: {
-					kind: "image",
-					src: `${OG}/simphy`,
-					alt: "The Simphy physics-simulation-sandbox repository.",
-				},
-			};
-		case "truss_opt":
-			return {
-				title: "Truss Optimizer",
-				description:
-					"A 2D truss topology optimizer: draw a cantilever lattice, place supports and loads, then run an optimality-criteria solver that redistributes material to the members carrying the load. Extracted out of Simphy since it's small enough to live as a demo here, running through this site's own API.",
-				hook: "Draw a truss. Watch it optimize itself.",
-				dates: "2025",
-				tags: ["simulation", "optimization", "web", "react", "typescript"],
-				effort: "medium",
-				media: {
-					kind: "image",
-					src: trussOptScreenshot,
-					alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
-				},
-			};
-		default:
-			return assertNever(project);
-	}
+function getBlobUrl(filename: string): string {
+	return `${BLOB}/${filename}`;
 }
 
-export function getLinks(project: ProjectId): readonly ProjectLink[] {
-	switch (project) {
-		case "portfolio":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
-				},
-				{
-					kind: "external",
-					label: "Previous version",
-					href: "https://manoj-malviya-96.github.io/",
-				},
-			];
-		case "atom":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/atom",
-				},
-				{
-					kind: "demo",
-					label: "Playground",
-					href: "https://atom-two-tan.vercel.app",
-				},
-			];
-		case "muviz":
-			return [
-				{ kind: "demo", label: "Demo", href: "https://muviz.vercel.app/" },
-			];
-		case "honeycomb":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/honeycomb/tree/master",
-				},
-			];
-		case "topopt_py":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/topopt-py/tree/master",
-				},
-				{
-					kind: "medium",
-					href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
-				},
-			];
-		case "blackhole":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/blackhole/tree/master",
-				},
-			];
-		case "ev_sim":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/ev-sim",
-				},
-			];
-		case "mesha":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/mesha",
-				},
-				{
-					kind: "demo",
-					label: "Preview",
-					href: "https://mesha3.vercel.app",
-				},
-			];
-		case "simphy":
-			return [
-				{
-					kind: "github",
-					href: "https://github.com/manoj-malviya-96/simphy",
-				},
-			];
-		case "truss_opt":
-			return [
-				{
-					kind: "demo",
-					label: "Try it",
-					href: "/demos/truss-opt",
-				},
-			];
-		default:
-			return assertNever(project);
-	}
+function getOgUrl(repo: string): string {
+	return `${OG}/${repo}`;
 }

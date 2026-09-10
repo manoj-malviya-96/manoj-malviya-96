@@ -26,7 +26,7 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, dates, tags, media } = getMeta(project);
+	const { title, summary: hook, dates, tags, media } = getMeta(project);
 
 	return (
 		<Flex
@@ -54,16 +54,18 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 					</Text>
 					{getProjectContent(project)}
 				</Flex>
-				<Flex
-					as="span"
-					direction="col"
-					gap="md"
-					vAlign="start"
-					grow
-					className="project-panel"
-				>
-					<ProjectCover media={media} />
-				</Flex>
+				{media && (
+					<Flex
+						as="span"
+						direction="col"
+						gap="md"
+						vAlign="start"
+						grow
+						className="project-panel"
+					>
+						<ProjectCover media={media} />
+					</Flex>
+				)}
 			</Flex>
 		</Flex>
 	);
@@ -92,6 +94,7 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 				fit="cover"
 				ratio="video"
 				radius="md"
+				style={{ aspectRatio: "5 / 4" }}
 				autoPlay
 				muted
 				loop
@@ -108,7 +111,7 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 			<div
 				style={{
 					position: "relative",
-					aspectRatio: "16 / 9",
+					aspectRatio: "5 / 4",
 					width: "100%",
 					overflow: "hidden",
 					borderRadius: "var(--radius-md)",
@@ -132,31 +135,45 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 			fit="cover"
 			ratio="video"
 			radius="md"
+			style={{ aspectRatio: "5 / 4" }}
 		/>
 	);
 }
 
 function ProjectLinks({ project }: { project: ProjectId }) {
-	const links = getLinks(project);
+	const { primary, others } = getLinks(project);
 
 	return (
 		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-			{links.map((link) => {
-				const LinkIcon = linkIcon(link);
-				const label = linkLabel(link);
-				return (
-					<Link
-						key={link.href}
-						url={link.href}
-						openNewTab
-						variant="button"
-						label={label}
-						size="sm"
-						icon={<LinkIcon size="sm" />}
-					/>
-				);
-			})}
+			{[...others, primary].map((link) => (
+				<ProjectLinkButton
+					key={link.href}
+					link={link}
+					color={link === primary ? "primary" : "secondary"}
+				/>
+			))}
 		</Flex>
+	);
+}
+
+function ProjectLinkButton({
+	link,
+	color,
+}: {
+	link: ProjectLink;
+	color: "primary" | "secondary";
+}) {
+	const LinkIcon = linkIcon(link);
+	return (
+		<Link
+			url={link.href}
+			openNewTab
+			variant="button"
+			label={linkLabel(link)}
+			size="sm"
+			color={color}
+			icon={<LinkIcon size="sm" />}
+		/>
 	);
 }
 
