@@ -1,13 +1,8 @@
 html {
-	text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility; /* Todo add this atom */
 	font-synthesis: none;
 	color-scheme: light dark;
-}
-
-h1,
-h2,
-h3 {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+	font-size: 18px; /* Todo add this atom */
 }
 
 /* Todo integrate in atom: Link renders a plain Atom, not a Text, so it has no bold/font-size/
