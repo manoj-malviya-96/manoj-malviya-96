@@ -76,7 +76,12 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 					{formatDate(start)} — {end ? formatDate(end) : "Present"}
 				</Text>
 			</Flex>
-			<Timeline events={experiences.map(roleEvent)} />
+			<Timeline
+				events={experiences.map(roleEvent)}
+				className={
+					experiences.length === 1 ? "track-timeline-single" : undefined
+				}
+			/>
 		</Grid>
 	);
 }
