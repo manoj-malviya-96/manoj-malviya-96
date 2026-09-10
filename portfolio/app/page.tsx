@@ -1,9 +1,8 @@
-import { assertNever, Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { assertNever, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import {
 	IconBriefcase,
 	IconChartLine,
 	IconCode,
-	IconFile,
 	IconLink,
 	IconList,
 	IconMagnifyingGlass,
@@ -13,13 +12,8 @@ import { getPhase, PHASE_IDS, type PhaseId } from "@/lib/data";
 import { dottedConcatString, withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
-import {
-	Eyebrow,
-	InlineBadge,
-	Link,
-	Section,
-	SectionHeader,
-} from "@/lib/shared";
+
+import { Eyebrow, IconBadge, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (
@@ -103,10 +97,10 @@ function LoopCard({
 	const PhaseIcon = phaseIcon(id);
 	return (
 		<FlexCard direction="col">
-			<InlineBadge color={color}>
+			<IconBadge color={color}>
 				<PhaseIcon size="sm" />
 				{label}
-			</InlineBadge>
+			</IconBadge>
 			<Text variant="body">{copy}</Text>
 		</FlexCard>
 	);

@@ -72,7 +72,7 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 
 export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
-export const InlineBadge = withDefaults(Badge)({
+export const IconBadge = withDefaults(Badge)({
 	width: "fit",
 	padding: { x: "md", y: "sm" },
 });
