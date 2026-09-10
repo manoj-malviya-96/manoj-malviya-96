@@ -41,7 +41,6 @@ export function useTrussOpt() {
 	const [mouseMode, setMouseMode] = useState<MouseMode>("none");
 	const [optimizeConfig, setOptimizeConfig] = useState(INITIAL_OPTIMIZE_CONFIG);
 	const [result, setResult] = useState<TrussOptResult | null>(null);
-	const [isOptimized, setIsOptimized] = useState(false);
 
 	const mutation = useTrussOptMutation();
 
@@ -49,7 +48,6 @@ export function useTrussOpt() {
 
 	const invalidateResult = useCallback(() => {
 		setResult(null);
-		setIsOptimized(false);
 		mutation.reset();
 	}, [mutation]);
 
@@ -88,7 +86,6 @@ export function useTrussOpt() {
 				{
 					onSuccess: (data) => {
 						setResult(data);
-						setIsOptimized(optimize !== undefined);
 					},
 				},
 			);
@@ -113,7 +110,6 @@ export function useTrussOpt() {
 		mouseMode,
 		optimizeConfig,
 		canRunFea,
-		isOptimized,
 		result,
 		isPending: mutation.isPending,
 		error: mutation.isError ? mutation.error.message : null,

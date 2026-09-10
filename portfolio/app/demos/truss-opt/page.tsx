@@ -13,7 +13,6 @@ export default function TrussOptDemoPage() {
 		mouseMode,
 		optimizeConfig,
 		canRunFea,
-		isOptimized,
 		result,
 		isPending,
 		error,
@@ -40,7 +39,6 @@ export default function TrussOptDemoPage() {
 					mouseMode={mouseMode}
 					optimizeConfig={optimizeConfig}
 					canRunFea={canRunFea}
-					isOptimized={isOptimized}
 					hasResult={result !== null}
 					isPending={isPending}
 					error={error}

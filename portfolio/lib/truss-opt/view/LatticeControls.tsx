@@ -20,7 +20,6 @@ interface LatticeControlsProps {
 	mouseMode: MouseMode;
 	optimizeConfig: TrussOptimizeInput;
 	canRunFea: boolean;
-	isOptimized: boolean;
 	hasResult: boolean;
 	isPending: boolean;
 	error: string | null;
@@ -37,7 +36,6 @@ export function LatticeControls({
 	mouseMode,
 	optimizeConfig,
 	canRunFea,
-	isOptimized,
 	hasResult,
 	isPending,
 	error,
@@ -220,19 +218,11 @@ export function LatticeControls({
 						/>
 					)}
 				</Field>
-				<Flex direction="row" gap="sm">
-					<Button
-						label={isPending ? "Optimizing…" : "Optimize"}
-						onClick={onOptimize}
-						disabled={editing || isPending || !canRunFea}
-					/>
-					<Button
-						variant="plain"
-						label="Clear"
-						onClick={onClear}
-						disabled={editing || !isOptimized}
-					/>
-				</Flex>
+				<Button
+					label={isPending ? "Optimizing…" : "Optimize"}
+					onClick={onOptimize}
+					disabled={editing || isPending || !canRunFea}
+				/>
 			</Flex>
 		</Flex>
 	);
