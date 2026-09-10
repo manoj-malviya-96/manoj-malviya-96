@@ -1,4 +1,7 @@
 html {
+	--font-sans:
+		var(--font-body), -apple-system, BlinkMacSystemFont, "SF Pro Text",
+		"Segoe UI", system-ui, sans-serif;
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
 	color-scheme: light dark;
