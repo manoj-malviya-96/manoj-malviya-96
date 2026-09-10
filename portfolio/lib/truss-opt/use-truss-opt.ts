@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useObservable, useSelector } from "@legendapp/state/react";
+import { useCallback, useMemo } from "react";
 import {
 	type TrussOptimizeInput,
 	type TrussOptResult,
@@ -29,74 +30,104 @@ const INITIAL_OPTIMIZE_CONFIG: TrussOptimizeInput = {
 	targetFraction: 0.3,
 };
 
+interface TrussOptState {
+	meshConfig: TrussMeshConfig;
+	mesh: TrussMesh;
+	mouseMode: MouseMode;
+	optimizeConfig: TrussOptimizeInput;
+	result: TrussOptResult | null;
+}
+
 /** Node geometry (mesh shape, supports, loads) stays client-side — it's cheap and needs to
  * redraw on every pointer move. The FEA solve and OC optimization loop are the actual compute,
  * so those go through this site's own API route via useTrussOptMutation, same as the GitHub and
  * Scholar widgets fetch their data through /api/github and /api/scholar. */
 export function useTrussOpt() {
-	const [meshConfig, setMeshConfigState] = useState(INITIAL_MESH_CONFIG);
-	const [mesh, setMesh] = useState<TrussMesh>(() =>
-		createTrussMesh(INITIAL_MESH_CONFIG),
-	);
-	const [mouseMode, setMouseMode] = useState<MouseMode>("none");
-	const [optimizeConfig, setOptimizeConfig] = useState(INITIAL_OPTIMIZE_CONFIG);
-	const [result, setResult] = useState<TrussOptResult | null>(null);
+	const state$ = useObservable<TrussOptState>(() => ({
+		meshConfig: INITIAL_MESH_CONFIG,
+		mesh: createTrussMesh(INITIAL_MESH_CONFIG),
+		mouseMode: "none",
+		optimizeConfig: INITIAL_OPTIMIZE_CONFIG,
+		result: null,
+	}));
+
+	const meshConfig = useSelector(() => state$.meshConfig.get());
+	const mesh = useSelector(() => state$.mesh.get());
+	const mouseMode = useSelector(() => state$.mouseMode.get());
+	const optimizeConfig = useSelector(() => state$.optimizeConfig.get());
+	const result = useSelector(() => state$.result.get());
 
 	const mutation = useTrussOptMutation();
 
 	const canRunFea = isReadyToOptimize(mesh);
 
 	const invalidateResult = useCallback(() => {
-		setResult(null);
+		state$.result.set(null);
 		mutation.reset();
-	}, [mutation]);
+	}, [mutation, state$]);
 
 	const setMeshConfig = useCallback(
 		(config: TrussMeshConfig) => {
-			setMeshConfigState(config);
-			setMesh(createTrussMesh(config));
+			state$.meshConfig.set(config);
+			state$.mesh.set(createTrussMesh(config));
 			invalidateResult();
 		},
-		[invalidateResult],
+		[invalidateResult, state$],
+	);
+
+	const setMouseMode = useCallback(
+		(mode: MouseMode) => {
+			state$.mouseMode.set(mode);
+		},
+		[state$],
+	);
+
+	const setOptimizeConfig = useCallback(
+		(config: TrussOptimizeInput) => {
+			state$.optimizeConfig.set(config);
+		},
+		[state$],
 	);
 
 	const placeNode = useCallback(
 		(x: number, y: number) => {
-			if (mouseMode === "none") return;
-			setMesh((current) =>
-				mouseMode === "fixed"
+			const mode = state$.mouseMode.peek();
+			if (mode === "none") return;
+			state$.mesh.set((current) =>
+				mode === "fixed"
 					? toggleFixedNode(current, x, y)
 					: toggleForceNode(current, x, y),
 			);
 			invalidateResult();
 		},
-		[mouseMode, invalidateResult],
+		[invalidateResult, state$],
 	);
 
 	const run = useCallback(
 		(optimize?: TrussOptimizeInput) => {
+			const currentMesh = state$.mesh.peek();
 			const meshInput = {
-				...meshConfig,
-				fixedPoints: [...mesh.fixedPoints],
-				forcePointsX: [...mesh.forcePointsX],
-				forcePointsY: [...mesh.forcePointsY],
+				...state$.meshConfig.peek(),
+				fixedPoints: [...currentMesh.fixedPoints],
+				forcePointsX: [...currentMesh.forcePointsX],
+				forcePointsY: [...currentMesh.forcePointsY],
 			};
 			mutation.mutate(
 				optimize ? { mesh: meshInput, optimize } : { mesh: meshInput },
 				{
 					onSuccess: (data) => {
-						setResult(data);
+						state$.result.set(data);
 					},
 				},
 			);
 		},
-		[mesh, meshConfig, mutation],
+		[mutation, state$],
 	);
 
 	const simulate = useCallback(() => run(), [run]);
 	const optimize = useCallback(
-		() => run(optimizeConfig),
-		[run, optimizeConfig],
+		() => run(state$.optimizeConfig.peek()),
+		[run, state$],
 	);
 
 	const displayedMesh: TrussMesh = useMemo(
