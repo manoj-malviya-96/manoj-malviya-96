@@ -1,23 +1,25 @@
-import { Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { assertNever, Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import {
+	IconBriefcase,
 	IconChartLine,
 	IconCode,
+	IconFile,
 	IconLink,
+	IconList,
 	IconMagnifyingGlass,
 	IconPalette,
 } from "@manoj-malviya-96/atom/icons";
-import {
-	EXPERIENCE_BY_RECENCY,
-	getEmployer,
-	getExperience,
-	getPhase,
-	PHASE_IDS,
-	type PhaseId,
-} from "@/lib/data";
-import { dottedConcatString, uniqueBy } from "@/lib/helper";
+import { getPhase, PHASE_IDS, type PhaseId } from "@/lib/data";
+import { dottedConcatString, withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
-import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import {
+	Eyebrow,
+	InlineBadge,
+	Link,
+	Section,
+	SectionHeader,
+} from "@/lib/shared";
 
 export default function Landing() {
 	return (
@@ -32,28 +34,17 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<Section
-			id="home-hero"
-			as="header"
-			direction="col"
-			gap="lg"
-			width={{
-				max: "lg",
-			}}
-			variant="plain"
-			padding={{
-				y: "lg",
-			}}
-			vAlign="between"
-		>
+		<HeroSection id="home-hero">
 			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
 			<Text variant="hero">Engineering Intelligent Products</Text>
 			<Text variant="subtitle">
-				Over <Badge as="span">7+ years </Badge>, I’ve worked across research,
-				software, AI, and computational design to build products that push the
-				boundaries of what’s possible. I love taking complex problems from first
-				principles and turning them into fast, intuitive, real-world
-				experiences.
+				Hey, I am Manoj Malviya{" "}
+				{dottedConcatString([
+					"Computation Design",
+					"High Performance Software",
+					"Product Engineering",
+					"Multi Discipline Research",
+				])}
 			</Text>
 			<Flex
 				as="span"
@@ -64,12 +55,13 @@ function Hero() {
 				wrap
 			>
 				<Link
-					url="#loop"
+					url="/projects"
 					variant="button"
 					buttonVariant="filled"
 					color="secondary"
 					size="sm"
-					label="See how I work"
+					label="Projects"
+					icon={<IconList />}
 				/>
 				<Link
 					url="/resume"
@@ -77,10 +69,11 @@ function Hero() {
 					buttonVariant="filled"
 					color="primary"
 					size="sm"
-					label="Past work"
+					label="Resume"
+					icon={<IconBriefcase />}
 				/>
 			</Flex>
-		</Section>
+		</HeroSection>
 	);
 }
 
@@ -109,13 +102,36 @@ function LoopCard({
 }: { id: PhaseId } & ReturnType<typeof getPhase>) {
 	const PhaseIcon = phaseIcon(id);
 	return (
-		<Flex direction="col" gap="md" padding="lg" radius="lg" bg="surface" blur>
-			<Badge color={color} width="fit" padding="sm">
+		<FlexCard direction="col">
+			<InlineBadge color={color}>
 				<PhaseIcon size="sm" />
 				{label}
-			</Badge>
+			</InlineBadge>
 			<Text variant="body">{copy}</Text>
-		</Flex>
+		</FlexCard>
+	);
+}
+
+function FeaturedWork() {
+	return (
+		<Section id="home-feature" gap="lg">
+			<SectionHeader
+				eyebrow="Shipped work"
+				title="Proof, briefly."
+				caption="A few things I've built, shipped, and measured"
+			/>
+			<FlexCard direction="row">
+				<Link
+					url="/resume"
+					icon={<IconLink />}
+					variant="button"
+					color="secondary"
+					collapse
+					label="Full history"
+				/>
+			</FlexCard>
+			<ShowAndTellGrid />
+		</Section>
 	);
 }
 
@@ -129,53 +145,32 @@ function phaseIcon(id: PhaseId) {
 			return IconCode;
 		case "measure":
 			return IconChartLine;
+		default:
+			assertNever(id);
 	}
 }
 
-function FeaturedWork() {
-	return (
-		<Section id="home-feature" gap="lg">
-			<SectionHeader
-				eyebrow="Shipped work"
-				title="Proof, briefly."
-				caption="The messy parts live on the full work page."
-			/>
-			<WorkExHistory />
-			<ShowAndTellGrid />
-		</Section>
-	);
-}
+const FlexCard = withDefaults(Flex)({
+	hAlign: "between",
+	vAlign: "center",
+	gap: "md",
+	padding: "md",
+	radius: "lg",
+	bg: "surface",
+	blur: true,
+	wrap: true,
+});
 
-function WorkExHistory() {
-	const workExp = uniqueBy(
-		[...EXPERIENCE_BY_RECENCY],
-		(experience) => getExperience(experience).organization,
-	).slice(0, 3);
-	const stringToRender = dottedConcatString(
-		workExp.map((experience) => getEmployer(experience).name),
-	);
-
-	return (
-		<Flex
-			direction="row"
-			hAlign="between"
-			vAlign="center"
-			gap="md"
-			padding="lg"
-			radius="lg"
-			bg="surface"
-			blur
-			wrap
-		>
-			{stringToRender}
-			<Link
-				url="/resume"
-				icon={<IconLink />}
-				variant="button"
-				color="secondary"
-				collapse
-				label="Full history"
-			/>
-		</Flex>
-	);
-}
+const HeroSection = withDefaults(Section)({
+	as: "header",
+	direction: "col",
+	gap: "md",
+	width: {
+		max: "md",
+	},
+	variant: "plain",
+	padding: {
+		y: "lg",
+	},
+	vAlign: "between",
+});

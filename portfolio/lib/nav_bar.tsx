@@ -67,6 +67,7 @@ export default function NavBar() {
 						label="Contact"
 						aria-label="Contact"
 						collapse
+						color="primary"
 					/>
 				</Flex>
 			}

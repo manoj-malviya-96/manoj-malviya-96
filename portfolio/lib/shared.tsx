@@ -1,16 +1,9 @@
 "use client";
 
-import { Link as AtomLink, Flex, Text } from "@manoj-malviya-96/atom";
+import { Link as AtomLink, Badge, Flex, Text } from "@manoj-malviya-96/atom";
 import NextLink from "next/link";
-import type { ComponentProps, ComponentType, ReactNode } from "react";
-
-function styled<P extends object>(Component: ComponentType<P>) {
-	return function preset<D extends Partial<P>>(defaultProps: D) {
-		return function Styled(props: Omit<P, keyof D> & Partial<D>) {
-			return <Component {...defaultProps} {...(props as P)} />;
-		};
-	};
-}
+import type { ComponentProps, ReactNode } from "react";
+import { withDefaults } from "@/lib/helper";
 
 type SectionId = "home-loop" | "home-feature" | "home-hero";
 
@@ -77,4 +70,9 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	);
 }
 
-export const Eyebrow = styled(Text)({ variant: "overline", mono: true });
+export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
+
+export const InlineBadge = withDefaults(Badge)({
+	width: "fit",
+	padding: { x: "md", y: "sm" },
+});

@@ -15,7 +15,6 @@ import {
 import NextImage from "next/image";
 import {
 	getLinks,
-	getMedia,
 	getMeta,
 	type ProjectId,
 	type ProjectLink,
@@ -27,8 +26,7 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, dates, tags } = getMeta(project);
-	const media = getMedia(project);
+	const { title, hook, dates, tags, media } = getMeta(project);
 
 	return (
 		<Flex
@@ -39,9 +37,14 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			padding="lg"
 			radius="lg"
 		>
-			<Flex as="span" direction="col" gap="xs">
-				<Text variant="heading">{title}</Text>
-				<ProjectTags tags={tags} date={dates} />
+			<Flex as="span" direction="col" gap="xs" vAlign="start">
+				<Flex as="span" direction="row" hAlign="between" vAlign="center">
+					<Flex as="span" direction="col" gap="xs">
+						<Text variant="heading">{title}</Text>
+						<ProjectTags tags={tags} date={dates} />
+					</Flex>
+					<ProjectLinks project={project} />
+				</Flex>
 				<Divider direction="horizontal" style={{ opacity: "30%" }} />
 			</Flex>
 			<Flex direction="row" gap="lg" wrap>
@@ -50,20 +53,17 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 						{hook}
 					</Text>
 					{getProjectContent(project)}
-					<ProjectLinks project={project} />
 				</Flex>
-				{media && (
-					<Flex
-						as="span"
-						direction="col"
-						gap="md"
-						vAlign="start"
-						grow
-						className="project-panel"
-					>
-						<ProjectCover media={media} />
-					</Flex>
-				)}
+				<Flex
+					as="span"
+					direction="col"
+					gap="md"
+					vAlign="start"
+					grow
+					className="project-panel"
+				>
+					<ProjectCover media={media} />
+				</Flex>
 			</Flex>
 		</Flex>
 	);
@@ -150,7 +150,6 @@ function ProjectLinks({ project }: { project: ProjectId }) {
 						url={link.href}
 						openNewTab
 						variant="button"
-						buttonVariant="plain"
 						label={label}
 						size="sm"
 						icon={<LinkIcon size="sm" />}

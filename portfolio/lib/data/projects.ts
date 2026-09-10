@@ -30,6 +30,8 @@ type SoftwareConcepts =
 	| "optimization"
 	| "cad"
 	| "simulation"
+	| "ui-development"
+	| "a/b testing"
 	| "micro-services";
 
 type SoftSkills =
@@ -68,6 +70,10 @@ export type ProjectTag =
 
 export type ProjectEffort = "low" | "medium" | "high";
 
+export type ProjectMedia =
+	| { kind: "image"; src: LocalImage | string; alt: string }
+	| { kind: "video"; src: string; alt: string };
+
 export type ProjectMeta = {
 	title: string;
 	description: string;
@@ -75,11 +81,8 @@ export type ProjectMeta = {
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
+	media: ProjectMedia;
 };
-
-export type ProjectMedia =
-	| { kind: "image"; src: LocalImage | string; alt: string }
-	| { kind: "video"; src: string; alt: string };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -103,8 +106,21 @@ export function getMeta(project: ProjectId): ProjectMeta {
 					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
 				hook: "The portfolio, describing itself.",
 				dates: "2025",
-				tags: ["web", "open-source", "nextjs", "typescript", "ui/ux"],
+				tags: [
+					"web",
+					"open-source",
+					"nextjs",
+					"react",
+					"typescript",
+					"ui/ux",
+					"rendering",
+				],
 				effort: "medium",
+				media: {
+					kind: "video",
+					src: `${BLOB}/portfolio.webm`,
+					alt: "This portfolio’s interactive landing page in motion.",
+				},
 			};
 		case "atom":
 			return {
@@ -115,16 +131,26 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2024–2025",
 				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 				effort: "high",
+				media: {
+					kind: "image",
+					src: `${OG}/atom`,
+					alt: "The atom design-system repository.",
+				},
 			};
 		case "muviz":
 			return {
 				title: "Muviz",
 				description:
-					"A GPU-driven 3D music visualizer. A C++ audio pipeline, compiled to WebAssembly, feeds a Three.js renderer — the browser never touches raw audio math.",
+					"A fast, feature-rich music visualizer for reactive beautiful visualizations",
 				hook: "Winamp nostalgia, rebuilt for the GPU.",
 				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 				effort: "high",
+				media: {
+					kind: "video",
+					src: `${BLOB}/muviz.webm`,
+					alt: "Muviz reacting to a track in real time.",
+				},
 			};
 		case "honeycomb":
 			return {
@@ -142,6 +168,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 					"cad",
 				],
 				effort: "medium",
+				media: {
+					kind: "video",
+					src: `${BLOB}/honeycomb_demo.webm`,
+					alt: "A honeycomb lattice generated and rendered in VTK.",
+				},
 			};
 		case "topopt_py":
 			return {
@@ -151,6 +182,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2021",
 				tags: ["simulation", "optimization", "high-performance", "python"],
 				effort: "high",
+				media: {
+					kind: "video",
+					src: `${BLOB}/optimization.webm`,
+					alt: "A topology optimization converging on a solution.",
+				},
 			};
 		case "blackhole":
 			return {
@@ -161,6 +197,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2023",
 				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 				effort: "high",
+				media: {
+					kind: "image",
+					src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
+					alt: "Cover art for the black hole renderer.",
+				},
 			};
 		case "ev_sim":
 			return {
@@ -171,6 +212,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2024",
 				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 				effort: "medium",
+				media: {
+					kind: "image",
+					src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+					alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
+				},
 			};
 		case "mesha":
 			return {
@@ -181,6 +227,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2025",
 				tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 				effort: "low",
+				media: {
+					kind: "image",
+					src: `${OG}/mesha`,
+					alt: "The Mesha mesh-repair-tool repository.",
+				},
 			};
 		case "simphy":
 			return {
@@ -191,6 +242,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2025",
 				tags: ["simulation", "c++", "open-source"],
 				effort: "low",
+				media: {
+					kind: "image",
+					src: `${OG}/simphy`,
+					alt: "The Simphy physics-simulation-sandbox repository.",
+				},
 			};
 		case "truss_opt":
 			return {
@@ -201,73 +257,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				dates: "2025",
 				tags: ["simulation", "optimization", "web", "react", "typescript"],
 				effort: "medium",
-			};
-		default:
-			return assertNever(project);
-	}
-}
-
-export function getMedia(project: ProjectId): ProjectMedia {
-	switch (project) {
-		case "portfolio":
-			return {
-				kind: "video",
-				src: `${BLOB}/portfolio.webm`,
-				alt: "This portfolio’s interactive landing page in motion.",
-			};
-		case "atom":
-			return {
-				kind: "image",
-				src: `${OG}/atom`,
-				alt: "The atom design-system repository.",
-			};
-		case "muviz":
-			return {
-				kind: "video",
-				src: `${BLOB}/muviz.webm`,
-				alt: "Muviz reacting to a track in real time.",
-			};
-		case "honeycomb":
-			return {
-				kind: "video",
-				src: `${BLOB}/honeycomb_demo.webm`,
-				alt: "A honeycomb lattice generated and rendered in VTK.",
-			};
-		case "topopt_py":
-			return {
-				kind: "video",
-				src: `${BLOB}/optimization.webm`,
-				alt: "A topology optimization converging on a solution.",
-			};
-		case "blackhole":
-			return {
-				kind: "image",
-				src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
-				alt: "Cover art for the black hole renderer.",
-			};
-		case "ev_sim":
-			return {
-				kind: "image",
-				src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
-				alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
-			};
-		case "mesha":
-			return {
-				kind: "image",
-				src: `${OG}/mesha`,
-				alt: "The Mesha mesh-repair-tool repository.",
-			};
-		case "simphy":
-			return {
-				kind: "image",
-				src: `${OG}/simphy`,
-				alt: "The Simphy physics-simulation-sandbox repository.",
-			};
-		case "truss_opt":
-			return {
-				kind: "image",
-				src: trussOptScreenshot,
-				alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
+				media: {
+					kind: "image",
+					src: trussOptScreenshot,
+					alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
+				},
 			};
 		default:
 			return assertNever(project);
