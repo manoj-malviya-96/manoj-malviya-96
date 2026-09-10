@@ -77,6 +77,17 @@ img {
 	min-width: 0;
 }
 
+/* Always mounted, visibility toggled via data-hidden — same mechanism as atom's own
+   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut. */
+.lattice-overlay {
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.lattice-overlay[data-hidden] {
+	opacity: 0;
+	pointer-events: none;
+}
+
 /*
  * Todo integrate in atom: Grid/Flex take a single static `columns`/`direction`/`gap` value with no
  * breakpoint variants, so every responsive layout change below is a plain CSS override of the class
