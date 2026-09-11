@@ -1,8 +1,8 @@
-import { Screen } from "@manoj-malviya-96/atom/features";
+import { Screen } from "@manoj-malviya-96/atom/system";
 import type { Metadata } from "next";
 import type React from "react";
 import Footer from "@/lib/footer";
-import NavBar from "@/lib/nav_bar";
+import HeaderBar from "@/lib/header_bar";
 import { ReactQueryProvider } from "@/lib/react_query";
 import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
@@ -30,7 +30,7 @@ export default function RootLayout({
 			<body>
 				<ReactQueryProvider>
 					<Screen as="main" variant="page">
-						<NavBar />
+						<HeaderBar />
 						{children}
 						<Footer />
 					</Screen>
