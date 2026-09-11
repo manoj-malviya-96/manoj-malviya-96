@@ -7,11 +7,11 @@ import {
 	useScrollEffect,
 	useTheme,
 } from "@manoj-malviya-96/atom";
-import { Header } from "@manoj-malviya-96/atom/features";
 import {
 	IconCircleHalfStroke,
 	IconEnvelope,
 } from "@manoj-malviya-96/atom/icons";
+import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,64 +23,63 @@ const NAV_LINKS = [
 	{ url: "/resume", label: "Résumé" },
 ] as const;
 
-export default function NavBar() {
+export default function HeaderBar() {
 	const pathname = usePathname();
-	const { visible } = useNavBarScroll();
+	const { visible } = useHeaderBarScroll();
 
-	return (
-		<Header
-			data-hidden={visible ? undefined : true}
-			left={
-				<Link url="/" className="wordmark">
-					<Flex as="span" direction="row" gap="xs" vAlign="center">
-						<NextImage src="/icon.svg" alt="Logo" width={24} height={24} />
-						<span className="wordmark-text">Manoj Malviya</span>
-					</Flex>
-				</Link>
-			}
-			center={
-				<Flex as="nav" direction="row" gap="xs">
-					{NAV_LINKS.map(({ url, label }) => {
-						const isCurrent = pathname === url;
-						return (
-							<Link
-								key={url}
-								url={url}
-								variant="tab"
-								isActive={isCurrent}
-								aria-current={isCurrent ? "page" : undefined}
-							>
-								{label}
-							</Link>
-						);
-					})}
+	useHeaderBar({
+		left: (
+			<Link url="/" className="wordmark">
+				<Flex as="span" direction="row" gap="xs" vAlign="center">
+					<NextImage src="/icon.svg" alt="Logo" width={24} height={24} />
+					<span className="wordmark-text">Manoj Malviya</span>
 				</Flex>
-			}
-			right={
-				<Flex direction="row" gap="md" vAlign="center">
-					<ThemeToggle />
-					<Link
-						url={EmailAddress}
-						variant="button"
-						size="sm"
-						icon={<IconEnvelope size="sm" />}
-						label="Contact"
-						aria-label="Contact"
-						collapse
-						color="primary"
-					/>
-				</Flex>
-			}
-		/>
-	);
+			</Link>
+		),
+		center: (
+			<Flex as="nav" direction="row" gap="xs">
+				{NAV_LINKS.map(({ url, label }) => {
+					const isCurrent = pathname === url;
+					return (
+						<Link
+							key={url}
+							url={url}
+							variant="tab"
+							isActive={isCurrent}
+							aria-current={isCurrent ? "page" : undefined}
+						>
+							{label}
+						</Link>
+					);
+				})}
+			</Flex>
+		),
+		right: (
+			<Flex direction="row" gap="md" vAlign="center">
+				<ThemeToggle />
+				<Link
+					url={EmailAddress}
+					variant="button"
+					size="sm"
+					icon={<IconEnvelope size="sm" />}
+					label="Contact"
+					aria-label="Contact"
+					collapse
+					color="primary"
+				/>
+			</Flex>
+		),
+	});
+
+	return <Header data-hidden={visible ? undefined : true} />;
 }
 
 const TOP_BAND = 0.05 as const;
 const INTENT_PX_PER_MS = 0.3 as const;
-type NavBarScroll = { y: number; visible: boolean };
+type HeaderBarScroll = { y: number; visible: boolean };
 
-function useNavBarScroll(): NavBarScroll {
-	return useScrollEffect<NavBarScroll>(
+function useHeaderBarScroll(): HeaderBarScroll {
+	return useScrollEffect<HeaderBarScroll>(
 		({ y, delta, speedPxPerMs }, prev) => {
 			const visible =
 				y < window.innerHeight * TOP_BAND
