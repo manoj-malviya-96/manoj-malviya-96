@@ -1,9 +1,8 @@
-import { assertNever, Badge, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { assertNever, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import {
 	IconBriefcase,
 	IconChartLine,
 	IconCode,
-	IconFile,
 	IconLink,
 	IconList,
 	IconMagnifyingGlass,
