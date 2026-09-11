@@ -36,31 +36,24 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			bg="surface"
 			padding="lg"
 			radius="lg"
+			hAlign="center"
 			as="article"
 		>
-			<Flex as="span" direction="col" gap="xs" vAlign="start">
-				<Flex as="span" direction="row" hAlign="between" vAlign="center">
-					<Flex as="span" direction="col" gap="xs" padding="none">
-						<Text variant="heading">{title}</Text>
-						<ProjectTags tags={tags} date={dates} />
-					</Flex>
-					<ProjectLinks project={project} />
+			<Flex direction="col" gap="lg" hAlign="center" width="content">
+				<Flex as="span" direction="col" gap="xs" hAlign="center">
+					<Text variant="heading" align="center">
+						{title}
+					</Text>
+					<ProjectTags tags={tags} date={dates} />
 				</Flex>
 				<Divider direction="horizontal" style={{ opacity: "30%" }} />
+				<Text variant="title" bold align="center">
+					{summary}
+				</Text>
+				{getProjectContent(project)}
+				<ProjectLinks project={project} />
 			</Flex>
-			<Flex direction="row" gap="sm" wrap vAlign="start">
-				<Flex direction="col" gap="md" grow>
-					<Text variant="title" bold>
-						{summary}
-					</Text>
-					{getProjectContent(project)}
-				</Flex>
-				{media && (
-					<Flex as="span" direction="col" gap="md" vAlign="start" grow>
-						<ProjectCover media={media} />
-					</Flex>
-				)}
-			</Flex>
+			{media && <ProjectCover media={media} />}
 		</Flex>
 	);
 }
