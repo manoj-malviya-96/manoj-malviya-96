@@ -117,8 +117,7 @@ function AtomContent() {
 			<strong>Atom</strong> is my attempt at both at once. Core idea is to use
 			CSS as much as possible, enforce type safety. Currently its under{" "}
 			<Badge color="green">20KB</Badge> - at least 1/5th of industry standard
-			with type safety and performance built in at cost of constrained design
-			system.
+			with type safety and performance built in.
 			<TwoLineBreak />
 			<IconBadge colsor="blue">
 				<IconCircleInfo />
