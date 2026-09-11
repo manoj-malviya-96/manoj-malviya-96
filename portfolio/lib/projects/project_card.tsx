@@ -26,7 +26,7 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, dates, tags, media } = getMeta(project);
+	const { title, summary, dates, tags, media } = getMeta(project);
 
 	return (
 		<Flex
@@ -36,10 +36,11 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			bg="surface"
 			padding="lg"
 			radius="lg"
+			as="article"
 		>
 			<Flex as="span" direction="col" gap="xs" vAlign="start">
 				<Flex as="span" direction="row" hAlign="between" vAlign="center">
-					<Flex as="span" direction="col" gap="xs">
+					<Flex as="span" direction="col" gap="xs" padding="none">
 						<Text variant="heading">{title}</Text>
 						<ProjectTags tags={tags} date={dates} />
 					</Flex>
@@ -47,23 +48,18 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				</Flex>
 				<Divider direction="horizontal" style={{ opacity: "30%" }} />
 			</Flex>
-			<Flex direction="row" gap="lg" wrap>
-				<Flex direction="col" gap="md" grow className="project-panel">
+			<Flex direction="row" gap="sm" wrap vAlign="start">
+				<Flex direction="col" gap="md" grow>
 					<Text variant="title" bold>
-						{hook}
+						{summary}
 					</Text>
 					{getProjectContent(project)}
 				</Flex>
-				<Flex
-					as="span"
-					direction="col"
-					gap="md"
-					vAlign="start"
-					grow
-					className="project-panel"
-				>
-					<ProjectCover media={media} />
-				</Flex>
+				{media && (
+					<Flex as="span" direction="col" gap="md" vAlign="start" grow>
+						<ProjectCover media={media} />
+					</Flex>
+				)}
 			</Flex>
 		</Flex>
 	);

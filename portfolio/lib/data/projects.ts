@@ -19,92 +19,12 @@ export const AllProjectIds = [
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
-type SoftwareConcepts =
-	| "web"
-	| "mobile"
-	| "ai"
-	| "rendering"
-	| "open-source"
-	| "high-performance"
-	| "gpu"
-	| "optimization"
-	| "cad"
-	| "simulation"
-	| "ui-development"
-	| "a/b testing"
-	| "micro-services";
-
-type SoftSkills =
-	| "communication"
-	| "ui/ux"
-	| "project-management"
-	| "devops"
-	| "testing";
-
-type ProgrammingFrameworks =
-	| "react"
-	| "nextjs"
-	| "qt/qml"
-	| "tailwind"
-	| "vtk"
-	| "numpy"
-	| "pytorch"
-	| "tensorflow"
-	| "wasm"
-	| "threejs"
-	| "opengl";
-
-export type ProgrammingLanguage =
-	| "typescript"
-	| "python"
-	| "rust"
-	| "go"
-	| "c++"
-	| "swift";
-
-export type ProjectTag =
-	| ProgrammingFrameworks
-	| ProgrammingLanguage
-	| SoftwareConcepts
-	| SoftSkills;
-
-export type ProjectEffort = "low" | "medium" | "high";
-
-export type ProjectMedia =
-	| { kind: "image"; src: LocalImage | string; alt: string }
-	| { kind: "video"; src: string; alt: string };
-
-export type ProjectMeta = {
-	title: string;
-	description: string;
-	hook: string;
-	dates: string;
-	tags: readonly ProjectTag[];
-	effort: ProjectEffort;
-	media: ProjectMedia;
-};
-
-type GithubRepo = `https://github.com/${string}/${string}`;
-type MediumPost = `https://medium.com/@${string}/${string}`;
-type InternalPath = `/${string}`;
-
-export type ProjectLink =
-	| { kind: "github"; href: GithubRepo }
-	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
-	| { kind: "external"; label: string; href: ExternalURL };
-
-const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
-const OG = "https://opengraph.githubassets.com/1/manoj-malviya-96";
-
 export function getMeta(project: ProjectId): ProjectMeta {
 	switch (project) {
 		case "portfolio":
 			return {
 				title: "Portfolio",
-				description:
-					"A Next.js App Router site built on atom, my own design system, with a fuzzy-searchable project catalog.",
-				hook: "The portfolio, describing itself.",
+				summary: "The portfolio, describing itself.",
 				dates: "2025",
 				tags: [
 					"web",
@@ -118,46 +38,35 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				effort: "medium",
 				media: {
 					kind: "video",
-					src: `${BLOB}/portfolio.webm`,
+					src: getBlob("portfolio.webm"),
 					alt: "This portfolio’s interactive landing page in motion.",
 				},
 			};
 		case "atom":
 			return {
 				title: "Atom",
-				description:
-					"A minimal, CSS-first React UI library: one primitive, one stylesheet, everything composes from it. Styling and motion live in CSS, not JS — with enforced size budgets and real-browser tests.",
-				hook: "One primitive. The whole design system composes from it.",
+				summary: "One primitive. The whole design system composes from it.",
 				dates: "2024–2025",
 				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 				effort: "high",
-				media: {
-					kind: "image",
-					src: `${OG}/atom`,
-					alt: "The atom design-system repository.",
-				},
 			};
 		case "muviz":
 			return {
 				title: "Muviz",
-				description:
-					"A fast, feature-rich music visualizer for reactive beautiful visualizations",
-				hook: "Winamp nostalgia, rebuilt for the GPU.",
+				summary: "Winamp nostalgia, rebuilt for the GPU.",
 				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 				effort: "high",
 				media: {
 					kind: "video",
-					src: `${BLOB}/muviz.webm`,
+					src: getBlob("muviz.webm"),
 					alt: "Muviz reacting to a track in real time.",
 				},
 			};
 		case "honeycomb":
 			return {
 				title: "HoneyMesh",
-				description:
-					"A C++ skeletonization algorithm that generates honeycomb lattices and exports straight to a VTK mesh for CAD and simulation.",
-				hook: "Because hexagons are just better, structurally speaking.",
+				summary: "Because hexagons are just better, structurally speaking.",
 				dates: "2022",
 				tags: [
 					"rendering",
@@ -170,30 +79,29 @@ export function getMeta(project: ProjectId): ProjectMeta {
 				effort: "medium",
 				media: {
 					kind: "video",
-					src: `${BLOB}/honeycomb_demo.webm`,
+					src: getBlob("honeycomb_demo.webm"),
 					alt: "A honeycomb lattice generated and rendered in VTK.",
 				},
 			};
 		case "topopt_py":
 			return {
 				title: "topopt-py",
-				description: "A 2D topology-optimization solver, rewritten for speed.",
-				hook: "A 40-year-old optimization algorithm, dragged into this decade.",
+				summary:
+					"A 40-year-old optimization algorithm, dragged into this decade.",
 				dates: "2021",
 				tags: ["simulation", "optimization", "high-performance", "python"],
 				effort: "high",
 				media: {
 					kind: "video",
-					src: `${BLOB}/optimization.webm`,
+					src: getBlob("optimization.webm"),
 					alt: "A topology optimization converging on a solution.",
 				},
 			};
 		case "blackhole":
 			return {
 				title: "Blackhole",
-				description:
-					"A real-time GLSL raymarcher: integrates light-ray geodesics around a Schwarzschild black hole to render gravitational lensing, at interactive frame rates.",
-				hook: "Gravity, rendered in real time, because I couldn't wait for the movie.",
+				summary:
+					"Gravity, rendered in real time, because I couldn't wait for the movie.",
 				dates: "2023",
 				tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 				effort: "high",
@@ -206,9 +114,7 @@ export function getMeta(project: ProjectId): ProjectMeta {
 		case "ev_sim":
 			return {
 				title: "EV Charging Simulator",
-				description:
-					"A Monte Carlo simulator for EV charging-lot demand: Poisson-process arrivals, per-interval power draw, concurrency factor — with a React front end for running scenarios.",
-				hook: "How many chargers do you actually need? Simulate it first.",
+				summary: "How many chargers do you actually need? Simulate it first.",
 				dates: "2024",
 				tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 				effort: "medium",
@@ -221,39 +127,23 @@ export function getMeta(project: ProjectId): ProjectMeta {
 		case "mesha":
 			return {
 				title: "Mesha",
-				description:
-					"An in-progress 3D mesh-repair tool: a C++/Qt backend exposed as both a CLI and a WebSocket service, with a Tauri + Next.js editor on top.",
-				hook: "Mesh repair, from the command line to a real editor.",
+				summary: "Mesh repair, from the command line to a real editor.",
 				dates: "2025",
 				tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 				effort: "low",
-				media: {
-					kind: "image",
-					src: `${OG}/mesha`,
-					alt: "The Mesha mesh-repair-tool repository.",
-				},
 			};
 		case "simphy":
 			return {
 				title: "Simphy",
-				description:
-					"An early-stage physics-simulation sandbox: C++ core, no rendering layer yet.",
-				hook: "Simulating the universe. Literally, eventually.",
+				summary: "Simulating the universe. Literally, eventually.",
 				dates: "2025",
 				tags: ["simulation", "c++", "open-source"],
 				effort: "low",
-				media: {
-					kind: "image",
-					src: `${OG}/simphy`,
-					alt: "The Simphy physics-simulation-sandbox repository.",
-				},
 			};
 		case "truss_opt":
 			return {
 				title: "Truss Optimizer",
-				description:
-					"A 2D truss topology optimizer: draw a cantilever lattice, place supports and loads, then run an optimality-criteria solver that redistributes material to the members carrying the load. Extracted out of Simphy since it's small enough to live as a demo here, running through this site's own API.",
-				hook: "Draw a truss. Watch it optimize itself.",
+				summary: "Draw a truss. Watch it optimize itself.",
 				dates: "2025",
 				tags: ["simulation", "optimization", "web", "react", "typescript"],
 				effort: "medium",
@@ -360,4 +250,84 @@ export function getLinks(project: ProjectId): readonly ProjectLink[] {
 		default:
 			return assertNever(project);
 	}
+}
+
+type SoftwareConcepts =
+	| "web"
+	| "mobile"
+	| "ai"
+	| "rendering"
+	| "open-source"
+	| "high-performance"
+	| "gpu"
+	| "optimization"
+	| "cad"
+	| "simulation"
+	| "ui-development"
+	| "a/b testing"
+	| "micro-services";
+
+type SoftSkills =
+	| "communication"
+	| "ui/ux"
+	| "project-management"
+	| "devops"
+	| "testing";
+
+type ProgrammingFrameworks =
+	| "react"
+	| "nextjs"
+	| "qt/qml"
+	| "tailwind"
+	| "vtk"
+	| "numpy"
+	| "pytorch"
+	| "tensorflow"
+	| "wasm"
+	| "threejs"
+	| "opengl";
+
+type ProgrammingLanguage =
+	| "typescript"
+	| "python"
+	| "rust"
+	| "go"
+	| "c++"
+	| "swift";
+
+export type ProjectTag =
+	| ProgrammingFrameworks
+	| ProgrammingLanguage
+	| SoftwareConcepts
+	| SoftSkills;
+
+export type ProjectEffort = "low" | "medium" | "high";
+
+export type ProjectMedia =
+	| { kind: "image"; src: LocalImage | string; alt: string }
+	| { kind: "video"; src: string; alt: string };
+
+export type ProjectMeta = {
+	title: string;
+	summary: string;
+	dates: string;
+	tags: readonly ProjectTag[];
+	effort: ProjectEffort;
+	media?: ProjectMedia;
+};
+
+type GithubRepo = `https://github.com/${string}/${string}`;
+type MediumPost = `https://medium.com/@${string}/${string}`;
+type InternalPath = `/${string}`;
+
+export type ProjectLink =
+	| { kind: "github"; href: GithubRepo }
+	| { kind: "medium"; href: MediumPost }
+	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
+	| { kind: "external"; label: string; href: ExternalURL };
+
+const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
+
+function getBlob(filename: string) {
+	return `${BLOB}/${filename}`;
 }
