@@ -133,26 +133,36 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 }
 
 function ProjectLinks({ project }: { project: ProjectId }) {
-	const links = getLinks(project);
+	const { primary, others } = getLinks(project);
 
 	return (
 		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-			{links.map((link) => {
-				const LinkIcon = linkIcon(link);
-				const label = linkLabel(link);
-				return (
-					<Link
-						key={link.href}
-						url={link.href}
-						openNewTab
-						variant="button"
-						label={label}
-						size="sm"
-						icon={<LinkIcon size="sm" />}
-					/>
-				);
-			})}
+			<ProjectLinkButton link={primary} color="primary" />
+			{others.map((link) => (
+				<ProjectLinkButton key={link.href} link={link} />
+			))}
 		</Flex>
+	);
+}
+
+function ProjectLinkButton({
+	link,
+	color,
+}: {
+	link: ProjectLink;
+	color?: "primary";
+}) {
+	const LinkIcon = linkIcon(link);
+	return (
+		<Link
+			url={link.href}
+			openNewTab
+			variant="button"
+			{...(color && { color })}
+			label={linkLabel(link)}
+			size="sm"
+			icon={<LinkIcon size="sm" />}
+		/>
 	);
 }
 

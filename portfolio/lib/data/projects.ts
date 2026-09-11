@@ -158,7 +158,24 @@ export function getMeta(project: ProjectId): ProjectMeta {
 	}
 }
 
-export function getLinks(project: ProjectId): readonly ProjectLink[] {
+export type ProjectLinks = {
+	primary: ProjectLink;
+	others: readonly ProjectLink[];
+};
+
+export function getLinks(project: ProjectId): ProjectLinks {
+	const links = allLinks(project);
+	const primary =
+		links.find((link) => link.kind === "demo") ??
+		links.find((link) => link.kind === "github") ??
+		links[0];
+	return {
+		primary,
+		others: links.filter((link) => link !== primary),
+	};
+}
+
+function allLinks(project: ProjectId): readonly ProjectLink[] {
 	switch (project) {
 		case "portfolio":
 			return [
