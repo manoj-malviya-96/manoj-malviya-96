@@ -1,6 +1,6 @@
 import { Flex, Progress } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
-import ProjectsClient from "@/lib/projects/projects_client";
+import ProjectsView from "@/lib/projects/projects_view";
 import { SectionHeader } from "@/lib/shared";
 
 export default function Page() {
@@ -31,7 +31,7 @@ export default function Page() {
 					</Flex>
 				}
 			>
-				<ProjectsClient />
+				<ProjectsView />
 			</Suspense>
 		</>
 	);

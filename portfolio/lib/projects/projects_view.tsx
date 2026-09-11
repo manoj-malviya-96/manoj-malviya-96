@@ -9,7 +9,7 @@ import {
 import ProjectCard from "@/lib/projects/project_card";
 import { Link } from "@/lib/shared";
 
-export default function ProjectsClient() {
+export default function ProjectsView() {
 	return (
 		<Flex direction="col" gap="xl" vAlign="start">
 			<ProjectsToc />
@@ -56,9 +56,9 @@ const projectsToShow: ProjectId[] = AllProjectIds.filter(
 	(id) => !projectsToHide.includes(id),
 );
 
-const rankedProjects: ProjectSummary[] = projectsToShow.map(
-	(id) => ({
+const rankedProjects: ProjectSummary[] = projectsToShow
+	.map((id) => ({
 		id,
 		...getMeta(id),
-	}),
-).sort((a, b) => effortRank[b.effort] - effortRank[a.effort]);
+	}))
+	.sort((a, b) => effortRank[b.effort] - effortRank[a.effort]);
