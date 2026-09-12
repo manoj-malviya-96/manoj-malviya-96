@@ -1,4 +1,3 @@
-import { assertNever } from "@manoj-malviya-96/atom";
 import type { StaticImageData as LocalImage } from "next/image";
 import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
@@ -24,39 +23,30 @@ export type Organization = {
 	logo: LocalImage;
 };
 
-export function getOrganization(organization: OrganizationId): Organization {
-	switch (organization) {
-		case "noah-labs":
-			return {
-				name: "Noah Labs",
-				url: "https://www.noah-labs.com/",
-				logo: noahLabsLogo,
-			};
-		case "flow-key":
-			return {
-				name: "Flowkey",
-				url: "https://www.flowkey.com/en",
-				logo: flowkeyLogo,
-			};
-		case "form-labs":
-			return {
-				name: "Formlabs",
-				url: "https://formlabs.com/",
-				logo: formlabsLogo,
-			};
-		case "penn-state":
-			return {
-				name: "Penn State",
-				url: "https://www.psu.edu/",
-				logo: pennStateLogo,
-			};
-		case "iit-j":
-			return {
-				name: "IITJ",
-				url: "https://www.iitj.ac.in/",
-				logo: iitjLogo,
-			};
-		default:
-			return assertNever(organization);
-	}
-}
+export const Organizations = {
+	"noah-labs": {
+		name: "Noah Labs",
+		url: "https://www.noah-labs.com/",
+		logo: noahLabsLogo,
+	},
+	"flow-key": {
+		name: "Flowkey",
+		url: "https://www.flowkey.com/en",
+		logo: flowkeyLogo,
+	},
+	"form-labs": {
+		name: "Formlabs",
+		url: "https://formlabs.com/",
+		logo: formlabsLogo,
+	},
+	"penn-state": {
+		name: "Penn State",
+		url: "https://www.psu.edu/",
+		logo: pennStateLogo,
+	},
+	"iit-j": {
+		name: "IITJ",
+		url: "https://www.iitj.ac.in/",
+		logo: iitjLogo,
+	},
+} satisfies Record<OrganizationId, Organization>;

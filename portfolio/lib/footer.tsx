@@ -24,12 +24,7 @@ import { Link } from "@/lib/shared";
 
 export default function Footer() {
 	return (
-		<Flex
-			as="footer"
-			direction="col"
-            gap="lg"
-			padding={{y: "xl"}}
-		>
+		<Flex as="footer" direction="col" gap="lg" padding={{ y: "xl" }}>
 			<Grid columns={3} gap="lg" className="footer-grid">
 				<About />
 				<QuickLinks />

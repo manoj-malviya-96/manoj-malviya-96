@@ -1,5 +1,4 @@
 import type { ColorToken } from "@manoj-malviya-96/atom";
-import { assertNever } from "@manoj-malviya-96/atom";
 import type { ValuesOf } from "@/lib/helper";
 
 /** The "how I work" loop, in the order it's presented. */
@@ -13,33 +12,25 @@ export type Phase = {
 	copy: string;
 };
 
-export function getPhase(phase: PhaseId): Phase {
-	switch (phase) {
-		case "discover":
-			return {
-				label: "Discover",
-				color: "blue",
-				copy: "Understand the problem, not just the requirement..",
-			};
-		case "design":
-			return {
-				label: "Design",
-				color: "indigo",
-				copy: "Model the problem before modeling the system",
-			};
-		case "build":
-			return {
-				label: "Build",
-				color: "green",
-				copy: "Correct first. Fast second. Maintainable always.",
-			};
-		case "measure":
-			return {
-				label: "Measure",
-				color: "orange",
-				copy: "Ship it. Measure it. Learn from it.",
-			};
-		default:
-			return assertNever(phase);
-	}
-}
+export const Phases = {
+	discover: {
+		label: "Discover",
+		color: "blue",
+		copy: "Understand the problem, not just the requirement..",
+	},
+	design: {
+		label: "Design",
+		color: "indigo",
+		copy: "Model the problem before modeling the system",
+	},
+	build: {
+		label: "Build",
+		color: "green",
+		copy: "Correct first. Fast second. Maintainable always.",
+	},
+	measure: {
+		label: "Measure",
+		color: "orange",
+		copy: "Ship it. Measure it. Learn from it.",
+	},
+} satisfies Record<PhaseId, Phase>;
