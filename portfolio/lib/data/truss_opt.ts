@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import type { LatticeType } from "@/lib/truss-opt/engine/mesh";
 
-export interface TrussOptMeshInput {
+interface TrussOptMeshInput {
 	cellSize_mm: number;
 	meshWidth_mm: number;
 	meshHeight_mm: number;

@@ -1,15 +1,16 @@
 import {
 	assertNever,
 	Badge,
-	Code,
 	type ColorToken,
 	Flex,
 	List,
 	Text,
 } from "@manoj-malviya-96/atom";
-import { BarChart } from "@manoj-malviya-96/atom/charts";
 import type { ReactNode } from "react";
 import type { ProjectId } from "@/lib/data";
+import { IconLightbulb } from "@manoj-malviya-96/atom/icons";
+import { IconVolumeHigh } from "@manoj-malviya-96/atom/icons";
+import { IconPaintBrush } from "@manoj-malviya-96/atom/icons";
 
 function statusItem(
 	color: ColorToken,
@@ -24,14 +25,69 @@ function statusItem(
 	);
 }
 
-export function getProjectContent(project: ProjectId): ReactNode {
+export function getProjectContent(project: ProjectId) {
 	switch (project) {
 		case "portfolio":
-			return <PortfolioContent />;
+			return (
+				<Flex direction="col" gap="sm">
+					<Text variant="body" muted>
+						Every project I've built, in one catalog — searchable by title,
+						tags, or description as you type. Fuse.js runs client-side, so
+						there's no server round trip.
+					</Text>
+				</Flex>
+			);
 		case "atom":
-			return <AtomContent />;
+			return (
+			<List direction="col" gap="md">
+				<li>
+					<Text variant="body">
+						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays
+						a runtime cost.
+					</Text>
+				</li>
+				<li>
+					<Text variant="body">
+						✅ Types generate straight from that CSS, so an illegal token can't
+						compile. Scripts catch what the type system can't.
+					</Text>
+				</li>
+				<li>
+					<Text variant="body">
+						✅ 20 KB gzipped for the core. Charts and system components ship
+						separately, each under its own budget.
+					</Text>
+				</li>
+			</List>
+			);
 		case "muviz":
-			return <MuvizContent />;
+			return (
+			<List direction="col" gap="md">
+                    <Flex as="li" direction="row" gap="md" vAlign="center">
+                        <IconVolumeHigh/>
+					<Text variant="body">
+						A C++ pipeline (FFT, onset detection, key and rhythm extraction)
+						compiles to WebAssembly and analyzes a track once, in a Web
+						Worker, off the main thread.
+					</Text>
+				</Flex>
+                <Flex as="li" direction="row" gap="md" vAlign="center">
+                         <IconLightbulb/>
+                        <Text variant="body">
+						Every analyzed track is cached in IndexedDB by content hash, so
+						replaying it or re-adding the file skips analysis entirely.
+					</Text>
+				</Flex>
+                    <Flex as="li" direction="row" gap="md" vAlign="center">
+                        <IconPaintBrush/>
+					<Text variant="body">
+						The Three.js scene never touches audio directly. It’s just a
+						pure function of the extracted features and playback time, so
+						scrubbing and switching tracks come for free.
+					</Text>
+				</Flex>
+			</List>
+			);
 		case "honeycomb":
 			return (
 				<Text variant="body">
@@ -41,14 +97,8 @@ export function getProjectContent(project: ProjectId): ReactNode {
 				</Text>
 			);
 		case "topopt_py":
-			return (
-				<Text variant="body">
-					Same 40-year-old topology-optimization algorithm, rewritten to
-					actually be fast: the solver's inner loop runs as array operations in
-					NumPy instead of nested Python loops —{" "}
-					<Badge color="green">2× faster</Badge>, same accuracy, bigger
-					problems, still just NumPy.
-				</Text>
+            return (
+                undefined
 			);
 		case "blackhole":
 			return (
@@ -111,57 +161,4 @@ export function getProjectContent(project: ProjectId): ReactNode {
 		default:
 			return assertNever(project);
 	}
-}
-
-function AtomContent() {
-	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="body">
-				I am obsessed with a lightweight design system to build all of my
-				projects on top of it. I love the philosophy of{" "}
-			</Text>
-			<Text variant="caption" muted>
-				Size budget, enforced by CI on every build:
-			</Text>
-		</Flex>
-	);
-}
-
-function MuvizContent() {
-	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="body" muted>
-				I’ve been obsessed with music visualizers since the Winamp days—there’s
-				just something ridiculously satisfying about watching visuals snap to
-				the beat. That itch is exactly why I’m building Muviz: a web visualizer
-				that stays fast without skimping on features.
-			</Text>
-			<List direction="col" gap="xs">
-				<li>
-					<Text variant="body" muted>
-						A C++ feature extractor, compiled to WebAssembly, runs the spectral
-						analysis once and caches it.
-					</Text>
-				</li>
-				<li>
-					<Text variant="body" muted>
-						Three.js renders every frame off that cache — no audio math on the
-						main thread.
-					</Text>
-				</li>
-			</List>
-		</Flex>
-	);
-}
-
-function PortfolioContent() {
-	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="body">
-				Every project I've built, in one catalog — searchable by title, tags, or
-				description as you type. Fuse.js runs client-side, so there's no server
-				round trip.
-			</Text>
-		</Flex>
-	);
 }

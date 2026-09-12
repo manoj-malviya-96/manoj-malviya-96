@@ -11,7 +11,7 @@ export function withDefaults<P extends object>(Component: ComponentType<P>) {
 	};
 }
 
-export function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
+function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
 	const seen = new Set<K>();
 	return array.filter((item) => {
 		const key = keyFn(item);

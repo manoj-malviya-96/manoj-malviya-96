@@ -1,11 +1,4 @@
-import {
-	assertNever,
-	Divider,
-	Flex,
-	Image,
-	Text,
-	Video,
-} from "@manoj-malviya-96/atom";
+import { assertNever, Flex, Image, Text, Video } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -26,7 +19,8 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, hook, dates, tags, media } = getMeta(project);
+    const { title, summary, dates, tags, media } = getMeta(project);
+    const contentNode = getProjectContent(project);
 
 	return (
 		<Flex
@@ -36,35 +30,28 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			bg="surface"
 			padding="lg"
 			radius="lg"
+			hAlign="center"
+			as="section"
+			width="full"
 		>
-			<Flex as="span" direction="col" gap="xs" vAlign="start">
-				<Flex as="span" direction="row" hAlign="between" vAlign="center">
-					<Flex as="span" direction="col" gap="xs">
-						<Text variant="heading">{title}</Text>
-						<ProjectTags tags={tags} date={dates} />
-					</Flex>
-					<ProjectLinks project={project} />
-				</Flex>
-				<Divider direction="horizontal" style={{ opacity: "30%" }} />
+			<Flex
+				direction="col"
+				gap="md"
+				hAlign="center"
+				width="lg"
+				style={{ textAlign: "center" }}
+			>
+    			<Text variant="hero" >
+    				{title}
+    			</Text>
+				<Text variant="subtitle" muted >
+					{summary}
+				</Text>
+				<ProjectLinks project={project} />
 			</Flex>
-			<Flex direction="row" gap="lg" wrap>
-				<Flex direction="col" gap="md" grow className="project-panel">
-					<Text variant="title" bold>
-						{hook}
-					</Text>
-					{getProjectContent(project)}
-				</Flex>
-				<Flex
-					as="span"
-					direction="col"
-					gap="md"
-					vAlign="start"
-					grow
-					className="project-panel"
-				>
-					<ProjectCover media={media} />
-				</Flex>
-			</Flex>
+            {media && <ProjectCover media={media} />}
+			{getProjectContent(project)}
+			<ProjectTags tags={tags} date={dates} />
 		</Flex>
 	);
 }
@@ -93,9 +80,12 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 				ratio="video"
 				radius="md"
 				autoPlay
+				preload="none"
 				muted
 				loop
+				role="img"
 				playsInline
+				controls={false}
 			/>
 		);
 	}
@@ -137,26 +127,36 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 }
 
 function ProjectLinks({ project }: { project: ProjectId }) {
-	const links = getLinks(project);
+	const { primary, others } = getLinks(project);
 
 	return (
 		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-			{links.map((link) => {
-				const LinkIcon = linkIcon(link);
-				const label = linkLabel(link);
-				return (
-					<Link
-						key={link.href}
-						url={link.href}
-						openNewTab
-						variant="button"
-						label={label}
-						size="sm"
-						icon={<LinkIcon size="sm" />}
-					/>
-				);
-			})}
+			<ProjectLinkButton link={primary} color="primary" />
+			{others.map((link) => (
+				<ProjectLinkButton key={link.href} link={link} />
+			))}
 		</Flex>
+	);
+}
+
+function ProjectLinkButton({
+	link,
+	color,
+}: {
+	link: ProjectLink;
+	color?: "primary";
+}) {
+	const LinkIcon = linkIcon(link);
+	return (
+		<Link
+			url={link.href}
+			openNewTab
+			variant="button"
+			{...(color && { color })}
+			label={linkLabel(link)}
+			size="sm"
+			icon={<LinkIcon size="sm" />}
+		/>
 	);
 }
 

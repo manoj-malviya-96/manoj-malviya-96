@@ -79,13 +79,6 @@ img {
 	display: none;
 }
 
-/* Todo integrate in atom: no prop resets a flex item's default min-width:auto, so a wide
-   child (a long code line, a chart canvas) inflates the row past its container instead of
-   shrinking or wrapping onto its own line. */
-.project-panel {
-	min-width: 0;
-}
-
 /* Always mounted, visibility toggled via data-hidden — same mechanism as atom's own
    .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut. */
 .lattice-overlay {
