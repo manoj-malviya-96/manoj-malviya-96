@@ -400,7 +400,7 @@ export type ProjectLinks = {
 
 export type Project = {
 	title: string;
-	summary: string;
+	summary: ReactNode;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
