@@ -90,7 +90,7 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 					aspectRatio: "16 / 9",
 					width: "100%",
 					overflow: "hidden",
-					borderRadius: "var(--radius-md)",
+					borderRadius: "var(--radius-md)", // TODO
 				}}
 			>
 				<NextImage
