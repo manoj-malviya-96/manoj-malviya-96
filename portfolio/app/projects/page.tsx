@@ -6,7 +6,10 @@ import { SectionHeader } from "@/lib/shared";
 export default function Page() {
 	return (
 		<>
-			<Flex as="header" direction="col" gap="sm">
+			{/* Todo integrate in atom: Header's page-padding compensation is a fixed
+			    calc, blind to the extra bottom-slot row HeaderBar shows on this route —
+			    padding here makes up the difference so the TOC doesn't overlap this text. */}
+			<Flex as="header" direction="col" gap="sm" padding={{ y: "xl" }}>
 				<SectionHeader
 					eyebrow="Selected work"
 					title="Worked end to end."

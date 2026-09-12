@@ -16,17 +16,27 @@ import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { EmailAddress } from "@/lib/data";
+import { EmailAddress, RankedProjects } from "@/lib/data";
+import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Work" },
-	{ url: "/resume", label: "Résumé" },
+	{ url: "/projects", label: "Work", toc: "projects" },
+	{ url: "/resume", label: "Résumé", toc: "resume" },
 ] as const;
+
+type TocKey = (typeof NAV_LINKS)[number]["toc"];
 
 export default function HeaderBar() {
 	const pathname = usePathname();
 	const { visible } = useHeaderBarScroll();
+	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
+
+	const activeToc: TocKey | null = pathname.startsWith("/resume")
+		? "resume"
+		: pathname.startsWith("/projects")
+			? "projects"
+			: null;
 
 	useHeaderBar({
 		left: (
@@ -39,7 +49,7 @@ export default function HeaderBar() {
 		),
 		center: (
 			<Flex as="nav" direction="row" gap="sm">
-				{NAV_LINKS.map(({ url, label }) => {
+				{NAV_LINKS.map(({ url, label, toc }) => {
 					const isCurrent = pathname === url;
 					return (
 						<Link
@@ -48,6 +58,8 @@ export default function HeaderBar() {
 							variant="tab"
 							isActive={isCurrent}
 							aria-current={isCurrent ? "page" : undefined}
+							onMouseEnter={() => setHoveredToc(toc)}
+							onMouseLeave={() => setHoveredToc(null)}
 						>
 							{label}
 						</Link>
@@ -70,11 +82,7 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
-		bottom: (
-			<Text variant="caption" muted className="header-tagline">
-				Product-minded engineer · Berlin, DE
-			</Text>
-		),
+		bottom: <HeaderToc toc={hoveredToc ?? activeToc} />,
 	});
 
 	return (
@@ -83,6 +91,49 @@ export default function HeaderBar() {
 			data-hidden={visible ? undefined : true}
 		/>
 	);
+}
+
+function HeaderToc({ toc }: { toc: TocKey | null }) {
+	switch (toc) {
+		case "projects":
+			return (
+				<Flex
+					as="nav"
+					aria-label="Project sections"
+					direction="row"
+					gap="sm"
+					wrap
+				>
+					{RankedProjects.map(({ id, title }) => (
+						<Link key={id} url={`#${id}`} variant="tab">
+							{title}
+						</Link>
+					))}
+				</Flex>
+			);
+		case "resume":
+			return (
+				<Flex
+					as="nav"
+					aria-label="Résumé sections"
+					direction="row"
+					gap="sm"
+					wrap
+				>
+					{RESUME_SECTIONS.map(({ id, label }) => (
+						<Link key={id} url={`#${id}`} variant="tab">
+							{label}
+						</Link>
+					))}
+				</Flex>
+			);
+		case null:
+			return (
+				<Text variant="caption" muted className="header-tagline">
+					Product-minded engineer · Berlin, DE
+				</Text>
+			);
+	}
 }
 
 const TOP_BAND = 0.05 as const;
