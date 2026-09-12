@@ -1,6 +1,5 @@
 import type { RefObject } from "react";
 import { useEffect, useRef } from "react";
-import { FaceCanvasTune } from "./config";
 import {
 	createAttributeBuffer,
 	createIndexBuffer,
@@ -9,6 +8,7 @@ import {
 import { FACE_FRAGMENT_SHADER, FACE_VERTEX_SHADER } from "./gl/shaders";
 import type { FaceMesh } from "./mesh/types";
 import { easePointer, usePointer } from "./use-pointer";
+import type { RgbColor } from "./use-theme-color";
 
 type CanvasSize = { width: number; height: number };
 
@@ -18,15 +18,11 @@ type GlState = {
 	triangleCount: number;
 	uPointer: WebGLUniformLocation;
 	uPointerStrength: WebGLUniformLocation;
-	uAmbientPulse: WebGLUniformLocation;
-	uAspect: WebGLUniformLocation;
+	uThemeColor: WebGLUniformLocation;
 };
 
 function setupGl(canvas: HTMLCanvasElement, mesh: FaceMesh): GlState | null {
-	const gl = canvas.getContext("webgl2", {
-		alpha: true,
-		premultipliedAlpha: false,
-	});
+	const gl = canvas.getContext("webgl2");
 	if (!gl) return null;
 
 	const program = createProgram(gl, FACE_VERTEX_SHADER, FACE_FRAGMENT_SHADER);
@@ -35,17 +31,13 @@ function setupGl(canvas: HTMLCanvasElement, mesh: FaceMesh): GlState | null {
 	const vao = gl.createVertexArray();
 	gl.bindVertexArray(vao);
 	createAttributeBuffer(gl, program, "aPosition", mesh.positions, 2);
-	createAttributeBuffer(gl, program, "aColor", mesh.colors, 3);
+	createAttributeBuffer(gl, program, "aBrightness", mesh.brightness, 1);
 	createIndexBuffer(gl, mesh.indices);
-
-	gl.enable(gl.BLEND);
-	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 	const uPointer = gl.getUniformLocation(program, "uPointer");
 	const uPointerStrength = gl.getUniformLocation(program, "uPointerStrength");
-	const uAmbientPulse = gl.getUniformLocation(program, "uAmbientPulse");
-	const uAspect = gl.getUniformLocation(program, "uAspect");
-	if (!uPointer || !uPointerStrength || !uAmbientPulse || !uAspect) {
+	const uThemeColor = gl.getUniformLocation(program, "uThemeColor");
+	if (!uPointer || !uPointerStrength || !uThemeColor) {
 		throw new Error("Face shader is missing an expected uniform");
 	}
 
@@ -55,21 +47,15 @@ function setupGl(canvas: HTMLCanvasElement, mesh: FaceMesh): GlState | null {
 		triangleCount: mesh.triangleCount,
 		uPointer,
 		uPointerStrength,
-		uAmbientPulse,
-		uAspect,
+		uThemeColor,
 	};
-}
-
-function pulsePhase(t: number): number {
-	return (
-		(1 - Math.cos((t / FaceCanvasTune.ambientPulse.periodMs) * Math.PI * 2)) / 2
-	);
 }
 
 /** Owns the WebGL context, buffers, and render loop for a triangulated `FaceMesh`. */
 export function useFaceShaderRenderer(
 	canvasRef: RefObject<HTMLCanvasElement | null>,
 	mesh: FaceMesh | null,
+	themeColorRef: RefObject<RgbColor>,
 ): (size: CanvasSize) => void {
 	const stateRef = useRef<GlState | null>(null);
 	const sizeRef = useRef<CanvasSize>({ width: 0, height: 0 });
@@ -99,7 +85,7 @@ export function useFaceShaderRenderer(
 		).matches;
 		let raf: number | null = null;
 
-		function draw(t: number): void {
+		function draw(): void {
 			const current = stateRef.current;
 			if (current) {
 				easePointer(pointerRef.current);
@@ -112,15 +98,14 @@ export function useFaceShaderRenderer(
 					pointerRef.current.y,
 				);
 				gl.uniform1f(current.uPointerStrength, pointerRef.current.strength);
-				gl.uniform1f(current.uAmbientPulse, pulsePhase(t));
-				gl.uniform1f(current.uAspect, aspectRef.current);
+				gl.uniform3f(current.uThemeColor, ...themeColorRef.current);
 				gl.drawElements(gl.TRIANGLES, triangleCount * 3, gl.UNSIGNED_INT, 0);
 			}
 			if (!reduceMotion) raf = requestAnimationFrame(draw);
 		}
 
 		if (reduceMotion) {
-			draw(0);
+			draw();
 		} else {
 			raf = requestAnimationFrame(draw);
 		}
@@ -129,7 +114,7 @@ export function useFaceShaderRenderer(
 			if (raf) cancelAnimationFrame(raf);
 			stateRef.current = null;
 		};
-	}, [canvasRef, mesh, pointerRef]);
+	}, [canvasRef, mesh, pointerRef, themeColorRef]);
 
 	return handleResize;
 }

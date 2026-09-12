@@ -8,8 +8,8 @@ export const FaceMeshTune = {
 		minPointSpacing: 16,
 		borderPointsPerSide: 4,
 	},
-	color: {
-		/** Half-width (px) of the box the per-vertex color is averaged over. */
+	brightness: {
+		/** Half-width (px) of the box the per-vertex luminance is averaged over. */
 		sampleRadius: 1,
 	},
 } as const;
