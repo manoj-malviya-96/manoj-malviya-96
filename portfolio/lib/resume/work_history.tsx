@@ -14,8 +14,8 @@ import {
 	EXPERIENCE_BY_RECENCY,
 	type Experience,
 	type ExperienceId,
+	Experiences,
 	getEmployer,
-	getExperience,
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
@@ -28,7 +28,7 @@ type ExperienceGroup = {
 function groupByOrganization(ids: readonly ExperienceId[]): ExperienceGroup[] {
 	const groups: ExperienceGroup[] = [];
 	for (const id of ids) {
-		const { organization } = getExperience(id);
+		const { organization } = Experiences[id];
 		const current = groups[groups.length - 1];
 		if (current && current.organization === organization) {
 			current.experiences.push(id);
@@ -54,8 +54,8 @@ export default function WorkHistory() {
 function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { experiences } = group;
 	const { name, logo } = getEmployer(experiences[0]);
-	const { start } = getExperience(experiences[experiences.length - 1]);
-	const { end } = getExperience(experiences[0]);
+	const { start } = Experiences[experiences[experiences.length - 1]];
+	const { end } = Experiences[experiences[0]];
 
 	return (
 		<Grid columns={2} className="track-row" padding="lg" bg="surface">
@@ -88,7 +88,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 
 function roleEvent(experience: ExperienceId): TimelineEvent {
 	const { position, start, end, type, skills, summary } =
-		getExperience(experience);
+		Experiences[experience];
 
 	return {
 		key: experience,

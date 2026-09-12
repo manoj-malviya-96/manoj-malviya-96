@@ -8,7 +8,7 @@ import {
 	IconMagnifyingGlass,
 	IconPalette,
 } from "@manoj-malviya-96/atom/icons";
-import { getPhase, PHASE_IDS, type PhaseId } from "@/lib/data";
+import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { dottedConcatString, withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
@@ -86,19 +86,14 @@ function Loop() {
 			/>
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
-					<LoopCard key={id} id={id} {...getPhase(id)} />
+					<LoopCard key={id} id={id} {...Phases[id]} />
 				))}
 			</Grid>
 		</Section>
 	);
 }
 
-function LoopCard({
-	id,
-	color,
-	label,
-	copy,
-}: { id: PhaseId } & ReturnType<typeof getPhase>) {
+function LoopCard({ id, color, label, copy }: { id: PhaseId } & Phase) {
 	const PhaseIcon = phaseIcon(id);
 	return (
 		<FlexCard direction="col">

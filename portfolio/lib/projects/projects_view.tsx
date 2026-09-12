@@ -1,22 +1,34 @@
-import { Flex, Grid, List } from "@manoj-malviya-96/atom";
+import { Flex, Grid } from "@manoj-malviya-96/atom";
 import {
 	AllProjectIds,
-	getMeta,
+	type Project,
 	type ProjectEffort,
 	type ProjectId,
-	type ProjectMeta,
+	Projects,
 } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
 import { Link } from "@/lib/shared";
 
 export default function ProjectsView() {
 	return (
-		<Flex direction="col" gap="xl"  width="content" hAlign="center" vAlign="center">
+		<Flex
+			direction="col"
+			gap="xl"
+			width="content"
+			hAlign="center"
+			vAlign="center"
+		>
 			<ProjectsToc />
-			<Flex direction="col" gap="xl" hAlign="center" vAlign="center"  padding="lg">
+			<Flex
+				direction="col"
+				gap="xl"
+				hAlign="center"
+				vAlign="center"
+				padding="lg"
+			>
 				{/* TODO use DynamicList when its ready */}
 				{rankedProjects.map(({ id }) => (
-				    <ProjectCard project={id} />
+					<ProjectCard project={id} />
 				))}
 			</Flex>
 		</Flex>
@@ -29,7 +41,7 @@ function ProjectsToc() {
 			as="nav"
 			aria-label="Project sections"
 			columns={3}
-            gap="sm"
+			gap="sm"
 			width="full"
 		>
 			{rankedProjects.map(({ id, title }) => (
@@ -41,7 +53,7 @@ function ProjectsToc() {
 	);
 }
 
-type ProjectSummary = ProjectMeta & { id: ProjectId };
+type ProjectSummary = Project & { id: ProjectId };
 
 const effortRank: Record<ProjectEffort, number> = {
 	high: 3,
@@ -57,6 +69,6 @@ const projectsToShow: ProjectId[] = AllProjectIds.filter(
 const rankedProjects: ProjectSummary[] = projectsToShow
 	.map((id) => ({
 		id,
-		...getMeta(id),
+		...Projects[id],
 	}))
 	.sort((a, b) => effortRank[b.effort] - effortRank[a.effort]);

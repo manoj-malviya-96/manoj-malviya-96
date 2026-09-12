@@ -1,4 +1,3 @@
-import { assertNever } from "@manoj-malviya-96/atom";
 import type { OrganizationId } from "@/lib/data/organizations";
 import type { ValuesOf } from "@/lib/helper";
 import type { MonthAndYear } from "@/lib/types";
@@ -14,25 +13,19 @@ export type Degree = {
 	graduation: MonthAndYear;
 };
 
-export function getDegree(degree: DegreeId): Degree {
-	switch (degree) {
-		case "penn-state-ms":
-			return {
-				organization: "penn-state",
-				degree: "Master of Science",
-				field: "Mechanical Engineering",
-				focus: "Computational Design, Machine Learning, Data Science",
-				graduation: "2020-08",
-			};
-		case "iitj-btech":
-			return {
-				organization: "iit-j",
-				degree: "Bachelor of Technology",
-				field: "Mechanical Engineering",
-				focus: "Design and Manufacturing",
-				graduation: "2018-07",
-			};
-		default:
-			return assertNever(degree);
-	}
-}
+export const Degrees = {
+	"penn-state-ms": {
+		organization: "penn-state",
+		degree: "Master of Science",
+		field: "Mechanical Engineering",
+		focus: "Computational Design, Machine Learning, Data Science",
+		graduation: "2020-08",
+	},
+	"iitj-btech": {
+		organization: "iit-j",
+		degree: "Bachelor of Technology",
+		field: "Mechanical Engineering",
+		focus: "Design and Manufacturing",
+		graduation: "2018-07",
+	},
+} satisfies Record<DegreeId, Degree>;

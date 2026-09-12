@@ -1,14 +1,13 @@
 import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { IconGraduationCap } from "@manoj-malviya-96/atom/icons";
-import { DEGREE_IDS, getDegree, getOrganization } from "@/lib/data";
+import { DEGREE_IDS, Degrees, Organizations } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
 
 export default function Education() {
 	return (
 		<Grid columns={2} gap="md" className="edu-grid">
 			{DEGREE_IDS.map((id) => {
-				const { organization, degree, field, focus, graduation } =
-					getDegree(id);
+				const { organization, degree, field, focus, graduation } = Degrees[id];
 				return (
 					<Flex
 						key={id}
@@ -20,7 +19,7 @@ export default function Education() {
 					>
 						<Flex direction="row" gap="xs" vAlign="center">
 							<IconGraduationCap size="sm" />
-							<Text variant="title">{getOrganization(organization).name}</Text>
+							<Text variant="title">{Organizations[organization].name}</Text>
 						</Flex>
 						<Text variant="body" muted>
 							{degree}, {field} · {formatDate(graduation)}

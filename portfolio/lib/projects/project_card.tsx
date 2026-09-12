@@ -8,19 +8,17 @@ import {
 import NextImage from "next/image";
 import {
 	getLinks,
-	getMeta,
+	type Project,
 	type ProjectId,
 	type ProjectLink,
 	type ProjectMedia,
-	type ProjectMeta,
+	Projects,
 } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { Link } from "@/lib/shared";
-import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-    const { title, summary, dates, tags, media } = getMeta(project);
-    const contentNode = getProjectContent(project);
+	const { title, summary, dates, tags, media, content } = Projects[project];
 
 	return (
 		<Flex
@@ -41,28 +39,20 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				width="lg"
 				style={{ textAlign: "center" }}
 			>
-    			<Text variant="hero" >
-    				{title}
-    			</Text>
-				<Text variant="subtitle" muted >
+				<Text variant="hero">{title}</Text>
+				<Text variant="subtitle" muted>
 					{summary}
 				</Text>
 				<ProjectLinks project={project} />
 			</Flex>
-            {media && <ProjectCover media={media} />}
-			{getProjectContent(project)}
+			{media && <ProjectCover media={media} />}
+			{content}
 			<ProjectTags tags={tags} date={dates} />
 		</Flex>
 	);
 }
 
-function ProjectTags({
-	tags,
-	date,
-}: {
-	tags: ProjectMeta["tags"];
-	date: string;
-}) {
+function ProjectTags({ tags, date }: { tags: Project["tags"]; date: string }) {
 	return (
 		<Text variant="caption" muted>
 			{dottedConcatString([date, ...tags])}
