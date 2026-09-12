@@ -31,7 +31,6 @@ export const AllProjectIds = [
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
-
 export const Projects: Record<ProjectId, Project> = {
 	portfolio: {
 		title: "Portfolio",
@@ -135,7 +134,11 @@ export const Projects: Record<ProjectId, Project> = {
 			alt: "Muviz reacting to a track in real time.",
 		},
 		links: {
-			primary: { kind: "demo", label: "Demo", href: "https://muviz.vercel.app/" },
+			primary: {
+				kind: "demo",
+				label: "Demo",
+				href: "https://muviz.vercel.app/",
+			},
 			others: [],
 		},
 		content: (
@@ -368,7 +371,6 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 };
 
-
 type SoftwareConcepts =
 	| "web"
 	| "mobile"
@@ -449,6 +451,26 @@ export type Project = {
 	links: ProjectLinks;
 	content?: ReactNode;
 };
+
+export type ProjectSummary = Project & { id: ProjectId };
+
+const HIDDEN_PROJECT_IDS: readonly ProjectId[] = [
+	"blackhole",
+	"simphy",
+	"mesha",
+];
+
+const EFFORT_RANK: Record<ProjectEffort, number> = {
+	high: 3,
+	medium: 2,
+	low: 1,
+};
+
+export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
+	(id) => !HIDDEN_PROJECT_IDS.includes(id),
+)
+	.map((id) => ({ id, ...Projects[id] }))
+	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
 
 function statusItem(
 	color: ColorToken,

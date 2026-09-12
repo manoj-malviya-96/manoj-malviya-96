@@ -1,11 +1,5 @@
 import { Flex, Grid } from "@manoj-malviya-96/atom";
-import {
-	AllProjectIds,
-	type Project,
-	type ProjectEffort,
-	type ProjectId,
-	Projects,
-} from "@/lib/data";
+import { RankedProjects } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
 import { Link } from "@/lib/shared";
 
@@ -27,7 +21,7 @@ export default function ProjectsView() {
 				padding="lg"
 			>
 				{/* TODO use DynamicList when its ready */}
-				{rankedProjects.map(({ id }) => (
+				{RankedProjects.map(({ id }) => (
 					<ProjectCard project={id} />
 				))}
 			</Flex>
@@ -44,7 +38,7 @@ function ProjectsToc() {
 			gap="sm"
 			width="full"
 		>
-			{rankedProjects.map(({ id, title }) => (
+			{RankedProjects.map(({ id, title }) => (
 				<Link key={id} url={`#${id}`}>
 					{title}
 				</Link>
@@ -52,23 +46,3 @@ function ProjectsToc() {
 		</Grid>
 	);
 }
-
-type ProjectSummary = Project & { id: ProjectId };
-
-const effortRank: Record<ProjectEffort, number> = {
-	high: 3,
-	medium: 2,
-	low: 1,
-};
-
-const projectsToHide: ProjectId[] = ["blackhole", "simphy", "mesha"] as const;
-const projectsToShow: ProjectId[] = AllProjectIds.filter(
-	(id) => !projectsToHide.includes(id),
-);
-
-const rankedProjects: ProjectSummary[] = projectsToShow
-	.map((id) => ({
-		id,
-		...Projects[id],
-	}))
-	.sort((a, b) => effortRank[b.effort] - effortRank[a.effort]);
