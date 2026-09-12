@@ -4,7 +4,6 @@ import {
 	Button,
 	Flex,
 	setTheme,
-	Text,
 	useScrollEffect,
 	useTheme,
 } from "@manoj-malviya-96/atom";
@@ -37,6 +36,7 @@ export default function HeaderBar() {
 		: pathname.startsWith("/projects")
 			? "projects"
 			: null;
+	const tocKey = hoveredToc ?? activeToc;
 
 	useHeaderBar({
 		left: (
@@ -82,18 +82,19 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
-		bottom: <HeaderToc toc={hoveredToc ?? activeToc} />,
+		bottom: tocKey ? <HeaderToc toc={tocKey} /> : undefined,
 	});
 
 	return (
 		<Header
+			width="full"
 			padding={{ x: "lg", y: "md" }}
 			data-hidden={visible ? undefined : true}
 		/>
 	);
 }
 
-function HeaderToc({ toc }: { toc: TocKey | null }) {
+function HeaderToc({ toc }: { toc: TocKey }) {
 	switch (toc) {
 		case "projects":
 			return (
@@ -126,12 +127,6 @@ function HeaderToc({ toc }: { toc: TocKey | null }) {
 						</Link>
 					))}
 				</Flex>
-			);
-		case null:
-			return (
-				<Text variant="caption" muted className="header-tagline">
-					Product-minded engineer · Berlin, DE
-				</Text>
 			);
 	}
 }

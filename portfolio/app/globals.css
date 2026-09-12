@@ -47,12 +47,6 @@ h3 {
 	}
 }
 
-@media (max-width: 640px) {
-	.header-tagline {
-		display: none;
-	}
-}
-
 html[data-theme="light"] {
 	color-scheme: light;
 }
