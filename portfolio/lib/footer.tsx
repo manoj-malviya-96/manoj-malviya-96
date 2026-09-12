@@ -27,11 +27,8 @@ export default function Footer() {
 		<Flex
 			as="footer"
 			direction="col"
-			gap="lg"
-			padding="xl"
-			radius="lg"
-			bg="surface"
-			blur
+            gap="lg"
+			padding={{y: "xl"}}
 		>
 			<Grid columns={3} gap="lg" className="footer-grid">
 				<About />
@@ -39,7 +36,7 @@ export default function Footer() {
 				<SocialLinks />
 			</Grid>
 			<Divider direction="horizontal" />
-			<Flex direction="row" hAlign="between" gap="sm" wrap>
+			<Flex direction="row" hAlign="between" gap="lg" wrap>
 				<Text variant="caption" mono>
 					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
 				</Text>
@@ -67,7 +64,7 @@ function About() {
 				style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
 			/>
 			<Text variant="title">Manoj Malviya</Text>
-			<Text variant="body">
+			<Text variant="body" muted width="sm">
 				Product-minded engineer building things that work today and still work
 				next year. Occasionally simulates a black hole for fun.
 			</Text>
@@ -90,7 +87,7 @@ function QuickLinks() {
 	return (
 		<Flex direction="col" gap="md">
 			<Text variant="title">Quick Links</Text>
-			<List direction="col" gap="xs">
+			<List direction="col" gap="md">
 				{QUICK_LINKS.map(({ label, url, icon: LinkIcon }) => (
 					<Flex as="li" direction="row" gap="xs" vAlign="center" key={label}>
 						<LinkIcon size="sm" />

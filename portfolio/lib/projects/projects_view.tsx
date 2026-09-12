@@ -11,16 +11,14 @@ import { Link } from "@/lib/shared";
 
 export default function ProjectsView() {
 	return (
-		<Flex direction="col" gap="xl" vAlign="start">
+		<Flex direction="col" gap="xl"  width="content" hAlign="center" vAlign="center">
 			<ProjectsToc />
-			<List direction="col" gap="xl">
+			<Flex direction="col" gap="xl" hAlign="center" vAlign="center"  padding="lg">
 				{/* TODO use DynamicList when its ready */}
 				{rankedProjects.map(({ id }) => (
-					<li key={id}>
-						<ProjectCard project={id} />
-					</li>
+				    <ProjectCard project={id} />
 				))}
-			</List>
+			</Flex>
 		</Flex>
 	);
 }
@@ -31,8 +29,8 @@ function ProjectsToc() {
 			as="nav"
 			aria-label="Project sections"
 			columns={3}
-			gap="sm"
-			className="project-toc"
+            gap="sm"
+			width="full"
 		>
 			{rankedProjects.map(({ id, title }) => (
 				<Link key={id} url={`#${id}`}>
@@ -51,7 +49,7 @@ const effortRank: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-const projectsToHide: ProjectId[] = ["blackhole"] as const;
+const projectsToHide: ProjectId[] = ["blackhole", "simphy", "mesha"] as const;
 const projectsToShow: ProjectId[] = AllProjectIds.filter(
 	(id) => !projectsToHide.includes(id),
 );

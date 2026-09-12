@@ -45,7 +45,10 @@ export function getMeta(project: ProjectId): ProjectMeta {
 		case "atom":
 			return {
 				title: "Atom",
-				summary: "One primitive. The whole design system composes from it.",
+                summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
+				Every option out there made me choose, a JS-in-JS styling library dragging its own runtime,
+				or CSS that throws out type safety. I got tired of choosing, so I built Atom: one primitive,
+				one stylesheet, and a type system that actually checks it.`,
 				dates: "2024–2025",
 				tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 				effort: "high",
@@ -53,7 +56,10 @@ export function getMeta(project: ProjectId): ProjectMeta {
 		case "muviz":
 			return {
 				title: "Muviz",
-				summary: "Winamp nostalgia, rebuilt for the GPU.",
+				summary: `I grew up watching Winamp react to whatever was playing, and I never
+				stopped wanting that feeling back. So I’m building the real thing
+				myself: no AI, no faking it, just DSP that actually understands the
+				music.`,
 				dates: "2023",
 				tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 				effort: "high",
@@ -87,7 +93,11 @@ export function getMeta(project: ProjectId): ProjectMeta {
 			return {
 				title: "topopt-py",
 				summary:
-					"A 40-year-old optimization algorithm, dragged into this decade.",
+					`Same 40-year-old topology-optimization algorithm, rewritten to
+					actually be fast: the solver's inner loop runs as array operations in
+					NumPy instead of nested Python loops -
+					2x faster same accuracy, bigger
+					problems.`,
 				dates: "2021",
 				tags: ["simulation", "optimization", "high-performance", "python"],
 				effort: "high",

@@ -8,6 +8,9 @@ import {
 } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import type { ProjectId } from "@/lib/data";
+import { IconLightbulb } from "@manoj-malviya-96/atom/icons";
+import { IconVolumeHigh } from "@manoj-malviya-96/atom/icons";
+import { IconPaintBrush } from "@manoj-malviya-96/atom/icons";
 
 function statusItem(
 	color: ColorToken,
@@ -22,12 +25,12 @@ function statusItem(
 	);
 }
 
-export function getProjectContent(project: ProjectId): ReactNode {
+export function getProjectContent(project: ProjectId) {
 	switch (project) {
 		case "portfolio":
 			return (
 				<Flex direction="col" gap="sm">
-					<Text variant="body">
+					<Text variant="body" muted>
 						Every project I've built, in one catalog — searchable by title,
 						tags, or description as you type. Fuse.js runs client-side, so
 						there's no server round trip.
@@ -36,69 +39,54 @@ export function getProjectContent(project: ProjectId): ReactNode {
 			);
 		case "atom":
 			return (
-				<Flex direction="col" gap="sm">
+			<List direction="col" gap="md">
+				<li>
 					<Text variant="body">
-						I wanted Apple-grade design discipline: one visual language,
-						everywhere. Every option out there made me choose, a JS-in-JS
-						styling library dragging its own runtime, or CSS that throws out
-						type safety. I got tired of choosing, so I built Atom: one
-						primitive, one stylesheet, and a type system that actually checks
-						it.
+						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays
+						a runtime cost.
 					</Text>
-					<List direction="col" gap="md">
-						<li>
-							<Text variant="body">
-								Styling and motion live in CSS, never JS-in-JS, so nothing pays
-								a runtime cost.
-							</Text>
-						</li>
-						<li>
-							<Text variant="body">
-								Types generate straight from that CSS, so an illegal token can't
-								compile. Scripts catch what the type system can't.
-							</Text>
-						</li>
-						<li>
-							<Text variant="body">
-								20 KB gzipped for the core. Charts and system components ship
-								separately, each under its own budget.
-							</Text>
-						</li>
-					</List>
-				</Flex>
+				</li>
+				<li>
+					<Text variant="body">
+						✅ Types generate straight from that CSS, so an illegal token can't
+						compile. Scripts catch what the type system can't.
+					</Text>
+				</li>
+				<li>
+					<Text variant="body">
+						✅ 20 KB gzipped for the core. Charts and system components ship
+						separately, each under its own budget.
+					</Text>
+				</li>
+			</List>
 			);
 		case "muviz":
 			return (
-				<Flex direction="col" gap="sm">
-					<Text variant="body" muted>
-						I grew up watching Winamp react to whatever was playing, and I never
-						stopped wanting that feeling back. So I’m building the real thing
-						myself: no AI, no faking it, just DSP that actually understands the
-						music.
+			<List direction="col" gap="md">
+                    <Flex as="li" direction="row" gap="md" vAlign="center">
+                        <IconVolumeHigh/>
+					<Text variant="body">
+						A C++ pipeline (FFT, onset detection, key and rhythm extraction)
+						compiles to WebAssembly and analyzes a track once, in a Web
+						Worker, off the main thread.
 					</Text>
-					<List direction="col" gap="xs">
-						<li>
-							<Text variant="body" muted>
-								A C++ pipeline (FFT, onset detection, key and rhythm extraction)
-								compiles to WebAssembly and analyzes a track once, in a Web
-								Worker, off the main thread.
-							</Text>
-						</li>
-						<li>
-							<Text variant="body" muted>
-								Every analyzed track is cached in IndexedDB by content hash, so
-								replaying it or re-adding the file skips analysis entirely.
-							</Text>
-						</li>
-						<li>
-							<Text variant="body" muted>
-								The Three.js scene never touches audio directly. It’s just a
-								pure function of the extracted features and playback time, so
-								scrubbing and switching tracks come for free.
-							</Text>
-						</li>
-					</List>
 				</Flex>
+                <Flex as="li" direction="row" gap="md" vAlign="center">
+                         <IconLightbulb/>
+                        <Text variant="body">
+						Every analyzed track is cached in IndexedDB by content hash, so
+						replaying it or re-adding the file skips analysis entirely.
+					</Text>
+				</Flex>
+                    <Flex as="li" direction="row" gap="md" vAlign="center">
+                        <IconPaintBrush/>
+					<Text variant="body">
+						The Three.js scene never touches audio directly. It’s just a
+						pure function of the extracted features and playback time, so
+						scrubbing and switching tracks come for free.
+					</Text>
+				</Flex>
+			</List>
 			);
 		case "honeycomb":
 			return (
@@ -109,14 +97,8 @@ export function getProjectContent(project: ProjectId): ReactNode {
 				</Text>
 			);
 		case "topopt_py":
-			return (
-				<Text variant="body">
-					Same 40-year-old topology-optimization algorithm, rewritten to
-					actually be fast: the solver's inner loop runs as array operations in
-					NumPy instead of nested Python loops —{" "}
-					<Badge color="green">2× faster</Badge>, same accuracy, bigger
-					problems, still just NumPy.
-				</Text>
+            return (
+                undefined
 			);
 		case "blackhole":
 			return (

@@ -1,11 +1,4 @@
-import {
-	assertNever,
-	Divider,
-	Flex,
-	Image,
-	Text,
-	Video,
-} from "@manoj-malviya-96/atom";
+import { assertNever, Flex, Image, Text, Video } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -26,7 +19,8 @@ import { Link } from "@/lib/shared";
 import { getProjectContent } from "./project_content";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, summary, dates, tags, media } = getMeta(project);
+    const { title, summary, dates, tags, media } = getMeta(project);
+    const contentNode = getProjectContent(project);
 
 	return (
 		<Flex
@@ -37,23 +31,27 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			padding="lg"
 			radius="lg"
 			hAlign="center"
-			as="article"
+			as="section"
+			width="full"
 		>
-			<Flex direction="col" gap="lg" hAlign="center" width="content">
-				<Flex as="span" direction="col" gap="xs" hAlign="center">
-					<Text variant="heading" align="center">
-						{title}
-					</Text>
-					<ProjectTags tags={tags} date={dates} />
-				</Flex>
-				<Divider direction="horizontal" style={{ opacity: "30%" }} />
-				<Text variant="title" bold align="center">
+			<Flex
+				direction="col"
+				gap="md"
+				hAlign="center"
+				width="lg"
+				style={{ textAlign: "center" }}
+			>
+    			<Text variant="hero" >
+    				{title}
+    			</Text>
+				<Text variant="subtitle" muted >
 					{summary}
 				</Text>
-				{getProjectContent(project)}
 				<ProjectLinks project={project} />
 			</Flex>
-			{media && <ProjectCover media={media} />}
+            {media && <ProjectCover media={media} />}
+			{getProjectContent(project)}
+			<ProjectTags tags={tags} date={dates} />
 		</Flex>
 	);
 }
@@ -82,9 +80,12 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 				ratio="video"
 				radius="md"
 				autoPlay
+				preload="none"
 				muted
 				loop
+				role="img"
 				playsInline
+				controls={false}
 			/>
 		);
 	}
