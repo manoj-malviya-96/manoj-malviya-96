@@ -4,6 +4,7 @@ import {
 	Button,
 	Flex,
 	setTheme,
+	Text,
 	useScrollEffect,
 	useTheme,
 } from "@manoj-malviya-96/atom";
@@ -37,7 +38,7 @@ export default function HeaderBar() {
 			</Link>
 		),
 		center: (
-			<Flex as="nav" direction="row" gap="xs">
+			<Flex as="nav" direction="row" gap="sm">
 				{NAV_LINKS.map(({ url, label }) => {
 					const isCurrent = pathname === url;
 					return (
@@ -69,9 +70,19 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
+		bottom: (
+			<Text variant="caption" muted className="header-tagline">
+				Product-minded engineer · Berlin, DE
+			</Text>
+		),
 	});
 
-	return <Header data-hidden={visible ? undefined : true} />;
+	return (
+		<Header
+			padding={{ x: "lg", y: "md" }}
+			data-hidden={visible ? undefined : true}
+		/>
+	);
 }
 
 const TOP_BAND = 0.05 as const;
