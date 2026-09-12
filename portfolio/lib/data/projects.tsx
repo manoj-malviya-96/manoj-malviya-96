@@ -17,7 +17,6 @@ import type { ExternalURL } from "@/lib/types";
 import trussOptScreenshot from "./truss-opt-screenshot.png";
 
 export const AllProjectIds = [
-	"portfolio",
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -32,48 +31,6 @@ export const AllProjectIds = [
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
 export const Projects: Record<ProjectId, Project> = {
-	portfolio: {
-		title: "Portfolio",
-		summary: "The portfolio, describing itself.",
-		dates: "2025",
-		tags: [
-			"web",
-			"open-source",
-			"nextjs",
-			"react",
-			"typescript",
-			"ui/ux",
-			"rendering",
-		],
-		effort: "medium",
-		media: {
-			kind: "video",
-			src: getBlob("portfolio.webm"),
-			alt: "This portfolio’s interactive landing page in motion.",
-		},
-		links: {
-			primary: {
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
-			},
-			others: [
-				{
-					kind: "external",
-					label: "Previous version",
-					href: "https://manoj-malviya-96.github.io/",
-				},
-			],
-		},
-		content: (
-			<Flex direction="col" gap="sm">
-				<Text variant="body" muted>
-					Every project I've built, in one catalog — searchable by title, tags,
-					or description as you type. Fuse.js runs client-side, so there's no
-					server round trip.
-				</Text>
-			</Flex>
-		),
-	},
 	atom: {
 		title: "Atom",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
