@@ -128,7 +128,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	honeycomb: {
 		title: "HoneyMesh",
-		summary: "Because hexagons are just better, structurally speaking.",
+		summary:
+			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
 		dates: "2022",
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
@@ -148,17 +149,20 @@ export const Projects: Record<ProjectId, Project> = {
 			<Text variant="body">
 				Give it a shape, get back a honeycomb lattice — skeletonized in C++ and
 				exported straight to a VTK mesh, ready for your CAD tool. No manual
-				triangulation, no format conversion.
+				triangulation, no format conversion. The skeleton is a functional
+				pipeline: an unordered_set for edges, a sorted map for vertices, every
+				function pure input to output. The part that kept breaking was
+				staggering the hexagon centers correctly — get that wrong and the
+				whole grid drifts.
 			</Text>
 		),
 	},
 	topopt_py: {
 		title: "topopt-py",
-		summary: `Same 40-year-old topology-optimization algorithm, rewritten to
-					actually be fast: the solver's inner loop runs as array operations in
-					NumPy instead of nested Python loops -
-					2x faster same accuracy, bigger
-					problems.`,
+		summary: `I found DTU's 99-line topology-optimization script and loved how
+					compact it was, but the inner loop was nested Python. I rewrote the
+					stiffness assembly and filtering as vectorized NumPy — same SIMP
+					algorithm, same accuracy, faster on the same problem.`,
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "high",
@@ -179,6 +183,16 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
+		content: (
+			<Text variant="body">
+				The stiffness assembler now caches its sparsity pattern instead of
+				rebuilding it every iteration, and strain energy is a single einsum
+				call instead of a manual reshape-and-sum. Filtering swapped four
+				nested loops for one scipy.ndimage.convolve. Solver time still
+				dominates — that's inherent to FEM — but on a 5,000-element MBB beam
+				the run drops from 4.8s to 2.6s.
+			</Text>
+		),
 	},
 	blackhole: {
 		title: "Blackhole",
@@ -201,15 +215,19 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Simulates real black-hole gravity — a raymarching shader that
-				numerically integrates light-ray geodesics per pixel, fast enough to
-				rotate live instead of watching a pre-rendered clip.
+				Simulates real black-hole gravity — a compute shader integrates each
+				pixel's light-ray geodesic against a mass modeled on Sagittarius A*
+				(4.3 million solar masses), and a separate lensing fragment shader
+				bends the background grid around it. It runs as a Qt/OpenGL widget,
+				falling back to GL_ARB_compute_shader on GPUs without core GL 4.3, so
+				it still rotates live instead of playing back a pre-rendered clip.
 			</Text>
 		),
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
-		summary: "How many chargers do you actually need? Simulate it first.",
+		summary:
+			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first.",
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
@@ -227,9 +245,13 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Answers one question: how many chargers do you actually need? Change the
-				inputs — charger count, power draw — and watch demand, cost, and
-				concurrency update immediately.
+				Answers one question: how many chargers do you actually need? Each run
+				simulates a year of 15-minute intervals, drawing car arrivals from a
+				Poisson-derived probability per charge point, with no queueing — a car
+				that arrives to a busy point just leaves. Change the charger count or
+				power draw and watch demand, cost, and concurrency update
+				immediately; concurrency turned out to decay roughly exponentially as
+				charger count grows.
 			</Text>
 		),
 	},
@@ -301,7 +323,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	truss_opt: {
 		title: "Truss Optimizer",
-		summary: "Draw a truss. Watch it optimize itself.",
+		summary:
+			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
 		dates: "2025",
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
@@ -320,9 +343,12 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Place supports and loads on a cantilever lattice and this site's own API
-				route solves the FEA and runs an optimality-criteria search to
-				redistribute material — the browser only ever draws the answer.
+				Place supports and loads on a cantilever lattice and this site's own
+				API route solves the FEA and runs an optimality-criteria search to
+				redistribute material — the browser only ever draws the answer. Each
+				of the 200 iterations re-solves the FEA, then bisects on the Lagrange
+				multiplier to hold total volume at 40% of the start, with a minimum
+				thickness clamp so no member vanishes to zero.
 			</Text>
 		),
 	},
