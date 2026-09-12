@@ -2,7 +2,10 @@ export const FACE_VERTEX_SHADER = /* glsl */ `#version 300 es
 	in vec2 aPosition;
 	in float aBrightness;
 
-	out float vBrightness;
+	// flat: each triangle takes its provoking vertex's brightness instead of
+	// interpolating across the three — that's what makes the facets read as
+	// triangles instead of a smoothly blurred gradient.
+	flat out float vBrightness;
 	out vec2 vClipPosition;
 
 	void main() {
@@ -17,7 +20,7 @@ export const FACE_VERTEX_SHADER = /* glsl */ `#version 300 es
 export const FACE_FRAGMENT_SHADER = /* glsl */ `#version 300 es
 	precision highp float;
 
-	in float vBrightness;
+	flat in float vBrightness;
 	in vec2 vClipPosition;
 
 	uniform vec2 uPointer;
