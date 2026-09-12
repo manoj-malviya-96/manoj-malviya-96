@@ -7,7 +7,6 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import {
-	getLinks,
 	type Project,
 	type ProjectId,
 	type ProjectLink,
@@ -117,7 +116,7 @@ function ProjectCover({ media }: { media: ProjectMedia }) {
 }
 
 function ProjectLinks({ project }: { project: ProjectId }) {
-	const { primary, others } = getLinks(project);
+	const { primary, others } = Projects[project].links;
 
 	return (
 		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
