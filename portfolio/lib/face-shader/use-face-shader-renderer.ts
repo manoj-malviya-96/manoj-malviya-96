@@ -15,7 +15,7 @@ type CanvasSize = { width: number; height: number };
 type GlState = {
 	gl: WebGL2RenderingContext;
 	program: WebGLProgram;
-	triangleCount: number;
+	edgeCount: number;
 	uPointer: WebGLUniformLocation;
 	uPointerStrength: WebGLUniformLocation;
 	uThemeColor: WebGLUniformLocation;
@@ -32,7 +32,7 @@ function setupGl(canvas: HTMLCanvasElement, mesh: FaceMesh): GlState | null {
 	gl.bindVertexArray(vao);
 	createAttributeBuffer(gl, program, "aPosition", mesh.positions, 2);
 	createAttributeBuffer(gl, program, "aBrightness", mesh.brightness, 1);
-	createIndexBuffer(gl, mesh.indices);
+	createIndexBuffer(gl, mesh.edgeIndices);
 
 	const uPointer = gl.getUniformLocation(program, "uPointer");
 	const uPointerStrength = gl.getUniformLocation(program, "uPointerStrength");
@@ -44,7 +44,7 @@ function setupGl(canvas: HTMLCanvasElement, mesh: FaceMesh): GlState | null {
 	return {
 		gl,
 		program,
-		triangleCount: mesh.triangleCount,
+		edgeCount: mesh.edgeCount,
 		uPointer,
 		uPointerStrength,
 		uThemeColor,
@@ -89,7 +89,7 @@ export function useFaceShaderRenderer(
 			const current = stateRef.current;
 			if (current) {
 				easePointer(pointerRef.current);
-				const { gl, program, triangleCount } = current;
+				const { gl, program, edgeCount } = current;
 				gl.clear(gl.COLOR_BUFFER_BIT);
 				gl.useProgram(program);
 				gl.uniform2f(
@@ -99,7 +99,7 @@ export function useFaceShaderRenderer(
 				);
 				gl.uniform1f(current.uPointerStrength, pointerRef.current.strength);
 				gl.uniform3f(current.uThemeColor, ...themeColorRef.current);
-				gl.drawElements(gl.TRIANGLES, triangleCount * 3, gl.UNSIGNED_INT, 0);
+				gl.drawElements(gl.LINES, edgeCount * 2, gl.UNSIGNED_INT, 0);
 			}
 			if (!reduceMotion) raf = requestAnimationFrame(draw);
 		}

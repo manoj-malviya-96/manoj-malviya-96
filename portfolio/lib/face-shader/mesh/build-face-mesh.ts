@@ -1,5 +1,5 @@
 import { FaceMeshTune } from "./config";
-import { triangulate } from "./delaunay";
+import { type Triangle, triangulate } from "./delaunay";
 import { samplePoints } from "./sample-points";
 import type { FaceMesh, Point } from "./types";
 
@@ -45,11 +45,33 @@ function toClipSpace(p: Point, width: number, height: number): Point {
 	return { x: -nx * aspect, y: ny };
 }
 
-/** Builds a triangulated, per-vertex-brightness mesh from a photo, ready to upload to the GPU. */
+/** Each triangle's 3 edges, deduplicated so a shared edge isn't drawn twice. */
+function triangleEdges(triangles: Triangle[]): Array<[number, number]> {
+	const seen = new Set<string>();
+	const edges: Array<[number, number]> = [];
+
+	function addEdge(a: number, b: number): void {
+		const [lo, hi] = a < b ? [a, b] : [b, a];
+		const key = `${lo}:${hi}`;
+		if (seen.has(key)) return;
+		seen.add(key);
+		edges.push([lo, hi]);
+	}
+
+	for (const t of triangles) {
+		addEdge(t.a, t.b);
+		addEdge(t.b, t.c);
+		addEdge(t.c, t.a);
+	}
+	return edges;
+}
+
+/** Builds a triangulated, per-vertex-brightness wireframe from a photo, ready to upload to the GPU. */
 export function buildFaceMesh(source: HTMLImageElement): FaceMesh {
 	const image = decodeImage(source);
 	const points = samplePoints(image);
 	const triangles = triangulate(points);
+	const edges = triangleEdges(triangles);
 
 	const positions = new Float32Array(points.length * 2);
 	const brightness = new Float32Array(points.length);
@@ -60,18 +82,17 @@ export function buildFaceMesh(source: HTMLImageElement): FaceMesh {
 		brightness[i] = brightnessAt(image, p);
 	});
 
-	const indices = new Uint32Array(triangles.length * 3);
-	triangles.forEach((t, i) => {
-		indices[i * 3] = t.a;
-		indices[i * 3 + 1] = t.b;
-		indices[i * 3 + 2] = t.c;
+	const edgeIndices = new Uint32Array(edges.length * 2);
+	edges.forEach(([a, b], i) => {
+		edgeIndices[i * 2] = a;
+		edgeIndices[i * 2 + 1] = b;
 	});
 
 	return {
 		positions,
 		brightness,
-		indices,
+		edgeIndices,
 		vertexCount: points.length,
-		triangleCount: triangles.length,
+		edgeCount: edges.length,
 	};
 }
