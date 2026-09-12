@@ -12,6 +12,7 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import type { StaticImageData as LocalImage } from "next/image";
 import type { ReactNode } from "react";
+import faceShaderPhoto from "@/lib/face-shader/assets/face-source.jpg";
 import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL } from "@/lib/types";
 import trussOptScreenshot from "./truss-opt-screenshot.png";
@@ -27,10 +28,10 @@ export const AllProjectIds = [
 	"mesha",
 	"simphy",
 	"truss_opt",
+	"face_shader",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
-
 
 const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
 
@@ -137,7 +138,11 @@ export const Projects: Record<ProjectId, Project> = {
 			alt: "Muviz reacting to a track in real time.",
 		},
 		links: {
-			primary: { kind: "demo", label: "Demo", href: "https://muviz.vercel.app/" },
+			primary: {
+				kind: "demo",
+				label: "Demo",
+				href: "https://muviz.vercel.app/",
+			},
 			others: [],
 		},
 		content: (
@@ -368,8 +373,36 @@ export const Projects: Record<ProjectId, Project> = {
 			</Text>
 		),
 	},
+	face_shader: {
+		title: "Face Shader",
+		summary: "Any photo, triangulated into a cursor-reactive WebGL mesh.",
+		dates: "2026",
+		tags: ["web", "react", "typescript", "rendering", "opengl"],
+		effort: "low",
+		media: {
+			kind: "image",
+			src: faceShaderPhoto,
+			alt: "The source photo this demo triangulates into a low-poly mesh.",
+		},
+		links: {
+			primary: {
+				kind: "demo",
+				label: "Try it",
+				href: "/demos/face-shader",
+			},
+			others: [],
+		},
+		content: (
+			<Text variant="body">
+				Feed it a photo and it samples points along the strongest edges, runs a
+				Bowyer-Watson triangulation in the browser, and hands the result to a
+				custom WebGL2 shader that mirrors the mesh and lights it up around the
+				cursor — the same ambient-pulse-and-glow language as the homepage
+				background, just built from an image instead of a hex grid.
+			</Text>
+		),
+	},
 };
-
 
 type SoftwareConcepts =
 	| "web"

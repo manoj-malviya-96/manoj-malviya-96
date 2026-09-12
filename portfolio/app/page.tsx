@@ -10,7 +10,7 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { dottedConcatString, withDefaults } from "@/lib/helper";
-import MeshCanvas from "@/lib/home/mesh_canvas";
+import HeroFaceCanvas from "@/lib/home/hero_face_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
 import {
 	Eyebrow,
@@ -23,7 +23,7 @@ import {
 export default function Landing() {
 	return (
 		<>
-			<MeshCanvas />
+			<HeroFaceCanvas />
 			<Hero />
 			<Loop />
 			<FeaturedWork />

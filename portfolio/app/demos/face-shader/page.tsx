@@ -1,6 +1,7 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
+import faceSource from "@/lib/face-shader/assets/face-source.jpg";
 import FaceCanvas from "@/lib/face-shader/face_canvas";
 import { SectionHeader } from "@/lib/shared";
 
@@ -19,7 +20,10 @@ export default function FaceShaderDemoPage() {
 				radius="lg"
 				style={{ minHeight: "32rem", overflow: "hidden" }}
 			>
-				<FaceCanvas />
+				<FaceCanvas
+					src={faceSource.src}
+					alt="Triangulated portrait, cursor-reactive"
+				/>
 			</Flex>
 		</Flex>
 	);

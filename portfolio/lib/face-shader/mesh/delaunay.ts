@@ -110,13 +110,17 @@ export function triangulate(input: Point[]): Triangle[] {
 		triangles = [...good, ...rebuilt];
 	}
 
-	const superIndices = new Set(superT ? [superT.a, superT.b, superT.c] : []);
-	return triangles.filter(
-		(t) =>
-			!superIndices.has(t.a) &&
-			!superIndices.has(t.b) &&
-			!superIndices.has(t.c),
-	);
+	const superCount = superPoints.length;
+	const isSuperIndex = (index: number) => index < superCount;
+	return triangles
+		.filter(
+			(t) => !isSuperIndex(t.a) && !isSuperIndex(t.b) && !isSuperIndex(t.c),
+		)
+		.map((t) => ({
+			a: t.a - superCount,
+			b: t.b - superCount,
+			c: t.c - superCount,
+		}));
 }
 
 export type { Triangle };
