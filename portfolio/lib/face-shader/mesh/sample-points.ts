@@ -69,58 +69,57 @@ function pickWeighted(
 
 	for (const i of order) {
 		if (accepted.length >= count) break;
+		if (weight[i] <= 0) break; // ranked descending, so nothing after this carries signal
 		const p = candidates[i];
 		if (!tooClose(p, accepted, minSpacing)) accepted.push(p);
 	}
 }
 
-function borderPoints(width: number, height: number, perSide: number): Point[] {
-	const points: Point[] = [
-		{ x: 0, y: 0 },
-		{ x: width - 1, y: 0 },
-		{ x: 0, y: height - 1 },
-		{ x: width - 1, y: height - 1 },
-	];
-	for (let i = 1; i < perSide; i++) {
-		const t = i / perSide;
-		points.push({ x: t * (width - 1), y: 0 });
-		points.push({ x: t * (width - 1), y: height - 1 });
-		points.push({ x: 0, y: t * (height - 1) });
-		points.push({ x: width - 1, y: t * (height - 1) });
+function boundingBox(points: Point[]): {
+	minX: number;
+	minY: number;
+	maxX: number;
+	maxY: number;
+} {
+	let minX = Number.POSITIVE_INFINITY;
+	let minY = Number.POSITIVE_INFINITY;
+	let maxX = Number.NEGATIVE_INFINITY;
+	let maxY = Number.NEGATIVE_INFINITY;
+	for (const p of points) {
+		if (p.x < minX) minX = p.x;
+		if (p.y < minY) minY = p.y;
+		if (p.x > maxX) maxX = p.x;
+		if (p.y > maxY) maxY = p.y;
 	}
-	return points;
+	return { minX, minY, maxX, maxY };
 }
 
 /**
- * Builds the point set a Delaunay triangulation runs on: dense along edges (where the
- * low-poly facets should read as facial features), sparse fill elsewhere, plus a border
- * ring so triangles reach the image bounds instead of stopping short.
+ * Builds the point set a Delaunay triangulation runs on: dense along the strongest
+ * edges (hair, jaw, sunglasses — where the low-poly facets read as facial features),
+ * sparse fill inside their bounding box. There's no forced border ring, so the
+ * triangulated hull stops near where the actual edges are instead of the full
+ * rectangular photo — an approximation of the face/hair silhouette, not a crop shape.
  */
 export function samplePoints(image: ImageData): Point[] {
-	const { width, height } = image;
-	const {
-		gridStep,
-		edgePointCount,
-		fillPointCount,
-		minPointSpacing,
-		borderPointsPerSide,
-	} = FaceMeshTune.sampling;
+	const { gridStep, edgePointCount, fillPointCount, minPointSpacing } =
+		FaceMeshTune.sampling;
 
 	const { points: grid, weight } = gradientGrid(image, gridStep);
 
-	const accepted: Point[] = borderPoints(width, height, borderPointsPerSide);
-	pickWeighted(
-		grid,
-		weight,
-		accepted.length + edgePointCount,
-		minPointSpacing,
-		accepted,
-	);
+	const accepted: Point[] = [];
+	pickWeighted(grid, weight, edgePointCount, minPointSpacing, accepted);
+	if (accepted.length === 0) return accepted;
 
-	const uniformFill = grid.length > 0 ? Array(grid.length).fill(1) : [];
+	const box = boundingBox(accepted);
+	const interior = grid.filter(
+		(p) =>
+			p.x >= box.minX && p.x <= box.maxX && p.y >= box.minY && p.y <= box.maxY,
+	);
+	const uniformWeight = interior.map(() => 1);
 	pickWeighted(
-		grid,
-		uniformFill,
+		interior,
+		uniformWeight,
 		accepted.length + fillPointCount,
 		minPointSpacing * 1.5,
 		accepted,

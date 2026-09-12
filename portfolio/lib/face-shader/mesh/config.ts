@@ -6,7 +6,6 @@ export const FaceMeshTune = {
 		fillPointCount: 50,
 		/** Minimum gap (in source-image px) enforced between accepted edge points. */
 		minPointSpacing: 16,
-		borderPointsPerSide: 4,
 	},
 	brightness: {
 		/** Half-width (px) of the box the per-vertex luminance is averaged over. */
