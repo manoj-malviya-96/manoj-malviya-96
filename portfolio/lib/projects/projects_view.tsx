@@ -22,7 +22,7 @@ export default function ProjectsView() {
 			>
 				{/* TODO use DynamicList when its ready */}
 				{RankedProjects.map(({ id }) => (
-					<ProjectCard project={id} />
+					<ProjectCard key={id} project={id} />
 				))}
 			</Flex>
 		</Flex>

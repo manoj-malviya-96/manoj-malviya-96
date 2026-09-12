@@ -485,8 +485,6 @@ function statusItem(
 	);
 }
 
-const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
-
 function getBlob(filename: string) {
-	return `${BLOB}/${filename}`;
+	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }
