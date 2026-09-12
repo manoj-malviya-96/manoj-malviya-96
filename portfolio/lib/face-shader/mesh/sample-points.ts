@@ -95,17 +95,46 @@ function boundingBox(points: Point[]): {
 }
 
 /**
+ * Gradient magnitude can't distinguish a face outline from a hair or jacket one — they're
+ * all strong edges — so candidates outside the manually-cropped face region are dropped
+ * before ranking, not just left to lose on weight. The region is an ellipse, not a box:
+ * a uniform fill over a rectangle always has points near all 4 corners, so its convex
+ * hull is a rectangle no matter how tight the crop — an ellipse's hull reads as a face
+ * outline instead.
+ */
+function withinRegion(p: Point, image: PixelImage): boolean {
+	const { region } = FaceMeshTune.sampling;
+	const cx = ((region.xMin + region.xMax) / 2) * image.width;
+	const cy = ((region.yMin + region.yMax) / 2) * image.height;
+	const rx = ((region.xMax - region.xMin) / 2) * image.width;
+	const ry = ((region.yMax - region.yMin) / 2) * image.height;
+	const dx = (p.x - cx) / rx;
+	const dy = (p.y - cy) / ry;
+	return dx * dx + dy * dy <= 1;
+}
+
+/**
  * Builds the point set a Delaunay triangulation runs on: dense along the strongest
- * edges (hair, jaw, sunglasses — where the low-poly facets read as facial features),
- * sparse fill inside their bounding box. There's no forced border ring, so the
- * triangulated hull stops near where the actual edges are instead of the full
- * rectangular photo — an approximation of the face/hair silhouette, not a crop shape.
+ * edges within the face region (jaw, sunglasses, beard — where the low-poly facets
+ * read as facial features), sparse fill inside their bounding box. There's no forced
+ * border ring, so the triangulated hull stops near where the actual edges are instead
+ * of the whole cropped region.
  */
 export function samplePoints(image: PixelImage): Point[] {
 	const { gridStep, edgePointCount, fillPointCount, minPointSpacing } =
 		FaceMeshTune.sampling;
 
-	const { points: grid, weight } = gradientGrid(image, gridStep);
+	const { points: fullGrid, weight: fullWeight } = gradientGrid(
+		image,
+		gridStep,
+	);
+	const grid: Point[] = [];
+	const weight: number[] = [];
+	fullGrid.forEach((p, i) => {
+		if (!withinRegion(p, image)) return;
+		grid.push(p);
+		weight.push(fullWeight[i]);
+	});
 
 	const accepted: Point[] = [];
 	pickWeighted(grid, weight, edgePointCount, minPointSpacing, accepted);
