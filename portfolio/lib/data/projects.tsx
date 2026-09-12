@@ -32,6 +32,8 @@ export const AllProjectIds = [
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
 
+const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
+
 export const Projects: Record<ProjectId, Project> = {
 	portfolio: {
 		title: "Portfolio",
@@ -462,8 +464,6 @@ function statusItem(
 		</Flex>
 	);
 }
-
-const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
 
 function getBlob(filename: string) {
 	return `${BLOB}/${filename}`;
