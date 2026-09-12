@@ -1,15 +1,16 @@
 "use client";
 
-import { Canvas, Text, type ThemeColor } from "@manoj-malviya-96/atom";
+import { Canvas, type ThemeColor } from "@manoj-malviya-96/atom";
 import type { CSSProperties } from "react";
-import { useRef } from "react";
-import { useFaceMesh } from "./use-face-mesh";
+import { useMemo, useRef } from "react";
+import { deserializeFaceMesh } from "./mesh/serialize";
+import type { SerializedFaceMesh } from "./mesh/types";
 import { useFaceShaderRenderer } from "./use-face-shader-renderer";
 import { useThemeColor } from "./use-theme-color";
 
 type FaceCanvasProps = {
-	/** URL of the source photo to triangulate — any same-origin image works. */
-	src: string;
+	/** Precomputed mesh from `pnpm mesh:generate` — see scripts/generate-face-mesh.ts. */
+	mesh: SerializedFaceMesh;
 	alt: string;
 	/** Design-system color the mesh is tinted with; defaults to the page's content color. */
 	themeColor?: ThemeColor;
@@ -19,9 +20,9 @@ type FaceCanvasProps = {
 	style?: CSSProperties;
 };
 
-/** Triangulates `src` into a monochrome, theme-tinted, cursor-reactive WebGL mesh facing left. */
+/** Renders a precomputed triangulated wireframe as a monochrome, theme-tinted, cursor-reactive mesh. */
 export default function FaceCanvas({
-	src,
+	mesh: serializedMesh,
 	alt,
 	themeColor = "content",
 	decorative,
@@ -29,19 +30,12 @@ export default function FaceCanvas({
 	style,
 }: FaceCanvasProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const state = useFaceMesh(src);
-	const mesh = state.status === "ready" ? state.mesh : null;
+	const mesh = useMemo(
+		() => deserializeFaceMesh(serializedMesh),
+		[serializedMesh],
+	);
 	const themeColorRef = useThemeColor(themeColor);
 	const handleResize = useFaceShaderRenderer(canvasRef, mesh, themeColorRef);
-
-	if (state.status === "error") {
-		if (decorative) return null;
-		return (
-			<Text variant="caption" muted>
-				Face mesh failed to load: {state.error.message}
-			</Text>
-		);
-	}
 
 	return (
 		<Canvas

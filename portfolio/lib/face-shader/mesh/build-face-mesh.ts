@@ -1,20 +1,9 @@
 import { FaceMeshTune } from "./config";
 import { type Triangle, triangulate } from "./delaunay";
 import { samplePoints } from "./sample-points";
-import type { FaceMesh, Point } from "./types";
+import type { FaceMesh, PixelImage, Point } from "./types";
 
-function decodeImage(source: HTMLImageElement): ImageData {
-	const canvas = document.createElement("canvas");
-	canvas.width = source.naturalWidth;
-	canvas.height = source.naturalHeight;
-	const ctx = canvas.getContext("2d");
-	if (!ctx)
-		throw new Error("2D canvas context unavailable for face image decode");
-	ctx.drawImage(source, 0, 0);
-	return ctx.getImageData(0, 0, canvas.width, canvas.height);
-}
-
-function brightnessAt(image: ImageData, p: Point): number {
+function brightnessAt(image: PixelImage, p: Point): number {
 	const { data, width, height } = image;
 	const radius = FaceMeshTune.brightness.sampleRadius;
 	const x0 = Math.max(0, Math.round(p.x) - radius);
@@ -66,9 +55,12 @@ function triangleEdges(triangles: Triangle[]): Array<[number, number]> {
 	return edges;
 }
 
-/** Builds a triangulated, per-vertex-brightness wireframe from a photo, ready to upload to the GPU. */
-export function buildFaceMesh(source: HTMLImageElement): FaceMesh {
-	const image = decodeImage(source);
+/**
+ * Builds a triangulated, per-vertex-brightness wireframe from decoded pixel data —
+ * pure and platform-agnostic, so it runs the same in the offline generator script
+ * (Node + sharp) and, if ever needed, in the browser (canvas 2D getImageData).
+ */
+export function buildFaceMesh(image: PixelImage): FaceMesh {
 	const points = samplePoints(image);
 	const triangles = triangulate(points);
 	const edges = triangleEdges(triangles);

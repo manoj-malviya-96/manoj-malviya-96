@@ -1,8 +1,8 @@
 import { FaceMeshTune } from "./config";
-import type { Point } from "./types";
+import type { PixelImage, Point } from "./types";
 
 function luminanceAt(
-	data: Uint8ClampedArray,
+	data: PixelImage["data"],
 	width: number,
 	x: number,
 	y: number,
@@ -13,7 +13,7 @@ function luminanceAt(
 
 /** Sobel gradient magnitude on a coarse grid; cheap enough to run once at load. */
 function gradientGrid(
-	image: ImageData,
+	image: PixelImage,
 	step: number,
 ): { points: Point[]; weight: number[] } {
 	const { data, width, height } = image;
@@ -101,7 +101,7 @@ function boundingBox(points: Point[]): {
  * triangulated hull stops near where the actual edges are instead of the full
  * rectangular photo — an approximation of the face/hair silhouette, not a crop shape.
  */
-export function samplePoints(image: ImageData): Point[] {
+export function samplePoints(image: PixelImage): Point[] {
 	const { gridStep, edgePointCount, fillPointCount, minPointSpacing } =
 		FaceMeshTune.sampling;
 

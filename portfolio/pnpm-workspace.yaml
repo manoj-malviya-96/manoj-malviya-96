@@ -1,2 +1,4 @@
+allowBuilds:
+  esbuild: true
 minimumReleaseAgeExclude:
   - '@manoj-malviya-96/atom'

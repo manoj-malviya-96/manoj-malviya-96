@@ -1,7 +1,7 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
-import faceSource from "@/lib/face-shader/assets/face-source.jpg";
+import faceMesh from "@/lib/face-shader/assets/face-mesh.json";
 import FaceCanvas from "@/lib/face-shader/face_canvas";
 import { SectionHeader } from "@/lib/shared";
 
@@ -11,7 +11,7 @@ export default function FaceShaderDemoPage() {
 			<SectionHeader
 				eyebrow="Demo"
 				title="Triangulated portrait."
-				caption="A custom WebGL shader triangulates a photo on load, then reacts to the cursor with the same ambient-pulse and glow language as the homepage mesh."
+				caption="A photo, triangulated offline into a wireframe (pnpm mesh:generate), then rendered as a custom WebGL shader that reacts to the cursor."
 			/>
 			<Flex
 				direction="col"
@@ -21,7 +21,7 @@ export default function FaceShaderDemoPage() {
 				style={{ minHeight: "32rem", overflow: "hidden" }}
 			>
 				<FaceCanvas
-					src={faceSource.src}
+					mesh={faceMesh}
 					alt="Triangulated portrait, cursor-reactive"
 				/>
 			</Flex>

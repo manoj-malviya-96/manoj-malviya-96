@@ -1,6 +1,6 @@
 "use client";
 
-import faceSource from "@/lib/face-shader/assets/face-source.jpg";
+import faceMesh from "@/lib/face-shader/assets/face-mesh.json";
 import FaceCanvas from "@/lib/face-shader/face_canvas";
 
 const CORNER_BOX_SIZE = "min(89vw, 89vh, 1920px)";
@@ -9,7 +9,7 @@ const CORNER_BOX_SIZE = "min(89vw, 89vh, 1920px)";
 export default function HeroFaceCanvas() {
 	return (
 		<FaceCanvas
-			src={faceSource.src}
+			mesh={faceMesh}
 			alt="Triangulated portrait, cursor-reactive"
 			decorative
 			style={{
