@@ -9,6 +9,7 @@ import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
+import SignatureWork from "@/lib/home/signature_work";
 import { Eyebrow, Link, Page, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
@@ -97,6 +98,7 @@ function FeaturedWork() {
 				title="Proof, briefly."
 				caption="A few things I've built, shipped, and measured"
 			/>
+			<SignatureWork />
 			<ShowAndTellGrid />
 		</Section>
 	);
