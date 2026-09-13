@@ -8,29 +8,24 @@ import { Eyebrow, Link, Page } from "@/lib/shared";
 export default function About() {
 	return (
 		<Page>
-			<Flex as="header" direction="col" gap="xl" padding={{ y: "xl" }}>
-				<Flex direction="row" hAlign="between" vAlign="start" gap="lg" wrap>
-					<Flex direction="col" gap="xl">
-						<Eyebrow>Track record</Eyebrow>
-						<Text variant="heading">Résumé</Text>
-					</Flex>
-					<Link
-						url={ResumePDF}
-						openNewTab
-						variant="button"
-						color="primary"
-						label="Download PDF"
-					/>
-				</Flex>
-				<Text variant="subtitle">
-					Seven years solving problems that sit between hardware and software —
-					CAD tools engineers depend on, patient-monitoring platforms that
-					can&apos;t afford downtime, real-time rendering that has to hit budget
-					every frame. I own the full path: system design, the algorithm
-					underneath, and the interface someone actually has to use.
-				</Text>
-			</Flex>
-			<Flex as="section" id={RESUME_SECTIONS[0].id} direction="col" gap="lg">
+			<Text variant="heading">Past Experience</Text>
+			<Text variant="subtitle">
+				Seven years solving problems that sit between hardware and software —
+				CAD tools engineers depend on, patient-monitoring platforms that
+				can&apos;t afford downtime, real-time rendering that has to hit budget
+				every frame. I own the full path: system design, the algorithm
+				underneath, and the interface someone actually has to use.
+			</Text>
+			<Link url={ResumePDF} openNewTab variant="inline">
+				Download PDF
+			</Link>
+			<Flex
+				as="section"
+				id={RESUME_SECTIONS[0].id}
+				direction="col"
+				gap="lg"
+				padding={{ y: "lg" }}
+			>
 				<Flex direction="col" gap="sm">
 					<Eyebrow>Experience</Eyebrow>
 					<Text variant="heading">Where the last seven years went.</Text>
