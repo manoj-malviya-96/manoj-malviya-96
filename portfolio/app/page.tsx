@@ -36,16 +36,22 @@ function Hero() {
 	return (
 		<HeroSection id="home-hero">
 			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
-			<Text variant="hero">Engineering Intelligent Products</Text>
-			<Text variant="subtitle">
-				Hey, I am Manoj Malviya{" "}
-				{dottedConcatString([
-					"Computation Design",
-					"High Performance Software",
-					"Product Engineering",
-					"Multi Discipline Research",
-				])}
+			<Text variant="hero">
+				Building intelligent products people actually use.
 			</Text>
+			<Text variant="subtitle">
+				I'm Manoj Malviya. I combine systems engineering, computational design,
+				and high-performance C++ with modern product UI to turn technically
+				hard problems into fast, intuitive products.
+			</Text>
+			<Eyebrow>
+				{dottedConcatString([
+					"Computational Design",
+					"High-Performance Software",
+					"Product Engineering",
+					"Applied AI",
+				])}
+			</Eyebrow>
 			<Flex
 				as="span"
 				direction="row"
