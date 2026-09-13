@@ -1,22 +1,12 @@
 "use client";
 
-import {
-	Button,
-	Flex,
-	setTheme,
-	useScrollEffect,
-	useTheme,
-} from "@manoj-malviya-96/atom";
-import {
-	IconCircleHalfStroke,
-	IconEnvelope,
-} from "@manoj-malviya-96/atom/icons";
+import { assertNever, Flex, useScrollEffect } from "@manoj-malviya-96/atom";
+import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EmailAddress, RankedProjects } from "@/lib/data";
-import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
@@ -69,7 +59,6 @@ export default function HeaderBar() {
 		),
 		right: (
 			<Flex direction="row" gap="md" vAlign="center">
-				<ThemeToggle />
 				<Link
 					url={EmailAddress}
 					variant="button"
@@ -82,16 +71,10 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
-		bottom: tocKey ? <HeaderToc toc={tocKey} /> : undefined,
+		bottom: tocKey === "projects" ? <HeaderToc toc={tocKey} /> : undefined,
 	});
 
-	return (
-		<Header
-			width="content"
-			padding={{ x: "lg", y: "md" }}
-			data-hidden={visible ? undefined : true}
-		/>
-	);
+	return <Header width="content" data-hidden={visible ? undefined : true} />;
 }
 
 function HeaderToc({ toc }: { toc: TocKey }) {
@@ -113,21 +96,9 @@ function HeaderToc({ toc }: { toc: TocKey }) {
 				</Flex>
 			);
 		case "resume":
-			return (
-				<Flex
-					as="nav"
-					aria-label="Résumé sections"
-					direction="row"
-					gap="sm"
-					wrap
-				>
-					{RESUME_SECTIONS.map(({ id, label }) => (
-						<Link key={id} url={`#${id}`} variant="tab">
-							{label}
-						</Link>
-					))}
-				</Flex>
-			);
+			return undefined;
+		default:
+			assertNever(toc);
 	}
 }
 
@@ -147,36 +118,5 @@ function useHeaderBarScroll(): HeaderBarScroll {
 			return { y, visible };
 		},
 		{ y: 0, visible: true },
-	);
-}
-
-function ThemeToggle() {
-	const theme = useTheme();
-	const [systemPrefersDark, setSystemPrefersDark] = useState(false);
-
-	useEffect(() => {
-		const query = window.matchMedia("(prefers-color-scheme: dark)");
-		setSystemPrefersDark(query.matches);
-		const onChange = (e: MediaQueryListEvent) =>
-			setSystemPrefersDark(e.matches);
-		query.addEventListener("change", onChange);
-		return () => query.removeEventListener("change", onChange);
-	}, []);
-
-	const isDark = theme === "dark" || (theme === "system" && systemPrefersDark);
-
-	const toggle = () => {
-		const next = isDark ? "light" : "dark";
-		setTheme(next);
-	};
-
-	return (
-		<Button
-			icon={<IconCircleHalfStroke size="sm" />}
-			aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-			onClick={toggle}
-			variant="muted"
-			size="sm"
-		/>
 	);
 }
