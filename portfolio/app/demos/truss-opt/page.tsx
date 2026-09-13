@@ -1,7 +1,7 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
-import { SectionHeader } from "@/lib/shared";
+import { Page, SectionHeader } from "@/lib/shared";
 import { useTrussOpt } from "@/lib/truss-opt/use-truss-opt";
 import { LatticeControls } from "@/lib/truss-opt/view/LatticeControls";
 import { LatticeOutput } from "@/lib/truss-opt/view/LatticeOutput";
@@ -26,7 +26,7 @@ export default function TrussOptDemoPage() {
 	} = useTrussOpt();
 
 	return (
-		<Flex direction="col" gap="lg" grow>
+		<Page>
 			<SectionHeader
 				eyebrow="Demo"
 				title="Truss optimizer."
@@ -57,6 +57,6 @@ export default function TrussOptDemoPage() {
 					onPlaceNode={placeNode}
 				/>
 			</Flex>
-		</Flex>
+		</Page>
 	);
 }

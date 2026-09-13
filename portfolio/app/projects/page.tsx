@@ -1,11 +1,11 @@
 import { Flex, Progress } from "@manoj-malviya-96/atom";
 import { Suspense } from "react";
 import ProjectsView from "@/lib/projects/projects_view";
-import { SectionHeader } from "@/lib/shared";
+import { Page, SectionHeader } from "@/lib/shared";
 
-export default function Page() {
+export default function ProjectsPage() {
 	return (
-		<>
+		<Page>
 			{/* Todo integrate in atom: Header's page-padding compensation is a fixed
 			    calc, blind to the extra bottom-slot row HeaderBar shows on this route —
 			    padding here makes up the difference so the TOC doesn't overlap this text. */}
@@ -36,6 +36,6 @@ export default function Page() {
 			>
 				<ProjectsView />
 			</Suspense>
-		</>
+		</Page>
 	);
 }
