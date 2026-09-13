@@ -10,10 +10,9 @@ import {
 	IconPaintBrush,
 	IconVolumeHigh,
 } from "@manoj-malviya-96/atom/icons";
-import type { StaticImageData as LocalImage } from "next/image";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
-import type { ExternalURL } from "@/lib/types";
+import type { ExternalURL, MediaSource } from "@/lib/types";
 import trussOptScreenshot from "./truss-opt-screenshot.png";
 
 export const AllProjectIds = [
@@ -405,10 +404,6 @@ export type ProjectTag =
 
 export type ProjectEffort = "low" | "medium" | "high";
 
-export type ProjectMedia =
-	| { kind: "image"; src: LocalImage | string; alt: string }
-	| { kind: "video"; src: string; alt: string };
-
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
 type InternalPath = `/${string}`;
@@ -430,7 +425,7 @@ export type Project = {
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	media?: ProjectMedia;
+	media?: MediaSource;
 	links: ProjectLinks;
 	content?: ReactNode;
 };

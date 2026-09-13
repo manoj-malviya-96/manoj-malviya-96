@@ -19,6 +19,7 @@ import {
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
+import { Media } from "@/lib/shared";
 
 type ExperienceGroup = {
 	organization: OrganizationId;
@@ -87,7 +88,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 }
 
 function roleEvent(experience: ExperienceId): TimelineEvent {
-	const { position, start, end, type, skills, summary } =
+	const { position, start, end, type, skills, summary, media } =
 		Experiences[experience];
 
 	return {
@@ -107,6 +108,7 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 				<Text variant="body" muted>
 					{summary}
 				</Text>
+				{media && <Media media={media} />}
 				<ExperienceSkills skills={skills} />
 			</Flex>
 		),
