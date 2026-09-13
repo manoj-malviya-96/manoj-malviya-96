@@ -1,4 +1,4 @@
-import { Text } from "@manoj-malviya-96/atom";
+import { List, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import {
 	type Organization,
@@ -14,6 +14,18 @@ function Highlight({ children }: { children: ReactNode }) {
 		<Text as="span" variant="body" bold>
 			{children}
 		</Text>
+	);
+}
+
+function Bullets({ points }: { points: readonly ReactNode[] }) {
+	return (
+		<List direction="col" gap="xs">
+			{points.map((point, i) => (
+				<li key={i}>
+					<Text variant="body">{point}</Text>
+				</li>
+			))}
+		</List>
 	);
 }
 
@@ -51,17 +63,19 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		type: "Full-time",
 		skills: ["mobile", "web", "ai", "project-management"],
 		summary: (
-			<>
-				Heart-failure patients need monitoring that doesn't feel like a hospital
-				follow-up. I lead product for both sides of that: a{" "}
-				<Highlight>patient app</Highlight> in React Native/Expo with on-device
-				ML for live feedback and connected devices, and a{" "}
-				<Highlight>clinician platform</Highlight> built around patented
-				voice-based heart-failure detection and real-time alerts. Backend is
-				Python/FastAPI over SQLAlchemy, Postgres, and Kafka; I watch it in
-				production through Grafana, Amplitude, and feature flags, and ship it
-				myself — Docker on a self-managed server, reached over Tailscale.
-			</>
+			<Bullets
+				points={[
+					<>
+						Own a <Highlight>patient app</Highlight> with on-device ML for live,
+						real-time feedback from connected devices.
+					</>,
+					<>
+						Built a <Highlight>clinician platform</Highlight> around patented
+						voice-based heart-failure detection and real-time alerts.
+					</>,
+					"Run production myself, end to end — architecture, observability, deployment.",
+				]}
+			/>
 		),
 	},
 	"form-labs-rd": {
@@ -72,18 +86,24 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		location: "Somerville, MA",
 		type: "Full-time",
 		skills: ["optimization", "cad", "high-performance"],
+		media: {
+			kind: "video",
+			src: "https://formlabs-media.formlabs.com/filer_public/e3/51/e35140a1-b576-4dba-a335-f4c0a45d4ca3/supportsv2_clip_improvedaccuracy01_4x3.mp4#t=0.1",
+			alt: "Formlabs' redesigned support-structure algorithm generating supports on a 3D-printed part.",
+		},
 		summary: (
-			<>
-				Formlabs' support-structure algorithm was costing users material and
-				failed prints. I redesigned it into a{" "}
-				<Highlight>patent-pending topology-optimization method</Highlight> —
-				~20% cheaper prints, ~17% more reliable, ~50% more feature adoption —
-				and rebuilt the print-time estimator to be ~20% more accurate on half
-				the compute. Physics modeling on next-gen printers and materials pushed
-				reliability up ~40% and speed up to ~35%, backed by an internal
-				Python/JS/AWS tool I built to run and store the experiments. Recognized
-				twice with Formlabs' Top Performance Award.
-			</>
+			<Bullets
+				points={[
+					<>
+						Redesigned Formlabs' support-structure algorithm into a{" "}
+						<Highlight>patent-pending topology-optimization method</Highlight> —
+						~20% cheaper prints, ~17% more reliable, ~50% more feature adoption.
+					</>,
+					"Rebuilt the print-time estimator — ~20% more accurate on half the compute.",
+					"Modeled physics on next-gen printers and materials — reliability up ~40%, speed up ~35%.",
+					"Recognized twice with Formlabs' Top Performance Award.",
+				]}
+			/>
 		),
 	},
 	"form-labs-se": {
@@ -95,18 +115,19 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		type: "Full-time",
 		skills: ["ui/ux", "cad", "qt/qml", "project-management"],
 		summary: (
-			<>
-				As UI/UX tech lead for PreForm, I owned{" "}
-				<Highlight>CAD features engineers actually rely on</Highlight> — model
-				labeling, grouping, part cages — shipped at ~95% CSAT. I rebuilt the
-				Qt/QML component framework underneath for ~30–50% faster load times and
-				60% faster large-scene rendering, wired hardware integrations like
-				camera streaming over a secured local network, and wrote the embedded
-				tooling (C++/Qt, Go, Python, protobuf/libusb) behind an ESP32 firmware
-				updater and a maintenance suite. Simplifying core workflows like print
-				upload lifted NPS ~15%, and I kept the BigQuery dashboards the team used
-				for product decisions.
-			</>
+			<Bullets
+				points={[
+					<>
+						UI/UX tech lead for PreForm — owned{" "}
+						<Highlight>CAD features engineers actually rely on</Highlight>{" "}
+						(model labeling, grouping, part cages), shipped at ~95% CSAT.
+					</>,
+					"Rebuilt the component framework underneath — ~30–50% faster load times, 60% faster large-scene rendering.",
+					"Wired hardware integrations, including secure camera streaming.",
+					"Built the firmware updater and maintenance tooling behind every printer in the field.",
+					"Simplified core workflows like print upload — NPS up ~15%.",
+				]}
+			/>
 		),
 	},
 	"flow-key-se": {
@@ -118,13 +139,15 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		type: "Contract",
 		skills: ["c++", "micro-services", "ai", "rendering"],
 		summary: (
-			<>
-				Complex music scores took ~30 seconds to render — too slow for
-				interactive notation. I built a{" "}
-				<Highlight>C++/Qt microservice</Highlight> that cut that to ~200ms, and
-				rebuilt the Swift audio-to-MIDI ML pipeline for ~50ms inference at ~98%
-				accuracy.
-			</>
+			<Bullets
+				points={[
+					<>
+						Cut <Highlight>music-score rendering</Highlight> from ~30 seconds to
+						~200ms.
+					</>,
+					"Rebuilt the audio-to-MIDI ML pipeline — ~50ms inference at ~98% accuracy.",
+				]}
+			/>
 		),
 	},
 	"penn-state-gra": {
@@ -136,16 +159,20 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		type: "Full-time",
 		skills: ["ai", "optimization"],
 		summary: (
-			<>
-				Embedding design for 3D-printed parts needed an expert in the loop — I
-				automated it away, built eye-tracking and ML tooling to study how
-				engineers actually design, and pioneered a{" "}
-				<Highlight>
-					deep-learning generative model for topology optimization
-				</Highlight>
-				: ~3× faster design iterations. Coauthored 8 peer-reviewed papers and
-				presented the work at conferences.
-			</>
+			<Bullets
+				points={[
+					"Automated embedding design for 3D-printed parts — no expert in the loop needed.",
+					"Built eye-tracking and ML tooling to study how engineers actually design.",
+					<>
+						Pioneered a{" "}
+						<Highlight>
+							deep-learning generative model for topology optimization
+						</Highlight>{" "}
+						— ~3× faster design iterations.
+					</>,
+					"Coauthored 8 peer-reviewed papers and presented the work at conferences.",
+				]}
+			/>
 		),
 	},
 };
