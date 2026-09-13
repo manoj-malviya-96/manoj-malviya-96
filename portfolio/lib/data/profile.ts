@@ -20,8 +20,9 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
 };
 
+// Todo a simple solution ??? This looks horrible
 export const ResumePDF: ExternalURL =
-	"https://docs.google.com/document/d/e/2PACX-1vQ33K1IO2nPl8Y1fq0s6IpUJg1P0n_OWFC0q6HoKOOckiagDOVYy6XmAPZcm6yi4Q/pub?output=pdf";
+	"https://docs.google.com/document/d/e/2PACX-1vTx4Epi4BS_agxkxAMfB1cEYQLL6T8x3UBvB3lVzIaZY4qMtN2M_RjZgqJ4O0XeBYuJxXHkRHA4OJF4/pub";
 
 export const EmailAddress = "mailto:malviyamanoj1896@gmail.com";
 
