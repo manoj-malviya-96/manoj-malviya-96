@@ -10,11 +10,11 @@ export default function About() {
 		<Page>
 			<Text variant="heading">Past Experience</Text>
 			<Text variant="subtitle">
-				Seven years solving problems that sit between hardware and software —
-				CAD tools engineers depend on, patient-monitoring platforms that
-				can&apos;t afford downtime, real-time rendering that has to hit budget
-				every frame. I own the full path: system design, the algorithm
-				underneath, and the interface someone actually has to use.
+				Seven years solving problems that sit between hardware and software: CAD
+				tools engineers depend on, patient-monitoring platforms that can&apos;t
+				afford downtime, real-time rendering that has to hit budget every frame.
+				I own the full path: system design, the algorithm underneath, and the
+				interface someone actually has to use.
 			</Text>
 			<Link url={ResumePDF} openNewTab variant="inline">
 				Download PDF

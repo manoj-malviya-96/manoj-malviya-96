@@ -13,7 +13,7 @@ export default function ProjectsPage() {
 				<SectionHeader
 					eyebrow="Selected work"
 					title="Worked end to end."
-					caption="Source, demo, or write-up — each one links to where it actually lives."
+					caption="Source, demo, or write-up: each one links to where it actually lives."
 				/>
 			</Flex>
 

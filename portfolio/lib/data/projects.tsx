@@ -146,12 +146,12 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Give it a shape, get back a honeycomb lattice — skeletonized in C++ and
-				exported straight to a VTK mesh, ready for your CAD tool. No manual
+				Give it a shape and get back a honeycomb lattice, skeletonized in C++
+				and exported straight to a VTK mesh, ready for your CAD tool. No manual
 				triangulation, no format conversion. The skeleton is a functional
 				pipeline: an unordered_set for edges, a sorted map for vertices, every
 				function pure input to output. The part that kept breaking was
-				staggering the hexagon centers correctly — get that wrong and the whole
+				staggering the hexagon centers correctly. Get that wrong and the whole
 				grid drifts.
 			</Text>
 		),
@@ -160,8 +160,8 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "topopt-py",
 		summary: `I found DTU's 99-line topology-optimization script and loved how
 					compact it was, but the inner loop was nested Python. I rewrote the
-					stiffness assembly and filtering as vectorized NumPy — same SIMP
-					algorithm, same accuracy, faster on the same problem.`,
+					stiffness assembly and filtering as vectorized NumPy, keeping the same
+					SIMP algorithm and accuracy but running faster on the same problem.`,
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "high",
@@ -187,9 +187,9 @@ export const Projects: Record<ProjectId, Project> = {
 				The stiffness assembler now caches its sparsity pattern instead of
 				rebuilding it every iteration, and strain energy is a single einsum call
 				instead of a manual reshape-and-sum. Filtering swapped four nested loops
-				for one scipy.ndimage.convolve. Solver time still dominates — that's
-				inherent to FEM — but on a 5,000-element MBB beam the run drops from
-				4.8s to 2.6s.
+				for one scipy.ndimage.convolve. Solver time still dominates, which is
+				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
+				to 2.6s.
 			</Text>
 		),
 	},
@@ -214,7 +214,7 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Simulates real black-hole gravity — a compute shader integrates each
+				Simulates real black-hole gravity. A compute shader integrates each
 				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
 				million solar masses), and a separate lensing fragment shader bends the
 				background grid around it. It runs as a Qt/OpenGL widget, falling back
@@ -246,7 +246,7 @@ export const Projects: Record<ProjectId, Project> = {
 			<Text variant="body">
 				Answers one question: how many chargers do you actually need? Each run
 				simulates a year of 15-minute intervals, drawing car arrivals from a
-				Poisson-derived probability per charge point, with no queueing — a car
+				Poisson-derived probability per charge point, with no queueing: a car
 				that arrives to a busy point just leaves. Change the charger count or
 				power draw and watch demand, cost, and concurrency update immediately;
 				concurrency turned out to decay roughly exponentially as charger count
@@ -278,22 +278,22 @@ export const Projects: Record<ProjectId, Project> = {
 				{statusItem(
 					"green",
 					"Done",
-					"CLI — mesh repair as a standalone command-line tool.",
+					"CLI: mesh repair as a standalone command-line tool.",
 				)}
 				{statusItem(
 					"green",
 					"Done",
-					"Server — same C++/Qt backend, exposed over WebSocket.",
+					"Server: same C++/Qt backend, exposed over WebSocket.",
 				)}
 				{statusItem(
 					"green",
 					"Done",
-					"Editor — Tauri + Next.js shell, wired end to end.",
+					"Editor: Tauri + Next.js shell, wired end to end.",
 				)}
 				{statusItem(
 					"orange",
 					"Next",
-					"Repair algorithm — the actual mesh-repair logic.",
+					"Repair algorithm: the actual mesh-repair logic.",
 				)}
 			</List>
 		),
@@ -344,7 +344,7 @@ export const Projects: Record<ProjectId, Project> = {
 			<Text variant="body">
 				Place supports and loads on a cantilever lattice and this site's own API
 				route solves the FEA and runs an optimality-criteria search to
-				redistribute material — the browser only ever draws the answer. Each of
+				redistribute material. The browser only ever draws the answer. Each of
 				the 200 iterations re-solves the FEA, then bisects on the Lagrange
 				multiplier to hold total volume at 40% of the start, with a minimum
 				thickness clamp so no member vanishes to zero.

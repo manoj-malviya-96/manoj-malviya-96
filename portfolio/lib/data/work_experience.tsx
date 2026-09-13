@@ -73,7 +73,7 @@ export const Experiences: Record<ExperienceId, Experience> = {
 						Built a <Highlight>clinician platform</Highlight> around patented
 						voice-based heart-failure detection and real-time alerts.
 					</>,
-					"Run production myself, end to end — architecture, observability, deployment.",
+					"Run production myself end to end, covering architecture, observability, and deployment.",
 				]}
 			/>
 		),
@@ -96,11 +96,12 @@ export const Experiences: Record<ExperienceId, Experience> = {
 				points={[
 					<>
 						Redesigned Formlabs' support-structure algorithm into a{" "}
-						<Highlight>patent-pending topology-optimization method</Highlight> —
-						~20% cheaper prints, ~17% more reliable, ~50% more feature adoption.
+						<Highlight>patent-pending topology-optimization method</Highlight>,
+						cutting print cost ~20%, improving reliability ~17%, and lifting
+						feature adoption ~50%.
 					</>,
-					"Rebuilt the print-time estimator — ~20% more accurate on half the compute.",
-					"Modeled physics on next-gen printers and materials — reliability up ~40%, speed up ~35%.",
+					"Rebuilt the print-time estimator, ~20% more accurate on half the compute.",
+					"Modeled physics on next-gen printers and materials, lifting reliability ~40% and speed ~35%.",
 					"Recognized twice with Formlabs' Top Performance Award.",
 				]}
 			/>
@@ -118,14 +119,14 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			<Bullets
 				points={[
 					<>
-						UI/UX tech lead for PreForm — owned{" "}
+						UI/UX tech lead for PreForm, owning{" "}
 						<Highlight>CAD features engineers actually rely on</Highlight>{" "}
 						(model labeling, grouping, part cages), shipped at ~95% CSAT.
 					</>,
-					"Rebuilt the component framework underneath — ~30–50% faster load times, 60% faster large-scene rendering.",
+					"Rebuilt the component framework underneath, cutting load times ~30–50% and speeding up large-scene rendering 60%.",
 					"Wired hardware integrations, including secure camera streaming.",
 					"Built the firmware updater and maintenance tooling behind every printer in the field.",
-					"Simplified core workflows like print upload — NPS up ~15%.",
+					"Simplified core workflows like print upload, lifting NPS ~15%.",
 				]}
 			/>
 		),
@@ -145,7 +146,7 @@ export const Experiences: Record<ExperienceId, Experience> = {
 						Cut <Highlight>music-score rendering</Highlight> from ~30 seconds to
 						~200ms.
 					</>,
-					"Rebuilt the audio-to-MIDI ML pipeline — ~50ms inference at ~98% accuracy.",
+					"Rebuilt the audio-to-MIDI ML pipeline to ~50ms inference at ~98% accuracy.",
 				]}
 			/>
 		),
@@ -161,14 +162,14 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		summary: (
 			<Bullets
 				points={[
-					"Automated embedding design for 3D-printed parts — no expert in the loop needed.",
+					"Automated embedding design for 3D-printed parts, no expert in the loop needed.",
 					"Built eye-tracking and ML tooling to study how engineers actually design.",
 					<>
 						Pioneered a{" "}
 						<Highlight>
 							deep-learning generative model for topology optimization
 						</Highlight>{" "}
-						— ~3× faster design iterations.
+						that cut design iterations ~3×.
 					</>,
 					"Coauthored 8 peer-reviewed papers and presented the work at conferences.",
 				]}
