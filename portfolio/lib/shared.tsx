@@ -133,7 +133,7 @@ export function Media({ media }: { media: MediaSource }) {
 }
 
 type SectionHeaderProps = {
-	eyebrow: ReactNode;
+	eyebrow?: ReactNode;
 	title: ReactNode;
 	caption?: ReactNode;
 };
@@ -141,7 +141,7 @@ type SectionHeaderProps = {
 export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	return (
 		<Flex direction="col" gap="sm">
-			<Eyebrow>{eyebrow}</Eyebrow>
+			{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
 			<Text variant="heading">{title}</Text>
 			{caption && (
 				<Text variant="body" muted>

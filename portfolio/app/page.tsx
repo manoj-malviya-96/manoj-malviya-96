@@ -1,25 +1,15 @@
 import { assertNever, Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import {
-	IconBriefcase,
 	IconChartLine,
 	IconCode,
-	IconLink,
-	IconList,
 	IconMagnifyingGlass,
 	IconPalette,
 } from "@manoj-malviya-96/atom/icons";
 import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
-import { dottedConcatString, withDefaults } from "@/lib/helper";
+import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTellGrid from "@/lib/home/show_tell";
-import {
-	Eyebrow,
-	InlineBadge,
-	Link,
-	Page,
-	Section,
-	SectionHeader,
-} from "@/lib/shared";
+import { Eyebrow, Link, Page, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (
@@ -35,23 +25,16 @@ export default function Landing() {
 function Hero() {
 	return (
 		<HeroSection id="home-hero">
-			<Eyebrow>Senior product engineer 📍 Berlin, DE</Eyebrow>
+			<Eyebrow> Senior product engineer 📍 Berlin, DE</Eyebrow>
 			<Text variant="hero">
 				Building intelligent products people actually use.
 			</Text>
 			<Text variant="subtitle">
 				I'm Manoj Malviya. I combine systems engineering, computational design,
-				and high-performance C++ with modern product UI to turn technically
-				hard problems into fast, intuitive products.
+				and high-performance C++ with modern product UI to turn technically hard
+				problems into fast, intuitive products.
 			</Text>
-			<Eyebrow>
-				{dottedConcatString([
-					"Computational Design",
-					"High-Performance Software",
-					"Product Engineering",
-					"Applied AI",
-				])}
-			</Eyebrow>
+
 			<Flex
 				as="span"
 				direction="row"
@@ -64,10 +47,8 @@ function Hero() {
 					url="/projects"
 					variant="button"
 					buttonVariant="filled"
-					color="secondary"
 					size="sm"
-					label="Projects"
-					icon={<IconList />}
+					label="Personal Projects"
 				/>
 				<Link
 					url="/resume"
@@ -75,8 +56,7 @@ function Hero() {
 					buttonVariant="filled"
 					color="primary"
 					size="sm"
-					label="Resume"
-					icon={<IconBriefcase />}
+					label="Past Experience"
 				/>
 			</Flex>
 		</HeroSection>
@@ -86,11 +66,7 @@ function Hero() {
 function Loop() {
 	return (
 		<Section id="home-loop">
-			<SectionHeader
-				eyebrow="How I work"
-				title="Complex problems in. Intelligent products out."
-				caption="Understand the problem. Build the right thing. Measure the result."
-			/>
+			<SectionHeader title="Complex problems in. Intelligent products out." />
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
 					<LoopCard key={id} id={id} {...Phases[id]} />
@@ -100,14 +76,14 @@ function Loop() {
 	);
 }
 
-function LoopCard({ id, color, label, copy }: { id: PhaseId } & Phase) {
+function LoopCard({ id, label, copy }: { id: PhaseId } & Phase) {
 	const PhaseIcon = phaseIcon(id);
 	return (
 		<FlexCard direction="col">
-			<InlineBadge color={color}>
+			<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
 				<PhaseIcon size="sm" />
-				{label}
-			</InlineBadge>
+				<Text variant="title">{label}</Text>
+			</Flex>
 			<Text variant="body">{copy}</Text>
 		</FlexCard>
 	);
@@ -121,16 +97,6 @@ function FeaturedWork() {
 				title="Proof, briefly."
 				caption="A few things I've built, shipped, and measured"
 			/>
-			<FlexCard direction="row">
-				<Link
-					url="/resume"
-					icon={<IconLink />}
-					variant="button"
-					color="secondary"
-					collapse
-					label="Full history"
-				/>
-			</FlexCard>
 			<ShowAndTellGrid />
 		</Section>
 	);
