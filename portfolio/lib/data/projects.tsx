@@ -152,8 +152,8 @@ export const Projects: Record<ProjectId, Project> = {
 				triangulation, no format conversion. The skeleton is a functional
 				pipeline: an unordered_set for edges, a sorted map for vertices, every
 				function pure input to output. The part that kept breaking was
-				staggering the hexagon centers correctly — get that wrong and the
-				whole grid drifts.
+				staggering the hexagon centers correctly — get that wrong and the whole
+				grid drifts.
 			</Text>
 		),
 	},
@@ -186,11 +186,11 @@ export const Projects: Record<ProjectId, Project> = {
 		content: (
 			<Text variant="body">
 				The stiffness assembler now caches its sparsity pattern instead of
-				rebuilding it every iteration, and strain energy is a single einsum
-				call instead of a manual reshape-and-sum. Filtering swapped four
-				nested loops for one scipy.ndimage.convolve. Solver time still
-				dominates — that's inherent to FEM — but on a 5,000-element MBB beam
-				the run drops from 4.8s to 2.6s.
+				rebuilding it every iteration, and strain energy is a single einsum call
+				instead of a manual reshape-and-sum. Filtering swapped four nested loops
+				for one scipy.ndimage.convolve. Solver time still dominates — that's
+				inherent to FEM — but on a 5,000-element MBB beam the run drops from
+				4.8s to 2.6s.
 			</Text>
 		),
 	},
@@ -216,11 +216,11 @@ export const Projects: Record<ProjectId, Project> = {
 		content: (
 			<Text variant="body">
 				Simulates real black-hole gravity — a compute shader integrates each
-				pixel's light-ray geodesic against a mass modeled on Sagittarius A*
-				(4.3 million solar masses), and a separate lensing fragment shader
-				bends the background grid around it. It runs as a Qt/OpenGL widget,
-				falling back to GL_ARB_compute_shader on GPUs without core GL 4.3, so
-				it still rotates live instead of playing back a pre-rendered clip.
+				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
+				million solar masses), and a separate lensing fragment shader bends the
+				background grid around it. It runs as a Qt/OpenGL widget, falling back
+				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
+				rotates live instead of playing back a pre-rendered clip.
 			</Text>
 		),
 	},
@@ -249,9 +249,9 @@ export const Projects: Record<ProjectId, Project> = {
 				simulates a year of 15-minute intervals, drawing car arrivals from a
 				Poisson-derived probability per charge point, with no queueing — a car
 				that arrives to a busy point just leaves. Change the charger count or
-				power draw and watch demand, cost, and concurrency update
-				immediately; concurrency turned out to decay roughly exponentially as
-				charger count grows.
+				power draw and watch demand, cost, and concurrency update immediately;
+				concurrency turned out to decay roughly exponentially as charger count
+				grows.
 			</Text>
 		),
 	},
@@ -343,10 +343,10 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Place supports and loads on a cantilever lattice and this site's own
-				API route solves the FEA and runs an optimality-criteria search to
-				redistribute material — the browser only ever draws the answer. Each
-				of the 200 iterations re-solves the FEA, then bisects on the Lagrange
+				Place supports and loads on a cantilever lattice and this site's own API
+				route solves the FEA and runs an optimality-criteria search to
+				redistribute material — the browser only ever draws the answer. Each of
+				the 200 iterations re-solves the FEA, then bisects on the Lagrange
 				multiplier to hold total volume at 40% of the start, with a minimum
 				thickness clamp so no member vanishes to zero.
 			</Text>

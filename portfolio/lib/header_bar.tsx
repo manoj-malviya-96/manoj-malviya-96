@@ -87,7 +87,7 @@ export default function HeaderBar() {
 
 	return (
 		<Header
-			width="full"
+			width="content"
 			padding={{ x: "lg", y: "md" }}
 			data-hidden={visible ? undefined : true}
 		/>

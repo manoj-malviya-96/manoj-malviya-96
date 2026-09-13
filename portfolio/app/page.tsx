@@ -16,18 +16,19 @@ import {
 	Eyebrow,
 	InlineBadge,
 	Link,
+	Page,
 	Section,
 	SectionHeader,
 } from "@/lib/shared";
 
 export default function Landing() {
 	return (
-		<>
+		<Page>
 			<MeshCanvas />
 			<Hero />
 			<Loop />
 			<FeaturedWork />
-		</>
+		</Page>
 	);
 }
 

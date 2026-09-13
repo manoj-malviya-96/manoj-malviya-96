@@ -46,7 +46,7 @@ export default function RootLayout({
 			</head>
 			<body>
 				<ReactQueryProvider>
-					<Screen as="main" variant="page">
+					<Screen as="main" hAlign="center" vAlign="center">
 						<HeaderBar />
 						{children}
 						<Footer />
