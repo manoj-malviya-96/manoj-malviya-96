@@ -15,8 +15,8 @@ import {
 import NextImage from "next/image";
 import {
 	EmailAddress,
-	getSocialLinks,
 	ResumePDF,
+	SocialLinks,
 	type SocialMedia,
 	UserAvatar,
 } from "@/lib/data";
@@ -28,7 +28,7 @@ export default function Footer() {
 			<Grid columns={3} gap="lg" className="footer-grid">
 				<About />
 				<QuickLinks />
-				<SocialLinks />
+				<SocialLinksSection />
 			</Grid>
 			<Divider direction="horizontal" />
 			<Flex direction="row" hAlign="between" gap="lg" wrap>
@@ -104,8 +104,7 @@ const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: typeof IconGithub }> = [
 	{ name: "Instagram", icon: IconInstagram },
 ];
 
-function SocialLinks() {
-	const socials = getSocialLinks();
+function SocialLinksSection() {
 	return (
 		<Flex direction="col" gap="md">
 			<Flex direction="col" gap="xs">
@@ -116,7 +115,7 @@ function SocialLinks() {
 				{SOCIALS.map(({ name, icon: SocialIcon }) => (
 					<li key={name}>
 						<Link
-							url={socials[name]}
+							url={SocialLinks[name]}
 							openNewTab
 							variant="button"
 							buttonVariant="plain"
