@@ -14,22 +14,6 @@ import type { ComponentProps, ReactNode } from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
 
-// TOdo replace with @atom.
-export function Page({ children }: { children: ReactNode }) {
-	return (
-		<Flex
-			as="div"
-			direction="col"
-			width="content"
-			hAlign="start"
-			vAlign="center"
-			gap="md"
-		>
-			{children}
-		</Flex>
-	);
-}
-
 type SectionId = "home-loop" | "home-feature" | "home-hero";
 
 type SectionProps = {

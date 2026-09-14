@@ -34,7 +34,9 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				gap="md"
 				hAlign="center"
 				width="lg"
-				style={{ textAlign: "center" }}
+				style={{
+					textAlign: "center",
+				}} /* TODO ATOM should support textAlign on Atom */
 			>
 				<Text variant="hero">{title}</Text>
 				<Text variant="subtitle" muted>

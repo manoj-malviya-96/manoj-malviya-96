@@ -1,13 +1,14 @@
 import { Flex, Text } from "@manoj-malviya-96/atom";
+import { Page } from "@manoj-malviya-96/atom/system";
 import { ResumePDF } from "@/lib/data";
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import { Eyebrow, Link, Page } from "@/lib/shared";
+import { Eyebrow, Link } from "@/lib/shared";
 
 export default function About() {
 	return (
-		<Page>
+		<Page variant="content">
 			<Text variant="heading">Past Experience</Text>
 			<Text variant="subtitle">
 				Seven years solving problems that sit between hardware and software: CAD
