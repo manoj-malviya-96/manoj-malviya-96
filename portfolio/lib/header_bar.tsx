@@ -18,7 +18,6 @@ type TocKey = (typeof NAV_LINKS)[number]["toc"];
 
 export default function HeaderBar() {
 	const pathname = usePathname();
-	const { visible } = useHeaderBarScroll();
 	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
 
 	const activeToc: TocKey | null = pathname.startsWith("/resume")
@@ -74,7 +73,7 @@ export default function HeaderBar() {
 		bottom: tocKey === "projects" ? <HeaderToc toc={tocKey} /> : undefined,
 	});
 
-	return <Header width="content" data-hidden={visible ? undefined : true} />;
+	return <Header width="content" radius="md" />;
 }
 
 function HeaderToc({ toc }: { toc: TocKey }) {
@@ -100,23 +99,4 @@ function HeaderToc({ toc }: { toc: TocKey }) {
 		default:
 			assertNever(toc);
 	}
-}
-
-const TOP_BAND = 0.05 as const;
-const INTENT_PX_PER_MS = 0.3 as const;
-type HeaderBarScroll = { y: number; visible: boolean };
-
-function useHeaderBarScroll(): HeaderBarScroll {
-	return useScrollEffect<HeaderBarScroll>(
-		({ y, delta, speedPxPerMs }, prev) => {
-			const visible =
-				y < window.innerHeight * TOP_BAND
-					? true
-					: speedPxPerMs < INTENT_PX_PER_MS
-						? prev.visible
-						: delta < 0;
-			return { y, visible };
-		},
-		{ y: 0, visible: true },
-	);
 }
