@@ -72,14 +72,17 @@ img {
 }
 
 /* Always mounted, visibility toggled via data-hidden — same mechanism as atom's own
-   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut. */
+   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut.
+   pointer-events stay off even while visible: these are readouts sitting on top of the
+   canvas, not controls, and one (the mode hint) sits directly over the nodes a user is
+   trying to click while placing supports/loads. */
 .lattice-overlay {
 	transition: opacity var(--duration-base) var(--ease-out);
+	pointer-events: none;
 }
 
 .lattice-overlay[data-hidden] {
 	opacity: 0;
-	pointer-events: none;
 }
 
 /*
