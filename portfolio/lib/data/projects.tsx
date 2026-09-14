@@ -1,4 +1,5 @@
 import {
+	assertNever,
 	Badge,
 	type ColorToken,
 	Flex,
@@ -432,11 +433,23 @@ export type Project = {
 
 export type ProjectSummary = Project & { id: ProjectId };
 
-const HIDDEN_PROJECT_IDS: readonly ProjectId[] = [
-	"blackhole",
-	"simphy",
-	"mesha",
-];
+function showProject(id: ProjectId) {
+	switch (id) {
+		case "atom":
+		case "ev_sim":
+		case "topopt_py":
+		case "honeycomb":
+		case "muviz":
+		case "truss_opt":
+			return true;
+		case "blackhole":
+		case "mesha":
+		case "simphy":
+			return false;
+		default:
+			assertNever(id);
+	}
+}
 
 const EFFORT_RANK: Record<ProjectEffort, number> = {
 	high: 3,
@@ -445,7 +458,7 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 };
 
 export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
-	(id) => !HIDDEN_PROJECT_IDS.includes(id),
+	(id) => showProject(id),
 )
 	.map((id) => ({ id, ...Projects[id] }))
 	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
