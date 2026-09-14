@@ -14,7 +14,7 @@ import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (
-		<Page>
+		<Page variant="content">
 			<MeshCanvas />
 			<Hero />
 			<Loop />

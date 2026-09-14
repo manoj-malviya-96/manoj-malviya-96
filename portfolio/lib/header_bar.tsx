@@ -10,7 +10,7 @@ import { EmailAddress, RankedProjects } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Work", toc: "projects" },
+	{ url: "/projects", label: "Personal Projects", toc: "projects" },
 	{ url: "/resume", label: "Résumé", toc: "resume" },
 ] as const;
 
