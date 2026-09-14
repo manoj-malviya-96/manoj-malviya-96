@@ -24,7 +24,6 @@ export const AllProjectIds = [
 	"blackhole",
 	"ev_sim",
 	"mesha",
-	"simphy",
 	"truss_opt",
 ] as const;
 
@@ -299,28 +298,6 @@ export const Projects: Record<ProjectId, Project> = {
 			</List>
 		),
 	},
-	simphy: {
-		title: "Simphy",
-		summary: "Simulating the universe. Literally, eventually.",
-		dates: "2025",
-		tags: ["simulation", "c++", "open-source"],
-		effort: "low",
-		links: {
-			primary: {
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/simphy",
-			},
-			others: [],
-		},
-		content: (
-			<Flex direction="row" gap="xs" vAlign="start">
-				<Badge color="orange">In progress</Badge>
-				<Text variant="body">
-					C++ core scaffolded, no rendering layer committed yet.
-				</Text>
-			</Flex>
-		),
-	},
 	truss_opt: {
 		title: "Truss Optimizer",
 		summary:
@@ -444,7 +421,6 @@ function showProject(id: ProjectId) {
 			return true;
 		case "blackhole":
 		case "mesha":
-		case "simphy":
 			return false;
 		default:
 			assertNever(id);
