@@ -49,7 +49,7 @@ export function LatticeCanvas({
 			const canvas = canvasRef.current;
 			if (!canvas) return;
 			const rect = canvas.getBoundingClientRect();
-			const scale = computeScale(size, mesh);
+			const scale = computeScale(size);
 			if (scale === 0) return;
 			const offset = computeOffset(size, mesh, scale);
 			const [meshX, meshY] = fromCanvasPoint(
