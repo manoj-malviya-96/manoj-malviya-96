@@ -31,8 +31,6 @@ interface TrussOptRequest {
 	optimize?: TrussOptimizeInput;
 }
 
-/** Unlike the GitHub/Scholar queries, the payload varies per call (the mesh the user just
- * edited), so this is a mutation rather than a cached query keyed on fixed inputs. */
 export function useTrussOptMutation() {
 	return useMutation({
 		mutationKey: ["truss-opt"],
