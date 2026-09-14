@@ -10,7 +10,6 @@ import { LatticeOutput } from "@/lib/truss-opt/view/LatticeOutput";
 export default function TrussOptDemoPage() {
 	const {
 		meshConfig,
-		mesh,
 		mouseMode,
 		optimizeConfig,
 		canRunFea,
@@ -20,7 +19,6 @@ export default function TrussOptDemoPage() {
 		setMeshConfig,
 		setMouseMode,
 		setOptimizeConfig,
-		placeNode,
 		simulate,
 		optimize,
 		clear,
@@ -57,11 +55,9 @@ export default function TrussOptDemoPage() {
 					onClear={clear}
 				/>
 				<LatticeOutput
-					mesh={mesh}
 					result={result}
 					mouseMode={mouseMode}
 					isPending={isPending}
-					onPlaceNode={placeNode}
 				/>
 			</Flex>
 		</Page>
