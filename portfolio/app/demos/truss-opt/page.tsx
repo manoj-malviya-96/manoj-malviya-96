@@ -1,7 +1,8 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
-import { Page, SectionHeader } from "@/lib/shared";
+import { Page } from "@manoj-malviya-96/atom/system";
+import { SectionHeader } from "@/lib/shared";
 import { useTrussOpt } from "@/lib/truss-opt/use-truss-opt";
 import { LatticeControls } from "@/lib/truss-opt/view/LatticeControls";
 import { LatticeOutput } from "@/lib/truss-opt/view/LatticeOutput";

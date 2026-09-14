@@ -5,11 +5,12 @@ import {
 	IconMagnifyingGlass,
 	IconPalette,
 } from "@manoj-malviya-96/atom/icons";
+import { Page } from "@manoj-malviya-96/atom/system";
 import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
-import { Eyebrow, Link, Page, Section, SectionHeader } from "@/lib/shared";
+import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (
