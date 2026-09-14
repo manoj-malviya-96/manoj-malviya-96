@@ -1,5 +1,13 @@
 export type LatticeType = "cross" | "checkerboard";
 
+/** Single source of truth for mesh dimension limits — shared by the API route's clamp,
+ * the control knobs, and the canvas's fixed mm-to-px scale. */
+export const MESH_BOUNDS = {
+	cellSize_mm: { min: 5, max: 20 },
+	meshWidth_mm: { min: 5, max: 100 },
+	meshHeight_mm: { min: 5, max: 100 },
+} as const;
+
 type Point = readonly [x: number, y: number];
 type Connection = readonly [start: number, end: number];
 type DirectionCosine = readonly [c: number, s: number];

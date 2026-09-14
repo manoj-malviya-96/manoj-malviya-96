@@ -1,6 +1,6 @@
 import { getThemeColor } from "@manoj-malviya-96/atom";
 import type { TrussOptResult } from "@/lib/data/truss_opt";
-import type { TrussMesh } from "@/lib/truss-opt/engine/mesh";
+import { MESH_BOUNDS, type TrussMesh } from "@/lib/truss-opt/engine/mesh";
 
 export interface CanvasSize {
 	width: number;
@@ -19,15 +19,17 @@ const DRAW_SETTINGS = {
 	},
 };
 
-/** Scale mapping mesh units to canvas pixels, sized to fit the mesh's own width/height. */
-export function computeScale(
-	size: CanvasSize,
-	mesh: Pick<TrussMesh, "meshWidth_mm" | "meshHeight_mm">,
-): number {
+/** Scale mapping mesh mm to canvas px, fixed against the mesh's max possible size (not the
+ * current mesh) — otherwise a bigger mesh at the same cell size renders *smaller* (everything
+ * rescales to keep fitting the canvas) instead of using more of the available canvas. */
+export function computeScale(size: CanvasSize): number {
 	if (size.width === 0 || size.height === 0) return 0;
 	return (
 		0.9 *
-		Math.min(size.width / mesh.meshWidth_mm, size.height / mesh.meshHeight_mm)
+		Math.min(
+			size.width / MESH_BOUNDS.meshWidth_mm.max,
+			size.height / MESH_BOUNDS.meshHeight_mm.max,
+		)
 	);
 }
 
@@ -67,7 +69,7 @@ export function drawLattice(
 	result: TrussOptResult | null,
 ): void {
 	ctx.clearRect(0, 0, size.width, size.height);
-	const scale = computeScale(size, mesh);
+	const scale = computeScale(size);
 	if (scale === 0) return;
 	const offset = computeOffset(size, mesh, scale);
 

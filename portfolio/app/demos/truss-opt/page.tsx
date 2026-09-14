@@ -2,29 +2,18 @@
 
 import { Flex } from "@manoj-malviya-96/atom";
 import { Page } from "@manoj-malviya-96/atom/system";
+import { useEffect } from "react";
 import { SectionHeader } from "@/lib/shared";
-import { useTrussOpt } from "@/lib/truss-opt/use-truss-opt";
+import { resetTrussOptState } from "@/lib/truss-opt/state";
 import { LatticeControls } from "@/lib/truss-opt/view/LatticeControls";
 import { LatticeOutput } from "@/lib/truss-opt/view/LatticeOutput";
 
 export default function TrussOptDemoPage() {
-	const {
-		meshConfig,
-		mesh,
-		mouseMode,
-		optimizeConfig,
-		canRunFea,
-		result,
-		isPending,
-		error,
-		setMeshConfig,
-		setMouseMode,
-		setOptimizeConfig,
-		placeNode,
-		simulate,
-		optimize,
-		clear,
-	} = useTrussOpt();
+	// trussOptState$ is a module singleton (see state.ts) so it survives client-side
+	// navigation away from this page — reset it fresh on every mount.
+	useEffect(() => {
+		resetTrussOptState();
+	}, []);
 
 	return (
 		<Page>
@@ -41,28 +30,8 @@ export default function TrussOptDemoPage() {
 				wrap
 				style={{ minHeight: "32rem", maxHeight: "calc(100dvh - 16rem)" }}
 			>
-				<LatticeControls
-					meshConfig={meshConfig}
-					mouseMode={mouseMode}
-					optimizeConfig={optimizeConfig}
-					canRunFea={canRunFea}
-					hasResult={result !== null}
-					isPending={isPending}
-					error={error}
-					onMeshConfigChange={setMeshConfig}
-					onMouseModeChange={setMouseMode}
-					onOptimizeConfigChange={setOptimizeConfig}
-					onSimulate={simulate}
-					onOptimize={optimize}
-					onClear={clear}
-				/>
-				<LatticeOutput
-					mesh={mesh}
-					result={result}
-					mouseMode={mouseMode}
-					isPending={isPending}
-					onPlaceNode={placeNode}
-				/>
+				<LatticeControls />
+				<LatticeOutput />
 			</Flex>
 		</Page>
 	);
