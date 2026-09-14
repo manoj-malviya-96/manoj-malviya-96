@@ -8,7 +8,6 @@ import {
 	Text,
 	Timeline,
 } from "@manoj-malviya-96/atom";
-import { IconBriefcase } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import {
 	EXPERIENCE_BY_RECENCY,
@@ -19,6 +18,7 @@ import {
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
+import { Media } from "@/lib/shared";
 
 type ExperienceGroup = {
 	organization: OrganizationId;
@@ -87,27 +87,22 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 }
 
 function roleEvent(experience: ExperienceId): TimelineEvent {
-	const { position, start, end, type, skills, summary } =
+	const { position, start, end, skills, summary, media } =
 		Experiences[experience];
 
 	return {
 		key: experience,
 		label: `${formatDate(start)} — ${end ? formatDate(end) : "Present"}`,
 		children: (
-			<Flex direction="col" gap="xs" hAlign="start">
-				<Flex direction="row" gap="sm" wrap vAlign="center">
-					<Text variant="body" bold>
+			<Flex direction="col" gap="md" hAlign="start">
+				<Flex direction="col" gap="sm" vAlign="center">
+					<Text variant="title" bold>
 						{position}
 					</Text>
-					<Badge>
-						<IconBriefcase size="sm" />
-						{type}
-					</Badge>
+					<ExperienceSkills skills={skills} />
 				</Flex>
-				<Text variant="body" muted>
-					{summary}
-				</Text>
-				<ExperienceSkills skills={skills} />
+				{summary}
+				{media && <Media media={media} />}
 			</Flex>
 		),
 	};

@@ -4,7 +4,7 @@ html {
 		"Segoe UI", system-ui, sans-serif;
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
-	color-scheme: light dark;
+	color-scheme: light;
 }
 
 h1,
@@ -45,14 +45,6 @@ h3 {
 	.wordmark-text {
 		display: none;
 	}
-}
-
-html[data-theme="light"] {
-	color-scheme: light;
-}
-
-html[data-theme="dark"] {
-	color-scheme: dark;
 }
 
 img {

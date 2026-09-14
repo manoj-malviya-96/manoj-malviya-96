@@ -1,6 +1,7 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
+import { Page } from "@manoj-malviya-96/atom/system";
 import { SectionHeader } from "@/lib/shared";
 import { useTrussOpt } from "@/lib/truss-opt/use-truss-opt";
 import { LatticeControls } from "@/lib/truss-opt/view/LatticeControls";
@@ -26,14 +27,20 @@ export default function TrussOptDemoPage() {
 	} = useTrussOpt();
 
 	return (
-		<Flex direction="col" gap="lg" grow>
+		<Page>
 			<SectionHeader
 				eyebrow="Demo"
 				title="Truss optimizer."
-				caption="Place supports and loads on a cantilever lattice, then let an optimality-criteria solver redistribute material toward the members carrying the load. The FEA solve and optimization loop both run through this site's own API — the browser only draws the result."
+				caption="Place supports and loads on a cantilever lattice, then let an optimality-criteria solver redistribute material toward the members carrying the load. The FEA solve and optimization loop both run through this site's own API. The browser only draws the result."
 			/>
 
-			<Flex direction="row" gap="lg" grow wrap style={{ minHeight: "32rem" }}>
+			<Flex
+				direction="row"
+				gap="lg"
+				grow
+				wrap
+				style={{ minHeight: "32rem", maxHeight: "calc(100dvh - 16rem)" }}
+			>
 				<LatticeControls
 					meshConfig={meshConfig}
 					mouseMode={mouseMode}
@@ -57,6 +64,6 @@ export default function TrussOptDemoPage() {
 					onPlaceNode={placeNode}
 				/>
 			</Flex>
-		</Flex>
+		</Page>
 	);
 }

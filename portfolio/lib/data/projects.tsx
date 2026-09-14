@@ -1,4 +1,5 @@
 import {
+	assertNever,
 	Badge,
 	type ColorToken,
 	Flex,
@@ -10,14 +11,12 @@ import {
 	IconPaintBrush,
 	IconVolumeHigh,
 } from "@manoj-malviya-96/atom/icons";
-import type { StaticImageData as LocalImage } from "next/image";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
-import type { ExternalURL } from "@/lib/types";
+import type { ExternalURL, MediaSource } from "@/lib/types";
 import trussOptScreenshot from "./truss-opt-screenshot.png";
 
 export const AllProjectIds = [
-	"portfolio",
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -25,55 +24,12 @@ export const AllProjectIds = [
 	"blackhole",
 	"ev_sim",
 	"mesha",
-	"simphy",
 	"truss_opt",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
 export const Projects: Record<ProjectId, Project> = {
-	portfolio: {
-		title: "Portfolio",
-		summary: "The portfolio, describing itself.",
-		dates: "2025",
-		tags: [
-			"web",
-			"open-source",
-			"nextjs",
-			"react",
-			"typescript",
-			"ui/ux",
-			"rendering",
-		],
-		effort: "medium",
-		media: {
-			kind: "video",
-			src: getBlob("portfolio.webm"),
-			alt: "This portfolio’s interactive landing page in motion.",
-		},
-		links: {
-			primary: {
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/manoj-malviya-96/tree/master/portfolio",
-			},
-			others: [
-				{
-					kind: "external",
-					label: "Previous version",
-					href: "https://manoj-malviya-96.github.io/",
-				},
-			],
-		},
-		content: (
-			<Flex direction="col" gap="sm">
-				<Text variant="body" muted>
-					Every project I've built, in one catalog — searchable by title, tags,
-					or description as you type. Fuse.js runs client-side, so there's no
-					server round trip.
-				</Text>
-			</Flex>
-		),
-	},
 	atom: {
 		title: "Atom",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
@@ -171,7 +127,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	honeycomb: {
 		title: "HoneyMesh",
-		summary: "Because hexagons are just better, structurally speaking.",
+		summary:
+			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
 		dates: "2022",
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
@@ -189,19 +146,22 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Give it a shape, get back a honeycomb lattice — skeletonized in C++ and
-				exported straight to a VTK mesh, ready for your CAD tool. No manual
-				triangulation, no format conversion.
+				Give it a shape and get back a honeycomb lattice, skeletonized in C++
+				and exported straight to a VTK mesh, ready for your CAD tool. No manual
+				triangulation, no format conversion. The skeleton is a functional
+				pipeline: an unordered_set for edges, a sorted map for vertices, every
+				function pure input to output. The part that kept breaking was
+				staggering the hexagon centers correctly. Get that wrong and the whole
+				grid drifts.
 			</Text>
 		),
 	},
 	topopt_py: {
 		title: "topopt-py",
-		summary: `Same 40-year-old topology-optimization algorithm, rewritten to
-					actually be fast: the solver's inner loop runs as array operations in
-					NumPy instead of nested Python loops -
-					2x faster same accuracy, bigger
-					problems.`,
+		summary: `I found DTU's 99-line topology-optimization script and loved how
+					compact it was, but the inner loop was nested Python. I rewrote the
+					stiffness assembly and filtering as vectorized NumPy, keeping the same
+					SIMP algorithm and accuracy but running faster on the same problem.`,
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "high",
@@ -222,6 +182,16 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
+		content: (
+			<Text variant="body">
+				The stiffness assembler now caches its sparsity pattern instead of
+				rebuilding it every iteration, and strain energy is a single einsum call
+				instead of a manual reshape-and-sum. Filtering swapped four nested loops
+				for one scipy.ndimage.convolve. Solver time still dominates, which is
+				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
+				to 2.6s.
+			</Text>
+		),
 	},
 	blackhole: {
 		title: "Blackhole",
@@ -244,15 +214,19 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Simulates real black-hole gravity — a raymarching shader that
-				numerically integrates light-ray geodesics per pixel, fast enough to
-				rotate live instead of watching a pre-rendered clip.
+				Simulates real black-hole gravity. A compute shader integrates each
+				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
+				million solar masses), and a separate lensing fragment shader bends the
+				background grid around it. It runs as a Qt/OpenGL widget, falling back
+				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
+				rotates live instead of playing back a pre-rendered clip.
 			</Text>
 		),
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
-		summary: "How many chargers do you actually need? Simulate it first.",
+		summary:
+			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first.",
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
@@ -270,9 +244,13 @@ export const Projects: Record<ProjectId, Project> = {
 		},
 		content: (
 			<Text variant="body">
-				Answers one question: how many chargers do you actually need? Change the
-				inputs — charger count, power draw — and watch demand, cost, and
-				concurrency update immediately.
+				Answers one question: how many chargers do you actually need? Each run
+				simulates a year of 15-minute intervals, drawing car arrivals from a
+				Poisson-derived probability per charge point, with no queueing: a car
+				that arrives to a busy point just leaves. Change the charger count or
+				power draw and watch demand, cost, and concurrency update immediately;
+				concurrency turned out to decay roughly exponentially as charger count
+				grows.
 			</Text>
 		),
 	},
@@ -300,51 +278,30 @@ export const Projects: Record<ProjectId, Project> = {
 				{statusItem(
 					"green",
 					"Done",
-					"CLI — mesh repair as a standalone command-line tool.",
+					"CLI: mesh repair as a standalone command-line tool.",
 				)}
 				{statusItem(
 					"green",
 					"Done",
-					"Server — same C++/Qt backend, exposed over WebSocket.",
+					"Server: same C++/Qt backend, exposed over WebSocket.",
 				)}
 				{statusItem(
 					"green",
 					"Done",
-					"Editor — Tauri + Next.js shell, wired end to end.",
+					"Editor: Tauri + Next.js shell, wired end to end.",
 				)}
 				{statusItem(
 					"orange",
 					"Next",
-					"Repair algorithm — the actual mesh-repair logic.",
+					"Repair algorithm: the actual mesh-repair logic.",
 				)}
 			</List>
 		),
 	},
-	simphy: {
-		title: "Simphy",
-		summary: "Simulating the universe. Literally, eventually.",
-		dates: "2025",
-		tags: ["simulation", "c++", "open-source"],
-		effort: "low",
-		links: {
-			primary: {
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/simphy",
-			},
-			others: [],
-		},
-		content: (
-			<Flex direction="row" gap="xs" vAlign="start">
-				<Badge color="orange">In progress</Badge>
-				<Text variant="body">
-					C++ core scaffolded, no rendering layer committed yet.
-				</Text>
-			</Flex>
-		),
-	},
 	truss_opt: {
 		title: "Truss Optimizer",
-		summary: "Draw a truss. Watch it optimize itself.",
+		summary:
+			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
 		dates: "2025",
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
@@ -365,7 +322,10 @@ export const Projects: Record<ProjectId, Project> = {
 			<Text variant="body">
 				Place supports and loads on a cantilever lattice and this site's own API
 				route solves the FEA and runs an optimality-criteria search to
-				redistribute material — the browser only ever draws the answer.
+				redistribute material. The browser only ever draws the answer. Each of
+				the 200 iterations re-solves the FEA, then bisects on the Lagrange
+				multiplier to hold total volume at 40% of the start, with a minimum
+				thickness clamp so no member vanishes to zero.
 			</Text>
 		),
 	},
@@ -422,10 +382,6 @@ export type ProjectTag =
 
 export type ProjectEffort = "low" | "medium" | "high";
 
-export type ProjectMedia =
-	| { kind: "image"; src: LocalImage | string; alt: string }
-	| { kind: "video"; src: string; alt: string };
-
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
 type InternalPath = `/${string}`;
@@ -443,22 +399,33 @@ export type ProjectLinks = {
 
 export type Project = {
 	title: string;
-	summary: string;
+	summary: ReactNode;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	media?: ProjectMedia;
+	media?: MediaSource;
 	links: ProjectLinks;
 	content?: ReactNode;
 };
 
 export type ProjectSummary = Project & { id: ProjectId };
 
-const HIDDEN_PROJECT_IDS: readonly ProjectId[] = [
-	"blackhole",
-	"simphy",
-	"mesha",
-];
+function showProject(id: ProjectId) {
+	switch (id) {
+		case "atom":
+		case "ev_sim":
+		case "topopt_py":
+		case "honeycomb":
+		case "muviz":
+		case "truss_opt":
+			return true;
+		case "blackhole":
+		case "mesha":
+			return false;
+		default:
+			assertNever(id);
+	}
+}
 
 const EFFORT_RANK: Record<ProjectEffort, number> = {
 	high: 3,
@@ -467,7 +434,7 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 };
 
 export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
-	(id) => !HIDDEN_PROJECT_IDS.includes(id),
+	(id) => showProject(id),
 )
 	.map((id) => ({ id, ...Projects[id] }))
 	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
@@ -485,8 +452,6 @@ function statusItem(
 	);
 }
 
-const BLOB = "https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com";
-
 function getBlob(filename: string) {
-	return `${BLOB}/${filename}`;
+	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }
