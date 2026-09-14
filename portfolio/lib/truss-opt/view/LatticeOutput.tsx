@@ -1,19 +1,17 @@
+"use client";
+
+import { useSelector } from "@legendapp/state/react";
 import { Flex, Layer, Stat, Text } from "@manoj-malviya-96/atom";
-import type { TrussOptResult } from "@/lib/data/truss_opt";
-import type { MouseMode } from "@/lib/truss-opt/use-truss-opt";
+import { type MouseMode, trussOptState$ } from "@/lib/truss-opt/state";
 import { LatticeCanvas } from "./LatticeCanvas";
 
-interface LatticeOutputProps {
-	result: TrussOptResult | null;
-	mouseMode: MouseMode;
-	isPending: boolean;
-}
+export function LatticeOutput() {
+	const result = useSelector(() => trussOptState$.result.get());
+	const isPending = useSelector(
+		() => trussOptState$.run.get().type === "pending",
+	);
+	const mouseMode = useSelector(() => trussOptState$.mouseMode.get());
 
-export function LatticeOutput({
-	result,
-	mouseMode,
-	isPending,
-}: LatticeOutputProps) {
 	return (
 		<Layer bg="surface" radius="lg" width="full" height="full" grow>
 			<LatticeCanvas />

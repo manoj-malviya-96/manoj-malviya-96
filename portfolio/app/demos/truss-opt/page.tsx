@@ -54,11 +54,7 @@ export default function TrussOptDemoPage() {
 					onOptimize={optimize}
 					onClear={clear}
 				/>
-				<LatticeOutput
-					result={result}
-					mouseMode={mouseMode}
-					isPending={isPending}
-				/>
+				<LatticeOutput />
 			</Flex>
 		</Page>
 	);
