@@ -13,6 +13,7 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
+import { Prose } from "@/lib/shared";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
 export const AllProjectIds = [
@@ -151,7 +152,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body" width="lg">
+			<Prose>
 				Give it a shape and get back a honeycomb lattice, skeletonized in C++
 				and exported straight to a VTK mesh, ready for your CAD tool. No manual
 				triangulation, no format conversion. The skeleton is a functional
@@ -159,7 +160,7 @@ export const Projects: Record<ProjectId, Project> = {
 				function pure input to output. The part that kept breaking was
 				staggering the hexagon centers correctly. Get that wrong and the whole
 				grid drifts.
-			</Text>
+			</Prose>
 		),
 	},
 	topopt_py: {
@@ -189,14 +190,14 @@ export const Projects: Record<ProjectId, Project> = {
 			],
 		},
 		content: (
-			<Text variant="body" width="lg">
+			<Prose>
 				The stiffness assembler now caches its sparsity pattern instead of
 				rebuilding it every iteration, and strain energy is a single einsum call
 				instead of a manual reshape-and-sum. Filtering swapped four nested loops
 				for one scipy.ndimage.convolve. Solver time still dominates, which is
 				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
 				to 2.6s.
-			</Text>
+			</Prose>
 		),
 	},
 	blackhole: {
@@ -219,14 +220,14 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body" width="lg">
+			<Prose>
 				Simulates real black-hole gravity. A compute shader integrates each
 				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
 				million solar masses), and a separate lensing fragment shader bends the
 				background grid around it. It runs as a Qt/OpenGL widget, falling back
 				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
 				rotates live instead of playing back a pre-rendered clip.
-			</Text>
+			</Prose>
 		),
 	},
 	ev_sim: {
@@ -249,7 +250,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body" width="lg">
+			<Prose>
 				Answers one question: how many chargers do you actually need? Each run
 				simulates a year of 15-minute intervals, drawing car arrivals from a
 				Poisson-derived probability per charge point, with no queueing: a car
@@ -257,7 +258,7 @@ export const Projects: Record<ProjectId, Project> = {
 				power draw and watch demand, cost, and concurrency update immediately;
 				concurrency turned out to decay roughly exponentially as charger count
 				grows.
-			</Text>
+			</Prose>
 		),
 	},
 	mesha: {
@@ -325,14 +326,14 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body" width="lg">
+			<Prose>
 				Place supports and loads on a cantilever lattice and this site's own API
 				route solves the FEA and runs an optimality-criteria search to
 				redistribute material. The browser only ever draws the answer. Each of
 				the 200 iterations re-solves the FEA, then bisects on the Lagrange
 				multiplier to hold total volume at 40% of the start, with a minimum
 				thickness clamp so no member vanishes to zero.
-			</Text>
+			</Prose>
 		),
 	},
 };

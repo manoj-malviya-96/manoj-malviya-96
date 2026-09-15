@@ -28,28 +28,30 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			radius="sm"
 			hAlign="center"
 			as="section"
-			width="content"
+			width="full"
 			bg="surface"
 			padding={{ x: "sm", y: "lg" }}
 		>
-			<Flex
-				direction="col"
-				gap="md"
-				hAlign="center"
-				width="lg"
-				style={{
-					textAlign: "center",
-				}} /* TODO ATOM should support textAlign on Atom */
-			>
-				<Text variant="hero">{title}</Text>
-				<Text variant="subtitle" muted>
-					{summary}
-				</Text>
-				<ProjectLinks project={project} />
+			<Flex direction="col" gap="lg" hAlign="center" width="content">
+				<Flex
+					direction="col"
+					gap="md"
+					hAlign="center"
+					width="lg"
+					style={{
+						textAlign: "center",
+					}} /* TODO ATOM should support textAlign on Atom */
+				>
+					<Text variant="hero">{title}</Text>
+					<Text variant="subtitle" muted>
+						{summary}
+					</Text>
+					<ProjectLinks project={project} />
+				</Flex>
+				{media && <ProjectMediaComponent media={media} />}
+				{content}
+				<ProjectTags tags={tags} date={dates} />
 			</Flex>
-			{media && <ProjectMediaComponent media={media} />}
-			{content}
-			<ProjectTags tags={tags} date={dates} />
 		</Flex>
 	);
 }
@@ -59,7 +61,7 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 	switch (media.mockup) {
 		case undefined:
 			return (
-				<Atom as="div" width="lg">
+				<Atom as="div" width="content">
 					{child}
 				</Atom>
 			);
