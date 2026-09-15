@@ -30,4 +30,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add profile/dark_mode.svg profile/light_mode.svg
           git diff --staged --quiet || git commit -m "Update profile card stats"
+          git pull --rebase origin master
           git push
