@@ -19,41 +19,50 @@ const TOKEN = process.env.GITHUB_TOKEN || process.env.ACCESS_TOKEN || "";
 const PRIV_TOKEN = process.env.ACCESS_TOKEN || TOKEN;
 
 const PROFILE = {
-  role: "Lead Product Engineer",
-  company: "Noah Labs GmbH",
   location: "Berlin, Germany",
   experience: "8 years",
   frameworks: "Qt/QML, React, FastAPI, PyTorch",
   speaks: "English, Hindi",
-  email: "malviyamanoj1896@gmail.com",
-  linkedin: "in/manoj-malviya-",
-  portfolio: "manoj-malviya.vercel.app",
 };
 
 type Color = "h" | "k" | "v" | "d" | "g" | "r" | "art";
 type Segment = [text: string, color: Color];
+type Line =
+  | { kind: "text"; segs: Segment[] }
+  | { kind: "space" }
+  | { kind: "langbar"; languages: LangShare[] };
 
 const PALETTES: Record<"dark" | "light", Record<Color | "bg" | "border", string>> = {
   dark: {
-    bg: "#0d1117", border: "#30363d", h: "#58a6ff", k: "#ffa657",
+    bg: "#0d1117", border: "#30363d", h: "#818cf8", k: "#58a6ff",
     v: "#c9d1d9", d: "#484f58", g: "#3fb950", r: "#f85149", art: "#8b949e",
   },
   light: {
-    bg: "#ffffff", border: "#d0d7de", h: "#0969da", k: "#953800",
+    bg: "#ffffff", border: "#d0d7de", h: "#4f46e5", k: "#0969da",
     v: "#24292f", d: "#afb8c1", g: "#1a7f37", r: "#cf222e", art: "#57606a",
   },
 };
 
+interface LangShare {
+  name: string;
+  pct: number;
+  color: string;
+}
+
 interface Stats {
+  role: string;
   repos: number;
   contributed: number;
   commits: number;
   prs: number;
   reviews: number;
+  comments: number;
+  streak: number;
+  longestStreak: number;
   locAdd: number;
   locDel: number;
   loc: number;
-  languages: string;
+  languageShares: LangShare[];
 }
 
 async function gh<T>(query: string, variables: Record<string, unknown> = {}, token = TOKEN): Promise<T> {
@@ -79,22 +88,60 @@ async function searchCount(query: string): Promise<number> {
   return data.search.issueCount;
 }
 
-async function fetchCommits(joinYear: number): Promise<number> {
+interface ContribDay {
+  date: string;
+  contributionCount: number;
+}
+
+interface YearContrib {
+  totalCommitContributions: number;
+  restrictedContributionsCount: number;
+  contributionCalendar: { weeks: { contributionDays: ContribDay[] }[] };
+}
+
+// One query for every year since the account was created: commit totals (for the
+// total commit count) and the daily calendar (for streaks) come from the same field.
+async function fetchYearlyContributions(joinYear: number): Promise<YearContrib[]> {
   const currentYear = new Date().getUTCFullYear();
-  const aliases: string[] = [];
-  for (let y = joinYear; y <= currentYear; y++) {
-    aliases.push(
-      `y${y}: contributionsCollection(from: "${y}-01-01T00:00:00Z", to: "${y + 1}-01-01T00:00:00Z") ` +
-        "{ totalCommitContributions restrictedContributionsCount }",
-    );
-  }
-  const data = await gh<{
-    user: Record<string, { totalCommitContributions: number; restrictedContributionsCount: number }>;
-  }>(`query { user(login: "${USER}") { ${aliases.join("\n")} } }`, {}, PRIV_TOKEN);
-  return Object.values(data.user).reduce(
-    (sum, v) => sum + v.totalCommitContributions + v.restrictedContributionsCount,
-    0,
+  const years: number[] = [];
+  for (let y = joinYear; y <= currentYear; y++) years.push(y);
+  const aliases = years
+    .map(
+      (y) =>
+        `y${y}: contributionsCollection(from: "${y}-01-01T00:00:00Z", to: "${y + 1}-01-01T00:00:00Z") ` +
+        "{ totalCommitContributions restrictedContributionsCount " +
+        "contributionCalendar { weeks { contributionDays { date contributionCount } } } }",
+    )
+    .join("\n");
+  const data = await gh<{ user: Record<string, YearContrib> }>(
+    `query { user(login: "${USER}") { ${aliases} } }`,
+    {},
+    PRIV_TOKEN,
   );
+  return years.map((y) => data.user[`y${y}`]);
+}
+
+function computeStreaks(years: YearContrib[]): { current: number; longest: number } {
+  const today = new Date().toISOString().slice(0, 10);
+  const days = years
+    .flatMap((y) => y.contributionCalendar.weeks.flatMap((w) => w.contributionDays))
+    .filter((d) => d.date <= today) // GitHub pads the current year's calendar to Jan 1 next year
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+
+  let longest = 0;
+  let run = 0;
+  for (const day of days) {
+    run = day.contributionCount > 0 ? run + 1 : 0;
+    longest = Math.max(longest, run);
+  }
+
+  let current = 0;
+  for (let i = days.length - 1; i >= 0; i--) {
+    if (days[i].contributionCount > 0) current++;
+    else if (i === days.length - 1) continue; // today isn't over yet, don't break the streak on it
+    else break;
+  }
+  return { current, longest };
 }
 
 const LOC_QUERY = `
@@ -158,24 +205,39 @@ async function fetchLoc(repoNames: string[], userId: string): Promise<{ add: num
 interface RepoNode {
   name: string;
   isFork: boolean;
-  languages: { edges: { size: number; node: { name: string } }[] };
+  languages: { edges: { size: number; node: { name: string; color: string | null } }[] };
 }
 
-function topLanguages(repos: RepoNode[], count = 4): string {
-  const totals = new Map<string, number>();
+// GitHub's own linguist colors put TypeScript and Python both in near-identical
+// blues, and C++'s pink is jarring next to the card's palette — override those few.
+const LANGUAGE_COLOR_OVERRIDES: Record<string, string> = {
+  Python: "#e3b341",
+  "C++": "#6e7681",
+};
+
+function topLanguageShares(repos: RepoNode[], count = 4): LangShare[] {
+  const totals = new Map<string, { size: number; color: string }>();
   for (const repo of repos) {
     if (repo.isFork) continue;
     for (const edge of repo.languages.edges) {
-      totals.set(edge.node.name, (totals.get(edge.node.name) ?? 0) + edge.size);
+      const existing = totals.get(edge.node.name);
+      if (existing) existing.size += edge.size;
+      else {
+        const color = LANGUAGE_COLOR_OVERRIDES[edge.node.name] ?? edge.node.color ?? "#8b949e";
+        totals.set(edge.node.name, { size: edge.size, color });
+      }
     }
   }
-  const total = [...totals.values()].reduce((a, b) => a + b, 0);
-  if (total === 0) return "—";
+  const total = [...totals.values()].reduce((sum, v) => sum + v.size, 0);
+  if (total === 0) return [];
   return [...totals.entries()]
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1].size - a[1].size)
     .slice(0, count)
-    .map(([name, size]) => `${name} ${Math.round((size / total) * 100)}%`)
-    .join(", ");
+    .map(([name, v]) => ({ name, pct: Math.round((v.size / total) * 100), color: v.color }));
+}
+
+function truncate(s: string, max: number): string {
+  return s.length > max ? `${s.slice(0, max - 1)}…` : s;
 }
 
 async function fetchStats(): Promise<Stats> {
@@ -183,6 +245,8 @@ async function fetchStats(): Promise<Stats> {
     user: {
       id: string;
       createdAt: string;
+      bio: string | null;
+      issueComments: { totalCount: number };
       repositories: { totalCount: number; nodes: RepoNode[] };
       repositoriesContributedTo: { totalCount: number };
     };
@@ -191,13 +255,15 @@ async function fetchStats(): Promise<Stats> {
       user(login: "${USER}") {
         id
         createdAt
+        bio
+        issueComments(first: 0) { totalCount }
         repositories(first: 100, ownerAffiliations: OWNER) {
           totalCount
           nodes {
             name
             isFork
             languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
-              edges { size node { name } }
+              edges { size node { name color } }
             }
           }
         }
@@ -213,23 +279,33 @@ async function fetchStats(): Promise<Stats> {
   const joinYear = new Date(u.user.createdAt).getUTCFullYear();
   const ownedRepoNames = u.user.repositories.nodes.filter((n) => !n.isFork).map((n) => n.name);
 
-  const [commits, prs, reviews, locTotals] = await Promise.all([
-    fetchCommits(joinYear),
+  const [years, prs, reviews, locTotals] = await Promise.all([
+    fetchYearlyContributions(joinYear),
     searchCount(`is:pr author:${USER}`),
     searchCount(`is:pr reviewed-by:${USER} -author:${USER}`),
     fetchLoc(ownedRepoNames, u.user.id),
   ]);
 
+  const commits = years.reduce(
+    (sum, y) => sum + y.totalCommitContributions + y.restrictedContributionsCount,
+    0,
+  );
+  const { current, longest } = computeStreaks(years);
+
   return {
+    role: truncate((u.user.bio ?? "").replace(/\s+/g, " ").trim() || "—", 48),
     repos: u.user.repositories.totalCount,
     contributed: u.user.repositoriesContributedTo.totalCount,
     commits,
     prs,
     reviews,
+    comments: u.user.issueComments.totalCount,
+    streak: current,
+    longestStreak: longest,
     locAdd: locTotals.add,
     locDel: locTotals.del,
     loc: locTotals.add - locTotals.del,
-    languages: topLanguages(u.user.repositories.nodes),
+    languageShares: topLanguageShares(u.user.repositories.nodes),
   };
 }
 
@@ -412,30 +488,29 @@ function n(x: number): string {
   return x.toLocaleString("en-US");
 }
 
-function infoLines(s: Stats): Segment[][] {
+function infoLines(s: Stats): Line[] {
+  const text = (segs: Segment[]): Line => ({ kind: "text", segs });
+  const space: Line = { kind: "space" };
   return [
-    [[`${USER}@github `, "h"], ["─".repeat(Math.max(W - USER.length - 8, 1)), "d"]],
-    [],
-    kv("Role", `${PROFILE.role} @ ${PROFILE.company}`),
-    kv("Location", PROFILE.location),
-    kv("Experience", PROFILE.experience),
-    [],
-    kv("Languages", s.languages),
-    kv("Frameworks", PROFILE.frameworks),
-    kv("Speaks", PROFILE.speaks),
-    [],
-    rule("Contact"),
-    kv("Email", PROFILE.email),
-    kv("LinkedIn", PROFILE.linkedin),
-    kv("Portfolio", PROFILE.portfolio),
-    [],
-    rule("GitHub Stats"),
-    kv2("Repos", `${s.repos} {Contrib: ${s.contributed}}`, "PRs", n(s.prs)),
-    kv2("Commits", n(s.commits), "Reviews", n(s.reviews)),
-    [
+    text([[`${USER}@github `, "h"], ["─".repeat(Math.max(W - USER.length - 8, 1)), "d"]]),
+    space,
+    text(kv("Role", s.role)),
+    text(kv("Location", PROFILE.location)),
+    text(kv("Experience", PROFILE.experience)),
+    space,
+    text(kv("Frameworks", PROFILE.frameworks)),
+    text(kv("Speaks", PROFILE.speaks)),
+    space,
+    text(rule("GitHub Stats")),
+    { kind: "langbar", languages: s.languageShares },
+    text(kv2("Repos", `${s.repos} {Contrib: ${s.contributed}}`, "PRs", n(s.prs))),
+    text(kv2("Commits", n(s.commits), "Reviews", n(s.reviews))),
+    text(kv2("Streak", `${s.streak}d`, "Longest", `${s.longestStreak}d`)),
+    text(kv("Comments", n(s.comments))),
+    text([
       ["Lines of Code: ", "k"], [n(s.loc), "v"], [" ( ", "d"],
       [`${n(s.locAdd)}++`, "g"], [", ", "d"], [`${n(s.locDel)}--`, "r"], [" )", "d"],
-    ],
+    ]),
   ];
 }
 
@@ -443,10 +518,37 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+const INFO_X = 390;
+const LANGBAR_WIDTH = 440;
+const LANGBAR_HEIGHT = 10;
+
+// Each language keeps its real GitHub linguist color in both card themes, like the
+// language bar on a repo page. A thin bg-colored stroke separates adjacent segments
+// so similar hues (e.g. two blues) don't blur into one another.
+function renderLangBar(languages: LangShare[], y: number, bg: string): string[] {
+  if (languages.length === 0) return [];
+  const clipId = `langbar-${Math.round(y)}`;
+  const out = [
+    `<clipPath id="${clipId}"><rect x="${INFO_X}" y="${y}" width="${LANGBAR_WIDTH}" height="${LANGBAR_HEIGHT}" rx="5"/></clipPath>`,
+    `<g clip-path="url(#${clipId})">`,
+  ];
+  let x = INFO_X;
+  for (const lang of languages) {
+    const w = (lang.pct / 100) * LANGBAR_WIDTH;
+    out.push(
+      `<rect x="${x.toFixed(2)}" y="${y}" width="${w.toFixed(2)}" height="${LANGBAR_HEIGHT}" ` +
+        `fill="${lang.color}" stroke="${bg}" stroke-width="1"/>`,
+    );
+    x += w;
+  }
+  out.push("</g>");
+  return out;
+}
+
 function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
   const p = PALETTES[mode];
   const width = 840;
-  const height = 480;
+  const height = 410;
   const out: string[] = [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" ` +
       'font-family="Consolas, Menlo, monospace" font-size="13px">',
@@ -455,11 +557,27 @@ function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
   ascii.forEach((line, i) => {
     out.push(`<text x="25" y="${40 + i * ASCII_LINE_HEIGHT}" fill="${p.art}" xml:space="preserve">${escapeXml(line)}</text>`);
   });
-  infoLines(stats).forEach((segs, i) => {
-    if (!segs.length) return;
-    const spans = segs.map(([text, color]) => `<tspan fill="${p[color]}">${escapeXml(text)}</tspan>`).join("");
-    out.push(`<text x="390" y="${45 + i * 21}" xml:space="preserve">${spans}</text>`);
-  });
+
+  let y = 45;
+  for (const line of infoLines(stats)) {
+    if (line.kind === "space") {
+      y += 21;
+    } else if (line.kind === "text") {
+      if (line.segs.length) {
+        const spans = line.segs.map(([text, color]) => `<tspan fill="${p[color]}">${escapeXml(text)}</tspan>`).join("");
+        out.push(`<text x="${INFO_X}" y="${y}" xml:space="preserve">${spans}</text>`);
+      }
+      y += 21;
+    } else {
+      out.push(...renderLangBar(line.languages, y - 8, p.bg));
+      y += 14;
+      const legend = line.languages
+        .map((l) => `<tspan fill="${l.color}">● ${escapeXml(l.name)} ${l.pct}%   </tspan>`)
+        .join("");
+      out.push(`<text x="${INFO_X}" y="${y}" xml:space="preserve">${legend}</text>`);
+      y += 21;
+    }
+  }
   out.push("</svg>");
   return out.join("\n");
 }
