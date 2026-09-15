@@ -5,20 +5,26 @@ import type { ReactNode } from "react";
 
 // TODO ATOM: radius has no per-corner variant, and no size token this small (hinge bar,
 // notch) or this precise (16:9 screen) exists — chassis geometry falls back to style.
+// Screen and bezel share the same top-only rounding so the display sits flush against
+// the frame; a mismatched radius on the screen's bottom corners left a visible gap
+// above the hinge bar where the video didn't reach the edge.
 export function MacbookMockup({ children }: { children: ReactNode }) {
 	return (
-		<Flex direction="col" hAlign="center" width="md">
+		<Flex direction="col" hAlign="center" width="lg">
 			<Atom
 				bg="brand"
 				padding="xs"
 				width="full"
-				style={{ borderRadius: "1rem 1rem 0 0" }}
+				style={{ borderRadius: "1.25rem 1.25rem 0 0" }}
 			>
 				<Atom
 					bg="page"
-					radius="sm"
 					width="full"
-					style={{ aspectRatio: "16 / 9", overflow: "hidden" }}
+					style={{
+						aspectRatio: "16 / 9",
+						overflow: "hidden",
+						borderRadius: "0.85rem 0.85rem 0 0",
+					}}
 				>
 					{children}
 				</Atom>
@@ -28,14 +34,14 @@ export function MacbookMockup({ children }: { children: ReactNode }) {
 				hAlign="center"
 				width="full"
 				bg="brand"
-				style={{ height: "0.65rem", borderRadius: "0 0 0.75rem 0.75rem" }}
+				style={{ height: "0.85rem", borderRadius: "0 0 1rem 1rem" }}
 			>
 				<Atom
 					bg="page"
 					style={{
-						width: "3rem",
-						height: "0.2rem",
-						borderRadius: "0 0 0.3rem 0.3rem",
+						width: "4rem",
+						height: "0.25rem",
+						borderRadius: "0 0 0.4rem 0.4rem",
 					}}
 				/>
 			</Flex>
