@@ -208,6 +208,13 @@ interface RepoNode {
   languages: { edges: { size: number; node: { name: string; color: string | null } }[] };
 }
 
+// GitHub's own linguist colors put TypeScript and Python both in near-identical
+// blues, and C++'s pink is jarring next to the card's palette — override those few.
+const LANGUAGE_COLOR_OVERRIDES: Record<string, string> = {
+  Python: "#e3b341",
+  "C++": "#6e7681",
+};
+
 function topLanguageShares(repos: RepoNode[], count = 4): LangShare[] {
   const totals = new Map<string, { size: number; color: string }>();
   for (const repo of repos) {
@@ -215,7 +222,10 @@ function topLanguageShares(repos: RepoNode[], count = 4): LangShare[] {
     for (const edge of repo.languages.edges) {
       const existing = totals.get(edge.node.name);
       if (existing) existing.size += edge.size;
-      else totals.set(edge.node.name, { size: edge.size, color: edge.node.color ?? "#8b949e" });
+      else {
+        const color = LANGUAGE_COLOR_OVERRIDES[edge.node.name] ?? edge.node.color ?? "#8b949e";
+        totals.set(edge.node.name, { size: edge.size, color });
+      }
     }
   }
   const total = [...totals.values()].reduce((sum, v) => sum + v.size, 0);

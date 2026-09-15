@@ -31,12 +31,12 @@
 <text x="390" y="234" xml:space="preserve"><tspan fill="#818cf8">─ GitHub Stats </tspan><tspan fill="#484f58">───────────────────────────────────────</tspan></text>
 <clipPath id="langbar-247"><rect x="390" y="247" width="440" height="10" rx="5"/></clipPath>
 <g clip-path="url(#langbar-247)">
-<rect x="390.00" y="247" width="338.80" height="10" fill="#f34b7d" stroke="#0d1117" stroke-width="1"/>
+<rect x="390.00" y="247" width="338.80" height="10" fill="#6e7681" stroke="#0d1117" stroke-width="1"/>
 <rect x="728.80" y="247" width="39.60" height="10" fill="#44a51c" stroke="#0d1117" stroke-width="1"/>
-<rect x="768.40" y="247" width="22.00" height="10" fill="#3572A5" stroke="#0d1117" stroke-width="1"/>
+<rect x="768.40" y="247" width="22.00" height="10" fill="#e3b341" stroke="#0d1117" stroke-width="1"/>
 <rect x="790.40" y="247" width="13.20" height="10" fill="#3178c6" stroke="#0d1117" stroke-width="1"/>
 </g>
-<text x="390" y="269" xml:space="preserve"><tspan fill="#f34b7d">● C++ 77%   </tspan><tspan fill="#44a51c">● QML 9%   </tspan><tspan fill="#3572A5">● Python 5%   </tspan><tspan fill="#3178c6">● TypeScript 3%   </tspan></text>
+<text x="390" y="269" xml:space="preserve"><tspan fill="#6e7681">● C++ 77%   </tspan><tspan fill="#44a51c">● QML 9%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan><tspan fill="#3178c6">● TypeScript 3%   </tspan></text>
 <text x="390" y="290" xml:space="preserve"><tspan fill="#58a6ff">Repos: </tspan><tspan fill="#484f58">...... </tspan><tspan fill="#c9d1d9">15 {Contrib: 6}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">PRs: </tspan><tspan fill="#484f58">............. </tspan><tspan fill="#c9d1d9">493</tspan></text>
 <text x="390" y="311" xml:space="preserve"><tspan fill="#58a6ff">Commits: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">4,136</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Reviews: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">432</tspan></text>
 <text x="390" y="332" xml:space="preserve"><tspan fill="#58a6ff">Streak: </tspan><tspan fill="#484f58">.................. </tspan><tspan fill="#c9d1d9">9d</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Longest: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">13d</tspan></text>
