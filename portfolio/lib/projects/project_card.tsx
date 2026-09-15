@@ -12,6 +12,7 @@ import {
 	Projects,
 } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
+import { MacbookMockup } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
@@ -44,7 +45,14 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				</Text>
 				<ProjectLinks project={project} />
 			</Flex>
-			{media && <Media media={media} />}
+			{media &&
+				(project === "muviz" ? (
+					<MacbookMockup>
+						<Media media={media} />
+					</MacbookMockup>
+				) : (
+					<Media media={media} />
+				))}
 			{content}
 			<ProjectTags tags={tags} date={dates} />
 		</Flex>
