@@ -33,15 +33,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			padding={{ x: "sm", y: "lg" }}
 		>
 			<Flex direction="col" gap="lg" hAlign="center" width="content">
-				<Flex
-					direction="col"
-					gap="md"
-					hAlign="center"
-					width="lg"
-					style={{
-						textAlign: "center",
-					}} /* TODO ATOM should support textAlign on Atom */
-				>
+				<Flex direction="col" gap="md" hAlign="start" width="lg">
 					<Text variant="hero">{title}</Text>
 					<Text variant="subtitle" muted>
 						{summary}
@@ -61,7 +53,7 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 	switch (media.mockup) {
 		case undefined:
 			return (
-				<Atom as="div" width="content">
+				<Atom as="div" width="lg">
 					{child}
 				</Atom>
 			);
