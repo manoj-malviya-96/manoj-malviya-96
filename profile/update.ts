@@ -34,11 +34,11 @@ type Line =
 
 const PALETTES: Record<"dark" | "light", Record<Color | "bg" | "border", string>> = {
   dark: {
-    bg: "#0d1117", border: "#30363d", h: "#58a6ff", k: "#ffa657",
+    bg: "#0d1117", border: "#30363d", h: "#818cf8", k: "#58a6ff",
     v: "#c9d1d9", d: "#484f58", g: "#3fb950", r: "#f85149", art: "#8b949e",
   },
   light: {
-    bg: "#ffffff", border: "#d0d7de", h: "#0969da", k: "#953800",
+    bg: "#ffffff", border: "#d0d7de", h: "#4f46e5", k: "#0969da",
     v: "#24292f", d: "#afb8c1", g: "#1a7f37", r: "#cf222e", art: "#57606a",
   },
 };
@@ -513,8 +513,9 @@ const LANGBAR_WIDTH = 440;
 const LANGBAR_HEIGHT = 10;
 
 // Each language keeps its real GitHub linguist color in both card themes, like the
-// language bar on a repo page — that's the point of showing it here.
-function renderLangBar(languages: LangShare[], y: number): string[] {
+// language bar on a repo page. A thin bg-colored stroke separates adjacent segments
+// so similar hues (e.g. two blues) don't blur into one another.
+function renderLangBar(languages: LangShare[], y: number, bg: string): string[] {
   if (languages.length === 0) return [];
   const clipId = `langbar-${Math.round(y)}`;
   const out = [
@@ -524,7 +525,10 @@ function renderLangBar(languages: LangShare[], y: number): string[] {
   let x = INFO_X;
   for (const lang of languages) {
     const w = (lang.pct / 100) * LANGBAR_WIDTH;
-    out.push(`<rect x="${x.toFixed(2)}" y="${y}" width="${w.toFixed(2)}" height="${LANGBAR_HEIGHT}" fill="${lang.color}"/>`);
+    out.push(
+      `<rect x="${x.toFixed(2)}" y="${y}" width="${w.toFixed(2)}" height="${LANGBAR_HEIGHT}" ` +
+        `fill="${lang.color}" stroke="${bg}" stroke-width="1"/>`,
+    );
     x += w;
   }
   out.push("</g>");
@@ -555,7 +559,7 @@ function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
       }
       y += 21;
     } else {
-      out.push(...renderLangBar(line.languages, y - 8));
+      out.push(...renderLangBar(line.languages, y - 8, p.bg));
       y += 14;
       const legend = line.languages
         .map((l) => `<tspan fill="${l.color}">● ${escapeXml(l.name)} ${l.pct}%   </tspan>`)
