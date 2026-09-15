@@ -1,22 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="460" viewBox="0 0 820 460" font-family="Consolas, Menlo, monospace" font-size="13px">
-<rect x="0.5" y="0.5" width="819" height="459" rx="10" fill="#0d1117" stroke="#30363d"/>
-<clipPath id="avatarClip-dark"><circle cx="150" cy="200" r="100"/></clipPath>
-<circle cx="150" cy="200" r="103" fill="none" stroke="#30363d" stroke-width="2"/>
-<image href="https://github.com/manoj-malviya-96.png?size=240" x="50" y="100" width="200" height="200" clip-path="url(#avatarClip-dark)" preserveAspectRatio="xMidYMid slice"/>
-<text x="150" y="330" text-anchor="middle" fill="#58a6ff">@manoj-malviya-96</text>
-<text x="310" y="45" xml:space="preserve"><tspan fill="#58a6ff">manoj-malviya-96@github </tspan><tspan fill="#484f58">──────────────────────────</tspan></text>
-<text x="310" y="87" xml:space="preserve"><tspan fill="#ffa657">Role: </tspan><tspan fill="#484f58">..... </tspan><tspan fill="#c9d1d9">Lead Product Engineer @ Noah Labs GmbH</tspan></text>
-<text x="310" y="108" xml:space="preserve"><tspan fill="#ffa657">Location: </tspan><tspan fill="#484f58">........................ </tspan><tspan fill="#c9d1d9">Berlin, Germany</tspan></text>
-<text x="310" y="129" xml:space="preserve"><tspan fill="#ffa657">Experience: </tspan><tspan fill="#484f58">.............................. </tspan><tspan fill="#c9d1d9">8 years</tspan></text>
-<text x="310" y="171" xml:space="preserve"><tspan fill="#ffa657">Languages: </tspan><tspan fill="#484f58">.... </tspan><tspan fill="#c9d1d9">C/C++, Python, TS, Swift, Go, Rust</tspan></text>
-<text x="310" y="192" xml:space="preserve"><tspan fill="#ffa657">Frameworks: </tspan><tspan fill="#484f58">...... </tspan><tspan fill="#c9d1d9">Qt/QML, React, FastAPI, PyTorch</tspan></text>
-<text x="310" y="213" xml:space="preserve"><tspan fill="#ffa657">Speaks: </tspan><tspan fill="#484f58">........................... </tspan><tspan fill="#c9d1d9">English, Hindi</tspan></text>
-<text x="310" y="255" xml:space="preserve"><tspan fill="#58a6ff">─ Contact </tspan><tspan fill="#484f58">────────────────────────────────────────</tspan></text>
-<text x="310" y="276" xml:space="preserve"><tspan fill="#ffa657">Email: </tspan><tspan fill="#484f58">................ </tspan><tspan fill="#c9d1d9">malviyamanoj1896@gmail.com</tspan></text>
-<text x="310" y="297" xml:space="preserve"><tspan fill="#ffa657">LinkedIn: </tspan><tspan fill="#484f58">...................... </tspan><tspan fill="#c9d1d9">in/manoj-malviya-</tspan></text>
-<text x="310" y="318" xml:space="preserve"><tspan fill="#ffa657">Portfolio: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">manoj-malviya.vercel.app</tspan></text>
-<text x="310" y="360" xml:space="preserve"><tspan fill="#58a6ff">─ GitHub Stats </tspan><tspan fill="#484f58">───────────────────────────────────</tspan></text>
-<text x="310" y="381" xml:space="preserve"><tspan fill="#ffa657">Repos: </tspan><tspan fill="#484f58">.... </tspan><tspan fill="#c9d1d9">15 {Contrib: 6}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">PRs: </tspan><tspan fill="#484f58">........... </tspan><tspan fill="#c9d1d9">489</tspan></text>
-<text x="310" y="402" xml:space="preserve"><tspan fill="#ffa657">Commits: </tspan><tspan fill="#484f58">............ </tspan><tspan fill="#c9d1d9">4,133</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Reviews: </tspan><tspan fill="#484f58">....... </tspan><tspan fill="#c9d1d9">432</tspan></text>
-<text x="310" y="423" xml:space="preserve"><tspan fill="#ffa657">Lines of Code: </tspan><tspan fill="#c9d1d9">1,622,155</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">1,712,093++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">89,938--</tspan><tspan fill="#484f58"> )</tspan></text>
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="480" viewBox="0 0 840 480" font-family="Consolas, Menlo, monospace" font-size="13px">
+<rect x="0.5" y="0.5" width="839" height="479" rx="10" fill="#0d1117" stroke="#30363d"/>
+<text x="25" y="40" fill="#8b949e" xml:space="preserve">%%%%@@@@@@@@@@@@%%%%%@@@@%%%@@@@@@@@@@@@@@</text>
+<text x="25" y="55" fill="#8b949e" xml:space="preserve">@@@@@@@%%%%%@@@@%%%%#%%%%%%%%@@@@@@@@@@@@@</text>
+<text x="25" y="70" fill="#8b949e" xml:space="preserve">@@@@@@@%%%%%%%%%@%##*##%%%%%%%%%%%%@@%@@@@</text>
+<text x="25" y="85" fill="#8b949e" xml:space="preserve">%%%%%%%%%%%%%%%%#+++==++=+*#%%%%%%%%%%%%%%</text>
+<text x="25" y="100" fill="#8b949e" xml:space="preserve">%%%%%%%%%%%%%%#=::----=---:=+**##########*</text>
+<text x="25" y="115" fill="#8b949e" xml:space="preserve">%%%%%%####%%#=.....:-::::-.:==++*#########</text>
+<text x="25" y="130" fill="#8b949e" xml:space="preserve">############+.        ..-+---++###********</text>
+<text x="25" y="145" fill="#8b949e" xml:space="preserve">############=.  .  .:.:::-:.-+************</text>
+<text x="25" y="160" fill="#8b949e" xml:space="preserve">*####*******+..-=--:-==+=-:-+-************</text>
+<text x="25" y="175" fill="#8b949e" xml:space="preserve">*************: .-==-:-==+++=+******#*****+</text>
+<text x="25" y="190" fill="#8b949e" xml:space="preserve">***++***+****:..:=+--------=+*****+++++=++</text>
+<text x="25" y="205" fill="#8b949e" xml:space="preserve">#############*:-=++=::::..-**%%%##***#####</text>
+<text x="25" y="220" fill="#8b949e" xml:space="preserve">##############*+++++=-:.   .:*#######***##</text>
+<text x="25" y="235" fill="#8b949e" xml:space="preserve">############*: =++++++==:.+*############**</text>
+<text x="25" y="250" fill="#8b949e" xml:space="preserve">#%%%%%%#+==-  :++++++++=. -+*##*#########*</text>
+<text x="25" y="265" fill="#8b949e" xml:space="preserve">***#*=..  .   -+++++++-.  :+==++++***#****</text>
+<text x="25" y="280" fill="#8b949e" xml:space="preserve">***-.          .---:.    .  .--::===++####</text>
+<text x="25" y="295" fill="#8b949e" xml:space="preserve">##*.                      -:::-  :---=+@@@</text>
+<text x="25" y="310" fill="#8b949e" xml:space="preserve">%%=                       .-=--..  ::--#@@</text>
+<text x="25" y="325" fill="#8b949e" xml:space="preserve">@@-                    .:: .---.   . ::=@@</text>
+<text x="25" y="340" fill="#8b949e" xml:space="preserve">@@.                  .::--:.:--:     :::%@</text>
+<text x="25" y="355" fill="#8b949e" xml:space="preserve">%#      ...          ...-+:. :-: .   .. +%</text>
+<text x="390" y="45" xml:space="preserve"><tspan fill="#58a6ff">manoj-malviya-96@github </tspan><tspan fill="#484f58">──────────────────────────────</tspan></text>
+<text x="390" y="87" xml:space="preserve"><tspan fill="#ffa657">Role: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">Lead Product Engineer @ Noah Labs GmbH</tspan></text>
+<text x="390" y="108" xml:space="preserve"><tspan fill="#ffa657">Location: </tspan><tspan fill="#484f58">............................ </tspan><tspan fill="#c9d1d9">Berlin, Germany</tspan></text>
+<text x="390" y="129" xml:space="preserve"><tspan fill="#ffa657">Experience: </tspan><tspan fill="#484f58">.................................. </tspan><tspan fill="#c9d1d9">8 years</tspan></text>
+<text x="390" y="171" xml:space="preserve"><tspan fill="#ffa657">Languages: </tspan><tspan fill="#484f58">. </tspan><tspan fill="#c9d1d9">C++ 77%, QML 9%, Python 5%, TypeScript 3%</tspan></text>
+<text x="390" y="192" xml:space="preserve"><tspan fill="#ffa657">Frameworks: </tspan><tspan fill="#484f58">.......... </tspan><tspan fill="#c9d1d9">Qt/QML, React, FastAPI, PyTorch</tspan></text>
+<text x="390" y="213" xml:space="preserve"><tspan fill="#ffa657">Speaks: </tspan><tspan fill="#484f58">............................... </tspan><tspan fill="#c9d1d9">English, Hindi</tspan></text>
+<text x="390" y="255" xml:space="preserve"><tspan fill="#58a6ff">─ Contact </tspan><tspan fill="#484f58">────────────────────────────────────────────</tspan></text>
+<text x="390" y="276" xml:space="preserve"><tspan fill="#ffa657">Email: </tspan><tspan fill="#484f58">.................... </tspan><tspan fill="#c9d1d9">malviyamanoj1896@gmail.com</tspan></text>
+<text x="390" y="297" xml:space="preserve"><tspan fill="#ffa657">LinkedIn: </tspan><tspan fill="#484f58">.......................... </tspan><tspan fill="#c9d1d9">in/manoj-malviya-</tspan></text>
+<text x="390" y="318" xml:space="preserve"><tspan fill="#ffa657">Portfolio: </tspan><tspan fill="#484f58">.................. </tspan><tspan fill="#c9d1d9">manoj-malviya.vercel.app</tspan></text>
+<text x="390" y="360" xml:space="preserve"><tspan fill="#58a6ff">─ GitHub Stats </tspan><tspan fill="#484f58">───────────────────────────────────────</tspan></text>
+<text x="390" y="381" xml:space="preserve"><tspan fill="#ffa657">Repos: </tspan><tspan fill="#484f58">.... </tspan><tspan fill="#c9d1d9">15 {Contrib: 6}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">PRs: </tspan><tspan fill="#484f58">........... </tspan><tspan fill="#c9d1d9">490</tspan></text>
+<text x="390" y="402" xml:space="preserve"><tspan fill="#ffa657">Commits: </tspan><tspan fill="#484f58">............ </tspan><tspan fill="#c9d1d9">4,133</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Reviews: </tspan><tspan fill="#484f58">....... </tspan><tspan fill="#c9d1d9">432</tspan></text>
+<text x="390" y="423" xml:space="preserve"><tspan fill="#ffa657">Lines of Code: </tspan><tspan fill="#c9d1d9">1,622,155</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">1,712,093++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">89,938--</tspan><tspan fill="#484f58"> )</tspan></text>
 </svg>
