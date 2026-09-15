@@ -2,15 +2,18 @@
 
 import { useSelector } from "@legendapp/state/react";
 import { Flex, Layer, Stat, Text } from "@manoj-malviya-96/atom";
-import { type MouseMode, trussOptState$ } from "@/lib/truss-opt/state";
+import {
+	isEditingRun,
+	isPendingRun,
+	trussOptState$,
+} from "@/lib/truss-opt/state";
 import { LatticeCanvas } from "./LatticeCanvas";
 
 export function LatticeOutput() {
 	const result = useSelector(() => trussOptState$.result.get());
-	const isPending = useSelector(
-		() => trussOptState$.run.get().type === "pending",
-	);
-	const mouseMode = useSelector(() => trussOptState$.mouseMode.get());
+	const run = useSelector(() => trussOptState$.run.get());
+	const isPending = isPendingRun(run);
+	const editing = isEditingRun(run);
 
 	return (
 		<Layer bg="surface" radius="lg" width="full" height="full" grow>
@@ -49,16 +52,13 @@ export function LatticeOutput() {
 				top="md"
 				left="md"
 				className="lattice-overlay"
-				data-hidden={mouseMode !== "none" ? undefined : true}
+				data-hidden={editing ? undefined : true}
 			>
 				<Text variant="caption" muted>
-					Click a node to {mouseModeHint(mouseMode)}.
+					Click a node to{" "}
+					{run.type === "choosing_fix" ? "toggle a support" : "cycle its load"}.
 				</Text>
 			</Layer>
 		</Layer>
 	);
-}
-
-function mouseModeHint(mouseMode: MouseMode): string {
-	return mouseMode === "fixed" ? "toggle a support" : "cycle its load";
 }
