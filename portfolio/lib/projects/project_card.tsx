@@ -48,7 +48,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			{media &&
 				(project === "muviz" ? (
 					<MacbookMockup>
-						<Media media={media} />
+						<Media media={media} stretch />
 					</MacbookMockup>
 				) : (
 					<Media media={media} />

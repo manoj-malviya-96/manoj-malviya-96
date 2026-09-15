@@ -60,7 +60,16 @@ export function Link({ url, ...rest }: LinkProps) {
 	return <AtomLink as={isInternal ? NextLink : "a"} href={url} {...rest} />;
 }
 
-export function Media({ media }: { media: MediaSource }) {
+export function Media({
+	media,
+	stretch,
+}: {
+	media: MediaSource;
+	// Fills the parent's own box instead of the media's own fixed ratio — for
+	// placing media inside a container with a pre-set aspect ratio, like the
+	// MacBook mockup's screen cutout.
+	stretch?: boolean;
+}) {
 	if (media.kind === "video") {
 		return (
 			<Video
@@ -76,6 +85,9 @@ export function Media({ media }: { media: MediaSource }) {
 				role="img"
 				playsInline
 				controls={false}
+				{...(stretch && {
+					style: { width: "100%", height: "100%", aspectRatio: "auto" },
+				})}
 			/>
 		);
 	}
