@@ -7,6 +7,7 @@ import HeaderBar from "@/lib/header_bar";
 import { ReactQueryProvider } from "@/lib/react_query";
 import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const fontBody = Inter({
 	subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({
 						<Footer />
 					</Screen>
 				</ReactQueryProvider>
+				<Analytics />
 			</body>
 		</html>
 	);
