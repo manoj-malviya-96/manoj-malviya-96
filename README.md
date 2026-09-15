@@ -9,40 +9,8 @@
 [![Portfolio](https://img.shields.io/badge/🌐-Portfolio-purple)](https://manoj-malviya.vercel.app/)
 [![Medium](https://img.shields.io/badge/Medium-4285F4?logo=medium)]([https://blog.com/all](https://medium.com/@manoj-malviya))
 
-📍 Berlin, Germany 
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="profile/dark_mode.svg">
   <source media="(prefers-color-scheme: light)" srcset="profile/light_mode.svg">
   <img alt="Manoj Malviya's GitHub stats" src="profile/light_mode.svg">
 </picture>
-
-Senior Software Engineer with 7+ years building high-performance systems across desktop, embedded, and web platforms. I specialize in taking complex problems and delivering solutions that are both technically excellent and user-friendly.
-
-
-## Tech Stack
-
-**Languages**
-```
-C++ | Python | Swift | TypeScript/JavaScript | Go | Rust | HTML/CSS
-```
-
-**Frameworks**
-```
-Qt/QML | React | OpenGL | FastAPI | SwiftUI/UIKit
-```
-
-**Core Concepts**
-```
-System Design | High-Performance Computing | Clean Code | Agile
-Optimization Algorithms | Deep Learning
-```
-
-**Tools & Platforms**
-```
-AWS | Docker | GitHub Actions | Jenkins | CMake/Ninja
-MongoDB | SQL | Supabase | Vercel
-Protobuf | libusb | Linux
-```
----
-
