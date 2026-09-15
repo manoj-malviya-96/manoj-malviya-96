@@ -18,8 +18,7 @@ type TocKey = (typeof NAV_LINKS)[number]["toc"];
 
 const TOC_CLOSE_DELAY_MS = 250;
 
-export default function HeaderBar() {
-	const pathname = usePathname();
+function useTocHover(closeDelayMs: number) {
 	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
 	const closeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
 		undefined,
@@ -33,13 +32,21 @@ export default function HeaderBar() {
 		if (toc === null) {
 			closeTimeout.current = setTimeout(
 				() => setHoveredToc(null),
-				TOC_CLOSE_DELAY_MS,
+				closeDelayMs,
 			);
 		} else {
 			setHoveredToc(toc);
 		}
 	};
 	useEffect(() => clearCloseTimeout, []);
+
+	return { hoveredToc, setToc, clearCloseTimeout };
+}
+
+export default function HeaderBar() {
+	const pathname = usePathname();
+	const { hoveredToc, setToc, clearCloseTimeout } =
+		useTocHover(TOC_CLOSE_DELAY_MS);
 
 	const activeToc: TocKey | null = pathname.startsWith("/resume")
 		? "resume"
