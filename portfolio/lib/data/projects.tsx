@@ -51,8 +51,14 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
+		media: {
+			mockup: "macbook",
+			kind: "video",
+			alt: "Atom framework demo",
+			src: getBlob("atom.webm"),
+		},
 		content: (
-			<List direction="col" gap="md">
+			<List direction="col" gap="md" width="lg">
 				<li>
 					<Text variant="body">
 						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays a
@@ -84,11 +90,11 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
 		media: {
+			mockup: "macbook",
 			kind: "video",
 			src: getBlob("muviz.webm"),
 			alt: "Muviz reacting to a track in real time.",
 		},
-		mockup: "macbook",
 		links: {
 			primary: {
 				kind: "demo",
@@ -98,7 +104,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<List direction="col" gap="md">
+			<List direction="col" gap="md" width="lg">
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconVolumeHigh />
 					<Text variant="body">
@@ -145,7 +151,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Text variant="body" width="lg">
 				Give it a shape and get back a honeycomb lattice, skeletonized in C++
 				and exported straight to a VTK mesh, ready for your CAD tool. No manual
 				triangulation, no format conversion. The skeleton is a functional
@@ -183,7 +189,7 @@ export const Projects: Record<ProjectId, Project> = {
 			],
 		},
 		content: (
-			<Text variant="body">
+			<Text variant="body" width="lg">
 				The stiffness assembler now caches its sparsity pattern instead of
 				rebuilding it every iteration, and strain energy is a single einsum call
 				instead of a manual reshape-and-sum. Filtering swapped four nested loops
@@ -213,7 +219,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Text variant="body" width="lg">
 				Simulates real black-hole gravity. A compute shader integrates each
 				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
 				million solar masses), and a separate lensing fragment shader bends the
@@ -243,7 +249,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Text variant="body" width="lg">
 				Answers one question: how many chargers do you actually need? Each run
 				simulates a year of 15-minute intervals, drawing car arrivals from a
 				Poisson-derived probability per charge point, with no queueing: a car
@@ -319,7 +325,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Text variant="body" width="lg">
 				Place supports and loads on a cantilever lattice and this site's own API
 				route solves the FEA and runs an optimality-criteria search to
 				redistribute material. The browser only ever draws the answer. Each of
@@ -397,16 +403,15 @@ export type ProjectLinks = {
 	others: readonly ProjectLink[];
 };
 
+export type ProjectMedia = { mockup?: "macbook" } & MediaSource;
+
 export type Project = {
 	title: string;
 	summary: ReactNode;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	media?: MediaSource;
-	// Renders the media inside a MacBook screen frame instead of plain, for
-	// projects whose demo is a browser-based UI.
-	mockup?: "macbook";
+	media?: ProjectMedia;
 	links: ProjectLinks;
 	content?: ReactNode;
 };

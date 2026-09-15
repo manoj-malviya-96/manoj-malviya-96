@@ -6,7 +6,7 @@ import ProjectCard from "@/lib/projects/project_card";
 
 export default function ProjectsPage() {
 	return (
-		<Page variant="content">
+		<Page variant="full">
 			{/* Todo integrate in atom: Header's page-padding compensation is a fixed
 			    calc, blind to the extra bottom-slot row HeaderBar shows on this route —
 			    padding here makes up the difference so the TOC doesn't overlap this text. */}
@@ -29,12 +29,14 @@ export default function ProjectsPage() {
 				}
 			>
 				<Flex
+					as={"article"}
 					direction="col"
 					gap="xl"
 					hAlign="center"
 					margin={{
 						top: "xl",
 					}}
+					width="full"
 					vAlign="center"
 				>
 					{/* TODO use DynamicList when its ready */}
