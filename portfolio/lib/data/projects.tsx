@@ -14,7 +14,6 @@ import {
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
-import trussOptScreenshot from "./truss-opt-screenshot.png";
 
 export const AllProjectIds = [
 	"atom",
@@ -167,7 +166,7 @@ export const Projects: Record<ProjectId, Project> = {
 		effort: "high",
 		media: {
 			kind: "video",
-			src: getBlob("optimization.webm"),
+			src: getBlob("pixel-opt.webm"),
 			alt: "A topology optimization converging on a solution.",
 		},
 		links: {
@@ -307,7 +306,7 @@ export const Projects: Record<ProjectId, Project> = {
 		effort: "medium",
 		media: {
 			kind: "video",
-			src: getBlob("truss-opt.webm"),
+			src: getBlob("pixel-opt.webm"),
 			alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
 		},
 		links: {
