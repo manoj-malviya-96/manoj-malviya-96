@@ -122,31 +122,37 @@ interface LocPage {
   };
 }
 
-// ponytail: REST stats/contributors answers 202 forever to the Actions token,
-// so walk own commits on the default branch via GraphQL instead
-async function fetchLoc(repoNames: string[], userId: string): Promise<{ add: number; del: number }> {
+// REST's stats/contributors endpoint answers 202 (still computing) forever for
+// the Actions token, so walk each repo's own commit history via GraphQL instead.
+async function fetchRepoLoc(name: string, userId: string): Promise<{ add: number; del: number }> {
   let add = 0;
   let del = 0;
-  for (const name of repoNames) {
-    let cursor: string | null = null;
-    try {
-      for (;;) {
-        const data = await gh<LocPage>(LOC_QUERY, { owner: USER, name, id: userId, cursor }, PRIV_TOKEN);
-        const ref = data.repository.defaultBranchRef;
-        if (!ref) break; // empty repo
-        const h = ref.target.history;
-        for (const commit of h.nodes) {
-          add += commit.additions;
-          del += commit.deletions;
-        }
-        if (!h.pageInfo.hasNextPage) break;
-        cursor = h.pageInfo.endCursor;
-      }
-    } catch (err) {
-      console.error(`loc ${name}:`, err);
+  let cursor: string | null = null;
+  for (;;) {
+    const data = await gh<LocPage>(LOC_QUERY, { owner: USER, name, id: userId, cursor }, PRIV_TOKEN);
+    const ref = data.repository.defaultBranchRef;
+    if (!ref) break; // empty repo
+    const h = ref.target.history;
+    for (const commit of h.nodes) {
+      add += commit.additions;
+      del += commit.deletions;
     }
+    if (!h.pageInfo.hasNextPage) break;
+    cursor = h.pageInfo.endCursor;
   }
   return { add, del };
+}
+
+async function fetchLoc(repoNames: string[], userId: string): Promise<{ add: number; del: number }> {
+  const results = await Promise.all(
+    repoNames.map((name) =>
+      fetchRepoLoc(name, userId).catch((err) => {
+        console.error(`loc ${name}:`, err);
+        return { add: 0, del: 0 };
+      }),
+    ),
+  );
+  return results.reduce((sum, r) => ({ add: sum.add + r.add, del: sum.del + r.del }), { add: 0, del: 0 });
 }
 
 interface RepoNode {
@@ -230,7 +236,7 @@ async function fetchStats(): Promise<Stats> {
 interface DecodedImage {
   width: number;
   height: number;
-  luminanceAt(x: number, y: number): number; // 0 (black)..1 (white)
+  luminance: Float32Array; // row-major, one entry per pixel, 0 (black)..1 (white)
 }
 
 // PNG "Paeth" filter predictor (spec section 9.2): picks whichever neighbor
@@ -310,18 +316,26 @@ function decodePng(buf: Buffer): DecodedImage {
     }
   }
 
-  function luminanceAt(x: number, y: number): number {
-    const i = y * stride + x * channels;
-    if (colorType === 3) {
-      if (!palette) throw new Error("palette PNG missing PLTE chunk");
-      const p = pixels[i] * 3;
-      return (0.299 * palette[p] + 0.587 * palette[p + 1] + 0.114 * palette[p + 2]) / 255;
+  if (colorType === 3 && !palette) throw new Error("palette PNG missing PLTE chunk");
+
+  const luminance = new Float32Array(width * height);
+  for (let py = 0; py < height; py++) {
+    for (let px = 0; px < width; px++) {
+      const i = py * stride + px * channels;
+      let value: number;
+      if (colorType === 3) {
+        const p = pixels[i] * 3;
+        value = 0.299 * palette![p] + 0.587 * palette![p + 1] + 0.114 * palette![p + 2];
+      } else if (colorType === 0 || colorType === 4) {
+        value = pixels[i];
+      } else {
+        value = 0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+      }
+      luminance[py * width + px] = value / 255;
     }
-    if (colorType === 0 || colorType === 4) return pixels[i] / 255;
-    return (0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2]) / 255;
   }
 
-  return { width, height, luminanceAt };
+  return { width, height, luminance };
 }
 
 async function fetchAvatar(): Promise<DecodedImage> {
@@ -333,17 +347,16 @@ const ASCII_RAMP = " .:-=+*#%@";
 const ASCII_CHAR_WIDTH = 7.8; // px, Consolas/Menlo at font-size 13
 const ASCII_LINE_HEIGHT = 15; // px
 
-// Density represents luminance, but "dense" only reads as bright against a dark
-// background and as dark ink against a light one — so the two modes invert the ramp.
-function renderAscii(img: DecodedImage, mode: "dark" | "light"): string[] {
+// One cell's average luminance per character in the portrait grid — sampled once
+// and reused for both color modes, since only the character mapping differs below.
+function sampleCells(img: DecodedImage): Float32Array {
   const rows = Math.round(
     ASCII_COLS * (ASCII_CHAR_WIDTH / ASCII_LINE_HEIGHT) * (img.height / img.width),
   );
   const cellW = img.width / ASCII_COLS;
   const cellH = img.height / rows;
-  const lines: string[] = [];
+  const cells = new Float32Array(rows * ASCII_COLS);
   for (let row = 0; row < rows; row++) {
-    let line = "";
     const y0 = Math.floor(row * cellH);
     const y1 = Math.max(y0 + 1, Math.floor((row + 1) * cellH));
     for (let col = 0; col < ASCII_COLS; col++) {
@@ -353,11 +366,25 @@ function renderAscii(img: DecodedImage, mode: "dark" | "light"): string[] {
       let count = 0;
       for (let y = y0; y < y1; y++) {
         for (let x = x0; x < x1; x++) {
-          sum += img.luminanceAt(x, y);
+          sum += img.luminance[y * img.width + x];
           count++;
         }
       }
-      const luminance = sum / count;
+      cells[row * ASCII_COLS + col] = sum / count;
+    }
+  }
+  return cells;
+}
+
+// Density represents luminance, but "dense" only reads as bright against a dark
+// background and as dark ink against a light one — so the two modes invert the ramp.
+function renderAscii(cells: Float32Array, mode: "dark" | "light"): string[] {
+  const rows = cells.length / ASCII_COLS;
+  const lines: string[] = [];
+  for (let row = 0; row < rows; row++) {
+    let line = "";
+    for (let col = 0; col < ASCII_COLS; col++) {
+      const luminance = cells[row * ASCII_COLS + col];
       const t = mode === "dark" ? luminance : 1 - luminance;
       const idx = Math.min(ASCII_RAMP.length - 1, Math.floor(t * ASCII_RAMP.length));
       line += ASCII_RAMP[idx];
@@ -373,7 +400,7 @@ function kv(key: string, val: string, width = W): Segment[] {
 }
 
 function kv2(k1: string, v1: string, k2: string, v2: string): Segment[] {
-  return [...kv(k1, v1, 27), [" | ", "d"], ...kv(k2, v2, 20)];
+  return [...kv(k1, v1, 29), [" | ", "d"], ...kv(k2, v2, 22)];
 }
 
 function rule(title = ""): Segment[] {
@@ -440,9 +467,10 @@ function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
 async function main() {
   const [stats, avatar] = await Promise.all([fetchStats(), fetchAvatar()]);
   console.log("stats:", stats);
+  const cells = sampleCells(avatar);
   const dir = dirname(fileURLToPath(import.meta.url));
   for (const mode of ["dark", "light"] as const) {
-    await writeFile(join(dir, `${mode}_mode.svg`), render(mode, stats, renderAscii(avatar, mode)));
+    await writeFile(join(dir, `${mode}_mode.svg`), render(mode, stats, renderAscii(cells, mode)));
   }
   console.log("wrote dark_mode.svg, light_mode.svg");
 }
