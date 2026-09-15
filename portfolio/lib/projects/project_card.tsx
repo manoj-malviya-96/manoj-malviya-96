@@ -16,7 +16,8 @@ import { MacbookMockup } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, summary, dates, tags, media, content } = Projects[project];
+	const { title, summary, dates, tags, media, mockup, content } =
+		Projects[project];
 
 	return (
 		<Flex
@@ -46,7 +47,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				<ProjectLinks project={project} />
 			</Flex>
 			{media &&
-				(project === "muviz" ? (
+				(mockup === "macbook" ? (
 					<MacbookMockup>
 						<Media media={media} stretch />
 					</MacbookMockup>

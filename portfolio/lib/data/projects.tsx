@@ -88,6 +88,7 @@ export const Projects: Record<ProjectId, Project> = {
 			src: getBlob("muviz.webm"),
 			alt: "Muviz reacting to a track in real time.",
 		},
+		mockup: "macbook",
 		links: {
 			primary: {
 				kind: "demo",
@@ -403,6 +404,9 @@ export type Project = {
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
 	media?: MediaSource;
+	// Renders the media inside a MacBook screen frame instead of plain, for
+	// projects whose demo is a browser-based UI.
+	mockup?: "macbook";
 	links: ProjectLinks;
 	content?: ReactNode;
 };
