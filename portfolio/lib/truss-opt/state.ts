@@ -8,18 +8,15 @@ import {
 	toggleForceNode,
 } from "@/lib/truss-opt/engine/mesh";
 
-export type MouseMode = "none" | "fixed" | "force";
-
-/** idle/pending/error are mutually exclusive by construction — "pending with a stale error
- * still attached" was a real bug (runStarted used to only flip isPending, leaving the last
- * error's message on screen for the whole new run). */
-export type RunStatus =
+export type RunState =
 	| { type: "idle" }
-	| { type: "pending" }
+	| { type: "choosing_fix" }
+	| { type: "choosing_force" }
+	| { type: "optimizing" }
+	| { type: "simulating" }
 	| { type: "error"; message: string };
 
-const IDLE: RunStatus = { type: "idle" };
-const PENDING: RunStatus = { type: "pending" };
+const IDLE: RunState = { type: "idle" };
 
 const INITIAL_MESH_CONFIG: TrussMeshConfig = {
 	cellSize_mm: 10,
@@ -36,27 +33,21 @@ const INITIAL_OPTIMIZE_CONFIG: TrussOptimizeInput = {
 export interface TrussOptState {
 	meshConfig: TrussMeshConfig;
 	mesh: TrussMesh;
-	mouseMode: MouseMode;
 	optimizeConfig: TrussOptimizeInput;
 	result: TrussOptResult | null;
-	run: RunStatus;
+	run: RunState;
 }
 
 function initialState(): TrussOptState {
 	return {
 		meshConfig: INITIAL_MESH_CONFIG,
 		mesh: createTrussMesh(INITIAL_MESH_CONFIG),
-		mouseMode: "none",
 		optimizeConfig: INITIAL_OPTIMIZE_CONFIG,
 		result: null,
 		run: IDLE,
 	};
 }
 
-/** Feature-scoped store: the demo page mounts exactly one instance of this view tree, so a
- * module singleton — read directly by each view via useSelector — replaces the prop chain a
- * React-owned observable would otherwise force through every component in between. Reset on
- * page mount (see page.tsx) since the module itself outlives client-side navigation. */
 export const trussOptState$ = observable<TrussOptState>(initialState());
 
 export function resetTrussOptState(): void {
@@ -72,8 +63,10 @@ export function setMeshConfig(config: TrussMeshConfig): void {
 	});
 }
 
-export function setMouseMode(mode: MouseMode): void {
-	trussOptState$.mouseMode.set(mode);
+export type EditMode = "idle" | "choosing_fix" | "choosing_force";
+
+export function setEditMode(mode: EditMode): void {
+	trussOptState$.run.set({ type: mode });
 }
 
 export function setOptimizeConfig(config: TrussOptimizeInput): void {
@@ -81,13 +74,12 @@ export function setOptimizeConfig(config: TrussOptimizeInput): void {
 }
 
 export function placeNode(x: number, y: number): void {
-	const mode = trussOptState$.mouseMode.peek();
-	if (mode === "none") return;
+	const run = trussOptState$.run.peek();
+	if (run.type !== "choosing_fix" && run.type !== "choosing_force") return;
 	batch(() => {
 		trussOptState$.result.set(null);
-		trussOptState$.run.set(IDLE);
 		trussOptState$.mesh.set((current) =>
-			mode === "fixed"
+			run.type === "choosing_fix"
 				? toggleFixedNode(current, x, y)
 				: toggleForceNode(current, x, y),
 		);
@@ -99,8 +91,18 @@ export function clearResult(): void {
 	trussOptState$.run.set(IDLE);
 }
 
-export function runStarted(): void {
-	trussOptState$.run.set(PENDING);
+export function runStarted(kind: "simulate" | "optimize"): void {
+	trussOptState$.run.set({
+		type: kind === "simulate" ? "simulating" : "optimizing",
+	});
+}
+
+export function isPendingRun(run: RunState): boolean {
+	return run.type === "optimizing" || run.type === "simulating";
+}
+
+export function isEditingRun(run: RunState): boolean {
+	return run.type === "choosing_fix" || run.type === "choosing_force";
 }
 
 export function runSucceeded(result: TrussOptResult): void {

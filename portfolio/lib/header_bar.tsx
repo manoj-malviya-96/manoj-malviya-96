@@ -1,11 +1,11 @@
 "use client";
 
-import { assertNever, Flex, useScrollEffect } from "@manoj-malviya-96/atom";
+import { assertNever, Flex } from "@manoj-malviya-96/atom";
 import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EmailAddress, RankedProjects } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
@@ -16,9 +16,30 @@ const NAV_LINKS = [
 
 type TocKey = (typeof NAV_LINKS)[number]["toc"];
 
+const TOC_CLOSE_DELAY_MS = 250;
+
 export default function HeaderBar() {
 	const pathname = usePathname();
 	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
+	const closeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
+		undefined,
+	);
+
+	const clearCloseTimeout = () => {
+		clearTimeout(closeTimeout.current);
+	};
+	const scheduleClose = () => {
+		clearCloseTimeout();
+		closeTimeout.current = setTimeout(
+			() => setHoveredToc(null),
+			TOC_CLOSE_DELAY_MS,
+		);
+	};
+	const openToc = (toc: TocKey) => {
+		clearCloseTimeout();
+		setHoveredToc(toc);
+	};
+	useEffect(() => clearCloseTimeout, []);
 
 	const activeToc: TocKey | null = pathname.startsWith("/resume")
 		? "resume"
@@ -47,8 +68,8 @@ export default function HeaderBar() {
 							variant="tab"
 							isActive={isCurrent}
 							aria-current={isCurrent ? "page" : undefined}
-							onMouseEnter={() => setHoveredToc(toc)}
-							onMouseLeave={() => setHoveredToc(null)}
+							onMouseEnter={() => openToc(toc)}
+							onMouseLeave={scheduleClose}
 						>
 							{label}
 						</Link>
@@ -70,13 +91,28 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
-		bottom: tocKey === "projects" ? <HeaderToc toc={tocKey} /> : undefined,
+		bottom:
+			tocKey === "projects" ? (
+				<HeaderToc
+					toc={tocKey}
+					onMouseEnter={clearCloseTimeout}
+					onMouseLeave={scheduleClose}
+				/>
+			) : undefined,
 	});
 
 	return <Header width="content" radius="md" />;
 }
 
-function HeaderToc({ toc }: { toc: TocKey }) {
+function HeaderToc({
+	toc,
+	onMouseEnter,
+	onMouseLeave,
+}: {
+	toc: TocKey;
+	onMouseEnter: () => void;
+	onMouseLeave: () => void;
+}) {
 	switch (toc) {
 		case "projects":
 			return (
@@ -86,9 +122,11 @@ function HeaderToc({ toc }: { toc: TocKey }) {
 					direction="row"
 					gap="sm"
 					wrap
+					onMouseEnter={onMouseEnter}
+					onMouseLeave={onMouseLeave}
 				>
 					{RankedProjects.map(({ id, title }) => (
-						<Link key={id} url={`#${id}`} variant="tab">
+						<Link key={id} url={`/projects/#${id}`} variant="tab">
 							{title}
 						</Link>
 					))}

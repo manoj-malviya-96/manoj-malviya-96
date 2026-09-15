@@ -15,8 +15,10 @@ import type { LatticeType } from "@/lib/truss-opt/engine/mesh";
 import { isReadyToOptimize, MESH_BOUNDS } from "@/lib/truss-opt/engine/mesh";
 import {
 	clearResult,
+	isEditingRun,
+	isPendingRun,
+	setEditMode,
 	setMeshConfig,
-	setMouseMode,
 	setOptimizeConfig,
 	trussOptState$,
 } from "@/lib/truss-opt/state";
@@ -31,24 +33,25 @@ const LATTICE_OPTIONS = [
  * optimize. Optimize is the primary action — it's the reason the demo exists — so it's the
  * only filled button and the form's submit action; Simulate is the plain, secondary
  * "preview the FEA solve" step. Reads/writes trussOptState$ directly instead of taking
- * mesh/mouseMode/etc as props — nothing between here and the store needs to re-render on
+ * mesh/run/etc as props — nothing between here and the store needs to re-render on
  * every keystroke. */
 export function LatticeControls() {
 	const meshConfig = useSelector(() => trussOptState$.meshConfig.get());
-	const mouseMode = useSelector(() => trussOptState$.mouseMode.get());
 	const optimizeConfig = useSelector(() => trussOptState$.optimizeConfig.get());
 	const hasResult = useSelector(() => trussOptState$.result.get() !== null);
 	const canRunFea = useSelector(() =>
 		isReadyToOptimize(trussOptState$.mesh.get()),
 	);
 	const run = useSelector(() => trussOptState$.run.get());
-	const isPending = run.type === "pending";
+	const isSimulating = run.type === "simulating";
+	const isOptimizing = run.type === "optimizing";
+	const isPending = isPendingRun(run);
 	const error = run.type === "error" ? run.message : null;
+	const editing = isEditingRun(run);
 	const { simulate, optimize } = useTrussOptRun();
 
 	const { meshWidth_mm, meshHeight_mm, cellSize_mm, latticeType } = meshConfig;
 	const { numIterations, targetFraction } = optimizeConfig;
-	const editing = mouseMode !== "none";
 
 	return (
 		<Form onSubmit={optimize} gap="sm" width="sm">
@@ -143,36 +146,36 @@ export function LatticeControls() {
 					2 · Supports & loads
 				</Text>
 				<Flex direction="row" gap="sm" wrap>
-					{mouseMode === "fixed" ? (
+					{run.type === "choosing_fix" ? (
 						<Button
 							type="button"
 							variant="muted"
 							label="Place support"
-							onClick={() => setMouseMode("none")}
+							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
 							type="button"
 							variant="plain"
 							label="Place support"
-							onClick={() => setMouseMode("fixed")}
-							disabled={mouseMode === "force"}
+							onClick={() => setEditMode("choosing_fix")}
+							disabled={isPending || run.type === "choosing_force"}
 						/>
 					)}
-					{mouseMode === "force" ? (
+					{run.type === "choosing_force" ? (
 						<Button
 							type="button"
 							variant="muted"
 							label="Place load"
-							onClick={() => setMouseMode("none")}
+							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
 							type="button"
 							variant="plain"
 							label="Place load"
-							onClick={() => setMouseMode("force")}
-							disabled={mouseMode === "fixed"}
+							onClick={() => setEditMode("choosing_force")}
+							disabled={isPending || run.type === "choosing_fix"}
 						/>
 					)}
 				</Flex>
@@ -188,7 +191,7 @@ export function LatticeControls() {
 					<Button
 						type="button"
 						variant="plain"
-						label={isPending ? "Simulating…" : "Simulate"}
+						label={isSimulating ? "Simulating…" : "Simulate"}
 						onClick={simulate}
 						disabled={editing || !canRunFea || isPending}
 					/>
@@ -255,7 +258,7 @@ export function LatticeControls() {
 				<Button
 					type="submit"
 					variant="filled"
-					label={isPending ? "Optimizing…" : "Optimize"}
+					label={isOptimizing ? "Optimizing…" : "Optimize"}
 					disabled={editing || isPending || !canRunFea}
 				/>
 			</Flex>

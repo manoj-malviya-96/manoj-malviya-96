@@ -11,7 +11,7 @@ export function useTrussOptRun() {
 	const mutation = useTrussOptMutation();
 
 	const run = useCallback(
-		(optimize?: TrussOptimizeInput) => {
+		(kind: "simulate" | "optimize", optimize?: TrussOptimizeInput) => {
 			const mesh = trussOptState$.mesh.peek();
 			const meshInput = {
 				...trussOptState$.meshConfig.peek(),
@@ -19,7 +19,7 @@ export function useTrussOptRun() {
 				forcePointsX: [...mesh.forcePointsX],
 				forcePointsY: [...mesh.forcePointsY],
 			};
-			runStarted();
+			runStarted(kind);
 			mutation.mutate(
 				optimize ? { mesh: meshInput, optimize } : { mesh: meshInput },
 				{
@@ -32,9 +32,9 @@ export function useTrussOptRun() {
 	);
 
 	return {
-		simulate: useCallback(() => run(), [run]),
+		simulate: useCallback(() => run("simulate"), [run]),
 		optimize: useCallback(
-			() => run(trussOptState$.optimizeConfig.peek()),
+			() => run("optimize", trussOptState$.optimizeConfig.peek()),
 			[run],
 		),
 	};

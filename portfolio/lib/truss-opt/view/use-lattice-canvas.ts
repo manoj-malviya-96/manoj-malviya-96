@@ -8,7 +8,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { placeNode, trussOptState$ } from "@/lib/truss-opt/state";
+import { isEditingRun, placeNode, trussOptState$ } from "@/lib/truss-opt/state";
 import {
 	type CanvasSize,
 	computeOffset,
@@ -22,7 +22,8 @@ export function useLatticeCanvas() {
 	const [size, setSize] = useState<CanvasSize>({ width: 0, height: 0 });
 	const mesh = useSelector(() => trussOptState$.mesh.get());
 	const result = useSelector(() => trussOptState$.result.get());
-	const mouseMode = useSelector(() => trussOptState$.mouseMode.get());
+	const run = useSelector(() => trussOptState$.run.get());
+	const editing = isEditingRun(run);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -36,7 +37,7 @@ export function useLatticeCanvas() {
 
 	const onPointerDown = useCallback(
 		(event: ReactPointerEvent<HTMLCanvasElement>) => {
-			if (mouseMode === "none") return;
+			if (!editing) return;
 			const canvas = canvasRef.current;
 			if (!canvas) return;
 			const rect = canvas.getBoundingClientRect();
@@ -51,13 +52,13 @@ export function useLatticeCanvas() {
 			);
 			placeNode(meshX, meshY);
 		},
-		[mouseMode, size, mesh],
+		[editing, size, mesh],
 	);
 
 	return {
 		canvasRef,
 		onResize: setSize,
 		onPointerDown,
-		cursor: mouseMode === "none" ? "default" : "crosshair",
+		cursor: editing ? "crosshair" : "default",
 	};
 }
