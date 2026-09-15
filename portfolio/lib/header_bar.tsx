@@ -28,16 +28,16 @@ export default function HeaderBar() {
 	const clearCloseTimeout = () => {
 		clearTimeout(closeTimeout.current);
 	};
-	const scheduleClose = () => {
+	const setToc = (toc: TocKey | null) => {
 		clearCloseTimeout();
-		closeTimeout.current = setTimeout(
-			() => setHoveredToc(null),
-			TOC_CLOSE_DELAY_MS,
-		);
-	};
-	const openToc = (toc: TocKey) => {
-		clearCloseTimeout();
-		setHoveredToc(toc);
+		if (toc === null) {
+			closeTimeout.current = setTimeout(
+				() => setHoveredToc(null),
+				TOC_CLOSE_DELAY_MS,
+			);
+		} else {
+			setHoveredToc(toc);
+		}
 	};
 	useEffect(() => clearCloseTimeout, []);
 
@@ -68,8 +68,8 @@ export default function HeaderBar() {
 							variant="tab"
 							isActive={isCurrent}
 							aria-current={isCurrent ? "page" : undefined}
-							onMouseEnter={() => openToc(toc)}
-							onMouseLeave={scheduleClose}
+							onMouseEnter={() => setToc(toc)}
+							onMouseLeave={() => setToc(null)}
 						>
 							{label}
 						</Link>
@@ -96,7 +96,7 @@ export default function HeaderBar() {
 				<HeaderToc
 					toc={tocKey}
 					onMouseEnter={clearCloseTimeout}
-					onMouseLeave={scheduleClose}
+					onMouseLeave={() => setToc(null)}
 				/>
 			) : undefined,
 	});
