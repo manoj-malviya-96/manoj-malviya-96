@@ -11,8 +11,11 @@
 
 📍 Berlin, Germany 
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=manoj-malviya-96&theme=swift)
-
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="profile/dark_mode.svg">
+  <source media="(prefers-color-scheme: light)" srcset="profile/light_mode.svg">
+  <img alt="Manoj Malviya's GitHub stats" src="profile/light_mode.svg">
+</picture>
 
 Senior Software Engineer with 7+ years building high-performance systems across desktop, embedded, and web platforms. I specialize in taking complex problems and delivering solutions that are both technically excellent and user-friendly.
 
