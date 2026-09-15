@@ -7,9 +7,11 @@
 import { writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { inflateSync } from "node:zlib";
 
 const USER = "manoj-malviya-96";
-const W = 50; // info column width in characters
+const W = 54; // info column width in characters
+const ASCII_COLS = 42; // portrait width in characters
 
 // Two tokens by design: the Actions GITHUB_TOKEN sees only public data, while a
 // PAT (ACCESS_TOKEN secret) also sees private repos/PRs/reviews. Either falls back to the other.
@@ -21,7 +23,6 @@ const PROFILE = {
   company: "Noah Labs GmbH",
   location: "Berlin, Germany",
   experience: "8 years",
-  languages: "C/C++, Python, TS, Swift, Go, Rust",
   frameworks: "Qt/QML, React, FastAPI, PyTorch",
   speaks: "English, Hindi",
   email: "malviyamanoj1896@gmail.com",
@@ -29,17 +30,17 @@ const PROFILE = {
   portfolio: "manoj-malviya.vercel.app",
 };
 
-type Color = "h" | "k" | "v" | "d" | "g" | "r";
+type Color = "h" | "k" | "v" | "d" | "g" | "r" | "art";
 type Segment = [text: string, color: Color];
 
 const PALETTES: Record<"dark" | "light", Record<Color | "bg" | "border", string>> = {
   dark: {
     bg: "#0d1117", border: "#30363d", h: "#58a6ff", k: "#ffa657",
-    v: "#c9d1d9", d: "#484f58", g: "#3fb950", r: "#f85149",
+    v: "#c9d1d9", d: "#484f58", g: "#3fb950", r: "#f85149", art: "#8b949e",
   },
   light: {
     bg: "#ffffff", border: "#d0d7de", h: "#0969da", k: "#953800",
-    v: "#24292f", d: "#afb8c1", g: "#1a7f37", r: "#cf222e",
+    v: "#24292f", d: "#afb8c1", g: "#1a7f37", r: "#cf222e", art: "#57606a",
   },
 };
 
@@ -52,6 +53,7 @@ interface Stats {
   locAdd: number;
   locDel: number;
   loc: number;
+  languages: string;
 }
 
 async function gh<T>(query: string, variables: Record<string, unknown> = {}, token = TOKEN): Promise<T> {
@@ -147,12 +149,35 @@ async function fetchLoc(repoNames: string[], userId: string): Promise<{ add: num
   return { add, del };
 }
 
+interface RepoNode {
+  name: string;
+  isFork: boolean;
+  languages: { edges: { size: number; node: { name: string } }[] };
+}
+
+function topLanguages(repos: RepoNode[], count = 4): string {
+  const totals = new Map<string, number>();
+  for (const repo of repos) {
+    if (repo.isFork) continue;
+    for (const edge of repo.languages.edges) {
+      totals.set(edge.node.name, (totals.get(edge.node.name) ?? 0) + edge.size);
+    }
+  }
+  const total = [...totals.values()].reduce((a, b) => a + b, 0);
+  if (total === 0) return "—";
+  return [...totals.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, count)
+    .map(([name, size]) => `${name} ${Math.round((size / total) * 100)}%`)
+    .join(", ");
+}
+
 async function fetchStats(): Promise<Stats> {
   const u = await gh<{
     user: {
       id: string;
       createdAt: string;
-      repositories: { totalCount: number; nodes: { name: string; isFork: boolean }[] };
+      repositories: { totalCount: number; nodes: RepoNode[] };
       repositoriesContributedTo: { totalCount: number };
     };
   }>(
@@ -162,7 +187,13 @@ async function fetchStats(): Promise<Stats> {
         createdAt
         repositories(first: 100, ownerAffiliations: OWNER) {
           totalCount
-          nodes { name isFork }
+          nodes {
+            name
+            isFork
+            languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+              edges { size node { name } }
+            }
+          }
         }
         repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {
           totalCount
@@ -192,7 +223,148 @@ async function fetchStats(): Promise<Stats> {
     locAdd: locTotals.add,
     locDel: locTotals.del,
     loc: locTotals.add - locTotals.del,
+    languages: topLanguages(u.user.repositories.nodes),
   };
+}
+
+interface DecodedImage {
+  width: number;
+  height: number;
+  luminanceAt(x: number, y: number): number; // 0 (black)..1 (white)
+}
+
+// PNG "Paeth" filter predictor (spec section 9.2): picks whichever neighbor
+// best predicts the current byte from the left/above/above-left reconstructed values.
+function paeth(a: number, b: number, c: number): number {
+  const p = a + b - c;
+  const pa = Math.abs(p - a);
+  const pb = Math.abs(p - b);
+  const pc = Math.abs(p - c);
+  if (pa <= pb && pa <= pc) return a;
+  if (pb <= pc) return b;
+  return c;
+}
+
+// GitHub always re-encodes avatars as 8-bit, non-interlaced PNG, so that's all this supports.
+function decodePng(buf: Buffer): DecodedImage {
+  const SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  if (!buf.subarray(0, 8).equals(SIGNATURE)) throw new Error("not a PNG");
+
+  let offset = 8;
+  let width = 0;
+  let height = 0;
+  let bitDepth = 0;
+  let colorType = 0;
+  let interlace = 0;
+  const idatChunks: Buffer[] = [];
+  let palette: Buffer | null = null;
+
+  while (offset < buf.length) {
+    const length = buf.readUInt32BE(offset);
+    const type = buf.toString("ascii", offset + 4, offset + 8);
+    const data = buf.subarray(offset + 8, offset + 8 + length);
+    if (type === "IHDR") {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      bitDepth = data.readUInt8(8);
+      colorType = data.readUInt8(9);
+      interlace = data.readUInt8(12);
+    } else if (type === "PLTE") {
+      palette = Buffer.from(data);
+    } else if (type === "IDAT") {
+      idatChunks.push(Buffer.from(data));
+    } else if (type === "IEND") {
+      break;
+    }
+    offset += 8 + length + 4; // length + type + data + crc
+  }
+
+  if (bitDepth !== 8) throw new Error(`unsupported PNG bit depth: ${bitDepth}`);
+  if (interlace !== 0) throw new Error("interlaced PNG not supported");
+
+  const channels = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[colorType];
+  if (!channels) throw new Error(`unsupported PNG color type: ${colorType}`);
+
+  const raw = inflateSync(Buffer.concat(idatChunks));
+  const stride = width * channels;
+  const pixels = Buffer.alloc(height * stride);
+
+  for (let y = 0; y < height; y++) {
+    const filterType = raw[y * (stride + 1)];
+    const rowStart = y * (stride + 1) + 1;
+    for (let i = 0; i < stride; i++) {
+      const x = raw[rowStart + i];
+      const a = i >= channels ? pixels[y * stride + i - channels] : 0;
+      const b = y > 0 ? pixels[(y - 1) * stride + i] : 0;
+      const c = y > 0 && i >= channels ? pixels[(y - 1) * stride + i - channels] : 0;
+      let value: number;
+      switch (filterType) {
+        case 0: value = x; break;
+        case 1: value = x + a; break;
+        case 2: value = x + b; break;
+        case 3: value = x + Math.floor((a + b) / 2); break;
+        case 4: value = x + paeth(a, b, c); break;
+        default: throw new Error(`unsupported PNG filter type: ${filterType}`);
+      }
+      pixels[y * stride + i] = value & 0xff;
+    }
+  }
+
+  function luminanceAt(x: number, y: number): number {
+    const i = y * stride + x * channels;
+    if (colorType === 3) {
+      if (!palette) throw new Error("palette PNG missing PLTE chunk");
+      const p = pixels[i] * 3;
+      return (0.299 * palette[p] + 0.587 * palette[p + 1] + 0.114 * palette[p + 2]) / 255;
+    }
+    if (colorType === 0 || colorType === 4) return pixels[i] / 255;
+    return (0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2]) / 255;
+  }
+
+  return { width, height, luminanceAt };
+}
+
+async function fetchAvatar(): Promise<DecodedImage> {
+  const res = await fetch(`https://github.com/${USER}.png?size=240`);
+  return decodePng(Buffer.from(await res.arrayBuffer()));
+}
+
+const ASCII_RAMP = " .:-=+*#%@";
+const ASCII_CHAR_WIDTH = 7.8; // px, Consolas/Menlo at font-size 13
+const ASCII_LINE_HEIGHT = 15; // px
+
+// Density represents luminance, but "dense" only reads as bright against a dark
+// background and as dark ink against a light one — so the two modes invert the ramp.
+function renderAscii(img: DecodedImage, mode: "dark" | "light"): string[] {
+  const rows = Math.round(
+    ASCII_COLS * (ASCII_CHAR_WIDTH / ASCII_LINE_HEIGHT) * (img.height / img.width),
+  );
+  const cellW = img.width / ASCII_COLS;
+  const cellH = img.height / rows;
+  const lines: string[] = [];
+  for (let row = 0; row < rows; row++) {
+    let line = "";
+    const y0 = Math.floor(row * cellH);
+    const y1 = Math.max(y0 + 1, Math.floor((row + 1) * cellH));
+    for (let col = 0; col < ASCII_COLS; col++) {
+      const x0 = Math.floor(col * cellW);
+      const x1 = Math.max(x0 + 1, Math.floor((col + 1) * cellW));
+      let sum = 0;
+      let count = 0;
+      for (let y = y0; y < y1; y++) {
+        for (let x = x0; x < x1; x++) {
+          sum += img.luminanceAt(x, y);
+          count++;
+        }
+      }
+      const luminance = sum / count;
+      const t = mode === "dark" ? luminance : 1 - luminance;
+      const idx = Math.min(ASCII_RAMP.length - 1, Math.floor(t * ASCII_RAMP.length));
+      line += ASCII_RAMP[idx];
+    }
+    lines.push(line);
+  }
+  return lines;
 }
 
 function kv(key: string, val: string, width = W): Segment[] {
@@ -221,7 +393,7 @@ function infoLines(s: Stats): Segment[][] {
     kv("Location", PROFILE.location),
     kv("Experience", PROFILE.experience),
     [],
-    kv("Languages", PROFILE.languages),
+    kv("Languages", s.languages),
     kv("Frameworks", PROFILE.frameworks),
     kv("Speaks", PROFILE.speaks),
     [],
@@ -244,35 +416,33 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function render(mode: "dark" | "light", stats: Stats): string {
+function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
   const p = PALETTES[mode];
-  const width = 820;
-  const height = 460;
+  const width = 840;
+  const height = 480;
   const out: string[] = [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" ` +
       'font-family="Consolas, Menlo, monospace" font-size="13px">',
     `<rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="10" fill="${p.bg}" stroke="${p.border}"/>`,
-    `<clipPath id="avatarClip-${mode}"><circle cx="150" cy="200" r="100"/></clipPath>`,
-    `<circle cx="150" cy="200" r="103" fill="none" stroke="${p.border}" stroke-width="2"/>`,
-    `<image href="https://github.com/${USER}.png?size=240" x="50" y="100" width="200" height="200" ` +
-      `clip-path="url(#avatarClip-${mode})" preserveAspectRatio="xMidYMid slice"/>`,
-    `<text x="150" y="330" text-anchor="middle" fill="${p.h}">@${USER}</text>`,
   ];
+  ascii.forEach((line, i) => {
+    out.push(`<text x="25" y="${40 + i * ASCII_LINE_HEIGHT}" fill="${p.art}" xml:space="preserve">${escapeXml(line)}</text>`);
+  });
   infoLines(stats).forEach((segs, i) => {
     if (!segs.length) return;
     const spans = segs.map(([text, color]) => `<tspan fill="${p[color]}">${escapeXml(text)}</tspan>`).join("");
-    out.push(`<text x="310" y="${45 + i * 21}" xml:space="preserve">${spans}</text>`);
+    out.push(`<text x="390" y="${45 + i * 21}" xml:space="preserve">${spans}</text>`);
   });
   out.push("</svg>");
   return out.join("\n");
 }
 
 async function main() {
-  const stats = await fetchStats();
+  const [stats, avatar] = await Promise.all([fetchStats(), fetchAvatar()]);
   console.log("stats:", stats);
   const dir = dirname(fileURLToPath(import.meta.url));
   for (const mode of ["dark", "light"] as const) {
-    await writeFile(join(dir, `${mode}_mode.svg`), render(mode, stats));
+    await writeFile(join(dir, `${mode}_mode.svg`), render(mode, stats, renderAscii(avatar, mode)));
   }
   console.log("wrote dark_mode.svg, light_mode.svg");
 }
