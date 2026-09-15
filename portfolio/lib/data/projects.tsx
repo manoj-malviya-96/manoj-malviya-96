@@ -33,9 +33,9 @@ export const Projects: Record<ProjectId, Project> = {
 	atom: {
 		title: "Atom",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
-					Every option out there made me choose, a JS-in-JS styling library dragging its own runtime,
-					or CSS that throws out type safety. I got tired of choosing, so I built Atom: one primitive,
-					one stylesheet, and a type system that actually checks it.`,
+					Every option out there made me choose between a CSS-in-JS styling library dragging
+					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
+					built Atom: one primitive, one stylesheet, and a type system that actually checks it.`,
 		dates: "2024–2025",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
