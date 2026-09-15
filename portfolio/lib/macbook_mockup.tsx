@@ -15,7 +15,7 @@ export function MacbookMockup({ children }: { children: ReactNode }) {
 				bg="brand"
 				padding="xs"
 				width="full"
-				style={{ borderRadius: "1.25rem 1.25rem 0 0" }}
+				style={{ borderRadius: "1.25rem 1.25rem 0 0", boxSizing: "border-box" }}
 			>
 				<Atom
 					bg="page"
