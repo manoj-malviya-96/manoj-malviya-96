@@ -306,8 +306,8 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
 		media: {
-			kind: "image",
-			src: trussOptScreenshot,
+			kind: "video",
+			src: getBlob("truss-opt.webm"),
 			alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
 		},
 		links: {
