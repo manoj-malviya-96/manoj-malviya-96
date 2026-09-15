@@ -23,7 +23,7 @@ export default function ShowAndTell() {
 	const scholar = scholarQuery.data;
 
 	return (
-		<Grid columns={3} gap="md">
+		<Grid columns={3} gap="md" className="stat-grid">
 			{github && (
 				<Stat
 					label="GitHub"
