@@ -1,7 +1,5 @@
 # Manoj Malviya
 
-**Senior Software Engineer** | Building systems that are correct, fast, and maintainable
-
 [![Email](https://img.shields.io/badge/✉️-malviyamanoj1896@gmail.com-red)](mailto:malviyamanoj1896@gmail.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github)](https://github.com/manoj-malviya-96)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?logo=linkedin)](https://linkedin.com/in/manoj-malviya-)
