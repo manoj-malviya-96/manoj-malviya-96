@@ -31,15 +31,15 @@
 <text x="390" y="234" xml:space="preserve"><tspan fill="#818cf8">─ GitHub Stats </tspan><tspan fill="#484f58">───────────────────────────────────────</tspan></text>
 <clipPath id="langbar-247"><rect x="390" y="247" width="440" height="10" rx="5"/></clipPath>
 <g clip-path="url(#langbar-247)">
-<rect x="390.00" y="247" width="277.20" height="10" fill="#3178c6" stroke="#0d1117" stroke-width="1"/>
-<rect x="667.20" y="247" width="83.60" height="10" fill="#6e7681" stroke="#0d1117" stroke-width="1"/>
-<rect x="750.80" y="247" width="39.60" height="10" fill="#e3b341" stroke="#0d1117" stroke-width="1"/>
-<rect x="790.40" y="247" width="13.20" height="10" fill="#663399" stroke="#0d1117" stroke-width="1"/>
+<rect x="390.00" y="247" width="338.80" height="10" fill="#6e7681" stroke="#0d1117" stroke-width="1"/>
+<rect x="728.80" y="247" width="39.60" height="10" fill="#44a51c" stroke="#0d1117" stroke-width="1"/>
+<rect x="768.40" y="247" width="22.00" height="10" fill="#e3b341" stroke="#0d1117" stroke-width="1"/>
+<rect x="790.40" y="247" width="13.20" height="10" fill="#3178c6" stroke="#0d1117" stroke-width="1"/>
 </g>
-<text x="390" y="269" xml:space="preserve"><tspan fill="#3178c6">● TypeScript 63%   </tspan><tspan fill="#6e7681">● C++ 19%   </tspan><tspan fill="#e3b341">● Python 9%   </tspan><tspan fill="#663399">● CSS 3%   </tspan></text>
-<text x="390" y="290" xml:space="preserve"><tspan fill="#58a6ff">Repos: </tspan><tspan fill="#484f58">....... </tspan><tspan fill="#c9d1d9">7 {Contrib: 1}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">PRs: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">68</tspan></text>
-<text x="390" y="311" xml:space="preserve"><tspan fill="#58a6ff">Commits: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">4,142</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Reviews: </tspan><tspan fill="#484f58">........... </tspan><tspan fill="#c9d1d9">0</tspan></text>
+<text x="390" y="269" xml:space="preserve"><tspan fill="#6e7681">● C++ 77%   </tspan><tspan fill="#44a51c">● QML 9%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan><tspan fill="#3178c6">● TypeScript 3%   </tspan></text>
+<text x="390" y="290" xml:space="preserve"><tspan fill="#58a6ff">Repos: </tspan><tspan fill="#484f58">...... </tspan><tspan fill="#c9d1d9">15 {Contrib: 6}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">PRs: </tspan><tspan fill="#484f58">............. </tspan><tspan fill="#c9d1d9">497</tspan></text>
+<text x="390" y="311" xml:space="preserve"><tspan fill="#58a6ff">Commits: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">4,142</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Reviews: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">432</tspan></text>
 <text x="390" y="332" xml:space="preserve"><tspan fill="#58a6ff">Streak: </tspan><tspan fill="#484f58">.................. </tspan><tspan fill="#c9d1d9">9d</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Longest: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">13d</tspan></text>
-<text x="390" y="353" xml:space="preserve"><tspan fill="#58a6ff">Comments: </tspan><tspan fill="#484f58">.......................................... </tspan><tspan fill="#c9d1d9">0</tspan></text>
-<text x="390" y="374" xml:space="preserve"><tspan fill="#58a6ff">Lines of Code: </tspan><tspan fill="#c9d1d9">64,043</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">95,220++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">31,177--</tspan><tspan fill="#484f58"> )</tspan></text>
+<text x="390" y="353" xml:space="preserve"><tspan fill="#58a6ff">Comments: </tspan><tspan fill="#484f58">......................................... </tspan><tspan fill="#c9d1d9">46</tspan></text>
+<text x="390" y="374" xml:space="preserve"><tspan fill="#58a6ff">Lines of Code: </tspan><tspan fill="#c9d1d9">1,623,544</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">1,714,139++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">90,595--</tspan><tspan fill="#484f58"> )</tspan></text>
 </svg>
