@@ -28,7 +28,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			hAlign="center"
 			as="section"
 			width="full"
-			bg="surface"
+			bg="raised"
 			padding={{ x: "sm", y: "lg" }}
 		>
 			<Flex
