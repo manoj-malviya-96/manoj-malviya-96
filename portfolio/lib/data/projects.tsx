@@ -16,7 +16,7 @@ import type { ValuesOf } from "@/lib/helper";
 import { Prose } from "@/lib/shared";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
-export const AllProjectIds = [
+const AllProjectIds = [
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -280,30 +280,7 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: (
-			<List as="ol" direction="col" gap="xs">
-				{statusItem(
-					"green",
-					"Done",
-					"CLI: mesh repair as a standalone command-line tool.",
-				)}
-				{statusItem(
-					"green",
-					"Done",
-					"Server: same C++/Qt backend, exposed over WebSocket.",
-				)}
-				{statusItem(
-					"green",
-					"Done",
-					"Editor: Tauri + Next.js shell, wired end to end.",
-				)}
-				{statusItem(
-					"orange",
-					"Next",
-					"Repair algorithm: the actual mesh-repair logic.",
-				)}
-			</List>
-		),
+		content: <Prose>Todo</Prose>,
 	},
 	truss_opt: {
 		title: "Truss Optimizer",
@@ -387,7 +364,7 @@ export type ProjectTag =
 	| SoftwareConcepts
 	| SoftSkills;
 
-export type ProjectEffort = "low" | "medium" | "high";
+type ProjectEffort = "low" | "medium" | "high";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -399,7 +376,7 @@ export type ProjectLink =
 	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
 	| { kind: "external"; label: string; href: ExternalURL };
 
-export type ProjectLinks = {
+type ProjectLinks = {
 	primary: ProjectLink;
 	others: readonly ProjectLink[];
 };
@@ -448,19 +425,6 @@ export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
 )
 	.map((id) => ({ id, ...Projects[id] }))
 	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
-
-function statusItem(
-	color: ColorToken,
-	status: string,
-	body: ReactNode,
-): ReactNode {
-	return (
-		<Flex as="li" direction="row" gap="xs" vAlign="start">
-			<Badge color={color}>{status}</Badge>
-			<Text variant="body">{body}</Text>
-		</Flex>
-	);
-}
 
 function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;

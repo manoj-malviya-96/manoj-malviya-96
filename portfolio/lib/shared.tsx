@@ -150,11 +150,4 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 
 export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
-export const InlineBadge = withDefaults(Badge)({
-	width: "fit",
-	padding: { x: "md", y: "sm" },
-});
-
-// Standard prose paragraph for project write-ups: narrower than the
-// surrounding content column so body copy stays a comfortable line length.
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
