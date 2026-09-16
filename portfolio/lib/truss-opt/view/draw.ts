@@ -17,7 +17,7 @@ const DRAW_SETTINGS = {
 		headLength_px: 10,
 		headAngle_rad: Math.PI / 7,
 	},
-};
+} as const;
 
 /** Scale mapping mesh mm to canvas px, fixed against the mesh's max possible size (not the
  * current mesh) — otherwise a bigger mesh at the same cell size renders *smaller* (everything
