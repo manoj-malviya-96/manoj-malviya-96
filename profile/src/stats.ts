@@ -113,6 +113,10 @@ export async function fetchStats(): Promise<Stats> {
 		.filter((n) => !n.isFork)
 		.map((n) => n.name);
 
+	console.log(
+		`fetchStats: user joined ${joinYear}, ${ownedRepoNames.length} owned repos`,
+	);
+
 	const [years, prs, reviews, locTotals] = await Promise.all([
 		fetchYearlyContributions(joinYear),
 		searchCount(`is:pr author:${USER}`),

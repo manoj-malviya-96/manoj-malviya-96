@@ -7,8 +7,10 @@ import { fetchStats } from "./src/stats";
 import { render } from "./src/svg-card";
 
 async function main() {
+	console.time("update");
 	const [stats, avatar] = await Promise.all([fetchStats(), fetchAvatar()]);
 	console.log("stats:", stats);
+
 	const cells = sampleCells(avatar);
 	const dir = dirname(fileURLToPath(import.meta.url));
 	for (const mode of ["dark", "light"] as const) {
@@ -18,6 +20,7 @@ async function main() {
 		);
 	}
 	console.log("wrote dark_mode.svg, light_mode.svg");
+	console.timeEnd("update");
 }
 
 main().catch((err) => {
