@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="410" viewBox="0 0 840 410" font-family="Consolas, Menlo, monospace" font-size="13px">
-<rect x="0.5" y="0.5" width="839" height="409" rx="10" fill="#ffffff" stroke="#d0d7de"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="431" viewBox="0 0 840 431" font-family="Consolas, Menlo, monospace" font-size="13px">
+<rect x="0.5" y="0.5" width="839" height="430" rx="10" fill="#ffffff" stroke="#d0d7de"/>
 <text x="25" y="40" fill="#57606a" xml:space="preserve">....            .....    ...              </text>
 <text x="25" y="55" fill="#57606a" xml:space="preserve">       .....    ....:........             </text>
 <text x="25" y="70" fill="#57606a" xml:space="preserve">       ......... .::-::............  .    </text>
@@ -35,11 +35,14 @@
 <rect x="728.80" y="247" width="39.60" height="10" fill="#44a51c" stroke="#ffffff" stroke-width="1"/>
 <rect x="768.40" y="247" width="22.00" height="10" fill="#e3b341" stroke="#ffffff" stroke-width="1"/>
 <rect x="790.40" y="247" width="13.20" height="10" fill="#3178c6" stroke="#ffffff" stroke-width="1"/>
+<rect x="803.60" y="247" width="13.20" height="10" fill="#DA3434" stroke="#ffffff" stroke-width="1"/>
+<rect x="816.80" y="247" width="4.40" height="10" fill="#F05138" stroke="#ffffff" stroke-width="1"/>
 </g>
 <text x="390" y="269" xml:space="preserve"><tspan fill="#6e7681">● C++ 77%   </tspan><tspan fill="#44a51c">● QML 9%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan><tspan fill="#3178c6">● TypeScript 3%   </tspan></text>
-<text x="390" y="290" xml:space="preserve"><tspan fill="#0969da">Repos: </tspan><tspan fill="#afb8c1">...... </tspan><tspan fill="#24292f">15 {Contrib: 6}</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">PRs: </tspan><tspan fill="#afb8c1">............. </tspan><tspan fill="#24292f">500</tspan></text>
-<text x="390" y="311" xml:space="preserve"><tspan fill="#0969da">Commits: </tspan><tspan fill="#afb8c1">.............. </tspan><tspan fill="#24292f">4,146</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Reviews: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">432</tspan></text>
-<text x="390" y="332" xml:space="preserve"><tspan fill="#0969da">Streak: </tspan><tspan fill="#afb8c1">................. </tspan><tspan fill="#24292f">10d</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Longest: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">13d</tspan></text>
-<text x="390" y="353" xml:space="preserve"><tspan fill="#0969da">Comments: </tspan><tspan fill="#afb8c1">......................................... </tspan><tspan fill="#24292f">46</tspan></text>
-<text x="390" y="374" xml:space="preserve"><tspan fill="#0969da">Lines of Code: </tspan><tspan fill="#24292f">1,587,795</tspan><tspan fill="#afb8c1"> ( </tspan><tspan fill="#1a7f37">1,670,422++</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">82,627--</tspan><tspan fill="#afb8c1"> )</tspan></text>
+<text x="390" y="290" xml:space="preserve"><tspan fill="#DA3434">● CMake 3%   </tspan><tspan fill="#F05138">● Swift 1%   </tspan></text>
+<text x="390" y="311" xml:space="preserve"><tspan fill="#0969da">Repos: </tspan><tspan fill="#afb8c1">...... </tspan><tspan fill="#24292f">15 {Contrib: 6}</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">PRs: </tspan><tspan fill="#afb8c1">............. </tspan><tspan fill="#24292f">502</tspan></text>
+<text x="390" y="332" xml:space="preserve"><tspan fill="#0969da">Commits: </tspan><tspan fill="#afb8c1">.............. </tspan><tspan fill="#24292f">4,148</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Reviews: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">432</tspan></text>
+<text x="390" y="353" xml:space="preserve"><tspan fill="#0969da">Streak: </tspan><tspan fill="#afb8c1">................. </tspan><tspan fill="#24292f">10d</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Longest: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">13d</tspan></text>
+<text x="390" y="374" xml:space="preserve"><tspan fill="#0969da">Comments: </tspan><tspan fill="#afb8c1">......................................... </tspan><tspan fill="#24292f">46</tspan></text>
+<text x="390" y="395" xml:space="preserve"><tspan fill="#0969da">Lines of Code: </tspan><tspan fill="#24292f">1,587,810</tspan><tspan fill="#afb8c1"> ( </tspan><tspan fill="#1a7f37">1,670,440++</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">82,630--</tspan><tspan fill="#afb8c1"> )</tspan></text>
 </svg>

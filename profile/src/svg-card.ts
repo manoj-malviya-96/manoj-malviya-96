@@ -1,4 +1,4 @@
-import { ASCII_LINE_HEIGHT } from "./ascii-art";
+import { ASCII_CHAR_WIDTH, ASCII_LINE_HEIGHT } from "./ascii-art";
 import { PROFILE, USER, W } from "./config";
 import type { LangShare, Stats } from "./stats";
 
@@ -133,21 +133,31 @@ function renderLangBar(
 	return out;
 }
 
+// Wraps the legend onto as many rows as needed to fit LANGBAR_WIDTH — the language
+// count varies with the account's repos, so a fixed row count would either clip
+// entries (too few) or leave a stray empty row (too many).
+function packLegendRows(languages: LangShare[]): LangShare[][] {
+	const maxChars = Math.floor(LANGBAR_WIDTH / ASCII_CHAR_WIDTH);
+	const rows: LangShare[][] = [[]];
+	let charsUsed = 0;
+	for (const lang of languages) {
+		const chars = `● ${lang.name} ${lang.pct}%   `.length;
+		const row = rows[rows.length - 1];
+		if (charsUsed + chars > maxChars && row.length > 0) {
+			rows.push([]);
+			charsUsed = 0;
+		}
+		rows[rows.length - 1].push(lang);
+		charsUsed += chars;
+	}
+	return rows;
+}
+
 export function render(mode: "dark" | "light", stats: Stats, ascii: string[]): string {
 	const p = PALETTES[mode];
 	const width = 840;
-	const height = 410;
-	const out: string[] = [
-		`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" ` +
-			'font-family="Consolas, Menlo, monospace" font-size="13px">',
-		`<rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="10" fill="${p.bg}" stroke="${p.border}"/>`,
-	];
-	ascii.forEach((line, i) => {
-		out.push(
-			`<text x="25" y="${40 + i * ASCII_LINE_HEIGHT}" fill="${p.art}" xml:space="preserve">${escapeXml(line)}</text>`,
-		);
-	});
 
+	const body: string[] = [];
 	let y = 45;
 	for (const line of infoLines(stats)) {
 		if (line.kind === "space") {
@@ -160,26 +170,41 @@ export function render(mode: "dark" | "light", stats: Stats, ascii: string[]): s
 							`<tspan fill="${p[color]}">${escapeXml(text)}</tspan>`,
 					)
 					.join("");
-				out.push(
+				body.push(
 					`<text x="${INFO_X}" y="${y}" xml:space="preserve">${spans}</text>`,
 				);
 			}
 			y += 21;
 		} else {
-			out.push(...renderLangBar(line.languages, y - 8, p.bg));
+			body.push(...renderLangBar(line.languages, y - 8, p.bg));
 			y += 14;
-			const legend = line.languages
-				.map(
-					(l) =>
-						`<tspan fill="${l.color}">● ${escapeXml(l.name)} ${l.pct}%   </tspan>`,
-				)
-				.join("");
-			out.push(
-				`<text x="${INFO_X}" y="${y}" xml:space="preserve">${legend}</text>`,
-			);
-			y += 21;
+			for (const row of packLegendRows(line.languages)) {
+				const legend = row
+					.map(
+						(l) =>
+							`<tspan fill="${l.color}">● ${escapeXml(l.name)} ${l.pct}%   </tspan>`,
+					)
+					.join("");
+				body.push(
+					`<text x="${INFO_X}" y="${y}" xml:space="preserve">${legend}</text>`,
+				);
+				y += 21;
+			}
 		}
 	}
-	out.push("</svg>");
-	return out.join("\n");
+
+	const asciiHeight = 40 + ascii.length * ASCII_LINE_HEIGHT;
+	const height = Math.max(asciiHeight, y) + 15;
+
+	return [
+		`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" ` +
+			'font-family="Consolas, Menlo, monospace" font-size="13px">',
+		`<rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="10" fill="${p.bg}" stroke="${p.border}"/>`,
+		...ascii.map(
+			(line, i) =>
+				`<text x="25" y="${40 + i * ASCII_LINE_HEIGHT}" fill="${p.art}" xml:space="preserve">${escapeXml(line)}</text>`,
+		),
+		...body,
+		"</svg>",
+	].join("\n");
 }

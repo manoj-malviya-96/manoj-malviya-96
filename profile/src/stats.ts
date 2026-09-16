@@ -40,7 +40,10 @@ const LANGUAGE_COLOR_OVERRIDES: Record<string, string> = {
 	"C++": "#6e7681",
 };
 
-function topLanguageShares(repos: RepoNode[], count = 4): LangShare[] {
+// Capped at 8 so the legend still fits the card width; languages that round to
+// 0% are dropped rather than counted against that cap, since they'd be invisible
+// slivers on the bar anyway.
+function topLanguageShares(repos: RepoNode[], maxShown = 8): LangShare[] {
 	const totals = new Map<string, { size: number; color: string }>();
 	for (const repo of repos) {
 		if (repo.isFork) continue;
@@ -60,12 +63,13 @@ function topLanguageShares(repos: RepoNode[], count = 4): LangShare[] {
 	if (total === 0) return [];
 	return [...totals.entries()]
 		.sort((a, b) => b[1].size - a[1].size)
-		.slice(0, count)
 		.map(([name, v]) => ({
 			name,
 			pct: Math.round((v.size / total) * 100),
 			color: v.color,
-		}));
+		}))
+		.filter((l) => l.pct > 0)
+		.slice(0, maxShown);
 }
 
 function truncate(s: string, max: number): string {
