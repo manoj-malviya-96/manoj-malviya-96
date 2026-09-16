@@ -2,11 +2,12 @@ import { ASCII_CHAR_WIDTH, ASCII_LINE_HEIGHT } from "./ascii-art";
 import { PROFILE, USER, W } from "./config";
 import type { LangShare, Stats } from "./stats";
 
-type Color = "h" | "k" | "v" | "d" | "g" | "r" | "art";
+type Color = "h" | "k" | "v" | "d" | "g" | "r" | "art" | "overline";
 type Segment = [text: string, color: Color];
 type Line =
 	| { kind: "text"; segs: Segment[] }
 	| { kind: "space" }
+	| { kind: "overline"; label: string }
 	| { kind: "langbar"; languages: LangShare[] };
 
 const PALETTES: Record<
@@ -23,6 +24,7 @@ const PALETTES: Record<
 		g: "#3fb950",
 		r: "#f85149",
 		art: "#8b949e",
+		overline: "#ffffff",
 	},
 	light: {
 		bg: "#ffffff",
@@ -34,6 +36,7 @@ const PALETTES: Record<
 		g: "#1a7f37",
 		r: "#cf222e",
 		art: "#57606a",
+		overline: "#000000",
 	},
 };
 
@@ -66,17 +69,11 @@ function infoLines(s: Stats): Line[] {
 	const text = (segs: Segment[]): Line => ({ kind: "text", segs });
 	const space: Line = { kind: "space" };
 	return [
-		text([
-			[`${USER}@github `, "h"],
-			["─".repeat(Math.max(W - USER.length - 8, 1)), "d"],
-		]),
+		{ kind: "overline", label: `${USER}@github` },
 		space,
 		text(kv("Role", s.role)),
 		text(kv("Location", PROFILE.location)),
 		text(kv("Experience", PROFILE.experience)),
-		space,
-		text(kv("Frameworks", PROFILE.frameworks)),
-		text(kv("Speaks", PROFILE.speaks)),
 		space,
 		text(rule("GitHub Stats")),
 		{ kind: "langbar", languages: s.languageShares },
@@ -84,8 +81,8 @@ function infoLines(s: Stats): Line[] {
 			kv2("Repos", `${s.repos} {Contrib: ${s.contributed}}`, "PRs", formatNumber(s.prs)),
 		),
 		text(kv2("Commits", formatNumber(s.commits), "Reviews", formatNumber(s.reviews))),
-		text(kv2("Streak", `${s.streak}d`, "Longest", `${s.longestStreak}d`)),
-		text(kv("Comments", formatNumber(s.comments))),
+		text(kv2("Comments", formatNumber(s.comments), "Streak", `${s.streak}d`)),
+		text(kv("Longest", `${s.longestStreak}d`)),
 		text([
 			["Lines of Code: ", "k"],
 			[formatNumber(s.loc), "v"],
@@ -167,6 +164,15 @@ export function render(mode: "dark" | "light", stats: Stats, ascii: string[]): s
 	let y = 45;
 	for (const line of infoLines(stats)) {
 		if (line.kind === "space") {
+			y += 21;
+		} else if (line.kind === "overline") {
+			const label = line.label.toUpperCase();
+			const dashes = "─".repeat(Math.max(W - label.length - 1, 1));
+			body.push(
+				`<text x="${INFO_X}" y="${y}" xml:space="preserve">` +
+					`<tspan font-weight="bold" fill="${p.overline}">${escapeXml(label)} </tspan>` +
+					`<tspan fill="${p.d}">${dashes}</tspan></text>`,
+			);
 			y += 21;
 		} else if (line.kind === "text") {
 			if (line.segs.length) {

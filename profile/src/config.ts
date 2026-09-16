@@ -7,6 +7,4 @@ export const PRIV_TOKEN = process.env.ACCESS_TOKEN || TOKEN;
 export const PROFILE = {
 	location: "Berlin, Germany",
 	experience: "8 years",
-	frameworks: "Qt/QML, React, FastAPI, PyTorch",
-	speaks: "English, Hindi",
 };
