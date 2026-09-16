@@ -24,12 +24,12 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			id={project}
 			direction="col"
 			gap="lg"
-			radius="sm"
+			radius="md"
 			hAlign="center"
 			as="section"
 			width="full"
 			bg="raised"
-			padding={{ x: "sm", y: "lg" }}
+			padding={{ x: "none", y: "lg" }}
 		>
 			<Flex
 				direction="col"
