@@ -426,9 +426,10 @@ function showProject(id: ProjectId) {
 		case "topopt_py":
 		case "honeycomb":
 		case "muviz":
+		case "blackhole":
 		case "truss_opt":
 			return true;
-		case "blackhole":
+
 		case "mesha":
 			return false;
 		default:
