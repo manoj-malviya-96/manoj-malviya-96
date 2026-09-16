@@ -208,8 +208,8 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
 		media: {
-			kind: "image",
-			src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
+			kind: "video",
+			src: getBlob("blackhole.webm"),
 			alt: "Cover art for the black hole renderer.",
 		},
 		links: {
