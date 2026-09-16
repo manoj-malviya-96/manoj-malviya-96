@@ -5,7 +5,6 @@ import {
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import { useMemo } from "react";
 import {
 	type Project,
 	type ProjectId,
@@ -59,16 +58,19 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 }
 
 function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
-	const child = useMemo(() => <Media media={media} />, [media]);
 	switch (media.mockup) {
 		case undefined:
 			return (
 				<Atom as="div" width={{ value: "lg", max: "full" }}>
-					{child}
+					<Media media={media} />
 				</Atom>
 			);
 		case "macbook":
-			return <MacbookMockup>{child}</MacbookMockup>;
+			return (
+				<MacbookMockup>
+					<Media media={media} />
+				</MacbookMockup>
+			);
 		default:
 			assertNever(media.mockup);
 	}

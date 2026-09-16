@@ -31,6 +31,14 @@ interface TrussOptRequest {
 	optimize?: TrussOptimizeInput;
 }
 
+type TrussOptApiResponse =
+	| ({ success: true } & TrussOptResult)
+	| { success: false; error: string };
+
+function isTrussOptApiResponse(data: unknown): data is TrussOptApiResponse {
+	return typeof data === "object" && data !== null && "success" in data;
+}
+
 export function useTrussOptMutation() {
 	return useMutation({
 		mutationKey: ["truss-opt"],
@@ -49,9 +57,13 @@ async function requestTrussOpt(
 		},
 		body: JSON.stringify(request),
 	});
-	const data = await response.json();
-	if (!response.ok || !data.success) {
-		throw new Error(data.error ?? "Truss optimization failed");
+	const data: unknown = await response.json();
+	if (!isTrussOptApiResponse(data) || !response.ok || !data.success) {
+		throw new Error(
+			isTrussOptApiResponse(data) && !data.success
+				? data.error
+				: "Truss optimization failed",
+		);
 	}
-	return data as TrussOptResult;
+	return data;
 }

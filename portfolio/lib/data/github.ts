@@ -26,6 +26,18 @@ interface GitHubContributionsResponse {
 	contributions: Array<Contribution & { level: number }>;
 }
 
+function isGitHubContributionsResponse(
+	data: unknown,
+): data is GitHubContributionsResponse {
+	if (typeof data !== "object" || data === null) return false;
+	const { total, contributions } = data as Record<string, unknown>;
+	return (
+		typeof total === "object" &&
+		total !== null &&
+		Array.isArray(contributions)
+	);
+}
+
 async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 	const response = await fetch("/api/github", {
 		method: "GET",
@@ -34,7 +46,10 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 		},
 	});
 	if (!response.ok) throw new Error("Failed to fetch GitHub metrics");
-	const data = (await response.json()) as GitHubContributionsResponse;
+	const data: unknown = await response.json();
+	if (!isGitHubContributionsResponse(data)) {
+		throw new Error("Unexpected GitHub metrics response shape");
+	}
 
 	const totalCommits = Object.values(data.total).reduce(
 		(sum, count) => sum + count,

@@ -29,6 +29,20 @@ interface ScholarMetrics {
 	citationsPerYear: { [year: string]: number };
 }
 
+function isGoogleScholarResponse(
+	data: unknown,
+): data is GoogleScholarResponse {
+	if (typeof data !== "object" || data === null) return false;
+	const { total_citations, citations_per_year, publications } =
+		data as Record<string, unknown>;
+	return (
+		typeof total_citations === "number" &&
+		typeof citations_per_year === "object" &&
+		citations_per_year !== null &&
+		Array.isArray(publications)
+	);
+}
+
 function computeHIndex(sortedCitations: number[]): number {
 	let hIndex = 0;
 	for (let i = 0; i < sortedCitations.length; i++) {
@@ -49,7 +63,10 @@ async function fetchScholarMetrics(): Promise<ScholarMetrics> {
 		},
 	});
 	if (!response.ok) throw new Error("Failed to fetch Google Scholar data");
-	const data = (await response.json()) as GoogleScholarResponse;
+	const data: unknown = await response.json();
+	if (!isGoogleScholarResponse(data)) {
+		throw new Error("Unexpected Google Scholar response shape");
+	}
 
 	// Calculate h-index (number of papers with at least h citations)
 	const sortedCitations = data.publications
