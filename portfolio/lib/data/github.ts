@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 
 export function useGithubQuery() {
 	return useQuery({
@@ -14,29 +15,16 @@ interface GitHubMetrics {
 	longestStreak: number;
 }
 
-interface Contribution {
-	date: string;
-	count: number;
-}
-
-interface GitHubContributionsResponse {
-	total: {
-		[year: string]: number;
-	};
-	contributions: Array<Contribution & { level: number }>;
-}
-
-function isGitHubContributionsResponse(
-	data: unknown,
-): data is GitHubContributionsResponse {
-	if (typeof data !== "object" || data === null) return false;
-	const { total, contributions } = data as Record<string, unknown>;
-	return (
-		typeof total === "object" &&
-		total !== null &&
-		Array.isArray(contributions)
-	);
-}
+const gitHubContributionsResponseSchema = z.object({
+	total: z.record(z.string(), z.number()),
+	contributions: z.array(
+		z.object({
+			date: z.string(),
+			count: z.number(),
+			level: z.number(),
+		}),
+	),
+});
 
 async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 	const response = await fetch("/api/github", {
@@ -46,10 +34,7 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 		},
 	});
 	if (!response.ok) throw new Error("Failed to fetch GitHub metrics");
-	const data: unknown = await response.json();
-	if (!isGitHubContributionsResponse(data)) {
-		throw new Error("Unexpected GitHub metrics response shape");
-	}
+	const data = gitHubContributionsResponseSchema.parse(await response.json());
 
 	const totalCommits = Object.values(data.total).reduce(
 		(sum, count) => sum + count,

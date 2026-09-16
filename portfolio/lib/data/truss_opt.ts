@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { z } from "zod";
 import type { LatticeType } from "@/lib/truss-opt/engine/mesh";
 
 interface TrussOptMeshInput {
@@ -16,28 +17,27 @@ export interface TrussOptimizeInput {
 	targetFraction: number;
 }
 
-export interface TrussOptResult {
-	normThickness: number[];
-	displacements: number[];
-	stresses: number[];
-	strainEnergy: number;
-	totalVolume: number;
-	maxStress: number;
-	minStress: number;
-}
+const trussOptResultSchema = z.object({
+	normThickness: z.array(z.number()),
+	displacements: z.array(z.number()),
+	stresses: z.array(z.number()),
+	strainEnergy: z.number(),
+	totalVolume: z.number(),
+	maxStress: z.number(),
+	minStress: z.number(),
+});
+
+export type TrussOptResult = z.infer<typeof trussOptResultSchema>;
 
 interface TrussOptRequest {
 	mesh: TrussOptMeshInput;
 	optimize?: TrussOptimizeInput;
 }
 
-type TrussOptApiResponse =
-	| ({ success: true } & TrussOptResult)
-	| { success: false; error: string };
-
-function isTrussOptApiResponse(data: unknown): data is TrussOptApiResponse {
-	return typeof data === "object" && data !== null && "success" in data;
-}
+const trussOptApiResponseSchema = z.discriminatedUnion("success", [
+	trussOptResultSchema.extend({ success: z.literal(true) }),
+	z.object({ success: z.literal(false), error: z.string() }),
+]);
 
 export function useTrussOptMutation() {
 	return useMutation({
@@ -57,13 +57,9 @@ async function requestTrussOpt(
 		},
 		body: JSON.stringify(request),
 	});
-	const data: unknown = await response.json();
-	if (!isTrussOptApiResponse(data) || !response.ok || !data.success) {
-		throw new Error(
-			isTrussOptApiResponse(data) && !data.success
-				? data.error
-				: "Truss optimization failed",
-		);
+	const data = trussOptApiResponseSchema.parse(await response.json());
+	if (!response.ok || !data.success) {
+		throw new Error(!data.success ? data.error : "Truss optimization failed");
 	}
 	return data;
 }
