@@ -1,6 +1,7 @@
 import { PRIV_TOKEN, USER } from "./config";
 import { computeStreaks, fetchYearlyContributions } from "./contributions";
 import { gh, searchCount } from "./github-client";
+import { fetchLargestPr } from "./largest-pr";
 import { fetchLoc } from "./loc";
 
 export interface LangShare {
@@ -22,6 +23,8 @@ export interface Stats {
 	locAdd: number;
 	locDel: number;
 	loc: number;
+	largestPrAdd: number;
+	largestPrDel: number;
 	languageShares: LangShare[];
 }
 
@@ -121,11 +124,12 @@ export async function fetchStats(): Promise<Stats> {
 		`fetchStats: user joined ${joinYear}, ${ownedRepoNames.length} owned repos`,
 	);
 
-	const [years, prs, reviews, locTotals] = await Promise.all([
+	const [years, prs, reviews, locTotals, largestPr] = await Promise.all([
 		fetchYearlyContributions(joinYear),
 		searchCount(`is:pr author:${USER}`),
 		searchCount(`is:pr reviewed-by:${USER} -author:${USER}`),
 		fetchLoc(ownedRepoNames, u.user.id),
+		fetchLargestPr(),
 	]);
 
 	const commits = years.reduce(
@@ -148,6 +152,8 @@ export async function fetchStats(): Promise<Stats> {
 		locAdd: locTotals.add,
 		locDel: locTotals.del,
 		loc: locTotals.add - locTotals.del,
+		largestPrAdd: largestPr.additions,
+		largestPrDel: largestPr.deletions,
 		languageShares: topLanguageShares(u.user.repositories.nodes),
 	};
 }

@@ -95,6 +95,12 @@ function infoLines(s: Stats): Line[] {
 			[`${formatNumber(s.locDel)}--`, "r"],
 			[" )", "d"],
 		]),
+		text([
+			["Largest PR: ", "k"],
+			[`+${formatNumber(s.largestPrAdd)}`, "g"],
+			[", ", "d"],
+			[`-${formatNumber(s.largestPrDel)}`, "r"],
+		]),
 	];
 }
 
