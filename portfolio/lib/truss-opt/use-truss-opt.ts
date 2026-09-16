@@ -23,7 +23,7 @@ export function useTrussOptRun() {
 			mutation.mutate(
 				optimize ? { mesh: meshInput, optimize } : { mesh: meshInput },
 				{
-					onSuccess: runSucceeded,
+					onSuccess: (result) => runSucceeded(kind, result),
 					onError: (error) => runFailed(error.message),
 				},
 			);

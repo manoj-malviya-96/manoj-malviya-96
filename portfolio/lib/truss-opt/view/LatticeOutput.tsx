@@ -5,13 +5,14 @@ import { Flex, Layer, Stat, Text } from "@manoj-malviya-96/atom";
 import {
 	isEditingRun,
 	isPendingRun,
+	resultOf,
 	trussOptState$,
 } from "@/lib/truss-opt/state";
 import { LatticeCanvas } from "./LatticeCanvas";
 
 export function LatticeOutput() {
-	const result = useSelector(() => trussOptState$.result.get());
 	const run = useSelector(() => trussOptState$.run.get());
+	const result = resultOf(run);
 	const isPending = isPendingRun(run);
 	const editing = isEditingRun(run);
 

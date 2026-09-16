@@ -80,13 +80,6 @@ export function drawLattice(
 
 	if (result) {
 		drawStressedMesh(ctx, mesh, points, result, scale);
-		drawEdges(
-			ctx,
-			mesh.connections,
-			points,
-			mesh.normThickness,
-			getThemeColor("muted"),
-		);
 	} else {
 		drawEdges(ctx, mesh.connections, points, mesh.normThickness, contentColor);
 	}
@@ -122,7 +115,7 @@ function drawStressedMesh(
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 		ctx.strokeStyle = stressColor((stresses[index] - minStress) / stressRange);
-		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * mesh.normThickness[index];
+		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * result.normThickness[index];
 		ctx.stroke();
 	}
 }

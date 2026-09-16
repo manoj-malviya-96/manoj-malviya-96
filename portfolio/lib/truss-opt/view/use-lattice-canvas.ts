@@ -8,7 +8,12 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { isEditingRun, placeNode, trussOptState$ } from "@/lib/truss-opt/state";
+import {
+	isEditingRun,
+	placeNode,
+	resultOf,
+	trussOptState$,
+} from "@/lib/truss-opt/state";
 import {
 	type CanvasSize,
 	computeOffset,
@@ -21,8 +26,8 @@ export function useLatticeCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [size, setSize] = useState<CanvasSize>({ width: 0, height: 0 });
 	const mesh = useSelector(() => trussOptState$.mesh.get());
-	const result = useSelector(() => trussOptState$.result.get());
 	const run = useSelector(() => trussOptState$.run.get());
+	const result = resultOf(run);
 	const editing = isEditingRun(run);
 
 	useEffect(() => {

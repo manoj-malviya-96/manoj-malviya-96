@@ -32,8 +32,18 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			bg="surface"
 			padding={{ x: "sm", y: "lg" }}
 		>
-			<Flex direction="col" gap="lg" hAlign="center" width="content">
-				<Flex direction="col" gap="md" hAlign="start" width="lg">
+			<Flex
+				direction="col"
+				gap="lg"
+				hAlign="center"
+				width={{ value: "content", max: "full" }}
+			>
+				<Flex
+					direction="col"
+					gap="md"
+					hAlign="start"
+					width={{ value: "lg", max: "full" }}
+				>
 					<Text variant="hero">{title}</Text>
 					<Text variant="subtitle" muted>
 						{summary}
@@ -53,7 +63,7 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 	switch (media.mockup) {
 		case undefined:
 			return (
-				<Atom as="div" width="lg">
+				<Atom as="div" width={{ value: "lg", max: "full" }}>
 					{child}
 				</Atom>
 			);
