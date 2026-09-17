@@ -9,4 +9,5 @@ export * from "@/lib/data/projects";
 export * from "@/lib/data/skills";
 export * from "@/lib/data/truss_opt";
 export * from "@/lib/data/work_experience";
+export * from "@/lib/data/work_items";
 export * from "@/lib/data/work_phases";
