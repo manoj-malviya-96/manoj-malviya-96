@@ -210,3 +210,34 @@ img {
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Scroll/mount reveal (lib/reveal.tsx). Deliberately long and short-travel: the
+   motion should land at the edge of attention, not announce itself. */
+.reveal {
+	opacity: 0;
+	transform: translateY(0.5rem);
+	transition:
+		opacity 1.1s var(--ease-out),
+		transform 1.1s var(--ease-out);
+}
+
+.reveal[data-visible="true"] {
+	opacity: 1;
+	transform: none;
+}
+
+/* Without JS the observer never runs, so nothing may stay hidden. */
+@media (scripting: none) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
