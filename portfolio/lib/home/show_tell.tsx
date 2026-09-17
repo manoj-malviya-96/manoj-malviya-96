@@ -87,6 +87,7 @@ function ProductCard({ id, metric }: ProductItem) {
 			blur
 			vAlign="center"
 			wrap
+			className="hover-card"
 		>
 			<Flex
 				direction="col"
