@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 
 export function useGithubQuery() {
 	return useQuery({
@@ -14,17 +15,16 @@ interface GitHubMetrics {
 	longestStreak: number;
 }
 
-interface Contribution {
-	date: string;
-	count: number;
-}
-
-interface GitHubContributionsResponse {
-	total: {
-		[year: string]: number;
-	};
-	contributions: Array<Contribution & { level: number }>;
-}
+const gitHubContributionsResponseSchema = z.object({
+	total: z.record(z.string(), z.number()),
+	contributions: z.array(
+		z.object({
+			date: z.string(),
+			count: z.number(),
+			level: z.number(),
+		}),
+	),
+});
 
 async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 	const response = await fetch("/api/github", {
@@ -34,7 +34,7 @@ async function fetchGitHubMetrics(): Promise<GitHubMetrics> {
 		},
 	});
 	if (!response.ok) throw new Error("Failed to fetch GitHub metrics");
-	const data = (await response.json()) as GitHubContributionsResponse;
+	const data = gitHubContributionsResponseSchema.parse(await response.json());
 
 	const totalCommits = Object.values(data.total).reduce(
 		(sum, count) => sum + count,

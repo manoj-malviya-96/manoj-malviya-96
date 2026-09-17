@@ -10,7 +10,7 @@ import { EmailAddress, RankedProjects } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Personal Projects", toc: "projects" },
+	{ url: "/projects", label: "Projects", toc: "projects" },
 	{ url: "/resume", label: "Résumé", toc: "resume" },
 ] as const;
 
@@ -18,8 +18,7 @@ type TocKey = (typeof NAV_LINKS)[number]["toc"];
 
 const TOC_CLOSE_DELAY_MS = 250;
 
-export default function HeaderBar() {
-	const pathname = usePathname();
+function useTocHover(closeDelayMs: number) {
 	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
 	const closeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
 		undefined,
@@ -28,18 +27,26 @@ export default function HeaderBar() {
 	const clearCloseTimeout = () => {
 		clearTimeout(closeTimeout.current);
 	};
-	const scheduleClose = () => {
+	const setToc = (toc: TocKey | null) => {
 		clearCloseTimeout();
-		closeTimeout.current = setTimeout(
-			() => setHoveredToc(null),
-			TOC_CLOSE_DELAY_MS,
-		);
-	};
-	const openToc = (toc: TocKey) => {
-		clearCloseTimeout();
-		setHoveredToc(toc);
+		if (toc === null) {
+			closeTimeout.current = setTimeout(
+				() => setHoveredToc(null),
+				closeDelayMs,
+			);
+		} else {
+			setHoveredToc(toc);
+		}
 	};
 	useEffect(() => clearCloseTimeout, []);
+
+	return { hoveredToc, setToc, clearCloseTimeout };
+}
+
+export default function HeaderBar() {
+	const pathname = usePathname();
+	const { hoveredToc, setToc, clearCloseTimeout } =
+		useTocHover(TOC_CLOSE_DELAY_MS);
 
 	const activeToc: TocKey | null = pathname.startsWith("/resume")
 		? "resume"
@@ -68,8 +75,8 @@ export default function HeaderBar() {
 							variant="tab"
 							isActive={isCurrent}
 							aria-current={isCurrent ? "page" : undefined}
-							onMouseEnter={() => openToc(toc)}
-							onMouseLeave={scheduleClose}
+							onMouseEnter={() => setToc(toc)}
+							onMouseLeave={() => setToc(null)}
 						>
 							{label}
 						</Link>
@@ -96,7 +103,7 @@ export default function HeaderBar() {
 				<HeaderToc
 					toc={tocKey}
 					onMouseEnter={clearCloseTimeout}
-					onMouseLeave={scheduleClose}
+					onMouseLeave={() => setToc(null)}
 				/>
 			) : undefined,
 	});

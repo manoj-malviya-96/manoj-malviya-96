@@ -17,7 +17,7 @@ const DRAW_SETTINGS = {
 		headLength_px: 10,
 		headAngle_rad: Math.PI / 7,
 	},
-};
+} as const;
 
 /** Scale mapping mesh mm to canvas px, fixed against the mesh's max possible size (not the
  * current mesh) — otherwise a bigger mesh at the same cell size renders *smaller* (everything
@@ -80,13 +80,6 @@ export function drawLattice(
 
 	if (result) {
 		drawStressedMesh(ctx, mesh, points, result, scale);
-		drawEdges(
-			ctx,
-			mesh.connections,
-			points,
-			mesh.normThickness,
-			getThemeColor("muted"),
-		);
 	} else {
 		drawEdges(ctx, mesh.connections, points, mesh.normThickness, contentColor);
 	}
@@ -122,7 +115,7 @@ function drawStressedMesh(
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 		ctx.strokeStyle = stressColor((stresses[index] - minStress) / stressRange);
-		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * mesh.normThickness[index];
+		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * result.normThickness[index];
 		ctx.stroke();
 	}
 }

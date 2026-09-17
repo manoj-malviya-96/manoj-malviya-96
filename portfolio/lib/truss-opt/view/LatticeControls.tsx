@@ -38,11 +38,11 @@ const LATTICE_OPTIONS = [
 export function LatticeControls() {
 	const meshConfig = useSelector(() => trussOptState$.meshConfig.get());
 	const optimizeConfig = useSelector(() => trussOptState$.optimizeConfig.get());
-	const hasResult = useSelector(() => trussOptState$.result.get() !== null);
 	const canRunFea = useSelector(() =>
 		isReadyToOptimize(trussOptState$.mesh.get()),
 	);
 	const run = useSelector(() => trussOptState$.run.get());
+	const hasResult = run.type === "simulated" || run.type === "optimized";
 	const isSimulating = run.type === "simulating";
 	const isOptimizing = run.type === "optimizing";
 	const isPending = isPendingRun(run);

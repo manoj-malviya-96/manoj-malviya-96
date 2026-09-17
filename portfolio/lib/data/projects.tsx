@@ -13,10 +13,10 @@ import {
 } from "@manoj-malviya-96/atom/icons";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
+import { Prose } from "@/lib/shared";
 import type { ExternalURL, MediaSource } from "@/lib/types";
-import trussOptScreenshot from "./truss-opt-screenshot.png";
 
-export const AllProjectIds = [
+const AllProjectIds = [
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -33,9 +33,9 @@ export const Projects: Record<ProjectId, Project> = {
 	atom: {
 		title: "Atom",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
-					Every option out there made me choose, a JS-in-JS styling library dragging its own runtime,
-					or CSS that throws out type safety. I got tired of choosing, so I built Atom: one primitive,
-					one stylesheet, and a type system that actually checks it.`,
+					Every option out there made me choose between a CSS-in-JS styling library dragging
+					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
+					built Atom: one primitive, one stylesheet, and a type system that actually checks it.`,
 		dates: "2024–2025",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
@@ -52,8 +52,14 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
+		media: {
+			mockup: "macbook",
+			kind: "video",
+			alt: "Atom framework demo",
+			src: getBlob("atom.webm"),
+		},
 		content: (
-			<List direction="col" gap="md">
+			<List direction="col" gap="md" width="lg">
 				<li>
 					<Text variant="body">
 						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays a
@@ -85,6 +91,7 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
 		media: {
+			mockup: "macbook",
 			kind: "video",
 			src: getBlob("muviz.webm"),
 			alt: "Muviz reacting to a track in real time.",
@@ -98,7 +105,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<List direction="col" gap="md">
+			<List direction="col" gap="md" width="lg">
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconVolumeHigh />
 					<Text variant="body">
@@ -145,7 +152,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Prose>
 				Give it a shape and get back a honeycomb lattice, skeletonized in C++
 				and exported straight to a VTK mesh, ready for your CAD tool. No manual
 				triangulation, no format conversion. The skeleton is a functional
@@ -153,7 +160,7 @@ export const Projects: Record<ProjectId, Project> = {
 				function pure input to output. The part that kept breaking was
 				staggering the hexagon centers correctly. Get that wrong and the whole
 				grid drifts.
-			</Text>
+			</Prose>
 		),
 	},
 	topopt_py: {
@@ -167,7 +174,7 @@ export const Projects: Record<ProjectId, Project> = {
 		effort: "high",
 		media: {
 			kind: "video",
-			src: getBlob("optimization.webm"),
+			src: getBlob("pixel-opt.webm"),
 			alt: "A topology optimization converging on a solution.",
 		},
 		links: {
@@ -183,14 +190,14 @@ export const Projects: Record<ProjectId, Project> = {
 			],
 		},
 		content: (
-			<Text variant="body">
+			<Prose>
 				The stiffness assembler now caches its sparsity pattern instead of
 				rebuilding it every iteration, and strain energy is a single einsum call
 				instead of a manual reshape-and-sum. Filtering swapped four nested loops
 				for one scipy.ndimage.convolve. Solver time still dominates, which is
 				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
 				to 2.6s.
-			</Text>
+			</Prose>
 		),
 	},
 	blackhole: {
@@ -201,8 +208,8 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
 		media: {
-			kind: "image",
-			src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?fm=jpg&q=60&w=1600&fit=crop",
+			kind: "video",
+			src: getBlob("blackhole.webm"),
 			alt: "Cover art for the black hole renderer.",
 		},
 		links: {
@@ -213,14 +220,14 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Prose>
 				Simulates real black-hole gravity. A compute shader integrates each
 				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
 				million solar masses), and a separate lensing fragment shader bends the
 				background grid around it. It runs as a Qt/OpenGL widget, falling back
 				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
 				rotates live instead of playing back a pre-rendered clip.
-			</Text>
+			</Prose>
 		),
 	},
 	ev_sim: {
@@ -243,7 +250,7 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Prose>
 				Answers one question: how many chargers do you actually need? Each run
 				simulates a year of 15-minute intervals, drawing car arrivals from a
 				Poisson-derived probability per charge point, with no queueing: a car
@@ -251,7 +258,7 @@ export const Projects: Record<ProjectId, Project> = {
 				power draw and watch demand, cost, and concurrency update immediately;
 				concurrency turned out to decay roughly exponentially as charger count
 				grows.
-			</Text>
+			</Prose>
 		),
 	},
 	mesha: {
@@ -273,30 +280,7 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: (
-			<List as="ol" direction="col" gap="xs">
-				{statusItem(
-					"green",
-					"Done",
-					"CLI: mesh repair as a standalone command-line tool.",
-				)}
-				{statusItem(
-					"green",
-					"Done",
-					"Server: same C++/Qt backend, exposed over WebSocket.",
-				)}
-				{statusItem(
-					"green",
-					"Done",
-					"Editor: Tauri + Next.js shell, wired end to end.",
-				)}
-				{statusItem(
-					"orange",
-					"Next",
-					"Repair algorithm: the actual mesh-repair logic.",
-				)}
-			</List>
-		),
+		content: <Prose>Todo</Prose>,
 	},
 	truss_opt: {
 		title: "Truss Optimizer",
@@ -306,8 +290,8 @@ export const Projects: Record<ProjectId, Project> = {
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
 		media: {
-			kind: "image",
-			src: trussOptScreenshot,
+			kind: "video",
+			src: getBlob("pixel-opt.webm"),
 			alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
 		},
 		links: {
@@ -319,14 +303,14 @@ export const Projects: Record<ProjectId, Project> = {
 			others: [],
 		},
 		content: (
-			<Text variant="body">
+			<Prose>
 				Place supports and loads on a cantilever lattice and this site's own API
 				route solves the FEA and runs an optimality-criteria search to
 				redistribute material. The browser only ever draws the answer. Each of
 				the 200 iterations re-solves the FEA, then bisects on the Lagrange
 				multiplier to hold total volume at 40% of the start, with a minimum
 				thickness clamp so no member vanishes to zero.
-			</Text>
+			</Prose>
 		),
 	},
 };
@@ -380,7 +364,7 @@ export type ProjectTag =
 	| SoftwareConcepts
 	| SoftSkills;
 
-export type ProjectEffort = "low" | "medium" | "high";
+type ProjectEffort = "low" | "medium" | "high";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -392,10 +376,12 @@ export type ProjectLink =
 	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
 	| { kind: "external"; label: string; href: ExternalURL };
 
-export type ProjectLinks = {
+type ProjectLinks = {
 	primary: ProjectLink;
 	others: readonly ProjectLink[];
 };
+
+export type ProjectMedia = { mockup?: "macbook" } & MediaSource;
 
 export type Project = {
 	title: string;
@@ -403,7 +389,7 @@ export type Project = {
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	media?: MediaSource;
+	media?: ProjectMedia;
 	links: ProjectLinks;
 	content?: ReactNode;
 };
@@ -417,9 +403,10 @@ function showProject(id: ProjectId) {
 		case "topopt_py":
 		case "honeycomb":
 		case "muviz":
+		case "blackhole":
 		case "truss_opt":
 			return true;
-		case "blackhole":
+
 		case "mesha":
 			return false;
 		default:
@@ -438,19 +425,6 @@ export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
 )
 	.map((id) => ({ id, ...Projects[id] }))
 	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
-
-function statusItem(
-	color: ColorToken,
-	status: string,
-	body: ReactNode,
-): ReactNode {
-	return (
-		<Flex as="li" direction="row" gap="xs" vAlign="start">
-			<Badge color={color}>{status}</Badge>
-			<Text variant="body">{body}</Text>
-		</Flex>
-	);
-}
 
 function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
