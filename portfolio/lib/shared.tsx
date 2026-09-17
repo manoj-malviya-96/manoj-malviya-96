@@ -1,5 +1,6 @@
 "use client";
 
+import type { ColorToken } from "@manoj-malviya-96/atom";
 import {
 	Link as AtomLink,
 	Flex,
@@ -9,7 +10,7 @@ import {
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
 
@@ -150,3 +151,20 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
+
+export function Accent({
+	children,
+	color = "indigo",
+}: {
+	children: ReactNode;
+	color?: ColorToken;
+}) {
+	return (
+		<span
+			className="accent"
+			style={{ color: `var(--color-${color})` } as CSSProperties}
+		>
+			{children}
+		</span>
+	);
+}
