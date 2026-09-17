@@ -1,24 +1,29 @@
 "use client";
 
-import { Atom, type AtomProps, type MotionEnter } from "@manoj-malviya-96/atom";
+import { Atom, type AtomProps } from "@manoj-malviya-96/atom";
 import type { ComponentProps, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 type RevealProps = {
 	children: ReactNode;
-	as?: MotionEnter;
+	/** Milliseconds, for staggering siblings. */
+	delay?: number;
 	colSpan?: AtomProps["colSpan"];
 	rowSpan?: AtomProps["rowSpan"];
 } & Pick<ComponentProps<"div">, "className">;
 
-// IntersectionObserver, not atom's useScrollEffect — this only needs a
-// one-shot "has this entered the viewport" check per card, not a continuous
-// scroll subscription. display: contents keeps the pre-reveal wrapper out of
-// CSS grid/flex layout, so a plain, visible, no-JS render matches the final
-// layout exactly (no FOUC).
+// Own `.reveal` CSS instead of atom's `enter`: atom's motion rides on
+// @starting-style, which only plays when the node is inserted, so a wrapper that
+// swaps element types on reveal remounts its subtree and restarts every nested
+// reveal inside it. One stable element plus a class flip keeps nested reveals
+// independent and lets each play exactly once.
+//
+// IntersectionObserver, not atom's useScrollEffect — a one-shot "has this entered
+// the viewport" check, not a continuous scroll subscription. observe() reports the
+// current state immediately, so cards already on screen reveal on mount.
 export default function Reveal({
 	children,
-	as = "rise",
+	delay,
 	colSpan,
 	rowSpan,
 	className,
@@ -43,20 +48,14 @@ export default function Reveal({
 		return () => observer.disconnect();
 	}, []);
 
-	if (!visible) {
-		return (
-			<div ref={ref} style={{ display: "contents" }} className={className}>
-				{children}
-			</div>
-		);
-	}
-
 	return (
 		<Atom
-			enter={as}
+			ref={ref}
+			className={className ? `reveal ${className}` : "reveal"}
+			data-visible={visible}
+			{...(delay !== undefined && { style: { transitionDelay: `${delay}ms` } })}
 			{...(colSpan !== undefined && { colSpan })}
 			{...(rowSpan !== undefined && { rowSpan })}
-			{...(className !== undefined && { className })}
 		>
 			{children}
 		</Atom>

@@ -57,6 +57,18 @@ img {
 	display: contents;
 }
 
+.accent::before {
+	color: var(--color-muted);
+	content: "[";
+	margin-inline-end: 0.08em;
+}
+
+.accent::after {
+	color: var(--color-muted);
+	content: "]";
+	margin-inline-start: 0.08em;
+}
+
 .hover-card {
 	position: relative;
 	transition:
@@ -79,6 +91,12 @@ img {
 	transition: opacity var(--duration-base) var(--ease-out);
 }
 
+.magnetic {
+	display: inline-flex;
+	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+	transition: transform var(--duration-base) var(--ease-out);
+}
+
 @media (hover: hover) {
 	.hover-card:hover {
 		transform: translateY(-2px);
@@ -88,10 +106,15 @@ img {
 	.hover-card:hover::after {
 		opacity: 1;
 	}
+
+	.magnetic {
+		will-change: transform;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.hover-card {
+	.hover-card,
+	.magnetic {
 		transition: none;
 	}
 
@@ -195,5 +218,36 @@ img {
 	.loop-grid,
 	.stat-grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* Scroll/mount reveal (lib/reveal.tsx). Deliberately long and short-travel: the
+   motion should land at the edge of attention, not announce itself. */
+.reveal {
+	opacity: 0;
+	transform: translateY(0.5rem);
+	transition:
+		opacity 1.1s var(--ease-out),
+		transform 1.1s var(--ease-out);
+}
+
+.reveal[data-visible="true"] {
+	opacity: 1;
+	transform: none;
+}
+
+/* Without JS the observer never runs, so nothing may stay hidden. */
+@media (scripting: none) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
 	}
 }

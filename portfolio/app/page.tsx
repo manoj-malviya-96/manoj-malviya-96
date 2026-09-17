@@ -10,8 +10,9 @@ import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
+import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
-import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 import Spotlight from "@/lib/spotlight";
 
 export default function Landing() {
@@ -30,7 +31,8 @@ function Hero() {
 		<HeroSection id="home-hero">
 			<Eyebrow> Senior product engineer 📍 Berlin, DE</Eyebrow>
 			<Text variant="hero">
-				Building intelligent products people actually use.
+				Building <Accent color="indigo">intelligent products</Accent> people
+				actually use.
 			</Text>
 			<Text variant="subtitle">
 				I'm Manoj Malviya. I combine systems engineering, computational design,
@@ -46,21 +48,25 @@ function Hero() {
 				hAlign="start"
 				wrap
 			>
-				<Link
-					url="/projects"
-					variant="button"
-					buttonVariant="filled"
-					size="sm"
-					label="Personal Projects"
-				/>
-				<Link
-					url="/resume"
-					variant="button"
-					buttonVariant="filled"
-					color="primary"
-					size="sm"
-					label="Past Experience"
-				/>
+				<Magnetic>
+					<Link
+						url="/projects"
+						variant="button"
+						buttonVariant="filled"
+						size="sm"
+						label="Personal Projects"
+					/>
+				</Magnetic>
+				<Magnetic>
+					<Link
+						url="/resume"
+						variant="button"
+						buttonVariant="filled"
+						color="primary"
+						size="sm"
+						label="Past Experience"
+					/>
+				</Magnetic>
 			</Flex>
 		</HeroSection>
 	);
@@ -71,8 +77,8 @@ function Loop() {
 		<Section id="home-loop">
 			<SectionHeader title="Complex problems in. Intelligent products out." />
 			<Grid columns={4} gap="md" className="loop-grid">
-				{PHASE_IDS.map((id) => (
-					<Reveal key={id}>
+				{PHASE_IDS.map((id, index) => (
+					<Reveal key={id} delay={index * 120}>
 						<Spotlight>
 							<LoopCard id={id} {...Phases[id]} />
 						</Spotlight>
@@ -86,12 +92,16 @@ function Loop() {
 function LoopCard({ id, label, copy }: { id: PhaseId } & Phase) {
 	const PhaseIcon = phaseIcon(id);
 	return (
-		<FlexCard direction="col" className="hover-card">
-			<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
-				<PhaseIcon size="sm" />
-				<Text variant="title">{label}</Text>
-			</Flex>
-			<Text variant="body">{copy}</Text>
+		<FlexCard direction="col">
+			<Reveal delay={100}>
+				<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
+					<PhaseIcon size="sm" />
+					<Text variant="title">{label}</Text>
+				</Flex>
+			</Reveal>
+			<Reveal delay={240}>
+				<Text variant="body">{copy}</Text>
+			</Reveal>
 		</FlexCard>
 	);
 }
