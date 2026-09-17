@@ -83,7 +83,7 @@ function Loop() {
 function LoopCard({ id, label, copy }: { id: PhaseId } & Phase) {
 	const PhaseIcon = phaseIcon(id);
 	return (
-		<FlexCard direction="col">
+		<FlexCard direction="col" className="hover-card">
 			<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
 				<PhaseIcon size="sm" />
 				<Text variant="title">{label}</Text>

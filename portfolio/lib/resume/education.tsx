@@ -17,6 +17,7 @@ export default function Education() {
 							padding="lg"
 							radius="lg"
 							bg="surface"
+							className="hover-card"
 						>
 							<Flex direction="row" gap="xs" vAlign="center">
 								<IconGraduationCap size="sm" />

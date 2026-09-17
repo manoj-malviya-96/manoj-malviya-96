@@ -51,6 +51,45 @@ img {
 	content-visibility: auto;
 }
 
+.hover-card {
+	position: relative;
+	transition:
+		transform var(--duration-base) var(--ease-out),
+		box-shadow var(--duration-base) var(--ease-out);
+}
+
+.hover-card::after {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: radial-gradient(
+		circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+		color-mix(in srgb, var(--color-content) 8%, transparent),
+		transparent 45%
+	);
+	content: "";
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.hover-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lift);
+	}
+
+	.hover-card:hover::after {
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hover-card {
+		transition: none;
+	}
+}
+
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {

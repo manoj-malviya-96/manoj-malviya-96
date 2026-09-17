@@ -61,7 +61,12 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid columns={2} className="track-row" padding="lg" bg="surface">
+		<Grid
+			columns={2}
+			className="track-row hover-card"
+			padding="lg"
+			bg="surface"
+		>
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
 					as={NextImage}
