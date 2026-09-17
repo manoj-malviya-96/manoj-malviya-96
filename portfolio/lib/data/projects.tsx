@@ -308,48 +308,67 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 };
 
-type SoftwareConcepts =
-	| "web"
-	| "mobile"
-	| "ai"
-	| "rendering"
-	| "open-source"
-	| "high-performance"
-	| "gpu"
-	| "optimization"
-	| "cad"
-	| "simulation"
-	| "ui-development"
-	| "a/b testing"
-	| "micro-services";
+const SOFTWARE_CONCEPTS = [
+	"web",
+	"mobile",
+	"ai",
+	"rendering",
+	"open-source",
+	"high-performance",
+	"gpu",
+	"optimization",
+	"cad",
+	"simulation",
+	"ui-development",
+	"a/b testing",
+	"micro-services",
+] as const;
 
-type SoftSkills =
-	| "communication"
-	| "ui/ux"
-	| "project-management"
-	| "devops"
-	| "testing";
+const SOFT_SKILLS = [
+	"communication",
+	"ui/ux",
+	"project-management",
+	"devops",
+	"testing",
+] as const;
 
-type ProgrammingFrameworks =
-	| "react"
-	| "nextjs"
-	| "qt/qml"
-	| "tailwind"
-	| "vtk"
-	| "numpy"
-	| "pytorch"
-	| "tensorflow"
-	| "wasm"
-	| "threejs"
-	| "opengl";
+const PROGRAMMING_FRAMEWORKS = [
+	"react",
+	"nextjs",
+	"qt/qml",
+	"tailwind",
+	"vtk",
+	"numpy",
+	"pytorch",
+	"tensorflow",
+	"wasm",
+	"threejs",
+	"opengl",
+] as const;
 
-type ProgrammingLanguage =
-	| "typescript"
-	| "python"
-	| "rust"
-	| "go"
-	| "c++"
-	| "swift";
+const PROGRAMMING_LANGUAGES = [
+	"typescript",
+	"python",
+	"rust",
+	"go",
+	"c++",
+	"swift",
+] as const;
+
+type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
+type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
+type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
+type ProgrammingLanguage = ValuesOf<typeof PROGRAMMING_LANGUAGES>;
+
+export const TAG_GROUPS = [
+	{ label: "Languages", tags: PROGRAMMING_LANGUAGES },
+	{ label: "Frameworks", tags: PROGRAMMING_FRAMEWORKS },
+	{ label: "Domains", tags: SOFTWARE_CONCEPTS },
+	{ label: "Practice", tags: SOFT_SKILLS },
+] as const satisfies ReadonlyArray<{
+	label: string;
+	tags: readonly ProjectTag[];
+}>;
 
 export type ProjectTag =
 	| ProgrammingFrameworks
