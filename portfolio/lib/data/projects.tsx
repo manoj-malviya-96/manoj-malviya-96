@@ -1,11 +1,4 @@
-import {
-	assertNever,
-	Badge,
-	type ColorToken,
-	Flex,
-	List,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { assertNever, Flex, List, Text } from "@manoj-malviya-96/atom";
 import {
 	IconLightbulb,
 	IconPaintBrush,

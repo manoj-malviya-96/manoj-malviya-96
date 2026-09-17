@@ -2,7 +2,6 @@
 
 import {
 	Link as AtomLink,
-	Badge,
 	Flex,
 	Image,
 	Text,
