@@ -3,6 +3,7 @@
 import { Badge, Flex, Grid, Stat, Text } from "@manoj-malviya-96/atom";
 import { IconPalette } from "@manoj-malviya-96/atom/icons";
 import { Projects, useGithubQuery, useGoogleScholarQuery } from "@/lib/data";
+import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
 
 type ProductItem = {
@@ -65,7 +66,9 @@ export default function ShowAndTell() {
 				}
 			/>
 			{PRODUCTS.map((product) => (
-				<ProductCard key={product.id} {...product} />
+				<Reveal key={product.id} colSpan="3">
+					<ProductCard {...product} />
+				</Reveal>
 			))}
 		</Grid>
 	);
@@ -84,7 +87,6 @@ function ProductCard({ id, metric }: ProductItem) {
 			blur
 			vAlign="center"
 			wrap
-			colSpan="3"
 		>
 			<Flex
 				direction="col"

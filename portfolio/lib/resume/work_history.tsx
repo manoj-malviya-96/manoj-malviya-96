@@ -18,6 +18,7 @@ import {
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
+import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
 
 type ExperienceGroup = {
@@ -45,7 +46,9 @@ export default function WorkHistory() {
 	return (
 		<Flex direction="col" className="track-list">
 			{EXPERIENCE_GROUPS.map((group) => (
-				<TrackRow key={group.organization} group={group} />
+				<Reveal key={group.organization}>
+					<TrackRow group={group} />
+				</Reveal>
 			))}
 		</Flex>
 	);
