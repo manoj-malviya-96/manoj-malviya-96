@@ -1,10 +1,9 @@
-import { Flex, Progress } from "@manoj-malviya-96/atom";
+import { Atom, Flex, GlowCapture, Progress } from "@manoj-malviya-96/atom";
 import { Page } from "@manoj-malviya-96/atom/system";
 import { Suspense } from "react";
 import { RankedProjects } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
 import Reveal from "@/lib/reveal";
-import Spotlight from "@/lib/spotlight";
 
 export default function ProjectsPage() {
 	return (
@@ -30,26 +29,27 @@ export default function ProjectsPage() {
 					</Flex>
 				}
 			>
-				<Flex
-					as={"article"}
-					direction="col"
-					gap="xl"
-					hAlign="center"
-					margin={{
-						top: "xl",
-					}}
-					width="full"
-					vAlign="center"
-				>
-					{/* TODO use DynamicList when its ready */}
-					{RankedProjects.map(({ id }) => (
-						<Reveal key={id}>
-							<Spotlight>
+				{/* RISK: GlowCapture owns the `as` slot, so <article> is its own wrapper. */}
+				<Atom as="article" width="full">
+					<GlowCapture
+						as={Flex}
+						direction="col"
+						gap="xl"
+						hAlign="center"
+						margin={{
+							top: "xl",
+						}}
+						width="full"
+						vAlign="center"
+					>
+						{/* TODO use DynamicList when its ready */}
+						{RankedProjects.map(({ id }) => (
+							<Reveal key={id}>
 								<ProjectCard project={id} />
-							</Spotlight>
-						</Reveal>
-					))}
-				</Flex>
+							</Reveal>
+						))}
+					</GlowCapture>
+				</Atom>
 			</Suspense>
 		</Page>
 	);

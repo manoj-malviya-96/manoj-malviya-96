@@ -2,6 +2,8 @@ import type { TimelineEvent } from "@manoj-malviya-96/atom";
 import {
 	Badge,
 	Flex,
+	GlowCapture,
+	GlowContainer,
 	Grid,
 	Image,
 	List,
@@ -20,7 +22,6 @@ import {
 import { formatDate } from "@/lib/helper";
 import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
-import Spotlight from "@/lib/spotlight";
 
 type ExperienceGroup = {
 	organization: OrganizationId;
@@ -45,15 +46,13 @@ const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);
 
 export default function WorkHistory() {
 	return (
-		<Flex direction="col" className="track-list">
+		<GlowCapture as={Flex} direction="col" className="track-list">
 			{EXPERIENCE_GROUPS.map((group) => (
 				<Reveal key={group.organization}>
-					<Spotlight>
-						<TrackRow group={group} />
-					</Spotlight>
+					<TrackRow group={group} />
 				</Reveal>
 			))}
-		</Flex>
+		</GlowCapture>
 	);
 }
 
@@ -64,7 +63,8 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid
+		<GlowContainer
+			as={Grid}
 			columns={2}
 			className="track-row hover-card"
 			padding="lg"
@@ -93,7 +93,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 					experiences.length === 1 ? "track-timeline-single" : undefined
 				}
 			/>
-		</Grid>
+		</GlowContainer>
 	);
 }
 

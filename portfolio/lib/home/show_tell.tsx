@@ -1,11 +1,18 @@
 "use client";
 
-import { Badge, Flex, Grid, Stat, Text } from "@manoj-malviya-96/atom";
+import {
+	Badge,
+	Flex,
+	GlowCapture,
+	GlowContainer,
+	Grid,
+	Stat,
+	Text,
+} from "@manoj-malviya-96/atom";
 import { IconPalette } from "@manoj-malviya-96/atom/icons";
 import { Projects, useGithubQuery, useGoogleScholarQuery } from "@/lib/data";
 import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
-import Spotlight from "@/lib/spotlight";
 
 type ProductItem = {
 	id: "muviz" | "atom";
@@ -25,7 +32,7 @@ export default function ShowAndTell() {
 	const scholar = scholarQuery.data;
 
 	return (
-		<Grid columns={3} gap="md" className="stat-grid">
+		<GlowCapture as={Grid} columns={3} gap="md" className="stat-grid">
 			{github && (
 				<Stat
 					label="GitHub"
@@ -68,12 +75,10 @@ export default function ShowAndTell() {
 			/>
 			{PRODUCTS.map((product) => (
 				<Reveal key={product.id} colSpan="3">
-					<Spotlight>
-						<ProductCard {...product} />
-					</Spotlight>
+					<ProductCard {...product} />
 				</Reveal>
 			))}
-		</Grid>
+		</GlowCapture>
 	);
 }
 
@@ -81,7 +86,8 @@ function ProductCard({ id, metric }: ProductItem) {
 	const { title, summary, media } = Projects[id];
 
 	return (
-		<Flex
+		<GlowContainer
+			as={Flex}
 			direction="row"
 			gap="lg"
 			padding="lg"
@@ -113,6 +119,6 @@ function ProductCard({ id, metric }: ProductItem) {
 				</Text>
 				<Badge color="green">{metric}</Badge>
 			</Flex>
-		</Flex>
+		</GlowContainer>
 	);
 }
