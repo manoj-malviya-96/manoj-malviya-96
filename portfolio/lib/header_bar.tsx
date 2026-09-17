@@ -1,6 +1,6 @@
 "use client";
 
-import { assertNever, Flex } from "@manoj-malviya-96/atom";
+import { assertNever, Flex, useScrollEffect } from "@manoj-malviya-96/atom";
 import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
@@ -123,25 +123,56 @@ function HeaderToc({
 	switch (toc) {
 		case "projects":
 			return (
-				<Flex
-					as="nav"
-					aria-label="Project sections"
-					direction="row"
-					gap="sm"
-					wrap
-					onMouseEnter={onMouseEnter}
-					onMouseLeave={onMouseLeave}
-				>
-					{RankedProjects.map(({ id, title }) => (
-						<Link key={id} url={`/projects/#${id}`} variant="tab">
-							{title}
-						</Link>
-					))}
-				</Flex>
+				<ProjectToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
 			);
 		case "resume":
 			return undefined;
 		default:
 			assertNever(toc);
 	}
+}
+
+function ProjectToc({
+	onMouseEnter,
+	onMouseLeave,
+}: {
+	onMouseEnter: () => void;
+	onMouseLeave: () => void;
+}) {
+	const activeProject = useScrollEffect(() => {
+		if (typeof document === "undefined") return null;
+
+		let active: string | null = null;
+		for (const { id } of RankedProjects) {
+			const section = document.getElementById(id);
+			if (section && section.getBoundingClientRect().top <= 120) {
+				active = id;
+			}
+		}
+		return active;
+	}, null);
+
+	return (
+		<Flex
+			as="nav"
+			aria-label="Project sections"
+			direction="row"
+			gap="sm"
+			wrap
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}
+		>
+			{RankedProjects.map(({ id, title }) => (
+				<Link
+					key={id}
+					url={`/projects/#${id}`}
+					variant="tab"
+					isActive={activeProject === id}
+					aria-current={activeProject === id ? "location" : undefined}
+				>
+					{title}
+				</Link>
+			))}
+		</Flex>
+	);
 }
