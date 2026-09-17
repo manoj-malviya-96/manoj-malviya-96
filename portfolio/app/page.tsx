@@ -1,19 +1,6 @@
-import {
-	assertNever,
-	Flex,
-	GlowCapture,
-	GlowContainer,
-	Grid,
-	Text,
-} from "@manoj-malviya-96/atom";
-import {
-	IconChartLine,
-	IconCode,
-	IconMagnifyingGlass,
-	IconPalette,
-} from "@manoj-malviya-96/atom/icons";
+import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { Page } from "@manoj-malviya-96/atom/system";
-import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
+import { PHASE_IDS, type Phase, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
@@ -81,31 +68,28 @@ function Loop() {
 	return (
 		<Section id="home-loop">
 			<SectionHeader title="Complex problems in. Intelligent products out." />
-			<GlowCapture as={Grid} columns={4} gap="md" className="loop-grid">
+			<Grid columns={4} gap="md">
 				{PHASE_IDS.map((id, index) => (
 					<Reveal key={id} delay={index * 120}>
-						<LoopCard id={id} {...Phases[id]} />
+						<PhaseCol index={index} {...Phases[id]} />
 					</Reveal>
 				))}
-			</GlowCapture>
+			</Grid>
 		</Section>
 	);
 }
 
-function LoopCard({ id, label, copy }: { id: PhaseId } & Phase) {
-	const PhaseIcon = phaseIcon(id);
+function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 	return (
-		<FlexCard direction="col">
-			<Reveal delay={100}>
-				<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
-					<PhaseIcon size="sm" />
-					<Text variant="title">{label}</Text>
-				</Flex>
-			</Reveal>
-			<Reveal delay={240}>
-				<Text variant="body">{copy}</Text>
-			</Reveal>
-		</FlexCard>
+		<Flex direction="col" gap="sm">
+			<Text variant="overline" mono>
+				{String(index + 1).padStart(2, "0")}
+			</Text>
+			<Text variant="title">{label}</Text>
+			<Text variant="body" muted>
+				{copy}
+			</Text>
+		</Flex>
 	);
 }
 
@@ -121,34 +105,6 @@ function FeaturedWork() {
 		</Section>
 	);
 }
-
-function phaseIcon(id: PhaseId) {
-	switch (id) {
-		case "discover":
-			return IconMagnifyingGlass;
-		case "design":
-			return IconPalette;
-		case "build":
-			return IconCode;
-		case "measure":
-			return IconChartLine;
-		default:
-			assertNever(id);
-	}
-}
-
-// RISK: base is GlowContainer, not Flex — every loop card now carries the pointer glow.
-const FlexCard = withDefaults(GlowContainer)({
-	as: Flex,
-	hAlign: "between",
-	vAlign: "center",
-	gap: "md",
-	padding: "md",
-	radius: "lg",
-	bg: "surface",
-	blur: true,
-	wrap: true,
-});
 
 const HeroSection = withDefaults(Section)({
 	as: "header",
