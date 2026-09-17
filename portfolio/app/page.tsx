@@ -1,4 +1,11 @@
-import { assertNever, Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import {
+	assertNever,
+	Flex,
+	GlowCapture,
+	GlowContainer,
+	Grid,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconChartLine,
 	IconCode,
@@ -13,7 +20,6 @@ import ShowAndTell from "@/lib/home/show_tell";
 import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
 import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
-import Spotlight from "@/lib/spotlight";
 
 export default function Landing() {
 	return (
@@ -76,15 +82,13 @@ function Loop() {
 	return (
 		<Section id="home-loop">
 			<SectionHeader title="Complex problems in. Intelligent products out." />
-			<Grid columns={4} gap="md" className="loop-grid">
+			<GlowCapture as={Grid} columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id, index) => (
 					<Reveal key={id} delay={index * 120}>
-						<Spotlight>
-							<LoopCard id={id} {...Phases[id]} />
-						</Spotlight>
+						<LoopCard id={id} {...Phases[id]} />
 					</Reveal>
 				))}
-			</Grid>
+			</GlowCapture>
 		</Section>
 	);
 }
@@ -134,7 +138,9 @@ function phaseIcon(id: PhaseId) {
 	}
 }
 
-const FlexCard = withDefaults(Flex)({
+// RISK: base is GlowContainer, not Flex — every loop card now carries the pointer glow.
+const FlexCard = withDefaults(GlowContainer)({
+	as: Flex,
 	hAlign: "between",
 	vAlign: "center",
 	gap: "md",

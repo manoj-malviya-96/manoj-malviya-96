@@ -1,4 +1,10 @@
-import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
+import {
+	Atom,
+	assertNever,
+	Flex,
+	GlowContainer,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -21,22 +27,21 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 	const { title, summary, dates, tags, media, content } = Projects[project];
 
 	return (
-		<Flex
+		<GlowContainer
 			id={project}
-			direction="col"
-			gap="lg"
-			radius="md"
-			hAlign="center"
 			as="section"
+			radius="md"
 			width="full"
 			bg="raised"
 			padding={{ x: "none", y: "lg" }}
 			className="hover-card"
 		>
+			{/* RISK: the section is a plain block now, so this lone child centers itself. */}
 			<Flex
 				direction="col"
 				gap="lg"
 				hAlign="center"
+				margin={{ x: "auto" }}
 				width={{ value: "content", max: "full" }}
 			>
 				<Reveal>
@@ -63,7 +68,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 					<ProjectTags tags={tags} date={dates} />
 				</Reveal>
 			</Flex>
-		</Flex>
+		</GlowContainer>
 	);
 }
 
