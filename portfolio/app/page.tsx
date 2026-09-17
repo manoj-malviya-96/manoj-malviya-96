@@ -35,14 +35,13 @@ export default function Landing() {
 function Hero() {
 	return (
 		<HeroSection id="home-hero">
-			<Eyebrow> Senior product engineer 📍 Berlin, DE</Eyebrow>
+			<Eyebrow>Senior product engineer · Berlin, DE</Eyebrow>
 			<Text variant="hero">
-				Building <Accent color="indigo">intelligent products</Accent> people
-				actually use.
+				Manoj <Accent color="indigo">Malviya</Accent>
 			</Text>
-			<Text variant="subtitle">
-				I'm Manoj Malviya. I combine systems engineering, computational design,
-				and high-performance C++ with modern product UI to turn technically hard
+			<Text variant="body" muted>
+				I combine systems engineering, computational design, and
+				high-performance C++ with modern product UI to turn technically hard
 				problems into fast, intuitive products.
 			</Text>
 
@@ -59,6 +58,7 @@ function Hero() {
 						url="/projects"
 						variant="button"
 						buttonVariant="filled"
+						color="primary"
 						size="sm"
 						label="Personal Projects"
 					/>
@@ -67,8 +67,7 @@ function Hero() {
 					<Link
 						url="/resume"
 						variant="button"
-						buttonVariant="filled"
-						color="primary"
+						buttonVariant="plain"
 						size="sm"
 						label="Past Experience"
 					/>
