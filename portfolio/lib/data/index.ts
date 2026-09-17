@@ -1,3 +1,4 @@
+export * from "@/lib/data/blogs";
 export * from "@/lib/data/degrees";
 export * from "@/lib/data/github";
 export * from "@/lib/data/google_scholar";
