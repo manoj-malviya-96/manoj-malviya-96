@@ -70,8 +70,8 @@ function Loop() {
 		<Section id="home-loop">
 			<SectionHeader title="Complex problems in. Intelligent products out." />
 			<Grid columns={4} gap="md" className="loop-grid">
-				{PHASE_IDS.map((id) => (
-					<Reveal key={id}>
+				{PHASE_IDS.map((id, index) => (
+					<Reveal key={id} delay={index * 120}>
 						<LoopCard id={id} {...Phases[id]} />
 					</Reveal>
 				))}
@@ -84,11 +84,15 @@ function LoopCard({ id, label, copy }: { id: PhaseId } & Phase) {
 	const PhaseIcon = phaseIcon(id);
 	return (
 		<FlexCard direction="col">
-			<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
-				<PhaseIcon size="sm" />
-				<Text variant="title">{label}</Text>
-			</Flex>
-			<Text variant="body">{copy}</Text>
+			<Reveal delay={100}>
+				<Flex as="span" hAlign="start" gap="sm" vAlign="center" direction="row">
+					<PhaseIcon size="sm" />
+					<Text variant="title">{label}</Text>
+				</Flex>
+			</Reveal>
+			<Reveal delay={240}>
+				<Text variant="body">{copy}</Text>
+			</Reveal>
 		</FlexCard>
 	);
 }
