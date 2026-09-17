@@ -1,11 +1,10 @@
-import { assertNever, Flex, Image, Text, Video } from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import NextImage from "next/image";
 import {
 	type Project,
 	type ProjectId,
@@ -14,7 +13,9 @@ import {
 	Projects,
 } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
-import { Link } from "@/lib/shared";
+import { MacbookMockup } from "@/lib/macbook_mockup";
+import Reveal from "@/lib/reveal";
+import { Link, Media } from "@/lib/shared";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
 	const { title, summary, dates, tags, media, content } = Projects[project];
@@ -24,31 +25,65 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			id={project}
 			direction="col"
 			gap="lg"
-			bg="surface"
-			padding="lg"
-			radius="lg"
+			radius="md"
 			hAlign="center"
 			as="section"
 			width="full"
+			bg="raised"
+			padding={{ x: "none", y: "lg" }}
+			className="hover-card"
 		>
 			<Flex
 				direction="col"
-				gap="md"
+				gap="lg"
 				hAlign="center"
-				width="lg"
-				style={{ textAlign: "center" }}
+				width={{ value: "content", max: "full" }}
 			>
-				<Text variant="hero">{title}</Text>
-				<Text variant="subtitle" muted>
-					{summary}
-				</Text>
-				<ProjectLinks project={project} />
+				<Reveal>
+					<Flex
+						direction="col"
+						gap="md"
+						hAlign="start"
+						width={{ value: "lg", max: "full" }}
+					>
+						<Text variant="hero">{title}</Text>
+						<Text variant="subtitle" muted>
+							{summary}
+						</Text>
+						<ProjectLinks project={project} />
+					</Flex>
+				</Reveal>
+				{media && (
+					<Reveal delay={140}>
+						<ProjectMediaComponent media={media} />
+					</Reveal>
+				)}
+				{content && <Reveal delay={220}>{content}</Reveal>}
+				<Reveal delay={300}>
+					<ProjectTags tags={tags} date={dates} />
+				</Reveal>
 			</Flex>
-			{media && <ProjectCover media={media} />}
-			{content}
-			<ProjectTags tags={tags} date={dates} />
 		</Flex>
 	);
+}
+
+function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
+	switch (media.mockup) {
+		case undefined:
+			return (
+				<Atom as="div" width={{ value: "lg", max: "full" }}>
+					<Media media={media} />
+				</Atom>
+			);
+		case "macbook":
+			return (
+				<MacbookMockup>
+					<Media media={media} />
+				</MacbookMockup>
+			);
+		default:
+			assertNever(media.mockup);
+	}
 }
 
 function ProjectTags({ tags, date }: { tags: Project["tags"]; date: string }) {
@@ -56,62 +91,6 @@ function ProjectTags({ tags, date }: { tags: Project["tags"]; date: string }) {
 		<Text variant="caption" muted>
 			{dottedConcatString([date, ...tags])}
 		</Text>
-	);
-}
-
-function ProjectCover({ media }: { media: ProjectMedia }) {
-	if (media.kind === "video") {
-		return (
-			<Video
-				src={media.src}
-				aria-label={media.alt}
-				fit="cover"
-				ratio="video"
-				radius="md"
-				autoPlay
-				preload="none"
-				muted
-				loop
-				role="img"
-				playsInline
-				controls={false}
-			/>
-		);
-	}
-	if (typeof media.src === "string") {
-		// Todo integrate in atom: Image's width/height are its own Size-token scale, so they can't
-		// carry the pixel dimensions next/image needs to build a srcset for a remote (non-static-import)
-		// source — `fill` is the only next/image sizing mode that doesn't require those. Falls back to a
-		// plain sized+clipped box instead of atom's fit/ratio classes, which the same reason rules out.
-		return (
-			<div
-				style={{
-					position: "relative",
-					aspectRatio: "16 / 9",
-					width: "100%",
-					overflow: "hidden",
-					borderRadius: "var(--radius-md)",
-				}}
-			>
-				<NextImage
-					src={media.src}
-					alt={media.alt}
-					fill
-					sizes="(min-width: 920px) 50vw, 100vw"
-					style={{ objectFit: "cover" }}
-				/>
-			</div>
-		);
-	}
-	return (
-		<Image
-			as={NextImage}
-			src={media.src}
-			alt={media.alt}
-			fit="cover"
-			ratio="video"
-			radius="md"
-		/>
 	);
 }
 

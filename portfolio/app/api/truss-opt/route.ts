@@ -3,17 +3,13 @@ import { computeFea } from "@/lib/truss-opt/engine/fea";
 import {
 	createTrussMesh,
 	type LatticeType,
+	MESH_BOUNDS,
 	type TrussMesh,
 } from "@/lib/truss-opt/engine/mesh";
 import { optimizeTruss } from "@/lib/truss-opt/engine/optimizer";
 
-// Mirrors the sliders in LatticeControls — the UI never lets a user past these, so a direct
-// API call is clamped to the same bounds rather than trusted.
-const MESH_BOUNDS = {
-	cellSize_mm: { min: 5, max: 20 },
-	meshWidth_mm: { min: 5, max: 100 },
-	meshHeight_mm: { min: 5, max: 100 },
-} as const;
+// MESH_BOUNDS mirrors the sliders in LatticeControls — the UI never lets a user past these,
+// so a direct API call is clamped to the same bounds rather than trusted.
 const OPTIMIZE_BOUNDS = {
 	numIterations: { min: 5, max: 500 },
 	targetFraction: { min: 0.1, max: 0.9 },

@@ -4,7 +4,7 @@ html {
 		"Segoe UI", system-ui, sans-serif;
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
-	color-scheme: light dark;
+	color-scheme: light;
 }
 
 h1,
@@ -47,16 +47,70 @@ h3 {
 	}
 }
 
-html[data-theme="light"] {
-	color-scheme: light;
-}
-
-html[data-theme="dark"] {
-	color-scheme: dark;
-}
-
 img {
 	content-visibility: auto;
+}
+
+.accent::before {
+	color: var(--color-muted);
+	content: "[";
+	margin-inline-end: 0.08em;
+}
+
+.accent::after {
+	color: var(--color-muted);
+	content: "]";
+	margin-inline-start: 0.08em;
+}
+
+.hover-card {
+	position: relative;
+	transition:
+		transform var(--duration-base) var(--ease-out),
+		box-shadow var(--duration-base) var(--ease-out);
+}
+
+.hover-card::after {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: radial-gradient(
+		circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+		color-mix(in srgb, var(--color-content) 8%, transparent),
+		transparent 45%
+	);
+	content: "";
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.magnetic {
+	display: inline-flex;
+	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+	transition: transform var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.hover-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lift);
+	}
+
+	.hover-card:hover::after {
+		opacity: 1;
+	}
+
+	.magnetic {
+		will-change: transform;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hover-card,
+	.magnetic {
+		transition: none;
+	}
 }
 
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
@@ -80,14 +134,17 @@ img {
 }
 
 /* Always mounted, visibility toggled via data-hidden — same mechanism as atom's own
-   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut. */
+   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut.
+   pointer-events stay off even while visible: these are readouts sitting on top of the
+   canvas, not controls, and one (the mode hint) sits directly over the nodes a user is
+   trying to click while placing supports/loads. */
 .lattice-overlay {
 	transition: opacity var(--duration-base) var(--ease-out);
+	pointer-events: none;
 }
 
 .lattice-overlay[data-hidden] {
 	opacity: 0;
-	pointer-events: none;
 }
 
 /*
@@ -151,5 +208,36 @@ img {
 	.loop-grid,
 	.stat-grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* Scroll/mount reveal (lib/reveal.tsx). Deliberately long and short-travel: the
+   motion should land at the edge of attention, not announce itself. */
+.reveal {
+	opacity: 0;
+	transform: translateY(0.5rem);
+	transition:
+		opacity 1.1s var(--ease-out),
+		transform 1.1s var(--ease-out);
+}
+
+.reveal[data-visible="true"] {
+	opacity: 1;
+	transform: none;
+}
+
+/* Without JS the observer never runs, so nothing may stay hidden. */
+@media (scripting: none) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
 	}
 }

@@ -12,19 +12,17 @@ export const SocialUsersID = {
 
 export type SocialMedia = keyof typeof SocialUsersID;
 
-export function getSocialLinks(): Record<SocialMedia, ExternalURL> {
-	const { Github, Linkedin, Medium, Instagram, Scholar } = SocialUsersID;
-	return {
-		Github: `https://github.com/${Github}`,
-		Linkedin: `https://www.linkedin.com/in/${Linkedin}`,
-		Medium: `https://medium.com/${Medium}`,
-		Instagram: `https://www.instagram.com/${Instagram}`,
-		Scholar: `https://scholar.google.com/citations?user=${Scholar}&hl=en`,
-	};
-}
+export const SocialLinks: Record<SocialMedia, ExternalURL> = {
+	Github: `https://github.com/${SocialUsersID.Github}`,
+	Linkedin: `https://www.linkedin.com/in/${SocialUsersID.Linkedin}`,
+	Medium: `https://medium.com/${SocialUsersID.Medium}`,
+	Instagram: `https://www.instagram.com/${SocialUsersID.Instagram}`,
+	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
+};
 
+// Todo a simple solution ??? This looks horrible
 export const ResumePDF: ExternalURL =
-	"https://docs.google.com/document/d/1h56spN-URNEDdwn1ofiqUaxJpm83aLz89QrNjPl4BgQ/export?format=pdf";
+	"https://docs.google.com/document/d/e/2PACX-1vTx4Epi4BS_agxkxAMfB1cEYQLL6T8x3UBvB3lVzIaZY4qMtN2M_RjZgqJ4O0XeBYuJxXHkRHA4OJF4/pub";
 
 export const EmailAddress = "mailto:malviyamanoj1896@gmail.com";
 

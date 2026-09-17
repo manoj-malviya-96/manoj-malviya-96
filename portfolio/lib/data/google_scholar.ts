@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 
 export function useGoogleScholarQuery() {
 	return useQuery({
@@ -7,19 +8,19 @@ export function useGoogleScholarQuery() {
 	});
 }
 
-interface GoogleScholarResponse {
-	total_citations: number;
-	citations_per_year: {
-		[year: string]: number;
-	};
-	publications: Array<{
-		title: string;
-		authors: string;
-		venue: string;
-		citations: number;
-		year: number;
-	}>;
-}
+const googleScholarResponseSchema = z.object({
+	total_citations: z.number(),
+	citations_per_year: z.record(z.string(), z.number()),
+	publications: z.array(
+		z.object({
+			title: z.string(),
+			authors: z.string(),
+			venue: z.string(),
+			citations: z.number(),
+			year: z.number(),
+		}),
+	),
+});
 
 interface ScholarMetrics {
 	citations: number;
@@ -49,7 +50,7 @@ async function fetchScholarMetrics(): Promise<ScholarMetrics> {
 		},
 	});
 	if (!response.ok) throw new Error("Failed to fetch Google Scholar data");
-	const data = (await response.json()) as GoogleScholarResponse;
+	const data = googleScholarResponseSchema.parse(await response.json());
 
 	// Calculate h-index (number of papers with at least h citations)
 	const sortedCitations = data.publications

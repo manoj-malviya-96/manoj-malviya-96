@@ -1,229 +1,267 @@
+"use client";
+
+import { useSelector } from "@legendapp/state/react";
 import {
 	Button,
 	Field,
 	Flex,
-	Select,
-	Slider,
+	Form,
+	Grid,
+	Knob,
+	Radio,
 	Text,
 } from "@manoj-malviya-96/atom";
-import type { TrussOptimizeInput } from "@/lib/data/truss_opt";
-import type { LatticeType, TrussMeshConfig } from "@/lib/truss-opt/engine/mesh";
-import type { MouseMode } from "@/lib/truss-opt/use-truss-opt";
+import type { LatticeType } from "@/lib/truss-opt/engine/mesh";
+import { isReadyToOptimize, MESH_BOUNDS } from "@/lib/truss-opt/engine/mesh";
+import {
+	clearResult,
+	isEditingRun,
+	isPendingRun,
+	setEditMode,
+	setMeshConfig,
+	setOptimizeConfig,
+	trussOptState$,
+} from "@/lib/truss-opt/state";
+import { useTrussOptRun } from "@/lib/truss-opt/use-truss-opt";
 
 const LATTICE_OPTIONS = [
 	{ value: "cross", label: "Cross" },
 	{ value: "checkerboard", label: "Checkerboard" },
 ] as const;
 
-interface LatticeControlsProps {
-	meshConfig: TrussMeshConfig;
-	mouseMode: MouseMode;
-	optimizeConfig: TrussOptimizeInput;
-	canRunFea: boolean;
-	hasResult: boolean;
-	isPending: boolean;
-	error: string | null;
-	onMeshConfigChange: (config: TrussMeshConfig) => void;
-	onMouseModeChange: (mode: MouseMode) => void;
-	onOptimizeConfigChange: (config: TrussOptimizeInput) => void;
-	onSimulate: () => void;
-	onOptimize: () => void;
-	onClear: () => void;
-}
+/** Steps run top to bottom: shape the mesh, place the FEA inputs (supports/loads), then
+ * optimize. Optimize is the primary action — it's the reason the demo exists — so it's the
+ * only filled button and the form's submit action; Simulate is the plain, secondary
+ * "preview the FEA solve" step. Reads/writes trussOptState$ directly instead of taking
+ * mesh/run/etc as props — nothing between here and the store needs to re-render on
+ * every keystroke. */
+export function LatticeControls() {
+	const meshConfig = useSelector(() => trussOptState$.meshConfig.get());
+	const optimizeConfig = useSelector(() => trussOptState$.optimizeConfig.get());
+	const canRunFea = useSelector(() =>
+		isReadyToOptimize(trussOptState$.mesh.get()),
+	);
+	const run = useSelector(() => trussOptState$.run.get());
+	const hasResult = run.type === "simulated" || run.type === "optimized";
+	const isSimulating = run.type === "simulating";
+	const isOptimizing = run.type === "optimizing";
+	const isPending = isPendingRun(run);
+	const error = run.type === "error" ? run.message : null;
+	const editing = isEditingRun(run);
+	const { simulate, optimize } = useTrussOptRun();
 
-export function LatticeControls({
-	meshConfig,
-	mouseMode,
-	optimizeConfig,
-	canRunFea,
-	hasResult,
-	isPending,
-	error,
-	onMeshConfigChange,
-	onMouseModeChange,
-	onOptimizeConfigChange,
-	onSimulate,
-	onOptimize,
-	onClear,
-}: LatticeControlsProps) {
 	const { meshWidth_mm, meshHeight_mm, cellSize_mm, latticeType } = meshConfig;
 	const { numIterations, targetFraction } = optimizeConfig;
-	const editing = mouseMode !== "none";
 
 	return (
-		<Flex direction="col" gap="lg" width="sm">
-			<Flex direction="col" gap="md" bg="surface" radius="lg" padding="lg">
-				<Text variant="label">Design the cantilever</Text>
+		<Form onSubmit={optimize} gap="sm" width="sm">
+			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
+				<Text variant="overline" muted>
+					1 · Mesh
+				</Text>
 
-				<Field label="Width" description={`${meshWidth_mm}mm`}>
-					{(control) => (
-						<Slider
-							{...control}
-							min={cellSize_mm}
-							max={100}
-							step={cellSize_mm}
-							value={meshWidth_mm}
-							onChange={(value) =>
-								onMeshConfigChange({ ...meshConfig, meshWidth_mm: value })
-							}
-							disabled={editing}
-						/>
-					)}
-				</Field>
-				<Field label="Height" description={`${meshHeight_mm}mm`}>
-					{(control) => (
-						<Slider
-							{...control}
-							min={cellSize_mm}
-							max={100}
-							step={cellSize_mm}
-							value={meshHeight_mm}
-							onChange={(value) =>
-								onMeshConfigChange({ ...meshConfig, meshHeight_mm: value })
-							}
-							disabled={editing}
-						/>
-					)}
-				</Field>
-				<Field label="Cell size" description={`${cellSize_mm}mm`}>
-					{(control) => (
-						<Slider
-							{...control}
-							min={5}
-							max={20}
-							step={5}
-							value={cellSize_mm}
-							onChange={(value) =>
-								onMeshConfigChange({ ...meshConfig, cellSize_mm: value })
-							}
-							disabled={editing}
-						/>
-					)}
-				</Field>
-				<Field label="Lattice pattern">
-					{(control) => (
-						<Select
-							{...control}
-							options={LATTICE_OPTIONS}
-							value={latticeType}
-							disabled={editing}
-							onChange={(event) =>
-								onMeshConfigChange({
-									...meshConfig,
-									latticeType: event.currentTarget.value as LatticeType,
-								})
-							}
-						/>
-					)}
-				</Field>
+				<Grid columns={3} gap="xs">
+					<Field label="Width" description={`${meshWidth_mm}mm`}>
+						{(control) => (
+							<Knob
+								{...control}
+								aria-label="Width"
+								min={cellSize_mm}
+								max={MESH_BOUNDS.meshWidth_mm.max}
+								step={cellSize_mm}
+								value={meshWidth_mm}
+								onChange={(value) =>
+									setMeshConfig({ ...meshConfig, meshWidth_mm: value })
+								}
+								disabled={editing}
+							/>
+						)}
+					</Field>
+					<Field label="Height" description={`${meshHeight_mm}mm`}>
+						{(control) => (
+							<Knob
+								{...control}
+								aria-label="Height"
+								min={cellSize_mm}
+								max={MESH_BOUNDS.meshHeight_mm.max}
+								step={cellSize_mm}
+								value={meshHeight_mm}
+								onChange={(value) =>
+									setMeshConfig({ ...meshConfig, meshHeight_mm: value })
+								}
+								disabled={editing}
+							/>
+						)}
+					</Field>
+					<Field label="Cell" description={`${cellSize_mm}mm`}>
+						{(control) => (
+							<Knob
+								{...control}
+								aria-label="Cell size"
+								min={MESH_BOUNDS.cellSize_mm.min}
+								max={MESH_BOUNDS.cellSize_mm.max}
+								step={5}
+								value={cellSize_mm}
+								onChange={(value) =>
+									setMeshConfig({ ...meshConfig, cellSize_mm: value })
+								}
+								disabled={editing}
+							/>
+						)}
+					</Field>
+				</Grid>
+
+				<Flex direction="col" gap="xs">
+					<Text variant="label">Lattice pattern</Text>
+					<Flex direction="row" gap="md" wrap>
+						{LATTICE_OPTIONS.map((option) => (
+							<Flex
+								as="label"
+								key={option.value}
+								direction="row"
+								gap="xs"
+								vAlign="center"
+							>
+								<Radio
+									name="latticeType"
+									value={option.value}
+									checked={latticeType === option.value}
+									disabled={editing}
+									onChange={() =>
+										setMeshConfig({
+											...meshConfig,
+											latticeType: option.value as LatticeType,
+										})
+									}
+								/>
+								<Text variant="body">{option.label}</Text>
+							</Flex>
+						))}
+					</Flex>
+				</Flex>
 			</Flex>
 
-			<Flex direction="col" gap="md" bg="surface" radius="lg" padding="lg">
-				<Text variant="label">Supports & loads</Text>
-				<Flex direction="row" gap="sm">
-					{mouseMode === "fixed" ? (
+			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
+				<Text variant="overline" muted>
+					2 · Supports & loads
+				</Text>
+				<Flex direction="row" gap="sm" wrap>
+					{run.type === "choosing_fix" ? (
 						<Button
-							variant="filled"
+							type="button"
+							variant="muted"
 							label="Place support"
-							onClick={() => onMouseModeChange("none")}
+							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
+							type="button"
 							variant="plain"
 							label="Place support"
-							onClick={() => onMouseModeChange("fixed")}
-							disabled={mouseMode === "force"}
+							onClick={() => setEditMode("choosing_fix")}
+							disabled={isPending || run.type === "choosing_force"}
 						/>
 					)}
-					{mouseMode === "force" ? (
+					{run.type === "choosing_force" ? (
 						<Button
-							variant="filled"
+							type="button"
+							variant="muted"
 							label="Place load"
-							onClick={() => onMouseModeChange("none")}
+							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
+							type="button"
 							variant="plain"
 							label="Place load"
-							onClick={() => onMouseModeChange("force")}
-							disabled={mouseMode === "fixed"}
+							onClick={() => setEditMode("choosing_force")}
+							disabled={isPending || run.type === "choosing_fix"}
 						/>
 					)}
 				</Flex>
 				{hasResult ? (
 					<Button
+						type="button"
 						variant="plain"
 						label="Clear simulation"
-						onClick={onClear}
+						onClick={clearResult}
 						disabled={editing}
 					/>
 				) : (
 					<Button
-						variant="filled"
-						label={isPending ? "Simulating…" : "Simulate"}
-						onClick={onSimulate}
+						type="button"
+						variant="plain"
+						label={isSimulating ? "Simulating…" : "Simulate"}
+						onClick={simulate}
 						disabled={editing || !canRunFea || isPending}
 					/>
 				)}
-				{!canRunFea && (
-					<Text variant="caption" muted>
-						Add at least one support and one load to simulate.
-					</Text>
-				)}
-				{error && (
-					<Text variant="caption" muted>
+				{/* Reserved one-line slot, always mounted — swapping its text in and out of the
+				DOM (rather than just its content) shifted every panel below it. */}
+				{error ? (
+					<Text variant="caption" bg="red" radius="md" padding="xs">
 						{error}
+					</Text>
+				) : (
+					<Text variant="caption" muted>
+						{canRunFea
+							? " "
+							: "Add at least one support and one load to simulate."}
 					</Text>
 				)}
 			</Flex>
 
-			<Flex direction="col" gap="md" bg="surface" radius="lg" padding="lg">
-				<Text variant="label">Optimize</Text>
-				<Field label="Iterations" description={`${numIterations}`}>
-					{(control) => (
-						<Slider
-							{...control}
-							min={5}
-							max={500}
-							step={5}
-							value={numIterations}
-							onChange={(value) =>
-								onOptimizeConfigChange({
-									...optimizeConfig,
-									numIterations: value,
-								})
-							}
-							disabled={editing}
-						/>
-					)}
-				</Field>
-				<Field
-					label="Target material fraction"
-					description={`${Math.round(targetFraction * 100)}%`}
-				>
-					{(control) => (
-						<Slider
-							{...control}
-							min={0.1}
-							max={0.9}
-							step={0.05}
-							value={targetFraction}
-							onChange={(value) =>
-								onOptimizeConfigChange({
-									...optimizeConfig,
-									targetFraction: value,
-								})
-							}
-							disabled={editing}
-						/>
-					)}
-				</Field>
+			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
+				<Text variant="overline" muted>
+					3 · Optimize
+				</Text>
+				<Grid columns={2} gap="xs">
+					<Field label="Iterations" description={`${numIterations}`}>
+						{(control) => (
+							<Knob
+								{...control}
+								aria-label="Iterations"
+								min={5}
+								max={500}
+								step={5}
+								value={numIterations}
+								onChange={(value) =>
+									setOptimizeConfig({ ...optimizeConfig, numIterations: value })
+								}
+								disabled={editing}
+							/>
+						)}
+					</Field>
+					<Field
+						label="Material"
+						description={`${Math.round(targetFraction * 100)}%`}
+					>
+						{(control) => (
+							<Knob
+								{...control}
+								aria-label="Target material fraction"
+								min={0.1}
+								max={0.9}
+								step={0.05}
+								value={targetFraction}
+								onChange={(value) =>
+									setOptimizeConfig({
+										...optimizeConfig,
+										targetFraction: value,
+									})
+								}
+								disabled={editing}
+							/>
+						)}
+					</Field>
+				</Grid>
 				<Button
-					label={isPending ? "Optimizing…" : "Optimize"}
-					onClick={onOptimize}
+					type="submit"
+					variant="filled"
+					label={isOptimizing ? "Optimizing…" : "Optimize"}
 					disabled={editing || isPending || !canRunFea}
 				/>
 			</Flex>
-		</Flex>
+		</Form>
 	);
 }

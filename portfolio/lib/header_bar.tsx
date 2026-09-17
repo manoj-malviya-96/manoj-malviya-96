@@ -1,31 +1,59 @@
 "use client";
 
-import {
-	Button,
-	Flex,
-	setTheme,
-	useScrollEffect,
-	useTheme,
-} from "@manoj-malviya-96/atom";
-import {
-	IconCircleHalfStroke,
-	IconEnvelope,
-} from "@manoj-malviya-96/atom/icons";
+import { assertNever, Flex, useScrollEffect } from "@manoj-malviya-96/atom";
+import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { EmailAddress } from "@/lib/data";
+import { useEffect, useRef, useState } from "react";
+import { EmailAddress, RankedProjects } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Work" },
-	{ url: "/resume", label: "Résumé" },
+	{ url: "/projects", label: "Projects", toc: "projects" },
+	{ url: "/resume", label: "Résumé", toc: "resume" },
 ] as const;
+
+type TocKey = (typeof NAV_LINKS)[number]["toc"];
+
+const TOC_CLOSE_DELAY_MS = 250;
+
+function useTocHover(closeDelayMs: number) {
+	const [hoveredToc, setHoveredToc] = useState<TocKey | null>(null);
+	const closeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
+		undefined,
+	);
+
+	const clearCloseTimeout = () => {
+		clearTimeout(closeTimeout.current);
+	};
+	const setToc = (toc: TocKey | null) => {
+		clearCloseTimeout();
+		if (toc === null) {
+			closeTimeout.current = setTimeout(
+				() => setHoveredToc(null),
+				closeDelayMs,
+			);
+		} else {
+			setHoveredToc(toc);
+		}
+	};
+	useEffect(() => clearCloseTimeout, []);
+
+	return { hoveredToc, setToc, clearCloseTimeout };
+}
 
 export default function HeaderBar() {
 	const pathname = usePathname();
-	const { visible } = useHeaderBarScroll();
+	const { hoveredToc, setToc, clearCloseTimeout } =
+		useTocHover(TOC_CLOSE_DELAY_MS);
+
+	const activeToc: TocKey | null = pathname.startsWith("/resume")
+		? "resume"
+		: pathname.startsWith("/projects")
+			? "projects"
+			: null;
+	const tocKey = hoveredToc ?? activeToc;
 
 	useHeaderBar({
 		left: (
@@ -37,8 +65,8 @@ export default function HeaderBar() {
 			</Link>
 		),
 		center: (
-			<Flex as="nav" direction="row" gap="xs">
-				{NAV_LINKS.map(({ url, label }) => {
+			<Flex as="nav" direction="row" gap="sm">
+				{NAV_LINKS.map(({ url, label, toc }) => {
 					const isCurrent = pathname === url;
 					return (
 						<Link
@@ -47,6 +75,8 @@ export default function HeaderBar() {
 							variant="tab"
 							isActive={isCurrent}
 							aria-current={isCurrent ? "page" : undefined}
+							onMouseEnter={() => setToc(toc)}
+							onMouseLeave={() => setToc(null)}
 						>
 							{label}
 						</Link>
@@ -56,7 +86,6 @@ export default function HeaderBar() {
 		),
 		right: (
 			<Flex direction="row" gap="md" vAlign="center">
-				<ThemeToggle />
 				<Link
 					url={EmailAddress}
 					variant="button"
@@ -69,57 +98,81 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
+		bottom:
+			tocKey === "projects" ? (
+				<HeaderToc
+					toc={tocKey}
+					onMouseEnter={clearCloseTimeout}
+					onMouseLeave={() => setToc(null)}
+				/>
+			) : undefined,
 	});
 
-	return <Header data-hidden={visible ? undefined : true} />;
+	return <Header width="content" radius="md" />;
 }
 
-const TOP_BAND = 0.05 as const;
-const INTENT_PX_PER_MS = 0.3 as const;
-type HeaderBarScroll = { y: number; visible: boolean };
-
-function useHeaderBarScroll(): HeaderBarScroll {
-	return useScrollEffect<HeaderBarScroll>(
-		({ y, delta, speedPxPerMs }, prev) => {
-			const visible =
-				y < window.innerHeight * TOP_BAND
-					? true
-					: speedPxPerMs < INTENT_PX_PER_MS
-						? prev.visible
-						: delta < 0;
-			return { y, visible };
-		},
-		{ y: 0, visible: true },
-	);
+function HeaderToc({
+	toc,
+	onMouseEnter,
+	onMouseLeave,
+}: {
+	toc: TocKey;
+	onMouseEnter: () => void;
+	onMouseLeave: () => void;
+}) {
+	switch (toc) {
+		case "projects":
+			return (
+				<ProjectToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
+			);
+		case "resume":
+			return undefined;
+		default:
+			assertNever(toc);
+	}
 }
 
-function ThemeToggle() {
-	const theme = useTheme();
-	const [systemPrefersDark, setSystemPrefersDark] = useState(false);
+function ProjectToc({
+	onMouseEnter,
+	onMouseLeave,
+}: {
+	onMouseEnter: () => void;
+	onMouseLeave: () => void;
+}) {
+	const activeProject = useScrollEffect(() => {
+		if (typeof document === "undefined") return null;
 
-	useEffect(() => {
-		const query = window.matchMedia("(prefers-color-scheme: dark)");
-		setSystemPrefersDark(query.matches);
-		const onChange = (e: MediaQueryListEvent) =>
-			setSystemPrefersDark(e.matches);
-		query.addEventListener("change", onChange);
-		return () => query.removeEventListener("change", onChange);
-	}, []);
-
-	const isDark = theme === "dark" || (theme === "system" && systemPrefersDark);
-
-	const toggle = () => {
-		const next = isDark ? "light" : "dark";
-		setTheme(next);
-	};
+		let active: string | null = null;
+		for (const { id } of RankedProjects) {
+			const section = document.getElementById(id);
+			if (section && section.getBoundingClientRect().top <= 120) {
+				active = id;
+			}
+		}
+		return active;
+	}, null);
 
 	return (
-		<Button
-			icon={<IconCircleHalfStroke size="sm" />}
-			aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-			onClick={toggle}
-			variant="muted"
-			size="sm"
-		/>
+		<Flex
+			as="nav"
+			aria-label="Project sections"
+			direction="row"
+			gap="sm"
+			wrap
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}
+		>
+			{RankedProjects.map(({ id, title }) => (
+				<Link
+					key={id}
+					url={`/projects/#${id}`}
+					variant="tab"
+					isActive={activeProject === id}
+					aria-current={activeProject === id ? "location" : undefined}
+				>
+					{title}
+				</Link>
+			))}
+		</Flex>
 	);
 }

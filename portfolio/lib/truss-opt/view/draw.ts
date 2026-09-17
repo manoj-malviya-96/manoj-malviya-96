@@ -1,6 +1,6 @@
 import { getThemeColor } from "@manoj-malviya-96/atom";
 import type { TrussOptResult } from "@/lib/data/truss_opt";
-import type { TrussMesh } from "@/lib/truss-opt/engine/mesh";
+import { MESH_BOUNDS, type TrussMesh } from "@/lib/truss-opt/engine/mesh";
 
 export interface CanvasSize {
 	width: number;
@@ -17,17 +17,19 @@ const DRAW_SETTINGS = {
 		headLength_px: 10,
 		headAngle_rad: Math.PI / 7,
 	},
-};
+} as const;
 
-/** Scale mapping mesh units to canvas pixels, sized to fit the mesh's own width/height. */
-export function computeScale(
-	size: CanvasSize,
-	mesh: Pick<TrussMesh, "meshWidth_mm" | "meshHeight_mm">,
-): number {
+/** Scale mapping mesh mm to canvas px, fixed against the mesh's max possible size (not the
+ * current mesh) — otherwise a bigger mesh at the same cell size renders *smaller* (everything
+ * rescales to keep fitting the canvas) instead of using more of the available canvas. */
+export function computeScale(size: CanvasSize): number {
 	if (size.width === 0 || size.height === 0) return 0;
 	return (
 		0.9 *
-		Math.min(size.width / mesh.meshWidth_mm, size.height / mesh.meshHeight_mm)
+		Math.min(
+			size.width / MESH_BOUNDS.meshWidth_mm.max,
+			size.height / MESH_BOUNDS.meshHeight_mm.max,
+		)
 	);
 }
 
@@ -67,7 +69,7 @@ export function drawLattice(
 	result: TrussOptResult | null,
 ): void {
 	ctx.clearRect(0, 0, size.width, size.height);
-	const scale = computeScale(size, mesh);
+	const scale = computeScale(size);
 	if (scale === 0) return;
 	const offset = computeOffset(size, mesh, scale);
 
@@ -78,13 +80,6 @@ export function drawLattice(
 
 	if (result) {
 		drawStressedMesh(ctx, mesh, points, result, scale);
-		drawEdges(
-			ctx,
-			mesh.connections,
-			points,
-			mesh.normThickness,
-			getThemeColor("muted"),
-		);
 	} else {
 		drawEdges(ctx, mesh.connections, points, mesh.normThickness, contentColor);
 	}
@@ -120,7 +115,7 @@ function drawStressedMesh(
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 		ctx.strokeStyle = stressColor((stresses[index] - minStress) / stressRange);
-		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * mesh.normThickness[index];
+		ctx.lineWidth = DRAW_SETTINGS.maxLineWidth_px * result.normThickness[index];
 		ctx.stroke();
 	}
 }
