@@ -3,6 +3,7 @@ import { Page } from "@manoj-malviya-96/atom/system";
 import { Suspense } from "react";
 import { RankedProjects } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
+import Reveal from "@/lib/reveal";
 
 export default function ProjectsPage() {
 	return (
@@ -41,7 +42,9 @@ export default function ProjectsPage() {
 				>
 					{/* TODO use DynamicList when its ready */}
 					{RankedProjects.map(({ id }) => (
-						<ProjectCard key={id} project={id} />
+						<Reveal key={id}>
+							<ProjectCard project={id} />
+						</Reveal>
 					))}
 				</Flex>
 			</Suspense>

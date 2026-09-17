@@ -10,6 +10,7 @@ import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
+import Reveal from "@/lib/reveal";
 import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
@@ -70,7 +71,9 @@ function Loop() {
 			<SectionHeader title="Complex problems in. Intelligent products out." />
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
-					<LoopCard key={id} id={id} {...Phases[id]} />
+					<Reveal key={id}>
+						<LoopCard id={id} {...Phases[id]} />
+					</Reveal>
 				))}
 			</Grid>
 		</Section>
