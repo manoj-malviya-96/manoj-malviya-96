@@ -14,6 +14,7 @@ import {
 } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { MacbookMockup } from "@/lib/macbook_mockup";
+import Reveal from "@/lib/reveal";
 import { Link, Media } from "@/lib/shared";
 
 export default function ProjectCard({ project }: { project: ProjectId }) {
@@ -38,21 +39,29 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 				hAlign="center"
 				width={{ value: "content", max: "full" }}
 			>
-				<Flex
-					direction="col"
-					gap="md"
-					hAlign="start"
-					width={{ value: "lg", max: "full" }}
-				>
-					<Text variant="hero">{title}</Text>
-					<Text variant="subtitle" muted>
-						{summary}
-					</Text>
-					<ProjectLinks project={project} />
-				</Flex>
-				{media && <ProjectMediaComponent media={media} />}
-				{content}
-				<ProjectTags tags={tags} date={dates} />
+				<Reveal>
+					<Flex
+						direction="col"
+						gap="md"
+						hAlign="start"
+						width={{ value: "lg", max: "full" }}
+					>
+						<Text variant="hero">{title}</Text>
+						<Text variant="subtitle" muted>
+							{summary}
+						</Text>
+						<ProjectLinks project={project} />
+					</Flex>
+				</Reveal>
+				{media && (
+					<Reveal delay={140}>
+						<ProjectMediaComponent media={media} />
+					</Reveal>
+				)}
+				{content && <Reveal delay={220}>{content}</Reveal>}
+				<Reveal delay={300}>
+					<ProjectTags tags={tags} date={dates} />
+				</Reveal>
 			</Flex>
 		</Flex>
 	);
