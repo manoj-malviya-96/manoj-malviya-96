@@ -31,6 +31,7 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 			width="full"
 			bg="raised"
 			padding={{ x: "none", y: "lg" }}
+			className="hover-card"
 		>
 			<Flex
 				direction="col"

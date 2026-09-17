@@ -51,6 +51,68 @@ img {
 	content-visibility: auto;
 }
 
+.accent::before {
+	color: var(--color-muted);
+	content: "[";
+	margin-inline-end: 0.08em;
+}
+
+.accent::after {
+	color: var(--color-muted);
+	content: "]";
+	margin-inline-start: 0.08em;
+}
+
+.hover-card {
+	position: relative;
+	transition:
+		transform var(--duration-base) var(--ease-out),
+		box-shadow var(--duration-base) var(--ease-out);
+}
+
+.hover-card::after {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: radial-gradient(
+		circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+		color-mix(in srgb, var(--color-content) 8%, transparent),
+		transparent 45%
+	);
+	content: "";
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.magnetic {
+	display: inline-flex;
+	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+	transition: transform var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.hover-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lift);
+	}
+
+	.hover-card:hover::after {
+		opacity: 1;
+	}
+
+	.magnetic {
+		will-change: transform;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hover-card,
+	.magnetic {
+		transition: none;
+	}
+}
+
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {

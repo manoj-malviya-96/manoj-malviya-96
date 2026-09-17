@@ -10,8 +10,9 @@ import { PHASE_IDS, type Phase, type PhaseId, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
+import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
-import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 
 export default function Landing() {
 	return (
@@ -29,7 +30,8 @@ function Hero() {
 		<HeroSection id="home-hero">
 			<Eyebrow> Senior product engineer 📍 Berlin, DE</Eyebrow>
 			<Text variant="hero">
-				Building intelligent products people actually use.
+				Building <Accent color="indigo">intelligent products</Accent> people
+				actually use.
 			</Text>
 			<Text variant="subtitle">
 				I'm Manoj Malviya. I combine systems engineering, computational design,
@@ -45,21 +47,25 @@ function Hero() {
 				hAlign="start"
 				wrap
 			>
-				<Link
-					url="/projects"
-					variant="button"
-					buttonVariant="filled"
-					size="sm"
-					label="Personal Projects"
-				/>
-				<Link
-					url="/resume"
-					variant="button"
-					buttonVariant="filled"
-					color="primary"
-					size="sm"
-					label="Past Experience"
-				/>
+				<Magnetic>
+					<Link
+						url="/projects"
+						variant="button"
+						buttonVariant="filled"
+						size="sm"
+						label="Personal Projects"
+					/>
+				</Magnetic>
+				<Magnetic>
+					<Link
+						url="/resume"
+						variant="button"
+						buttonVariant="filled"
+						color="primary"
+						size="sm"
+						label="Past Experience"
+					/>
+				</Magnetic>
 			</Flex>
 		</HeroSection>
 	);
