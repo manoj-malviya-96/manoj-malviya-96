@@ -51,6 +51,12 @@ img {
 	content-visibility: auto;
 }
 
+/* Todo integrate in atom: cards expose no pointer-coordinate interaction hook,
+   so the sheen needs a small client wrapper that writes CSS variables directly. */
+.spotlight {
+	display: contents;
+}
+
 .hover-card {
 	position: relative;
 	transition:
@@ -87,6 +93,10 @@ img {
 @media (prefers-reduced-motion: reduce) {
 	.hover-card {
 		transition: none;
+	}
+
+	.hover-card:hover::after {
+		opacity: 0;
 	}
 }
 

@@ -5,6 +5,7 @@ import { IconPalette } from "@manoj-malviya-96/atom/icons";
 import { Projects, useGithubQuery, useGoogleScholarQuery } from "@/lib/data";
 import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
+import Spotlight from "@/lib/spotlight";
 
 type ProductItem = {
 	id: "muviz" | "atom";
@@ -67,7 +68,9 @@ export default function ShowAndTell() {
 			/>
 			{PRODUCTS.map((product) => (
 				<Reveal key={product.id} colSpan="3">
-					<ProductCard {...product} />
+					<Spotlight>
+						<ProductCard {...product} />
+					</Spotlight>
 				</Reveal>
 			))}
 		</Grid>

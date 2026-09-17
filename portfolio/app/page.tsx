@@ -12,6 +12,7 @@ import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
 import Reveal from "@/lib/reveal";
 import { Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import Spotlight from "@/lib/spotlight";
 
 export default function Landing() {
 	return (
@@ -72,7 +73,9 @@ function Loop() {
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id) => (
 					<Reveal key={id}>
-						<LoopCard id={id} {...Phases[id]} />
+						<Spotlight>
+							<LoopCard id={id} {...Phases[id]} />
+						</Spotlight>
 					</Reveal>
 				))}
 			</Grid>
