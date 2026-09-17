@@ -51,6 +51,18 @@ img {
 	content-visibility: auto;
 }
 
+.accent::before {
+	color: var(--color-muted);
+	content: "[";
+	margin-inline-end: 0.08em;
+}
+
+.accent::after {
+	color: var(--color-muted);
+	content: "]";
+	margin-inline-start: 0.08em;
+}
+
 .hover-card {
 	position: relative;
 	transition:
