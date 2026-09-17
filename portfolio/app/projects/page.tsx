@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { RankedProjects } from "@/lib/data";
 import ProjectCard from "@/lib/projects/project_card";
 import Reveal from "@/lib/reveal";
+import Spotlight from "@/lib/spotlight";
 
 export default function ProjectsPage() {
 	return (
@@ -43,7 +44,9 @@ export default function ProjectsPage() {
 					{/* TODO use DynamicList when its ready */}
 					{RankedProjects.map(({ id }) => (
 						<Reveal key={id}>
-							<ProjectCard project={id} />
+							<Spotlight>
+								<ProjectCard project={id} />
+							</Spotlight>
 						</Reveal>
 					))}
 				</Flex>

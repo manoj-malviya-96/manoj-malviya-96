@@ -13,6 +13,7 @@ import ShowAndTell from "@/lib/home/show_tell";
 import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
 import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import Spotlight from "@/lib/spotlight";
 
 export default function Landing() {
 	return (
@@ -78,7 +79,9 @@ function Loop() {
 			<Grid columns={4} gap="md" className="loop-grid">
 				{PHASE_IDS.map((id, index) => (
 					<Reveal key={id} delay={index * 120}>
-						<LoopCard id={id} {...Phases[id]} />
+						<Spotlight>
+							<LoopCard id={id} {...Phases[id]} />
+						</Spotlight>
 					</Reveal>
 				))}
 			</Grid>
