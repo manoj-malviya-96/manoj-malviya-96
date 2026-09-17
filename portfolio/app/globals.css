@@ -73,6 +73,12 @@ img {
 	transition: opacity var(--duration-base) var(--ease-out);
 }
 
+.magnetic {
+	display: inline-flex;
+	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+	transition: transform var(--duration-base) var(--ease-out);
+}
+
 @media (hover: hover) {
 	.hover-card:hover {
 		transform: translateY(-2px);
@@ -82,10 +88,15 @@ img {
 	.hover-card:hover::after {
 		opacity: 1;
 	}
+
+	.magnetic {
+		will-change: transform;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.hover-card {
+	.hover-card,
+	.magnetic {
 		transition: none;
 	}
 }
