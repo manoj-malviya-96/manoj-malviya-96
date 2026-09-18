@@ -5,7 +5,7 @@ type Patent = {
 };
 
 // TODO: confirm exact filed titles and years against the filings.
-const Patents: readonly Patent[] = [
+export const Patents: readonly Patent[] = [
 	{
 		title:
 			"Adaptive Motion Compensation in Minimally Invasive Surgical Procedures",
@@ -18,5 +18,3 @@ const Patents: readonly Patent[] = [
 		year: 2022,
 	},
 ];
-
-export {};

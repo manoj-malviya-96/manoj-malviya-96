@@ -2,6 +2,7 @@ import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { Page } from "@manoj-malviya-96/atom/system";
 import { PHASE_IDS, type Phase, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
+import Featured from "@/lib/home/featured";
 import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
 import Magnetic from "@/lib/magnetic";
@@ -96,12 +97,9 @@ function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 function FeaturedWork() {
 	return (
 		<Section id="home-feature" gap="lg">
-			<SectionHeader
-				eyebrow="Shipped work"
-				title="Proof, briefly."
-				caption="A few things I've built, shipped, and measured"
-			/>
+			<SectionHeader title="Proof, briefly." />
 			<ShowAndTell />
+			<Featured />
 		</Section>
 	);
 }
