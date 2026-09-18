@@ -28,7 +28,7 @@ export default function Footer() {
 			vAlign="center"
 			gap="lg"
 			wrap
-			padding={{ y: "xl" }}
+			width="content"
 		>
 			<Text variant="caption" mono>
 				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
@@ -47,10 +47,6 @@ export default function Footer() {
 					</li>
 				))}
 			</List>
-			<Text variant="body" muted>
-				Product-minded engineer building things that work today and still work
-				next year.
-			</Text>
 		</Flex>
 	);
 }
