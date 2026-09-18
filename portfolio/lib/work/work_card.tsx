@@ -1,4 +1,4 @@
-import { Atom, assertNever, Divider, Flex, Text } from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -12,15 +12,18 @@ import { MacbookMockup } from "@/lib/macbook_mockup";
 import Reveal from "@/lib/reveal";
 import { Link, Media } from "@/lib/shared";
 
-export default function WorkCard({
-	item,
-	divider,
-}: {
-	item: WorkItem;
-	divider?: boolean;
-}) {
+export default function WorkCard({ item }: { item: WorkItem }) {
 	return (
-		<Flex as="section" id={item.id} direction="col" gap="lg" width="full">
+		<Flex
+			as="section"
+			id={item.id}
+			direction="col"
+			gap="lg"
+			width="full"
+			bg="raised"
+			radius="md"
+			padding="lg"
+		>
 			<Reveal>
 				<Flex
 					direction="col"
@@ -46,7 +49,6 @@ export default function WorkCard({
 			<Reveal delay={300}>
 				<CardTags item={item} />
 			</Reveal>
-			{divider && <Divider direction="horizontal" />}
 		</Flex>
 	);
 }

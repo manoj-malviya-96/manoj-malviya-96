@@ -21,12 +21,8 @@ export default function WorkPage() {
 			>
 				<Eyebrow>Selected work</Eyebrow>
 				<Flex direction="col" gap="xl" width="full">
-					{WorkItems.map((item, index) => (
-						<WorkCard
-							key={item.id}
-							item={item}
-							divider={index < WorkItems.length - 1}
-						/>
+					{WorkItems.map((item) => (
+						<WorkCard key={item.id} item={item} />
 					))}
 				</Flex>
 			</Flex>
