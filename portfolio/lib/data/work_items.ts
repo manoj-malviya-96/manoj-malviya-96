@@ -38,7 +38,7 @@ export const WorkItems: readonly WorkItem[] = [
 	...BLOG_ITEMS,
 ].sort((a, b) => latestYear(b.dates) - latestYear(a.dates));
 
-const FeaturedWorkItems: readonly WorkItem[] = WorkItems.slice(0, 3);
+export const FeaturedWorkItems: readonly WorkItem[] = WorkItems.slice(0, 3);
 
 const WorkTags: readonly ProjectTag[] = [
 	...new Set(WorkItems.flatMap((item) => item.tags)),

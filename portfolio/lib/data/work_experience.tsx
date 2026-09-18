@@ -182,6 +182,15 @@ export function getEmployer(experience: ExperienceId): Organization {
 	return Organizations[Experiences[experience].organization];
 }
 
+const earliestStartYear = Math.min(
+	...Object.values(Experiences).map((experience) =>
+		Number(experience.start.slice(0, 4)),
+	),
+);
+
+export const YearsOfExperience: number =
+	new Date().getFullYear() - earliestStartYear;
+
 /** Ongoing roles first, then most recently ended. */
 export const EXPERIENCE_BY_RECENCY: readonly ExperienceId[] = [
 	...EXPERIENCE_IDS,
