@@ -55,7 +55,13 @@ function TagFilter({
 	onChange: (tag: ProjectTag | null) => void;
 }) {
 	return (
-		<Flex as="nav" aria-label="Filter work by tag" direction="row" gap="sm" wrap>
+		<Flex
+			as="nav"
+			aria-label="Filter work by tag"
+			direction="row"
+			gap="sm"
+			wrap
+		>
 			{WorkTags.map((tag) => (
 				<Badge
 					key={tag}

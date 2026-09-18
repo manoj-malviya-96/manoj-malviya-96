@@ -11,19 +11,6 @@ export function withDefaults<P extends object>(Component: ComponentType<P>) {
 	};
 }
 
-function uniqueBy<T, K>(array: T[], keyFn: (item: T) => K): T[] {
-	const seen = new Set<K>();
-	return array.filter((item) => {
-		const key = keyFn(item);
-		if (seen.has(key)) {
-			return false;
-		} else {
-			seen.add(key);
-			return true;
-		}
-	});
-}
-
 export function dottedConcatString(inputs: string[]) {
 	return inputs.join(" · ");
 }

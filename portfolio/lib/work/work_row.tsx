@@ -1,4 +1,10 @@
-import { Atom, assertNever, Disclosure, Flex, Text } from "@manoj-malviya-96/atom";
+import {
+	Atom,
+	assertNever,
+	Disclosure,
+	Flex,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,

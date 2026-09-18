@@ -122,7 +122,9 @@ function HeaderToc({
 }) {
 	switch (toc) {
 		case "work":
-			return <WorkToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />;
+			return (
+				<WorkToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
+			);
 		case "resume":
 			return undefined;
 		default:
