@@ -11,17 +11,9 @@ html {
 	color-scheme: light;
 }
 
-h1,
-h2,
-h3 {
-	font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
-}
-
 /* Todo integrate in atom: Link renders a plain Atom, not a Text, so it has no bold/font-size/
    tracking props — a brand wordmark needs all three, and none of them are reachable without
    this class. */
-/* RISK: was --font-display; Instrument Serif has no 800, so the wordmark would render
-   regular. The body font is variable and carries the weight. */
 .wordmark {
 	font-family: var(--font-body), system-ui, sans-serif;
 	font-weight: 800;
