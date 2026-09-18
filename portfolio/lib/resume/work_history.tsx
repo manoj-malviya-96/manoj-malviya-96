@@ -2,8 +2,6 @@ import type { TimelineEvent } from "@manoj-malviya-96/atom";
 import {
 	Badge,
 	Flex,
-	GlowCapture,
-	GlowContainer,
 	Grid,
 	Image,
 	List,
@@ -46,13 +44,13 @@ const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);
 
 export default function WorkHistory() {
 	return (
-		<GlowCapture as={Flex} direction="col" className="track-list">
+		<Flex direction="col" className="track-list">
 			{EXPERIENCE_GROUPS.map((group) => (
 				<Reveal key={group.organization}>
 					<TrackRow group={group} />
 				</Reveal>
 			))}
-		</GlowCapture>
+		</Flex>
 	);
 }
 
@@ -63,13 +61,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<GlowContainer
-			as={Grid}
-			columns={2}
-			className="track-row"
-			padding="lg"
-			bg="surface"
-		>
+		<Grid columns={2} className="track-row" padding="lg" bg="surface">
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
 					as={NextImage}
@@ -93,7 +85,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 					experiences.length === 1 ? "track-timeline-single" : undefined
 				}
 			/>
-		</GlowContainer>
+		</Grid>
 	);
 }
 

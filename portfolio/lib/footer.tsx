@@ -1,100 +1,15 @@
 "use client";
 
-import { Divider, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
+import { Flex, List, Text } from "@manoj-malviya-96/atom";
 import {
-	IconBriefcase,
-	IconCode,
-	IconEnvelope,
-	IconFileLines,
 	IconGithub,
 	IconGraduationCap,
 	IconInstagram,
 	IconLinkedin,
 	IconMedium,
 } from "@manoj-malviya-96/atom/icons";
-import NextImage from "next/image";
-import {
-	EmailAddress,
-	ResumePDF,
-	SocialLinks,
-	type SocialMedia,
-	UserAvatar,
-} from "@/lib/data";
+import { SocialLinks, type SocialMedia } from "@/lib/data";
 import { Link } from "@/lib/shared";
-
-export default function Footer() {
-	return (
-		<Flex as="footer" direction="col" gap="lg" padding={{ y: "xl" }}>
-			<Grid columns={3} gap="lg" className="footer-grid">
-				<About />
-				<QuickLinks />
-				<SocialLinksSection />
-			</Grid>
-			<Divider direction="horizontal" />
-			<Flex direction="row" hAlign="between" gap="lg" wrap>
-				<Text variant="caption" mono>
-					{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
-				</Text>
-				<Text variant="caption" mono>
-					BERLIN, DE
-				</Text>
-			</Flex>
-		</Flex>
-	);
-}
-
-const AVATAR_SIZE = "3rem";
-
-function About() {
-	return (
-		<Flex direction="col" gap="sm">
-			{/* Todo integrate in atom: width/height only take the sm–xl size scale (16rem+) — an avatar needs a smaller fixed size, so style= is the only path. */}
-			<Image
-				as={NextImage}
-				src={UserAvatar}
-				alt="Manoj Malviya"
-				fit="cover"
-				ratio="square"
-				radius="md"
-				style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
-			/>
-			<Text variant="title">Manoj Malviya</Text>
-			<Text variant="body" muted width="sm">
-				Product-minded engineer building things that work today and still work
-				next year. Occasionally simulates a black hole for fun.
-			</Text>
-		</Flex>
-	);
-}
-
-const QUICK_LINKS: ReadonlyArray<{
-	label: string;
-	url: string;
-	icon: typeof IconBriefcase;
-}> = [
-	{ label: "Work Experience", url: "/about", icon: IconBriefcase },
-	{ label: "Work", url: "/work", icon: IconCode },
-	{ label: "Resume PDF", url: ResumePDF, icon: IconFileLines },
-	{ label: "Contact", url: EmailAddress, icon: IconEnvelope },
-];
-
-function QuickLinks() {
-	return (
-		<Flex direction="col" gap="md">
-			<Text variant="title">Quick Links</Text>
-			<List direction="col" gap="md">
-				{QUICK_LINKS.map(({ label, url, icon: LinkIcon }) => (
-					<Flex as="li" direction="row" gap="xs" vAlign="center" key={label}>
-						<LinkIcon size="sm" />
-						<Link url={url} openNewTab={url.startsWith("http")}>
-							{label}
-						</Link>
-					</Flex>
-				))}
-			</List>
-		</Flex>
-	);
-}
 
 const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: typeof IconGithub }> = [
 	{ name: "Github", icon: IconGithub },
@@ -104,13 +19,20 @@ const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: typeof IconGithub }> = [
 	{ name: "Instagram", icon: IconInstagram },
 ];
 
-function SocialLinksSection() {
+export default function Footer() {
 	return (
-		<Flex direction="col" gap="md">
-			<Flex direction="col" gap="xs">
-				<Text variant="title">Connect</Text>
-				<Text variant="body">Reach out on any of the platforms below.</Text>
-			</Flex>
+		<Flex
+			as="footer"
+			direction="row"
+			hAlign="between"
+			vAlign="center"
+			gap="lg"
+			wrap
+			width="content"
+		>
+			<Text variant="caption" mono>
+				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
+			</Text>
 			<List direction="row" gap="md">
 				{SOCIALS.map(({ name, icon: SocialIcon }) => (
 					<li key={name}>
@@ -119,7 +41,7 @@ function SocialLinksSection() {
 							openNewTab
 							variant="button"
 							buttonVariant="plain"
-							icon={<SocialIcon size="md" />}
+							icon={<SocialIcon size="sm" />}
 							aria-label={name}
 						/>
 					</li>
