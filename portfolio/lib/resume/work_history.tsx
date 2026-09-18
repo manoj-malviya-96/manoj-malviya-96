@@ -66,7 +66,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 		<GlowContainer
 			as={Grid}
 			columns={2}
-			className="track-row hover-card"
+			className="track-row"
 			padding="lg"
 			bg="surface"
 		>

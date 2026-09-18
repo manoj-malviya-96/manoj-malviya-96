@@ -12,7 +12,7 @@ type SkillGroup = {
 	skills: readonly ProjectTag[];
 };
 
-const SKILL_GROUPS: readonly SkillGroup[] = TAG_GROUPS.map(
+export const SKILL_GROUPS: readonly SkillGroup[] = TAG_GROUPS.map(
 	({ label, tags }) => ({
 		label,
 		skills: tags.filter((tag) => CLAIMED_TAGS.has(tag)),
