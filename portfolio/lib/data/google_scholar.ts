@@ -22,12 +22,21 @@ const googleScholarResponseSchema = z.object({
 	),
 });
 
+export type ScholarPublication = {
+	title: string;
+	authors: string;
+	venue: string;
+	citations: number;
+	year: number;
+};
+
 interface ScholarMetrics {
 	citations: number;
 	hIndex: number;
 	publications: number;
 	recentYearCitations: number;
 	citationsPerYear: { [year: string]: number };
+	papers: readonly ScholarPublication[];
 }
 
 function computeHIndex(sortedCitations: number[]): number {
@@ -71,5 +80,6 @@ async function fetchScholarMetrics(): Promise<ScholarMetrics> {
 		publications: data.publications.length,
 		recentYearCitations,
 		citationsPerYear: data.citations_per_year,
+		papers: data.publications,
 	};
 }

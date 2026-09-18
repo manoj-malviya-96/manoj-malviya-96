@@ -72,7 +72,7 @@ const QUICK_LINKS: ReadonlyArray<{
 	url: string;
 	icon: typeof IconBriefcase;
 }> = [
-	{ label: "Work Experience", url: "/resume", icon: IconBriefcase },
+	{ label: "Work Experience", url: "/about", icon: IconBriefcase },
 	{ label: "Work", url: "/work", icon: IconCode },
 	{ label: "Resume PDF", url: ResumePDF, icon: IconFileLines },
 	{ label: "Contact", url: EmailAddress, icon: IconEnvelope },

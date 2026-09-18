@@ -11,7 +11,7 @@ import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
 	{ url: "/work", label: "Work", toc: "work" },
-	{ url: "/resume", label: "Résumé", toc: "resume" },
+	{ url: "/about", label: "About", toc: "about" },
 ] as const;
 
 type TocKey = (typeof NAV_LINKS)[number]["toc"];
@@ -48,8 +48,8 @@ export default function HeaderBar() {
 	const { hoveredToc, setToc, clearCloseTimeout } =
 		useTocHover(TOC_CLOSE_DELAY_MS);
 
-	const activeToc: TocKey | null = pathname.startsWith("/resume")
-		? "resume"
+	const activeToc: TocKey | null = pathname.startsWith("/about")
+		? "about"
 		: pathname.startsWith("/work")
 			? "work"
 			: null;
@@ -125,7 +125,7 @@ function HeaderToc({
 			return (
 				<WorkToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
 			);
-		case "resume":
+		case "about":
 			return undefined;
 		default:
 			assertNever(toc);
