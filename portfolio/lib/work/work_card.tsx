@@ -18,32 +18,44 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			as="section"
 			id={item.id}
 			direction="col"
-			gap="lg"
 			width="full"
 			bg="raised"
 			radius="md"
-			padding="lg"
+			padding={{ x: "none", y: "lg" }}
 		>
-			<Reveal>
-				<Flex direction="col" gap="md" hAlign="start" width="full">
-					<CardHeading item={item} />
-					<Text variant="subtitle" muted>
-						{item.summary}
-					</Text>
-					<WorkLinks item={item} />
-				</Flex>
-			</Reveal>
-			{item.kind === "project" && item.media && (
-				<Reveal delay={140}>
-					<ProjectMediaComponent media={item.media} />
+			<Flex
+				direction="col"
+				gap="lg"
+				hAlign="center"
+				margin={{ x: "auto" }}
+				width={{ value: "content", max: "full" }}
+			>
+				<Reveal>
+					<Flex
+						direction="col"
+						gap="md"
+						hAlign="start"
+						width={{ value: "lg", max: "full" }}
+					>
+						<CardHeading item={item} />
+						<Text variant="subtitle" muted>
+							{item.summary}
+						</Text>
+						<WorkLinks item={item} />
+					</Flex>
 				</Reveal>
-			)}
-			{item.kind === "project" && item.content && (
-				<Reveal delay={220}>{item.content}</Reveal>
-			)}
-			<Reveal delay={300}>
-				<CardTags item={item} />
-			</Reveal>
+				{item.kind === "project" && item.media && (
+					<Reveal delay={140}>
+						<ProjectMediaComponent media={item.media} />
+					</Reveal>
+				)}
+				{item.kind === "project" && item.content && (
+					<Reveal delay={220}>{item.content}</Reveal>
+				)}
+				<Reveal delay={300}>
+					<CardTags item={item} />
+				</Reveal>
+			</Flex>
 		</Flex>
 	);
 }
