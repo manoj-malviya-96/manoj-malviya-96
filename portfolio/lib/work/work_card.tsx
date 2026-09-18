@@ -25,12 +25,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			padding="lg"
 		>
 			<Reveal>
-				<Flex
-					direction="col"
-					gap="md"
-					hAlign="start"
-					width={{ value: "lg", max: "full" }}
-				>
+				<Flex direction="col" gap="md" hAlign="start" width="full">
 					<CardHeading item={item} />
 					<Text variant="subtitle" muted>
 						{item.summary}
@@ -55,16 +50,11 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 
 function CardHeading({ item }: { item: WorkItem }) {
 	return (
-		<Flex direction="row" gap="md" vAlign="center" wrap>
+		<Flex direction="col" gap="xs">
+			<Text variant="hero">{item.title}</Text>
 			<Text variant="caption" mono muted>
 				{workYear(item)}
 			</Text>
-			<Text variant="hero">{item.title}</Text>
-			{item.kind === "project" && item.heroStat && (
-				<Text variant="caption" mono muted>
-					{item.heroStat.value} · {item.heroStat.label}
-				</Text>
-			)}
 		</Flex>
 	);
 }
