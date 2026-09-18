@@ -7,12 +7,12 @@ const CLAIMED_TAGS: ReadonlySet<ProjectTag> = new Set([
 	...Object.values(Experiences).flatMap((experience) => experience.skills),
 ]);
 
-export type SkillGroup = {
+type SkillGroup = {
 	label: string;
 	skills: readonly ProjectTag[];
 };
 
-export const SKILL_GROUPS: readonly SkillGroup[] = TAG_GROUPS.map(
+const SKILL_GROUPS: readonly SkillGroup[] = TAG_GROUPS.map(
 	({ label, tags }) => ({
 		label,
 		skills: tags.filter((tag) => CLAIMED_TAGS.has(tag)),

@@ -20,7 +20,7 @@ function latestYear(dates: string): number {
 	return Math.max(...years.map(Number));
 }
 
-export function workYear(item: WorkItem): string {
+function workYear(item: WorkItem): string {
 	return String(latestYear(item.dates));
 }
 
@@ -38,8 +38,8 @@ export const WorkItems: readonly WorkItem[] = [
 	...BLOG_ITEMS,
 ].sort((a, b) => latestYear(b.dates) - latestYear(a.dates));
 
-export const FeaturedWorkItems: readonly WorkItem[] = WorkItems.slice(0, 3);
+const FeaturedWorkItems: readonly WorkItem[] = WorkItems.slice(0, 3);
 
-export const WorkTags: readonly ProjectTag[] = [
+const WorkTags: readonly ProjectTag[] = [
 	...new Set(WorkItems.flatMap((item) => item.tags)),
 ].sort();

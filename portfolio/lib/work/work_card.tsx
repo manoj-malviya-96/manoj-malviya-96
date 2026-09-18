@@ -6,7 +6,6 @@ import {
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
 import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
-import { workYear } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { MacbookMockup } from "@/lib/macbook_mockup";
 import Reveal from "@/lib/reveal";
@@ -37,7 +36,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 						hAlign="start"
 						width={{ value: "lg", max: "full" }}
 					>
-						<CardHeading item={item} />
+						<Text variant="hero">{item.title}</Text>
 						<Text variant="subtitle" muted>
 							{item.summary}
 						</Text>
@@ -60,21 +59,10 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 	);
 }
 
-function CardHeading({ item }: { item: WorkItem }) {
-	return (
-		<Flex direction="col" gap="xs">
-			<Text variant="hero">{item.title}</Text>
-			<Text variant="caption" mono muted>
-				{workYear(item)}
-			</Text>
-		</Flex>
-	);
-}
-
 function CardTags({ item }: { item: WorkItem }) {
 	return (
 		<Text variant="caption" muted>
-			{dottedConcatString([...item.tags])}
+			{dottedConcatString([item.dates, ...item.tags])}
 		</Text>
 	);
 }

@@ -1,11 +1,11 @@
-export type Patent = {
+type Patent = {
 	title: string;
 	field: string;
 	year: number;
 };
 
 // TODO: confirm exact filed titles and years against the filings.
-export const Patents: readonly Patent[] = [
+const Patents: readonly Patent[] = [
 	{
 		title:
 			"Adaptive Motion Compensation in Minimally Invasive Surgical Procedures",
@@ -18,3 +18,5 @@ export const Patents: readonly Patent[] = [
 		year: 2022,
 	},
 ];
+
+export {};

@@ -384,7 +384,7 @@ export type ProjectTag =
 
 type ProjectEffort = "low" | "medium" | "high";
 
-export type HeroStat = { value: string; label: string };
+type HeroStat = { value: string; label: string };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
