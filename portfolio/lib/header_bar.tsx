@@ -6,11 +6,11 @@ import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { EmailAddress, RankedProjects } from "@/lib/data";
+import { EmailAddress, WorkItems } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/projects", label: "Projects", toc: "projects" },
+	{ url: "/work", label: "Work", toc: "work" },
 	{ url: "/resume", label: "Résumé", toc: "resume" },
 ] as const;
 
@@ -50,8 +50,8 @@ export default function HeaderBar() {
 
 	const activeToc: TocKey | null = pathname.startsWith("/resume")
 		? "resume"
-		: pathname.startsWith("/projects")
-			? "projects"
+		: pathname.startsWith("/work")
+			? "work"
 			: null;
 	const tocKey = hoveredToc ?? activeToc;
 
@@ -99,7 +99,7 @@ export default function HeaderBar() {
 			</Flex>
 		),
 		bottom:
-			tocKey === "projects" ? (
+			tocKey === "work" ? (
 				<HeaderToc
 					toc={tocKey}
 					onMouseEnter={clearCloseTimeout}
@@ -121,9 +121,9 @@ function HeaderToc({
 	onMouseLeave: () => void;
 }) {
 	switch (toc) {
-		case "projects":
+		case "work":
 			return (
-				<ProjectToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
+				<WorkToc onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
 			);
 		case "resume":
 			return undefined;
@@ -132,20 +132,20 @@ function HeaderToc({
 	}
 }
 
-function ProjectToc({
+function WorkToc({
 	onMouseEnter,
 	onMouseLeave,
 }: {
 	onMouseEnter: () => void;
 	onMouseLeave: () => void;
 }) {
-	const activeProject = useScrollEffect(() => {
+	const activeItem = useScrollEffect(() => {
 		if (typeof document === "undefined") return null;
 
 		let active: string | null = null;
-		for (const { id } of RankedProjects) {
-			const section = document.getElementById(id);
-			if (section && section.getBoundingClientRect().top <= 120) {
+		for (const { id } of WorkItems) {
+			const row = document.getElementById(id);
+			if (row && row.getBoundingClientRect().top <= 120) {
 				active = id;
 			}
 		}
@@ -155,20 +155,20 @@ function ProjectToc({
 	return (
 		<Flex
 			as="nav"
-			aria-label="Project sections"
+			aria-label="Work sections"
 			direction="row"
 			gap="sm"
 			wrap
 			onMouseEnter={onMouseEnter}
 			onMouseLeave={onMouseLeave}
 		>
-			{RankedProjects.map(({ id, title }) => (
+			{WorkItems.map(({ id, title }) => (
 				<Link
 					key={id}
-					url={`/projects/#${id}`}
+					url={`/work/#${id}`}
 					variant="tab"
-					isActive={activeProject === id}
-					aria-current={activeProject === id ? "location" : undefined}
+					isActive={activeItem === id}
+					aria-current={activeItem === id ? "location" : undefined}
 				>
 					{title}
 				</Link>

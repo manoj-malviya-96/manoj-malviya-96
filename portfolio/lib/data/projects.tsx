@@ -32,6 +32,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2024–2025",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
+		heroStat: { value: "20 KB", label: "Gzipped core bundle" },
 		links: {
 			primary: {
 				kind: "demo",
@@ -83,6 +84,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2023",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
+		heroStat: { value: "1×", label: "Analysis per track, then cached" },
 		media: {
 			mockup: "macbook",
 			kind: "video",
@@ -165,6 +167,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "high",
+		heroStat: { value: "1.8×", label: "Faster on a 5k-element MBB beam" },
 		media: {
 			kind: "video",
 			src: getBlob("pixel-opt.webm"),
@@ -200,6 +203,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2023",
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
+		heroStat: { value: "4.3M M☉", label: "Simulated mass (Sgr A*)" },
 		media: {
 			kind: "video",
 			src: getBlob("blackhole.webm"),
@@ -230,6 +234,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
+		heroStat: { value: "35,040", label: "15-minute intervals per run" },
 		media: {
 			kind: "image",
 			src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
@@ -282,6 +287,7 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2025",
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
+		heroStat: { value: "200", label: "FEA solves per optimization" },
 		media: {
 			kind: "video",
 			src: getBlob("pixel-opt.webm"),
@@ -308,48 +314,67 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 };
 
-type SoftwareConcepts =
-	| "web"
-	| "mobile"
-	| "ai"
-	| "rendering"
-	| "open-source"
-	| "high-performance"
-	| "gpu"
-	| "optimization"
-	| "cad"
-	| "simulation"
-	| "ui-development"
-	| "a/b testing"
-	| "micro-services";
+const SOFTWARE_CONCEPTS = [
+	"web",
+	"mobile",
+	"ai",
+	"rendering",
+	"open-source",
+	"high-performance",
+	"gpu",
+	"optimization",
+	"cad",
+	"simulation",
+	"ui-development",
+	"a/b testing",
+	"micro-services",
+] as const;
 
-type SoftSkills =
-	| "communication"
-	| "ui/ux"
-	| "project-management"
-	| "devops"
-	| "testing";
+const SOFT_SKILLS = [
+	"communication",
+	"ui/ux",
+	"project-management",
+	"devops",
+	"testing",
+] as const;
 
-type ProgrammingFrameworks =
-	| "react"
-	| "nextjs"
-	| "qt/qml"
-	| "tailwind"
-	| "vtk"
-	| "numpy"
-	| "pytorch"
-	| "tensorflow"
-	| "wasm"
-	| "threejs"
-	| "opengl";
+const PROGRAMMING_FRAMEWORKS = [
+	"react",
+	"nextjs",
+	"qt/qml",
+	"tailwind",
+	"vtk",
+	"numpy",
+	"pytorch",
+	"tensorflow",
+	"wasm",
+	"threejs",
+	"opengl",
+] as const;
 
-type ProgrammingLanguage =
-	| "typescript"
-	| "python"
-	| "rust"
-	| "go"
-	| "c++"
-	| "swift";
+const PROGRAMMING_LANGUAGES = [
+	"typescript",
+	"python",
+	"rust",
+	"go",
+	"c++",
+	"swift",
+] as const;
+
+type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
+type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
+type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
+type ProgrammingLanguage = ValuesOf<typeof PROGRAMMING_LANGUAGES>;
+
+export const TAG_GROUPS = [
+	{ label: "Languages", tags: PROGRAMMING_LANGUAGES },
+	{ label: "Frameworks", tags: PROGRAMMING_FRAMEWORKS },
+	{ label: "Domains", tags: SOFTWARE_CONCEPTS },
+	{ label: "Practice", tags: SOFT_SKILLS },
+] as const satisfies ReadonlyArray<{
+	label: string;
+	tags: readonly ProjectTag[];
+}>;
 
 export type ProjectTag =
 	| ProgrammingFrameworks
@@ -358,6 +383,8 @@ export type ProjectTag =
 	| SoftSkills;
 
 type ProjectEffort = "low" | "medium" | "high";
+
+type HeroStat = { value: string; label: string };
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
@@ -382,6 +409,7 @@ export type Project = {
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
+	heroStat?: HeroStat;
 	media?: ProjectMedia;
 	links: ProjectLinks;
 	content?: ReactNode;

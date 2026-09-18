@@ -1,42 +1,27 @@
-import {
-	Atom,
-	assertNever,
-	Flex,
-	GlowContainer,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import {
-	type Project,
-	type ProjectId,
-	type ProjectLink,
-	type ProjectMedia,
-	Projects,
-} from "@/lib/data";
+import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { MacbookMockup } from "@/lib/macbook_mockup";
 import Reveal from "@/lib/reveal";
 import { Link, Media } from "@/lib/shared";
 
-export default function ProjectCard({ project }: { project: ProjectId }) {
-	const { title, summary, dates, tags, media, content } = Projects[project];
-
+export default function WorkCard({ item }: { item: WorkItem }) {
 	return (
-		<GlowContainer
-			id={project}
+		<Flex
 			as="section"
-			radius="md"
+			id={item.id}
+			direction="col"
 			width="full"
 			bg="raised"
+			radius="md"
 			padding={{ x: "none", y: "lg" }}
-			className="hover-card"
 		>
-			{/* RISK: the section is a plain block now, so this lone child centers itself. */}
 			<Flex
 				direction="col"
 				gap="lg"
@@ -51,24 +36,62 @@ export default function ProjectCard({ project }: { project: ProjectId }) {
 						hAlign="start"
 						width={{ value: "lg", max: "full" }}
 					>
-						<Text variant="hero">{title}</Text>
+						<Text variant="hero">{item.title}</Text>
 						<Text variant="subtitle" muted>
-							{summary}
+							{item.summary}
 						</Text>
-						<ProjectLinks project={project} />
+						<WorkLinks item={item} />
 					</Flex>
 				</Reveal>
-				{media && (
+				{item.kind === "project" && item.media && (
 					<Reveal delay={140}>
-						<ProjectMediaComponent media={media} />
+						<ProjectMediaComponent media={item.media} />
 					</Reveal>
 				)}
-				{content && <Reveal delay={220}>{content}</Reveal>}
+				{item.kind === "project" && item.content && (
+					<Reveal delay={220}>{item.content}</Reveal>
+				)}
 				<Reveal delay={300}>
-					<ProjectTags tags={tags} date={dates} />
+					<CardTags item={item} />
 				</Reveal>
 			</Flex>
-		</GlowContainer>
+		</Flex>
+	);
+}
+
+function CardTags({ item }: { item: WorkItem }) {
+	return (
+		<Text variant="caption" muted>
+			{dottedConcatString([item.dates, ...item.tags])}
+		</Text>
+	);
+}
+
+function WorkLinks({ item }: { item: WorkItem }) {
+	if (item.kind === "blog") {
+		return (
+			<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+				<Link
+					url={item.href}
+					openNewTab
+					variant="button"
+					color="primary"
+					label="Read on Medium"
+					size="sm"
+					icon={<IconMedium size="sm" />}
+				/>
+			</Flex>
+		);
+	}
+
+	const { primary, others } = item.links;
+	return (
+		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+			<ProjectLinkButton link={primary} color="primary" />
+			{others.map((link) => (
+				<ProjectLinkButton key={link.href} link={link} />
+			))}
+		</Flex>
 	);
 }
 
@@ -89,27 +112,6 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 		default:
 			assertNever(media.mockup);
 	}
-}
-
-function ProjectTags({ tags, date }: { tags: Project["tags"]; date: string }) {
-	return (
-		<Text variant="caption" muted>
-			{dottedConcatString([date, ...tags])}
-		</Text>
-	);
-}
-
-function ProjectLinks({ project }: { project: ProjectId }) {
-	const { primary, others } = Projects[project].links;
-
-	return (
-		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-			<ProjectLinkButton link={primary} color="primary" />
-			{others.map((link) => (
-				<ProjectLinkButton key={link.href} link={link} />
-			))}
-		</Flex>
-	);
 }
 
 function ProjectLinkButton({

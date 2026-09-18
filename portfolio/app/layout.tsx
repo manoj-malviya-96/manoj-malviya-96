@@ -1,6 +1,6 @@
 import { Screen } from "@manoj-malviya-96/atom/system";
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import type React from "react";
 import Footer from "@/lib/footer";
 import HeaderBar from "@/lib/header_bar";
@@ -13,15 +13,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const fontBody = Inter({
 	subsets: ["latin"],
 	variable: "--font-body",
-	display: "swap",
-});
-
-// RISK: Instrument Serif is not variable — 400 is its only weight, so anything asking
-// --font-display for bold silently renders regular (font-synthesis is off).
-const fontDisplay = Instrument_Serif({
-	subsets: ["latin"],
-	weight: "400",
-	variable: "--font-display",
 	display: "swap",
 });
 
@@ -41,11 +32,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`${fontBody.variable} ${fontDisplay.variable}`}
-		>
+		<html lang="en" suppressHydrationWarning className={fontBody.variable}>
 			<head>
 				<title>Manoj Malviya</title>
 			</head>
