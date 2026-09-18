@@ -1,10 +1,4 @@
-import {
-	Atom,
-	assertNever,
-	Disclosure,
-	Flex,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Divider, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -15,63 +9,81 @@ import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
 import { workYear } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { MacbookMockup } from "@/lib/macbook_mockup";
+import Reveal from "@/lib/reveal";
 import { Link, Media } from "@/lib/shared";
 
-export default function WorkRow({
+export default function WorkCard({
 	item,
-	defaultOpen,
+	divider,
 }: {
 	item: WorkItem;
-	defaultOpen?: boolean;
+	divider?: boolean;
 }) {
 	return (
-		<Disclosure
-			// RISK: `name` groups every row into one native exclusive accordion —
-			// opening one closes the rest without any React state.
-			name="work"
-			id={item.id}
-			{...(defaultOpen !== undefined && { defaultOpen })}
-			summary={<RowSummary item={item} />}
-		>
-			<RowContent item={item} />
-		</Disclosure>
-	);
-}
-
-function RowSummary({ item }: { item: WorkItem }) {
-	const { title, summary, tags } = item;
-
-	return (
-		<Flex direction="col" gap="xs" width="full">
-			<Flex direction="row" gap="md" vAlign="center" wrap>
-				<Text variant="caption" mono muted>
-					{workYear(item)}
-				</Text>
-				<Text variant="title">{title}</Text>
-				{item.kind === "project" && item.heroStat && (
-					<Text variant="caption" mono muted>
-						{item.heroStat.value} · {item.heroStat.label}
+		<Flex as="section" id={item.id} direction="col" gap="lg" width="full">
+			<Reveal>
+				<Flex
+					direction="col"
+					gap="md"
+					hAlign="start"
+					width={{ value: "lg", max: "full" }}
+				>
+					<CardHeading item={item} />
+					<Text variant="subtitle" muted>
+						{item.summary}
 					</Text>
-				)}
-			</Flex>
-			<Text variant="body" muted>
-				{summary}
-			</Text>
-			<Text variant="caption" mono muted>
-				{dottedConcatString([...tags])}
-			</Text>
+					<WorkLinks item={item} />
+				</Flex>
+			</Reveal>
+			{item.kind === "project" && item.media && (
+				<Reveal delay={140}>
+					<ProjectMediaComponent media={item.media} />
+				</Reveal>
+			)}
+			{item.kind === "project" && item.content && (
+				<Reveal delay={220}>{item.content}</Reveal>
+			)}
+			<Reveal delay={300}>
+				<CardTags item={item} />
+			</Reveal>
+			{divider && <Divider direction="horizontal" />}
 		</Flex>
 	);
 }
 
-function RowContent({ item }: { item: WorkItem }) {
+function CardHeading({ item }: { item: WorkItem }) {
+	return (
+		<Flex direction="row" gap="md" vAlign="center" wrap>
+			<Text variant="caption" mono muted>
+				{workYear(item)}
+			</Text>
+			<Text variant="hero">{item.title}</Text>
+			{item.kind === "project" && item.heroStat && (
+				<Text variant="caption" mono muted>
+					{item.heroStat.value} · {item.heroStat.label}
+				</Text>
+			)}
+		</Flex>
+	);
+}
+
+function CardTags({ item }: { item: WorkItem }) {
+	return (
+		<Text variant="caption" muted>
+			{dottedConcatString([...item.tags])}
+		</Text>
+	);
+}
+
+function WorkLinks({ item }: { item: WorkItem }) {
 	if (item.kind === "blog") {
 		return (
-			<Flex direction="col" gap="md" padding={{ top: "md" }}>
+			<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
 				<Link
 					url={item.href}
 					openNewTab
 					variant="button"
+					color="primary"
 					label="Read on Medium"
 					size="sm"
 					icon={<IconMedium size="sm" />}
@@ -80,12 +92,13 @@ function RowContent({ item }: { item: WorkItem }) {
 		);
 	}
 
-	const { media, content, links } = item;
+	const { primary, others } = item.links;
 	return (
-		<Flex direction="col" gap="lg" padding={{ top: "md" }}>
-			<ProjectLinks links={links} />
-			{media && <ProjectMediaComponent media={media} />}
-			{content}
+		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+			<ProjectLinkButton link={primary} color="primary" />
+			{others.map((link) => (
+				<ProjectLinkButton key={link.href} link={link} />
+			))}
 		</Flex>
 	);
 }
@@ -107,21 +120,6 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 		default:
 			assertNever(media.mockup);
 	}
-}
-
-function ProjectLinks({
-	links,
-}: {
-	links: { primary: ProjectLink; others: readonly ProjectLink[] };
-}) {
-	return (
-		<Flex direction="row" gap="md" wrap>
-			<ProjectLinkButton link={links.primary} color="primary" />
-			{links.others.map((link) => (
-				<ProjectLinkButton key={link.href} link={link} />
-			))}
-		</Flex>
-	);
 }
 
 function ProjectLinkButton({
