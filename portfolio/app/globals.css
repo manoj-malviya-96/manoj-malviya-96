@@ -54,13 +54,6 @@ img {
 	margin-inline-start: 0.08em;
 }
 
-.hover-card {
-	position: relative;
-	transition:
-		transform var(--duration-base) var(--ease-out),
-		box-shadow var(--duration-base) var(--ease-out);
-}
-
 .magnetic {
 	display: inline-flex;
 	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
@@ -68,18 +61,12 @@ img {
 }
 
 @media (hover: hover) {
-	.hover-card:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-lift);
-	}
-
 	.magnetic {
 		will-change: transform;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.hover-card,
 	.magnetic {
 		transition: none;
 	}
@@ -128,10 +115,6 @@ img {
 	grid-template-columns: 1fr;
 }
 
-.footer-grid {
-	grid-template-columns: 1fr;
-}
-
 .project-toc {
 	grid-template-columns: 1fr;
 }
@@ -153,12 +136,6 @@ img {
 	.about-intro,
 	.about-research {
 		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 768px) {
-	.footer-grid {
-		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
