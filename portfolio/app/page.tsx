@@ -42,7 +42,7 @@ function Hero() {
 			>
 				<Magnetic>
 					<Link
-						url="/projects"
+						url="/work"
 						variant="button"
 						buttonVariant="filled"
 						color="primary"
