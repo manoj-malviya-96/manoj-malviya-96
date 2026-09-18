@@ -3,7 +3,6 @@ import { Page } from "@manoj-malviya-96/atom/system";
 import { PHASE_IDS, type Phase, Phases } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import Featured from "@/lib/home/featured";
-import MeshCanvas from "@/lib/home/mesh_canvas";
 import ShowAndTell from "@/lib/home/show_tell";
 import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
@@ -12,7 +11,6 @@ import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
 export default function Landing() {
 	return (
 		<Page variant="content">
-			<MeshCanvas />
 			<Hero />
 			<Loop />
 			<FeaturedWork />
