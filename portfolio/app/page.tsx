@@ -22,9 +22,9 @@ export default function Landing() {
 function Hero() {
 	return (
 		<HeroSection id="home-hero" gap="lg">
-			<Eyebrow>Senior product engineer · Berlin, DE</Eyebrow>
+			<Eyebrow>Berlin, DE</Eyebrow>
 			<Text variant="hero">
-				Manoj <Accent color="indigo">Malviya</Accent>
+				<Accent color="indigo">Manoj Malviya </Accent>
 			</Text>
 
 			<TypeWriter
@@ -39,11 +39,9 @@ function Hero() {
 				]}
 			/>
 			<Text variant="body" muted>
-				I combine systems engineering, computational design, and
-				high-performance C++ with modern product UI to turn technically hard
-				problems into fast, intuitive products.
+				I transform complex problems into intelligent products — focusing on
+				correctness, then performance, then everything else.
 			</Text>
-
 			<Flex
 				as="span"
 				direction="row"
