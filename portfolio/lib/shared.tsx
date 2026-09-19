@@ -162,7 +162,7 @@ export function Accent({
 	return (
 		<span
 			className="accent"
-			style={{ color: `var(--color-${color})` } as CSSProperties}
+			style={{ color: `var(--color-${color})` } as CSSProperties} // TODO: Atom integration
 		>
 			{children}
 		</span>
