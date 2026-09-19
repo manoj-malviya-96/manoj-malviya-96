@@ -7,10 +7,11 @@ import ShowAndTell from "@/lib/home/show_tell";
 import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
 import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import TypeWriter from "@/lib/typewriter";
 
 export default function Landing() {
 	return (
-		<Page variant="content">
+		<Page variant="content" gap="xl">
 			<Hero />
 			<Loop />
 			<FeaturedWork />
@@ -20,11 +21,23 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<HeroSection id="home-hero">
+		<HeroSection id="home-hero" gap="lg">
 			<Eyebrow>Senior product engineer · Berlin, DE</Eyebrow>
 			<Text variant="hero">
 				Manoj <Accent color="indigo">Malviya</Accent>
 			</Text>
+
+			<TypeWriter
+				prefix="-"
+				words={[
+					"Lead Software Engineer",
+					"High Performance Computing",
+					"Product Designer",
+					"Computation Design Research",
+					"Part-time DJ",
+					"3D Printing",
+				]}
+			/>
 			<Text variant="body" muted>
 				I combine systems engineering, computational design, and
 				high-performance C++ with modern product UI to turn technically hard
@@ -53,7 +66,7 @@ function Hero() {
 					<Link
 						url="/resume"
 						variant="button"
-						buttonVariant="plain"
+						buttonVariant="filled"
 						size="sm"
 						label="Past Experience"
 					/>
@@ -66,7 +79,6 @@ function Hero() {
 function Loop() {
 	return (
 		<Section id="home-loop">
-			<SectionHeader title="Complex problems in. Intelligent products out." />
 			<Grid columns={4} gap="md">
 				{PHASE_IDS.map((id, index) => (
 					<Reveal key={id} delay={index * 120}>

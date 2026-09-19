@@ -1,9 +1,10 @@
 "use client";
 
-import { Text } from "@manoj-malviya-96/atom";
+import { assertNever, Text } from "@manoj-malviya-96/atom";
 import { useEffect, useState } from "react";
 
 type TypeWriterProps = {
+	prefix?: string;
 	words: string[];
 	typingSpeed?: number;
 	deletingSpeed?: number;
@@ -13,6 +14,7 @@ type TypeWriterProps = {
 type State = { kind: "adding" | "deleting"; wordIndex: number; length: number };
 
 export default function TypeWriter({
+	prefix,
 	words,
 	typingSpeed = 70,
 	deletingSpeed = 40,
@@ -79,15 +81,18 @@ export default function TypeWriter({
 				return () => clearTimeout(timeout);
 			}
 			default: {
-				const exhaustive: never = state.kind;
-				return exhaustive;
+				assertNever(state.kind);
 			}
 		}
 	}, [words, word, state, typingSpeed, deletingSpeed, pauseDuration]);
 
+	const finalString = !prefix
+		? word.slice(0, state.length)
+		: `${prefix} ${word.slice(0, state.length)}`;
+
 	return (
 		<Text variant="subtitle">
-			{word.slice(0, state.length)}
+			{finalString}
 			<span className="typewriter-cursor" aria-hidden="true" />
 		</Text>
 	);
