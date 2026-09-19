@@ -2,13 +2,22 @@ html {
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
 	color-scheme: light;
+	scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-heading), serif;
 }
 
 /* Todo integrate in atom: Link renders a plain Atom, not a Text, so it has no bold/font-size/
    tracking props — a brand wordmark needs all three, and none of them are reachable without
    this class. */
 .wordmark {
-	font-family: var(--font-body), system-ui, sans-serif;
 	font-weight: 800;
 	font-size: 0.95rem;
 	letter-spacing: -0.01em;
