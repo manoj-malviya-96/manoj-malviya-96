@@ -79,7 +79,7 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "Muviz",
 		summary: `I grew up watching Winamp react to whatever was playing, and I never
 					stopped wanting that feeling back. So I’m building the real thing
-					myself: no AI, no faking it, just DSP that actually understands the
+					myself: no AI, no faking it, DSP that actually understands the
 					music.`,
 		dates: "2023",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
@@ -119,9 +119,17 @@ export const Projects: Record<ProjectId, Project> = {
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconPaintBrush />
 					<Text variant="body">
-						The Three.js scene never touches audio directly. It’s just a pure
+						The Three.js scene never touches audio directly. It’s a pure
 						function of the extracted features and playback time, so scrubbing
 						and switching tracks come for free.
+					</Text>
+				</Flex>
+				<Flex as="li" direction="row" gap="md" vAlign="center">
+					<IconVolumeHigh />
+					<Text variant="body">
+						It’s live at muviz.vercel.app, reacting to whatever you drop on it
+						in real time — the Winamp feeling, running on my own DSP instead of
+						someone else’s AI.
 					</Text>
 				</Flex>
 			</List>
@@ -252,8 +260,8 @@ export const Projects: Record<ProjectId, Project> = {
 				Answers one question: how many chargers do you actually need? Each run
 				simulates a year of 15-minute intervals, drawing car arrivals from a
 				Poisson-derived probability per charge point, with no queueing: a car
-				that arrives to a busy point just leaves. Change the charger count or
-				power draw and watch demand, cost, and concurrency update immediately;
+				that arrives to a busy point leaves. Change the charger count or power
+				draw and watch demand, cost, and concurrency update immediately;
 				concurrency turned out to decay roughly exponentially as charger count
 				grows.
 			</Prose>

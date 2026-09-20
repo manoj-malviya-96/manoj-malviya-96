@@ -22,7 +22,7 @@ import {
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import { Eyebrow, Link, SectionHeader } from "@/lib/shared";
+import { Accent, Eyebrow, Link, SectionHeader } from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
@@ -60,7 +60,9 @@ function Intro() {
 	return (
 		<Grid columns={2} gap="xl" className="about-intro">
 			<Flex direction="col" gap="md" hAlign="start">
-				<Text variant="heading">Past experience</Text>
+				<Text variant="heading">
+					The <Accent color="indigo">Person</Accent>
+				</Text>
 				<Text variant="subtitle" muted>
 					Seven years solving problems that sit between hardware and software:
 					CAD tools engineers depend on, patient-monitoring platforms that

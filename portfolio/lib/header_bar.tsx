@@ -98,7 +98,7 @@ export default function HeaderBar() {
 				/>
 			</Flex>
 		),
-		bottom:
+		content:
 			tocKey === "work" ? (
 				<HeaderToc
 					toc={tocKey}
