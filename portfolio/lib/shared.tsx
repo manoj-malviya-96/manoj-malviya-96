@@ -1,20 +1,21 @@
 "use client";
 
-import type { ColorToken } from "@manoj-malviya-96/atom";
 import {
+	AccentText,
 	Link as AtomLink,
 	Flex,
 	Image,
+	makeGradientBackground,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
 
-type SectionId = "home-loop" | "home-feature" | "home-hero";
+type SectionId = "home-loop" | "home-feature" | "home-hero" | "home-cta";
 
 type SectionProps = {
 	id: SectionId;
@@ -30,13 +31,13 @@ export function Section({
 	return (
 		<Flex
 			as="section"
+			{...rest}
 			id={id}
 			direction="col"
-			width="full"
+			width="content"
 			gap={gap}
-			padding={{ y: "lg" }}
+			margin={{ x: "auto" }}
 			className={className}
-			{...rest}
 		>
 			{children}
 		</Flex>
@@ -152,19 +153,9 @@ export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
 
-export function Accent({
-	children,
-	color = "indigo",
-}: {
-	children: ReactNode;
-	color?: ColorToken;
-}) {
-	return (
-		<span
-			className="accent"
-			style={{ color: `var(--color-${color})` } as CSSProperties} // TODO: Atom integration
-		>
-			{children}
-		</span>
-	);
-}
+export const Accent = withDefaults(AccentText)({
+	gradient: makeGradientBackground({
+		direction: "to bottom",
+		stops: ["brand", "surface"],
+	}),
+});

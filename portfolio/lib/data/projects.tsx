@@ -29,7 +29,7 @@ export const Projects: Record<ProjectId, Project> = {
 					Every option out there made me choose between a CSS-in-JS styling library dragging
 					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
 					built Atom: one primitive, one stylesheet, and a type system that actually checks it.`,
-		dates: "2024–2025",
+		dates: "2025-2026",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
 		heroStat: { value: "20 KB", label: "Gzipped core bundle" },
@@ -81,7 +81,7 @@ export const Projects: Record<ProjectId, Project> = {
 					stopped wanting that feeling back. So I’m building the real thing
 					myself: no AI, no faking it, DSP that actually understands the
 					music.`,
-		dates: "2023",
+		dates: "2026",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
 		heroStat: { value: "1×", label: "Analysis per track, then cached" },
@@ -139,7 +139,7 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "HoneyMesh",
 		summary:
 			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
-		dates: "2022",
+		dates: "2025",
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
 		media: {
@@ -174,7 +174,7 @@ export const Projects: Record<ProjectId, Project> = {
 					SIMP algorithm and accuracy but running faster on the same problem.`,
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
-		effort: "high",
+		effort: "medium",
 		heroStat: { value: "1.8×", label: "Faster on a 5k-element MBB beam" },
 		media: {
 			kind: "video",
@@ -208,7 +208,7 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "Blackhole",
 		summary:
 			"Gravity, rendered in real time, because I couldn't wait for the movie.",
-		dates: "2023",
+		dates: "2026",
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
 		heroStat: { value: "4.3M M☉", label: "Simulated mass (Sgr A*)" },
@@ -292,7 +292,7 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "Truss Optimizer",
 		summary:
 			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
-		dates: "2025",
+		dates: "2024",
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
 		heroStat: { value: "200", label: "FEA solves per optimization" },

@@ -1,14 +1,13 @@
 "use client";
 
 import { Flex, Grid } from "@manoj-malviya-96/atom";
-import { Page } from "@manoj-malviya-96/atom/system";
 import { WorkItems } from "@/lib/data";
 import { Eyebrow, Link } from "@/lib/shared";
 import WorkCard from "@/lib/work/work_card";
 
 export default function WorkPage() {
 	return (
-		<Page variant="content">
+		<Flex direction="col" width="content">
 			<WorkToc />
 			<Flex as="article" direction="col" gap="xs" width="full">
 				<Eyebrow>Selected work</Eyebrow>
@@ -18,7 +17,7 @@ export default function WorkPage() {
 					))}
 				</Flex>
 			</Flex>
-		</Page>
+		</Flex>
 	);
 }
 

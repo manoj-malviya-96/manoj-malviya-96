@@ -6,7 +6,6 @@ import {
 	IconLightbulb,
 	IconLocationDot,
 } from "@manoj-malviya-96/atom/icons";
-import { Page } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import type { ComponentType } from "react";
 import {
@@ -26,7 +25,7 @@ import { Accent, Eyebrow, Link, SectionHeader } from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
-		<Page variant="content">
+		<Flex direction="col" width="content">
 			<Flex direction="col" gap="xl" width="full" margin={{ top: "xl" }}>
 				<Intro />
 				<Flex
@@ -52,7 +51,7 @@ export default function AboutPage() {
 				<TechnicalSurface />
 				<Research />
 			</Flex>
-		</Page>
+		</Flex>
 	);
 }
 

@@ -1,33 +1,41 @@
-import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
-import { Page } from "@manoj-malviya-96/atom/system";
-import { PHASE_IDS, type Phase, Phases } from "@/lib/data";
+import {
+	Flex,
+	Grid,
+	MagneticContainer,
+	Text,
+	TypewriterText,
+} from "@manoj-malviya-96/atom";
+import { HowIWorkPhase, PHASE_IDS, type Phase } from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
-import Magnetic from "@/lib/magnetic";
 import Reveal from "@/lib/reveal";
 import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
-import TypeWriter from "@/lib/typewriter";
 
 export default function Landing() {
 	return (
-		<Page variant="content" gap="xl">
+		<Flex direction="col" gap="xl" width="full">
 			<Hero />
-			<Loop />
 			<FeaturedWork />
-		</Page>
+			<ShowAndTell />
+			<HowIWork />
+			<FinalCTA />
+		</Flex>
 	);
 }
 
 function Hero() {
 	return (
-		<HeroSection id="home-hero" gap="lg">
-			<Eyebrow>Berlin, DE</Eyebrow>
-			<Text variant="hero">
-				<Accent color="indigo">Manoj Malviya </Accent>
-			</Text>
+		<HeroSection id="home-hero">
+			<Flex as="span" direction="col" gap="xs">
+				<Eyebrow>Berlin, DE</Eyebrow>
+				<Text variant="hero">
+					Manoj <Accent> Malviya</Accent>
+				</Text>
+			</Flex>
 
-			<TypeWriter
+			<TypewriterText
+				variant="subtitle"
 				prefix="-"
 				words={[
 					"Lead Software Engineer",
@@ -38,7 +46,7 @@ function Hero() {
 					"3D Printing",
 				]}
 			/>
-			<Text variant="body" muted>
+			<Text variant="body" muted width="sm">
 				I transform complex problems into intelligent products — focusing on
 				correctness, then performance, then everything else.
 			</Text>
@@ -50,37 +58,38 @@ function Hero() {
 				hAlign="start"
 				wrap
 			>
-				<Magnetic>
+				<MagneticContainer>
 					<Link
 						url="/work"
 						variant="button"
 						buttonVariant="filled"
 						color="primary"
 						size="sm"
-						label="Personal Projects"
+						label="View work →"
 					/>
-				</Magnetic>
-				<Magnetic>
+				</MagneticContainer>
+				<MagneticContainer>
 					<Link
 						url="/resume"
 						variant="button"
 						buttonVariant="filled"
 						size="sm"
-						label="Past Experience"
+						label="About me"
 					/>
-				</Magnetic>
+				</MagneticContainer>
 			</Flex>
 		</HeroSection>
 	);
 }
 
-function Loop() {
+function HowIWork() {
 	return (
 		<Section id="home-loop">
-			<Grid columns={4} gap="md">
+			<SectionHeader title="The process." eyebrow="How I work" />
+			<Grid columns={2} gap="md">
 				{PHASE_IDS.map((id, index) => (
 					<Reveal key={id} delay={index * 120}>
-						<PhaseCol index={index} {...Phases[id]} />
+						<PhaseCol index={index} {...HowIWorkPhase[id]} />
 					</Reveal>
 				))}
 			</Grid>
@@ -90,7 +99,14 @@ function Loop() {
 
 function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 	return (
-		<Flex direction="col" gap="sm">
+		<Flex
+			as="span"
+			direction="col"
+			gap="sm"
+			radius="lg"
+			bg="surface"
+			padding="md"
+		>
 			<Text variant="overline" mono>
 				{String(index + 1).padStart(2, "0")}
 			</Text>
@@ -105,9 +121,25 @@ function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 function FeaturedWork() {
 	return (
 		<Section id="home-feature" gap="lg">
-			<SectionHeader title="Proof, briefly." />
-			<ShowAndTell />
+			<Flex as="span" direction="row" vAlign="center" hAlign="between">
+				<Text variant="heading">Featured Work</Text>
+				<Link url="/work" variant="inline">
+					<Text variant="body" muted>
+						View all Work
+					</Text>
+				</Link>
+			</Flex>
 			<Featured />
+		</Section>
+	);
+}
+
+function FinalCTA() {
+	return (
+		<Section id="home-cta" gap="lg">
+			<Text variant="hero" align="center">
+				Got a hard<Accent>problem?</Accent>
+			</Text>
 		</Section>
 	);
 }
@@ -115,13 +147,13 @@ function FeaturedWork() {
 const HeroSection = withDefaults(Section)({
 	as: "header",
 	direction: "col",
-	gap: "md",
+	gap: "lg",
 	width: {
 		max: "md",
 	},
-	variant: "plain",
-	padding: {
-		y: "lg",
+	height: "lg",
+	margin: {
+		y: "auto",
 	},
-	vAlign: "between",
+	vAlign: "center",
 });

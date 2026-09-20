@@ -20,6 +20,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			width="full"
 			bg="raised"
 			radius="md"
+			card
 			padding={{ x: "none", y: "lg" }}
 		>
 			<Flex
