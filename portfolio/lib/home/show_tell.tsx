@@ -25,13 +25,21 @@ export default function ShowAndTell() {
 	];
 
 	return (
-		<Grid columns={4} gap="lg" width="full">
+		<Grid
+			columns={4}
+			width="content"
+			bg="raised"
+			card
+			padding={{ y: "md" }}
+			radius="md"
+			margin={{ x: "auto" }}
+		>
 			{stats.map((stat) => (
 				<Flex key={stat.caption} direction="col" gap="xs" hAlign="center">
-					<Text variant="hero" align="center">
+					<Text variant="heading" align="center">
 						{stat.value === undefined ? "–" : stat.value.toLocaleString()}
 					</Text>
-					<Text variant="overline" mono muted align="center">
+					<Text variant="overline" muted align="center">
 						{stat.caption}
 					</Text>
 				</Flex>
