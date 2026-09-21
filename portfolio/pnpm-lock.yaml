@@ -12,8 +12,8 @@ importers:
         specifier: 2.1.15
         version: 2.1.15(react@19.2.8)
       '@manoj-malviya-96/atom':
-        specifier: 0.3.1
-        version: 0.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 0.3.2
+        version: 0.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@tanstack/react-query':
         specifier: ^5.103.1
         version: 5.103.1(react@19.2.8)
@@ -311,8 +311,8 @@ packages:
       react:
         optional: true
 
-  '@manoj-malviya-96/atom@0.3.1':
-    resolution: {integrity: sha512-52lQ9qm4P6ZBzMDCijRNB39Wsw2MiIp58KRUvs24JRGcNYruTKMuinDtw429aujWLrmB+K+Uaumxm+JYFu0skw==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.3.1/646b685fd0f4141b1e52d4f6c0a9ebe7982885cf}
+  '@manoj-malviya-96/atom@0.3.2':
+    resolution: {integrity: sha512-qEt9wyC2NolKiDTV2CgT1uWfzE10fMx9RNWtfIeXnp3KxgFao+HYgrjm6pr6W6kRJewfuTKv1F6ZzLvzbqxwgg==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.3.2/be8d755e9468472162b3eca2ab7025b4fd42564b}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -1174,7 +1174,7 @@ snapshots:
     optionalDependencies:
       react: 19.2.8
 
-  '@manoj-malviya-96/atom@0.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@manoj-malviya-96/atom@0.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
