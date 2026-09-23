@@ -1,12 +1,7 @@
 "use client";
 
 import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
-import {
-	Patents,
-	useGithubQuery,
-	useGoogleScholarQuery,
-	YearsOfExperience,
-} from "@/lib/data";
+import { Patents, useGoogleScholarQuery, YearsOfExperience } from "@/lib/data";
 
 type NumberStat = {
 	value: number | undefined;
@@ -14,19 +9,20 @@ type NumberStat = {
 };
 
 export default function ShowAndTell() {
-	const github = useGithubQuery().data;
-	const scholar = useGoogleScholarQuery().data;
+	const scholar = useGoogleScholarQuery();
 
+	// Citations drop out on fetch error rather than showing "–" forever.
 	const stats: readonly NumberStat[] = [
-		{ value: github?.totalContribution, caption: "Contributions" },
-		{ value: scholar?.citations, caption: "Citations" },
+		...(scholar.isError
+			? []
+			: [{ value: scholar.data?.citations, caption: "Citations" }]),
 		{ value: Patents.length, caption: "Patents" },
 		{ value: YearsOfExperience, caption: "Years" },
 	];
 
 	return (
 		<Grid
-			columns={4}
+			columns={stats.length === 3 ? 3 : 2}
 			width="content"
 			bg="raised"
 			card
