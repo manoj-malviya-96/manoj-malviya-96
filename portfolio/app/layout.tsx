@@ -50,9 +50,6 @@ export default function RootLayout({
 			suppressHydrationWarning
 			className={`${fontBody.variable} ${fontHeading.variable} ${fontMono.variable}`}
 		>
-			<head>
-				<title>Manoj Malviya</title>
-			</head>
 			<body>
 				<ReactQueryProvider>
 					<Screen as="main" hAlign="center" vAlign="center">
