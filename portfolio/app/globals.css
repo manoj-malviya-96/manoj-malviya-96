@@ -51,28 +51,6 @@ img {
 	}
 }
 
-.typewriter-cursor {
-	display: inline-block;
-	width: 1px;
-	margin-inline-start: 0.08em;
-	background: currentColor;
-	height: 1em;
-	vertical-align: -0.15em;
-	animation: typewriter-blink 1s step-end infinite;
-}
-
-@keyframes typewriter-blink {
-	50% {
-		opacity: 0;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.typewriter-cursor {
-		animation: none;
-	}
-}
-
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {
