@@ -65,12 +65,6 @@ img {
 	gap: var(--space-lg);
 }
 
-/* Todo integrate in atom: Timeline always renders event marker/rail; no prop to hide
-   it for a single-event list, so a lone role at an org still shows dot with no line. */
-.track-timeline-single ._bUNe3 {
-	display: none;
-}
-
 .lattice-overlay {
 	transition: opacity var(--duration-base) var(--ease-out);
 	pointer-events: none;
