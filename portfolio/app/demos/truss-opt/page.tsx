@@ -3,7 +3,7 @@
 import { Flex } from "@manoj-malviya-96/atom";
 
 import { useEffect } from "react";
-import { SectionHeader } from "@/lib/shared";
+import { Page, PageHero } from "@/lib/shared";
 import { resetTrussOptState } from "@/lib/truss-opt/state";
 import { LatticeControls } from "@/lib/truss-opt/view/LatticeControls";
 import { LatticeOutput } from "@/lib/truss-opt/view/LatticeOutput";
@@ -16,8 +16,8 @@ export default function TrussOptDemoPage() {
 	}, []);
 
 	return (
-		<Flex direction="col" gap="lg" width="content">
-			<SectionHeader
+		<Page>
+			<PageHero
 				eyebrow="Demo"
 				title="Truss optimizer."
 				caption="Place supports and loads on a cantilever lattice, then let an optimality-criteria solver redistribute material toward the members carrying the load. The FEA solve and optimization loop both run through this site's own API. The browser only draws the result."
@@ -33,6 +33,6 @@ export default function TrussOptDemoPage() {
 				<LatticeControls />
 				<LatticeOutput />
 			</Flex>
-		</Flex>
+		</Page>
 	);
 }

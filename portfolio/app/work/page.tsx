@@ -1,21 +1,21 @@
 "use client";
 
-import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { Flex, Grid } from "@manoj-malviya-96/atom";
 import { WorkItems } from "@/lib/data";
-import { Eyebrow, Link } from "@/lib/shared";
+import { Eyebrow, Link, Page, PageHero } from "@/lib/shared";
 import WorkCard from "@/lib/work/work_card";
 
 export default function WorkPage() {
 	return (
-		<Flex direction="col" gap="lg" width="content">
-			<Text variant="hero">Selected work.</Text>
+		<Page>
+			<PageHero eyebrow="Work" title="Selected work." />
 			<WorkToc />
 			<Flex as="article" direction="col" gap="xl" width="full">
 				{WorkItems.map((item) => (
 					<WorkCard key={item.id} item={item} />
 				))}
 			</Flex>
-		</Flex>
+		</Page>
 	);
 }
 

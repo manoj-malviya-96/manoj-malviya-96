@@ -22,12 +22,27 @@ import {
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import { Accent, Eyebrow, Link, SectionHeader } from "@/lib/shared";
+import {
+	Accent,
+	Eyebrow,
+	Link,
+	Page,
+	PageHero,
+	SectionHeader,
+} from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
-		<Flex direction="col" width="content">
-			<Flex direction="col" gap="xl" width="full" margin={{ top: "xl" }}>
+		<Page>
+			<PageHero
+				eyebrow="About"
+				title={
+					<>
+						The <Accent>Person</Accent>
+					</>
+				}
+			/>
+			<Flex direction="col" gap="xl" width="full">
 				<Intro />
 				<Flex
 					as="section"
@@ -52,7 +67,7 @@ export default function AboutPage() {
 				<TechnicalSurface />
 				<Research />
 			</Flex>
-		</Flex>
+		</Page>
 	);
 }
 
@@ -60,9 +75,6 @@ function Intro() {
 	return (
 		<Grid columns={2} gap="xl" className="about-intro">
 			<Flex direction="col" gap="md" hAlign="start">
-				<Text variant="heading">
-					The <Accent>Person</Accent>
-				</Text>
 				<Text variant="body" muted>
 					Seven years solving problems that sit between hardware and software:
 					CAD tools engineers depend on, patient-monitoring platforms that

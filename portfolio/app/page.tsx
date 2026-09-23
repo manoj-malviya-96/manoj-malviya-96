@@ -12,34 +12,44 @@ import {
 	PHASE_IDS,
 	type Phase,
 } from "@/lib/data";
-import { withDefaults } from "@/lib/helper";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import Reveal from "@/lib/reveal";
-import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
+import {
+	Accent,
+	Link,
+	Page,
+	PageHero,
+	Section,
+	SectionHeader,
+} from "@/lib/shared";
 
 export default function Landing() {
 	return (
-		<Flex direction="col" gap="xl" width="full">
+		<Page>
 			<Hero />
 			<FeaturedWork />
 			<ShowAndTell />
 			<HowIWork />
 			<FinalCTA />
-		</Flex>
+		</Page>
 	);
 }
 
 function Hero() {
 	return (
-		<HeroSection id="home-hero">
-			<Flex as="span" direction="col" gap="xs">
-				<Eyebrow>Berlin, DE</Eyebrow>
-				<Text variant="hero">
+		<PageHero
+			id="home-hero"
+			eyebrow="Berlin, DE"
+			title={
+				<>
 					Manoj <Accent>Malviya</Accent>
-				</Text>
-			</Flex>
-
+				</>
+			}
+			height="lg"
+			margin={{ x: "auto" }}
+			vAlign="center"
+		>
 			<TypewriterText
 				variant="body"
 				prefix="-"
@@ -77,7 +87,7 @@ function Hero() {
 					<Link url="/about" variant="button" size="sm" label="About me" />
 				</MagneticContainer>
 			</Flex>
-		</HeroSection>
+		</PageHero>
 	);
 }
 
@@ -155,17 +165,3 @@ function FinalCTA() {
 		</Section>
 	);
 }
-
-const HeroSection = withDefaults(Section)({
-	as: "header",
-	direction: "col",
-	gap: "lg",
-	width: {
-		max: "md",
-	},
-	height: "lg",
-	margin: {
-		y: "auto",
-	},
-	vAlign: "center",
-});
