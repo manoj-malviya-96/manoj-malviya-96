@@ -5,15 +5,6 @@ html {
 	scroll-behavior: smooth;
 }
 
-/* Todo integrate in atom: Link renders a plain Atom, not a Text, so it has no bold/font-size/
-   tracking props — a brand wordmark needs all three, and none of them are reachable without
-   this class. */
-.wordmark {
-	font-weight: 800;
-	font-size: 0.95rem;
-	letter-spacing: -0.01em;
-}
-
 /* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
 .skip-link {
 	position: fixed;
@@ -40,18 +31,6 @@ html {
 
 img {
 	content-visibility: auto;
-}
-
-.accent::before {
-	color: var(--color-muted);
-	content: "[";
-	margin-inline-end: 0.08em;
-}
-
-.accent::after {
-	color: var(--color-muted);
-	content: "]";
-	margin-inline-start: 0.08em;
 }
 
 .magnetic {
@@ -114,11 +93,6 @@ img {
 	display: none;
 }
 
-/* Always mounted, visibility toggled via data-hidden — same mechanism as atom's own
-   .header[data-hidden], so entering/exiting overlays get a transition instead of a hard cut.
-   pointer-events stay off even while visible: these are readouts sitting on top of the
-   canvas, not controls, and one (the mode hint) sits directly over the nodes a user is
-   trying to click while placing supports/loads. */
 .lattice-overlay {
 	transition: opacity var(--duration-base) var(--ease-out);
 	pointer-events: none;
@@ -128,11 +102,6 @@ img {
 	opacity: 0;
 }
 
-/*
- * Todo integrate in atom: Grid/Flex take a single static `columns`/`direction`/`gap` value with no
- * breakpoint variants, so every responsive layout change below is a plain CSS override of the class
- * atom already generated. A `columns={{base, md, lg}}`-style prop would remove this whole section.
- */
 .edu-grid {
 	grid-template-columns: 1fr;
 }
