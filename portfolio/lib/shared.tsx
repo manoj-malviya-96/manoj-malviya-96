@@ -152,9 +152,10 @@ export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
 
+// Both stops contrast with the page; fading into "surface" left the glyph bottoms unreadable.
 const ACCENT_GRADIENT = makeGradientBackground({
 	direction: "to bottom",
-	stops: ["brand", "surface"],
+	stops: ["brand", "indigo"],
 });
 
 // RISK: renders as an inline span, not AccentText — AccentText emits its own
