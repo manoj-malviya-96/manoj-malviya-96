@@ -23,7 +23,7 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Medium: `https://medium.com/${SocialUsersID.Medium}`,
 	Instagram: `https://www.instagram.com/${SocialUsersID.Instagram}`,
 	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
-};
+} as const;
 
 // Todo a simple solution ??? This looks horrible
 export const ResumePDF: ExternalURL =
