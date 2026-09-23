@@ -11,7 +11,7 @@ import type { MediaSource, MonthAndYear } from "@/lib/types";
 
 function Highlight({ children }: { children: ReactNode }) {
 	return (
-		<Text as="span" variant="body" bold>
+		<Text as="span" variant="body">
 			{children}
 		</Text>
 	);

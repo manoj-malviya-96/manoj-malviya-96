@@ -99,9 +99,7 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 		children: (
 			<Flex direction="col" gap="md" hAlign="start">
 				<Flex direction="col" gap="sm" vAlign="center">
-					<Text variant="title" bold>
-						{position}
-					</Text>
+					<Text variant="title">{position}</Text>
 					<ExperienceSkills skills={skills} />
 				</Flex>
 				{summary}

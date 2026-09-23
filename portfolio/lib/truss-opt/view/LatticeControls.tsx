@@ -149,14 +149,14 @@ export function LatticeControls() {
 					{run.type === "choosing_fix" ? (
 						<Button
 							type="button"
-							variant="muted"
+							color="secondary"
 							label="Place support"
 							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
 							type="button"
-							variant="plain"
+							color="transparent"
 							label="Place support"
 							onClick={() => setEditMode("choosing_fix")}
 							disabled={isPending || run.type === "choosing_force"}
@@ -165,14 +165,14 @@ export function LatticeControls() {
 					{run.type === "choosing_force" ? (
 						<Button
 							type="button"
-							variant="muted"
+							color="secondary"
 							label="Place load"
 							onClick={() => setEditMode("idle")}
 						/>
 					) : (
 						<Button
 							type="button"
-							variant="plain"
+							color="transparent"
 							label="Place load"
 							onClick={() => setEditMode("choosing_force")}
 							disabled={isPending || run.type === "choosing_fix"}
@@ -182,7 +182,7 @@ export function LatticeControls() {
 				{hasResult ? (
 					<Button
 						type="button"
-						variant="plain"
+						color="transparent"
 						label="Clear simulation"
 						onClick={clearResult}
 						disabled={editing}
@@ -190,7 +190,7 @@ export function LatticeControls() {
 				) : (
 					<Button
 						type="button"
-						variant="plain"
+						color="transparent"
 						label={isSimulating ? "Simulating…" : "Simulate"}
 						onClick={simulate}
 						disabled={editing || !canRunFea || isPending}
@@ -257,7 +257,7 @@ export function LatticeControls() {
 				</Grid>
 				<Button
 					type="submit"
-					variant="filled"
+					color="primary"
 					label={isOptimizing ? "Optimizing…" : "Optimize"}
 					disabled={editing || isPending || !canRunFea}
 				/>
