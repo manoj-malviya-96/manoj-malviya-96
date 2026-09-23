@@ -68,7 +68,7 @@ function Hero() {
 					/>
 				</MagneticContainer>
 				<MagneticContainer>
-					<Link url="/resume" variant="button" size="sm" label="About me" />
+					<Link url="/about" variant="button" size="sm" label="About me" />
 				</MagneticContainer>
 			</Flex>
 		</HeroSection>
