@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	AccentText,
 	Link as AtomLink,
 	Flex,
 	Image,
@@ -153,9 +152,25 @@ export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
 
-export const Accent = withDefaults(AccentText)({
-	gradient: makeGradientBackground({
-		direction: "to bottom",
-		stops: ["brand", "surface"],
-	}),
+const ACCENT_GRADIENT = makeGradientBackground({
+	direction: "to bottom",
+	stops: ["brand", "surface"],
 });
+
+// RISK: renders as an inline span, not AccentText — AccentText emits its own
+// h1/h2/h3, which is invalid nested inside a parent Text heading (hydration error).
+export function Accent({ children, className }: ComponentProps<"span">) {
+	return (
+		<span
+			className={className}
+			style={{
+				backgroundImage: ACCENT_GRADIENT,
+				backgroundClip: "text",
+				WebkitBackgroundClip: "text",
+				color: "transparent",
+			}}
+		>
+			{children}
+		</span>
+	);
+}
