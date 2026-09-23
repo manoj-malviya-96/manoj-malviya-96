@@ -113,7 +113,7 @@ function ExperienceSkills({ skills }: { skills: Experience["skills"] }) {
 	return (
 		<List direction="row" gap="sm">
 			{skills.map((skill) => (
-				<Badge as="li" key={skill} color="blue">
+				<Badge as="li" key={skill}>
 					{skill}
 				</Badge>
 			))}
