@@ -15,6 +15,7 @@ import {
 	Patents,
 	ResumePDF,
 	SKILL_GROUPS,
+	SocialLinks,
 	UserAvatar,
 	useGoogleScholarQuery,
 } from "@/lib/data";
@@ -133,7 +134,7 @@ function TechnicalSurface() {
 }
 
 function Research() {
-	const scholar = useGoogleScholarQuery().data;
+	const { data: scholar, isError } = useGoogleScholarQuery();
 
 	return (
 		<Flex as="section" direction="col" gap="lg">
@@ -169,6 +170,12 @@ function Research() {
 								</li>
 							))}
 						</List>
+					) : isError ? (
+						<Link url={SocialLinks.Scholar} openNewTab variant="inline">
+							<Text variant="caption" muted>
+								See publications on Google Scholar →
+							</Text>
+						</Link>
 					) : (
 						<Text variant="caption" muted>
 							Loading from Google Scholar…
