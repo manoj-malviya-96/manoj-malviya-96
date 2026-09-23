@@ -30,7 +30,7 @@ function Hero() {
 			<Flex as="span" direction="col" gap="xs">
 				<Eyebrow>Berlin, DE</Eyebrow>
 				<Text variant="hero">
-					Manoj <Accent> Malviya</Accent>
+					Manoj <Accent>Malviya</Accent>
 				</Text>
 			</Flex>
 
