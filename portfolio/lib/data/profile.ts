@@ -29,7 +29,8 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 export const ResumePDF: ExternalURL =
 	"https://docs.google.com/document/d/e/2PACX-1vTx4Epi4BS_agxkxAMfB1cEYQLL6T8x3UBvB3lVzIaZY4qMtN2M_RjZgqJ4O0XeBYuJxXHkRHA4OJF4/pub";
 
-export const EmailAddress = "mailto:malviyamanoj1896@gmail.com";
+export const Email = "malviyamanoj1896@gmail.com";
+export const EmailAddress = `mailto:${Email}`;
 
 export const UserAvatar: LocalImage = userAvatar;
 

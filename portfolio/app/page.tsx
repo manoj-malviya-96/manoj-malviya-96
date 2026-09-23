@@ -5,7 +5,13 @@ import {
 	Text,
 	TypewriterText,
 } from "@manoj-malviya-96/atom";
-import { HowIWorkPhase, PHASE_IDS, type Phase } from "@/lib/data";
+import {
+	Email,
+	EmailAddress,
+	HowIWorkPhase,
+	PHASE_IDS,
+	type Phase,
+} from "@/lib/data";
 import { withDefaults } from "@/lib/helper";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
@@ -131,8 +137,21 @@ function FinalCTA() {
 	return (
 		<Section id="home-cta" gap="lg">
 			<Text variant="hero" align="center">
-				Got a hard<Accent>problem?</Accent>
+				Got a hard <Accent>problem?</Accent>
 			</Text>
+			<Flex direction="col" gap="sm" hAlign="center">
+				<MagneticContainer>
+					<Link
+						url={EmailAddress}
+						variant="button"
+						color="primary"
+						label="Email me"
+					/>
+				</MagneticContainer>
+				<Text variant="caption" mono muted selectable>
+					{Email}
+				</Text>
+			</Flex>
 		</Section>
 	);
 }

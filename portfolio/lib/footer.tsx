@@ -2,7 +2,7 @@
 
 import { Flex, List, Text } from "@manoj-malviya-96/atom";
 
-import { SocialLinks } from "@/lib/data";
+import { Email, SocialLinks } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 export default function Footer() {
@@ -18,6 +18,9 @@ export default function Footer() {
 		>
 			<Text variant="caption" mono muted>
 				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
+			</Text>
+			<Text variant="caption" mono muted selectable>
+				{Email}
 			</Text>
 			<List direction="row" gap="md">
 				{Object.entries(SocialLinks).map(([key, url]) => (
