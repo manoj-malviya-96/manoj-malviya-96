@@ -30,31 +30,25 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 				margin={{ x: "auto" }}
 				width={{ value: "content", max: "full" }}
 			>
-				<Reveal>
-					<Flex
-						direction="col"
-						gap="md"
-						hAlign="start"
-						width={{ value: "lg", max: "full" }}
-					>
-						<Text variant="heading">{item.title}</Text>
-						<Text variant="body" muted>
-							{item.summary}
-						</Text>
-						<WorkLinks item={item} />
-					</Flex>
-				</Reveal>
+				<Flex
+					direction="col"
+					gap="md"
+					hAlign="start"
+					width={{ value: "lg", max: "full" }}
+				>
+					<Text variant="heading">{item.title}</Text>
+					<Text variant="body" muted>
+						{item.summary}
+					</Text>
+					<WorkLinks item={item} />
+				</Flex>
 				{item.kind === "project" && item.media && (
-					<Reveal delay={140}>
+					<Reveal>
 						<ProjectMediaComponent media={item.media} />
 					</Reveal>
 				)}
-				{item.kind === "project" && item.content && (
-					<Reveal delay={220}>{item.content}</Reveal>
-				)}
-				<Reveal delay={300}>
-					<CardTags item={item} />
-				</Reveal>
+				{item.kind === "project" && item.content && item.content}
+				<CardTags item={item} />
 			</Flex>
 		</Flex>
 	);

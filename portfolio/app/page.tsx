@@ -81,7 +81,7 @@ function HowIWork() {
 			<SectionHeader title="The process." eyebrow="How I work" />
 			<Grid columns={2} gap="md">
 				{PHASE_IDS.map((id, index) => (
-					<Reveal key={id} delay={index * 120}>
+					<Reveal key={id}>
 						<PhaseCol index={index} {...HowIWorkPhase[id]} />
 					</Reveal>
 				))}
