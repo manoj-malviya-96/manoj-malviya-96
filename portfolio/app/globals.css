@@ -119,18 +119,6 @@ img {
 	.track-logo {
 		width: 3rem;
 	}
-
-	.loop-grid,
-	.stat-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (max-width: 600px) {
-	.loop-grid,
-	.stat-grid {
-		grid-template-columns: 1fr;
-	}
 }
 
 /* Scroll/mount reveal (lib/reveal.tsx). Deliberately long and short-travel: the
