@@ -148,6 +148,46 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	);
 }
 
+export const Page = withDefaults(Flex)({
+	direction: "col",
+	gap: "xl",
+	width: "content",
+});
+
+type PageHeroProps = SectionHeaderProps &
+	Omit<ComponentProps<typeof Flex>, "title">;
+
+// Same eyebrow + hero-title intro on every page, so moving between pages feels seamless.
+export function PageHero({
+	eyebrow,
+	title,
+	caption,
+	children,
+	...rest
+}: PageHeroProps) {
+	return (
+		<Flex
+			as="header"
+			direction="col"
+			gap="sm"
+			width="full"
+			padding={{ y: "xl" }}
+			{...rest}
+		>
+			<Flex as="span" direction="col" gap="xs">
+				{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+				<Text variant="hero">{title}</Text>
+			</Flex>
+			{caption && (
+				<Text variant="body" muted width="sm">
+					{caption}
+				</Text>
+			)}
+			{children}
+		</Flex>
+	);
+}
+
 export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
