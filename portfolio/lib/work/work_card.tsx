@@ -37,8 +37,8 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 						hAlign="start"
 						width={{ value: "lg", max: "full" }}
 					>
-						<Text variant="hero">{item.title}</Text>
-						<Text variant="subtitle" muted>
+						<Text variant="heading">{item.title}</Text>
+						<Text variant="body" muted>
 							{item.summary}
 						</Text>
 						<WorkLinks item={item} />

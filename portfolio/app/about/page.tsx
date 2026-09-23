@@ -62,7 +62,7 @@ function Intro() {
 				<Text variant="heading">
 					The <Accent>Person</Accent>
 				</Text>
-				<Text variant="subtitle" muted>
+				<Text variant="body" muted>
 					Seven years solving problems that sit between hardware and software:
 					CAD tools engineers depend on, patient-monitoring platforms that
 					can&apos;t afford downtime, real-time rendering that has to hit budget

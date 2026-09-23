@@ -91,7 +91,7 @@ export default function TypeWriter({
 		: `${prefix} ${word.slice(0, state.length)}`;
 
 	return (
-		<Text variant="subtitle">
+		<Text variant="body" muted>
 			{finalString}
 			<span className="typewriter-cursor" aria-hidden="true" />
 		</Text>

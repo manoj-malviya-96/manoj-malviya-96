@@ -35,7 +35,7 @@ function Hero() {
 			</Flex>
 
 			<TypewriterText
-				variant="subtitle"
+				variant="body"
 				prefix="-"
 				words={[
 					"Lead Software Engineer",
@@ -62,20 +62,13 @@ function Hero() {
 					<Link
 						url="/work"
 						variant="button"
-						buttonVariant="filled"
 						color="primary"
 						size="sm"
 						label="View work →"
 					/>
 				</MagneticContainer>
 				<MagneticContainer>
-					<Link
-						url="/resume"
-						variant="button"
-						buttonVariant="filled"
-						size="sm"
-						label="About me"
-					/>
+					<Link url="/resume" variant="button" size="sm" label="About me" />
 				</MagneticContainer>
 			</Flex>
 		</HeroSection>
