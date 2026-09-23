@@ -1,6 +1,7 @@
 "use client";
 
 import { Flex } from "@manoj-malviya-96/atom";
+import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
 import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
 import { usePathname } from "next/navigation";
 import { EmailAddress } from "@/lib/data";
@@ -41,6 +42,7 @@ export default function HeaderBar() {
 				variant="button"
 				size="sm"
 				label="Get in touch"
+				icon={<IconEnvelope size="sm" />}
 				aria-label="Get in touch"
 				collapse
 				color="primary"
