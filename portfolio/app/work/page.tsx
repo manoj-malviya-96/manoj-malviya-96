@@ -8,7 +8,7 @@ import WorkCard from "@/lib/work/work_card";
 export default function WorkPage() {
 	return (
 		<Page>
-			<PageHero eyebrow="Work" title="Selected work." />
+			<PageHero eyebrow="Work" title="Things I've built." />
 			<WorkToc />
 			<Flex as="article" direction="col" gap="xl" width="full">
 				{WorkItems.map((item) => (
