@@ -4,7 +4,6 @@ import {
 	Link as AtomLink,
 	Flex,
 	Image,
-	makeGradientBackground,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -169,9 +168,9 @@ export function PageHero({
 		<Flex
 			as="header"
 			direction="col"
-			gap="sm"
+			gap="lg"
 			width="full"
-			padding={{ y: "xl" }}
+			padding={{ y: "md" }}
 			{...rest}
 		>
 			<Flex as="span" direction="col" gap="xs">
@@ -192,26 +191,6 @@ export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
 
 export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
 
-// Both stops contrast with the page; fading into "surface" left the glyph bottoms unreadable.
-const ACCENT_GRADIENT = makeGradientBackground({
-	direction: "to bottom",
-	stops: ["brand", "indigo"],
-});
-
-// RISK: renders as an inline span, not AccentText — AccentText emits its own
-// h1/h2/h3, which is invalid nested inside a parent Text heading (hydration error).
-export function Accent({ children, className }: ComponentProps<"span">) {
-	return (
-		<span
-			className={className}
-			style={{
-				backgroundImage: ACCENT_GRADIENT,
-				backgroundClip: "text",
-				WebkitBackgroundClip: "text",
-				color: "transparent",
-			}}
-		>
-			{children}
-		</span>
-	);
-}
+export const EmText = ({ children }: { children: ReactNode }) => {
+	return <em style={{ color: "var(--color-subtle)" }}>{children}</em>;
+};
