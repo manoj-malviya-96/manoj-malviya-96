@@ -16,7 +16,7 @@ import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import Reveal from "@/lib/reveal";
 import {
-	Accent,
+	EmText,
 	Link,
 	Page,
 	PageHero,
@@ -43,11 +43,10 @@ function Hero() {
 			eyebrow="Berlin, DE"
 			title={
 				<>
-					Manoj <Accent>Malviya</Accent>
+					Manoj
+					<EmText> Malviya </EmText>
 				</>
 			}
-			height="lg"
-			margin={{ x: "auto" }}
 			vAlign="center"
 		>
 			<TypewriterText
@@ -62,7 +61,7 @@ function Hero() {
 					"3D Printing",
 				]}
 			/>
-			<Text variant="body" muted width="sm">
+			<Text variant="body" muted width="md">
 				I transform complex problems into intelligent products — focusing on
 				correctness, then performance, then everything else.
 			</Text>
@@ -147,7 +146,7 @@ function FinalCTA() {
 	return (
 		<Section id="home-cta" gap="lg">
 			<Text variant="hero" align="center">
-				Got a hard <Accent>problem?</Accent>
+				Got a hard <EmText>problem ? </EmText>
 			</Text>
 			<Flex direction="col" gap="sm" hAlign="center">
 				<MagneticContainer>

@@ -22,14 +22,7 @@ import {
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import {
-	Accent,
-	Eyebrow,
-	Link,
-	Page,
-	PageHero,
-	SectionHeader,
-} from "@/lib/shared";
+import { Eyebrow, Link, Page, PageHero, SectionHeader } from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
@@ -38,7 +31,7 @@ export default function AboutPage() {
 				eyebrow="About"
 				title={
 					<>
-						The <Accent>Person</Accent>
+						The <em>Person</em>
 					</>
 				}
 			/>
