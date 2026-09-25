@@ -2,8 +2,8 @@ import { Screen } from "@manoj-malviya-96/atom/system";
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
 import type React from "react";
+import AppControlCenter from "@/lib/control_center";
 import Footer from "@/lib/footer";
-import HeaderBar from "@/lib/header_bar";
 import { ReactQueryProvider } from "@/lib/react_query";
 import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
@@ -53,7 +53,7 @@ export default function RootLayout({
 			<body>
 				<ReactQueryProvider>
 					<Screen as="main" hAlign="center" vAlign="center">
-						<HeaderBar />
+						<AppControlCenter />
 						{children}
 						<Footer />
 					</Screen>

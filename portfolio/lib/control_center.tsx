@@ -1,56 +1,54 @@
 "use client";
 
-import { Flex } from "@manoj-malviya-96/atom";
-import { IconEnvelope } from "@manoj-malviya-96/atom/icons";
-import { Header, useHeaderBar } from "@manoj-malviya-96/atom/system";
+import {
+	IconBriefcase,
+	IconEnvelope,
+	IconHouse,
+	IconUser,
+} from "@manoj-malviya-96/atom/icons";
+import { ControlCenter } from "@manoj-malviya-96/atom/system";
+import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { EmailAddress } from "@/lib/data";
-import { Link } from "@/lib/shared";
 
 const NAV_LINKS = [
-	{ url: "/", label: "Home" },
-	{ url: "/work", label: "Work" },
-	{ url: "/about", label: "About" },
+	{ url: "/", label: "Home", Icon: IconHouse },
+	{ url: "/work", label: "Work", Icon: IconBriefcase },
+	{ url: "/about", label: "About", Icon: IconUser },
 ] as const;
 
-export default function HeaderBar() {
+export default function AppControlCenter() {
 	const pathname = usePathname();
 
-	useHeaderBar({
-		left: <Logo size={24} />,
-		content: (
-			<Flex as="nav" direction="row" gap="sm">
-				{NAV_LINKS.map(({ url, label }) => {
+	return (
+		<ControlCenter
+			header={<Logo size={24} />}
+			actions={
+				<ControlCenter.Item
+					as="a"
+					href={`mailto:${EmailAddress}`}
+					icon={<IconEnvelope />}
+					label="Get in touch"
+				/>
+			}
+		>
+			<ControlCenter.Tabs aria-label="Pages">
+				{NAV_LINKS.map(({ url, label, Icon }) => {
 					const isCurrent = pathname === url;
 					return (
-						<Link
+						<ControlCenter.Item
 							key={url}
-							url={url}
-							variant="tab"
-							isActive={isCurrent}
+							as={NextLink}
+							href={url}
 							aria-current={isCurrent ? "page" : undefined}
-						>
-							{label}
-						</Link>
+							icon={<Icon />}
+							label={label}
+						/>
 					);
 				})}
-			</Flex>
-		),
-		right: (
-			<Link
-				url={EmailAddress}
-				variant="button"
-				size="sm"
-				label="Get in touch"
-				icon={<IconEnvelope size="sm" />}
-				aria-label="Get in touch"
-				collapse
-				color="primary"
-			/>
-		),
-	});
-
-	return <Header width="content" padding="none" />;
+			</ControlCenter.Tabs>
+		</ControlCenter>
+	);
 }
 
 function Logo({
