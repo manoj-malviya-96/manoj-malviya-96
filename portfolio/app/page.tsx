@@ -7,13 +7,7 @@ import {
 	Text,
 	TypewriterText,
 } from "@manoj-malviya-96/atom";
-import {
-	Email,
-	EmailAddress,
-	HowIWorkPhase,
-	PHASE_IDS,
-	type Phase,
-} from "@/lib/data";
+import { EmailAddress, HowIWorkPhase, PHASE_IDS, type Phase } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import {
@@ -21,7 +15,7 @@ import {
 	Link,
 	Page,
 	PageHero,
-	Section,
+	PageSection,
 	SectionHeader,
 } from "@/lib/shared";
 
@@ -93,14 +87,14 @@ function Hero() {
 
 function HowIWork() {
 	return (
-		<Section id="home-loop">
+		<PageSection id="home-loop">
 			<SectionHeader title="The process." eyebrow="How I work" />
 			<Grid columns={2} gap="md">
 				{PHASE_IDS.map((id, index) => (
 					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
 				))}
 			</Grid>
-		</Section>
+		</PageSection>
 	);
 }
 
@@ -124,7 +118,7 @@ function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 
 function FeaturedWork() {
 	return (
-		<Section id="home-feature" gap="lg">
+		<PageSection id="home-feature" gap="lg">
 			<Flex as="span" direction="row" vAlign="center" hAlign="between">
 				<Text.Heading>Featured Work</Text.Heading>
 				<Link url="/work">
@@ -132,24 +126,22 @@ function FeaturedWork() {
 				</Link>
 			</Flex>
 			<Featured />
-		</Section>
+		</PageSection>
 	);
 }
 
 function FinalCTA() {
 	return (
-		<Section id="home-cta" gap="lg">
-			<Text.Hero align="center">
-				Got a hard <EmText>problem ? </EmText>
-			</Text.Hero>
-			<Flex direction="col" gap="sm" hAlign="center">
+		<PageSection id="home-cta" gap="lg" scheme="dark">
+			{/*TODO: Fix in atom- Section is not passing paddings. */}
+			<Flex direction="col" gap="lg" hAlign="center" height="xl">
+				<Text.Hero align="center">
+					Got a hard <EmText>problem ? </EmText>
+				</Text.Hero>
 				<MagneticContainer>
 					<Link.Button url={EmailAddress} color="primary" label="Email me" />
 				</MagneticContainer>
-				<Text.Caption mono ink="muted" selectable>
-					{Email}
-				</Text.Caption>
 			</Flex>
-		</Section>
+		</PageSection>
 	);
 }

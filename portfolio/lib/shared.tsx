@@ -2,9 +2,9 @@
 
 import {
 	Link as AtomLink,
+	Section as AtomSection,
 	Flex,
 	Image,
-	Section as AtomSection,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -13,33 +13,6 @@ import NextLink from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
-
-type SectionId = "home-loop" | "home-feature" | "home-hero" | "home-cta";
-
-type SectionProps = {
-	id: SectionId;
-} & Omit<ComponentProps<typeof AtomSection>, "id">;
-
-export function Section({
-	id,
-	gap = "lg",
-	className,
-	children,
-	...rest
-}: SectionProps) {
-	return (
-		<AtomSection
-			{...rest}
-			id={id}
-			width="content"
-			gap={gap}
-			margin={{ x: "auto" }}
-			className={className}
-		>
-			{children}
-		</AtomSection>
-	);
-}
 
 type Href = ComponentProps<typeof NextLink>["href"];
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
@@ -223,6 +196,9 @@ export function PageHero({
 }
 
 export const Eyebrow = withDefaults(Text.Overline)({ mono: true });
-
+export const PageSection = withDefaults(AtomSection)({
+	width: "content",
+	margin: { x: "auto" },
+});
 export const Prose = withDefaults(Text.Body)({ width: "lg" });
 export const EmText = withDefaults(Text.Italic)({ ink: "muted" });
