@@ -5,7 +5,7 @@ export function MacbookMockup({ children }: { children: ReactNode }) {
 	const uid = useId();
 
 	return (
-		<Flex direction="col" hAlign="center" width="lg">
+		<Flex direction="col" hAlign="center" width="lg" enter="rise">
 			<svg
 				viewBox="0 0 1717 1027"
 				width="100%"
