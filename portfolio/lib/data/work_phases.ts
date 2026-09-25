@@ -13,18 +13,18 @@ export type Phase = {
 export const HowIWorkPhase = {
 	discover: {
 		label: "Discover",
-		copy: "Problem understanding over requirement-taking. I ask what outcome actually matters and why this problem exists at all.",
+		copy: "Problem understanding over requirement-taking. The EV Charging Simulator started as 'how many chargers does this lot need,' not 'build a simulator.'",
 	},
 	design: {
 		label: "Design",
-		copy: "Model the problem before the system. Draw boundaries, identify invariants, challenge assumptions before opening an editor.",
+		copy: "Model the problem before the system. The Truss Optimizer started as a volume constraint and a stress bound, not a UI.",
 	},
 	build: {
 		label: "Build",
-		copy: "Correct first. Fast second. Premature optimization is the second-oldest engineering mistake.",
+		copy: "Correct first. Fast second. topopt-py got the SIMP algorithm right in plain Python before vectorizing it into NumPy.",
 	},
 	measure: {
 		label: "Measure",
-		copy: "Metrics are a contract with reality. Instrument before shipping, measure what changed, let data argue with assumptions.",
+		copy: "Metrics are a contract with reality. Muviz's audio pipeline only moved to a Web Worker after profiling showed it blocking the main thread.",
 	},
 } satisfies Record<PhaseId, Phase>;

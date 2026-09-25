@@ -25,6 +25,8 @@ export type ProjectId = ValuesOf<typeof AllProjectIds>;
 export const Projects: Record<ProjectId, Project> = {
 	atom: {
 		title: "Atom",
+		outcome:
+			"Design systems force a choice between runtime-cost CSS-in-JS and unchecked CSS → Atom ships both typed and zero-runtime, at 20 KB gzipped.",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
 					Every option out there made me choose between a CSS-in-JS styling library dragging
 					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
@@ -77,6 +79,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	muviz: {
 		title: "Muviz",
+		outcome:
+			"Wanted Winamp-style reactivity without faking it with AI → real DSP running in a WASM worker, analyzed once and cached per track.",
 		summary: `I grew up watching Winamp react to whatever was playing, and I never
 					stopped wanting that feeling back. So I’m building the real thing
 					myself: no AI, no faking it, DSP that actually understands the
@@ -137,6 +141,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	honeycomb: {
 		title: "HoneyMesh",
+		outcome:
+			"Triangulating hexagonal lattices by hand for CAD work → a C++ generator that exports straight to a VTK mesh.",
 		summary:
 			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
 		dates: "2025",
@@ -168,6 +174,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	topopt_py: {
 		title: "topopt-py",
+		outcome:
+			"DTU's reference topology optimizer was elegant but slow in pure Python → vectorized NumPy assembly, 1.8× faster at the same accuracy.",
 		summary: `I found DTU's 99-line topology-optimization script and loved how
 					compact it was, but the inner loop was nested Python. I rewrote the
 					stiffness assembly and filtering as vectorized NumPy, keeping the same
@@ -206,6 +214,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	blackhole: {
 		title: "Blackhole",
+		outcome:
+			"Wanted to see black-hole lensing without waiting for the movie → a real-time GPU renderer modeled on Sagittarius A*.",
 		summary:
 			"Gravity, rendered in real time, because I couldn't wait for the movie.",
 		dates: "2026",
@@ -237,6 +247,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
+		outcome:
+			"Didn't know how many chargers a lot actually needs → a year-long Poisson-based demand simulator that answers it instantly.",
 		summary:
 			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first.",
 		dates: "2024",
@@ -269,6 +281,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	mesha: {
 		title: "Mesha",
+		outcome:
+			"Mesh-repair tools live on the command line → building a real interactive editor around them.",
 		summary: "Mesh repair, from the command line to a real editor.",
 		dates: "2025",
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
@@ -290,6 +304,8 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	truss_opt: {
 		title: "Truss Optimizer",
+		outcome:
+			"Wanted to watch material redistribute in real time → a browser truss editor backed by a live FEA/optimization API.",
 		summary:
 			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
 		dates: "2024",
@@ -414,6 +430,8 @@ export type ProjectMedia = { mockup?: "macbook" } & MediaSource;
 export type Project = {
 	title: string;
 	summary: ReactNode;
+	/** One line, problem → result — for the featured-card grid. */
+	outcome: string;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;

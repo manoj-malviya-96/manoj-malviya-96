@@ -10,7 +10,7 @@ export default function Featured() {
 					<Flex direction="col" gap="sm">
 						{item.media && <Media media={item.media} />}
 						<Text.Title>{item.title}</Text.Title>
-						<Text.Caption ink="muted">{item.dates}</Text.Caption>
+						<Text.Body ink="muted">{item.outcome}</Text.Body>
 					</Flex>
 				</Link>
 			))}

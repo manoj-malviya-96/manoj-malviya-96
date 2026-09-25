@@ -26,7 +26,7 @@ export default function AppControlCenter() {
 			actions={
 				<ControlCenter.Item
 					as="a"
-					href={`mailto:${EmailAddress}`}
+					href={EmailAddress}
 					icon={<IconEnvelope />}
 					label="Get in touch"
 				/>

@@ -25,9 +25,7 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
 } as const;
 
-// Todo a simple solution ??? This looks horrible
-export const ResumePDF: ExternalURL =
-	"https://docs.google.com/document/d/e/2PACX-1vTx4Epi4BS_agxkxAMfB1cEYQLL6T8x3UBvB3lVzIaZY4qMtN2M_RjZgqJ4O0XeBYuJxXHkRHA4OJF4/pub";
+export const ResumePDF = "/resume.pdf";
 
 export const Email = "malviyamanoj1896@gmail.com";
 export const EmailAddress = `mailto:${Email}`;
@@ -41,9 +39,15 @@ const currentExperience = Experiences[currentExperienceId];
 export const CurrentLocation: string = currentExperience.location;
 export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
 
-// TODO: swap in whatever's actually pulling your attention lately.
+// Same phrase everywhere the role gets summarized in one line — hero, layout metadata.
+export const RoleTagline =
+	"senior product engineer building health-tech, CAD, and real-time systems";
+
 export const Interests: readonly string[] = [
 	"Generative design",
 	"Real-time rendering",
 	"Robotics",
 ];
+
+// Hero typewriter — hobbies only, not job titles (those live in RoleTagline/CurrentStatus).
+export const Hobbies: readonly string[] = ["Part-time DJ", "3D Printing"];

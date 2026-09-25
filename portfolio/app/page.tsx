@@ -7,7 +7,16 @@ import {
 	Text,
 	TypewriterText,
 } from "@manoj-malviya-96/atom";
-import { EmailAddress, HowIWorkPhase, PHASE_IDS, type Phase } from "@/lib/data";
+import {
+	CurrentStatus,
+	Email,
+	EmailAddress,
+	Hobbies,
+	HowIWorkPhase,
+	PHASE_IDS,
+	type Phase,
+	RoleTagline,
+} from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import {
@@ -45,21 +54,11 @@ function Hero() {
 			vAlign="center"
 		>
 			<Text.Body>
-				<TypewriterText
-					prefix="-"
-					words={[
-						"Lead Software Engineer",
-						"High Performance Computing",
-						"Product Designer",
-						"Computation Design Research",
-						"Part-time DJ",
-						"3D Printing",
-					]}
-				/>
+				{RoleTagline[0]?.toUpperCase()}
+				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
 			</Text.Body>
 			<Text.Body ink="muted" width="md">
-				I transform complex problems into intelligent products — focusing on
-				correctness, then performance, then everything else.
+				<TypewriterText prefix="Also into" words={Hobbies} />
 			</Text.Body>
 			<Flex
 				as="span"
@@ -141,6 +140,9 @@ function FinalCTA() {
 				<MagneticContainer>
 					<Link.Button url={EmailAddress} color="primary" label="Email me" />
 				</MagneticContainer>
+				<Text.Body ink="muted" selectable>
+					{Email}
+				</Text.Body>
 			</Flex>
 		</PageSection>
 	);

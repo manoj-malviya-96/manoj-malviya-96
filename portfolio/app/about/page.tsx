@@ -31,7 +31,7 @@ export default function AboutPage() {
 				eyebrow="About"
 				title={
 					<>
-						The <em>Person</em>
+						What I actually <em>do</em>
 					</>
 				}
 			/>
