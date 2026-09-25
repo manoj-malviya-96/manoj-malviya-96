@@ -21,12 +21,12 @@
 	},
 	"dependencies": {
 		"@legendapp/state": "2.1.15",
-		"@manoj-malviya-96/atom": "0.3.2",
-		"@tanstack/react-query": "^5.103.1",
+		"@manoj-malviya-96/atom": "0.3.3",
+		"@tanstack/react-query": "^5.103.2",
 		"@vercel/analytics": "^2.0.1",
 		"@vercel/speed-insights": "^2.0.0",
-		"knip": "^6.37.0",
-		"next": "^16.3.5",
+		"knip": "^6.38.0",
+		"next": "^16.3.6",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
 		"zod": "^4.6.5"
