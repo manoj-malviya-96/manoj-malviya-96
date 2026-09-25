@@ -4,6 +4,7 @@ import {
 	Link as AtomLink,
 	Flex,
 	Image,
+	Section as AtomSection,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -17,7 +18,7 @@ type SectionId = "home-loop" | "home-feature" | "home-hero" | "home-cta";
 
 type SectionProps = {
 	id: SectionId;
-} & Omit<ComponentProps<typeof Flex>, "id">;
+} & Omit<ComponentProps<typeof AtomSection>, "id">;
 
 export function Section({
 	id,
@@ -27,18 +28,16 @@ export function Section({
 	...rest
 }: SectionProps) {
 	return (
-		<Flex
-			as="section"
+		<AtomSection
 			{...rest}
 			id={id}
-			direction="col"
 			width="content"
 			gap={gap}
 			margin={{ x: "auto" }}
 			className={className}
 		>
 			{children}
-		</Flex>
+		</AtomSection>
 	);
 }
 
@@ -226,7 +225,4 @@ export function PageHero({
 export const Eyebrow = withDefaults(Text.Overline)({ mono: true });
 
 export const Prose = withDefaults(Text.Body)({ width: "lg" });
-
-export const EmText = ({ children }: { children: ReactNode }) => {
-	return <em style={{ color: "var(--color-subtle)" }}>{children}</em>;
-};
+export const EmText = withDefaults(Text.Italic)({ ink: "muted" });
