@@ -18,7 +18,6 @@ import {
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
-import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
 
 type ExperienceGroup = {
@@ -46,9 +45,7 @@ export default function WorkHistory() {
 	return (
 		<Flex direction="col" className="track-list">
 			{EXPERIENCE_GROUPS.map((group) => (
-				<Reveal key={group.organization}>
-					<TrackRow group={group} />
-				</Reveal>
+				<TrackRow key={group.organization} group={group} />
 			))}
 		</Flex>
 	);
@@ -61,7 +58,13 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid columns={2} className="track-row" padding="lg" bg="surface">
+		<Grid
+			columns={2}
+			enter="rise"
+			className="track-row"
+			padding="lg"
+			bg="surface"
+		>
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
 					as={NextImage}
@@ -72,12 +75,10 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 					radius="md"
 					className="track-logo"
 				/>
-				<Text variant="title" muted>
-					{name}
-				</Text>
-				<Text variant="caption" muted>
+				<Text.Title ink="muted">{name}</Text.Title>
+				<Text.Caption ink="muted">
 					{formatDate(start)} — {end ? formatDate(end) : "Present"}
-				</Text>
+				</Text.Caption>
 			</Flex>
 			{/* A lone role skips Timeline: its marker and rail mean nothing without a second event. */}
 			{experiences.length === 1 ? (
@@ -99,7 +100,7 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 		children: (
 			<Flex direction="col" gap="md" hAlign="start">
 				<Flex direction="col" gap="sm" vAlign="center">
-					<Text variant="title">{position}</Text>
+					<Text.Title>{position}</Text.Title>
 					<ExperienceSkills skills={skills} />
 				</Flex>
 				{summary}

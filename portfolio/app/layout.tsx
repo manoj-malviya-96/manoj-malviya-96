@@ -1,6 +1,5 @@
 import { Screen } from "@manoj-malviya-96/atom/system";
 import type { Metadata } from "next";
-import { DM_Sans, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
 import type React from "react";
 import AppControlCenter from "@/lib/control_center";
 import Footer from "@/lib/footer";
@@ -9,25 +8,6 @@ import "@manoj-malviya-96/atom/styles.css";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
-const fontBody = DM_Sans({
-	subsets: ["latin"],
-	variable: "--font-sans",
-	display: "swap",
-});
-
-const fontHeading = DM_Serif_Display({
-	subsets: ["latin"],
-	weight: "400",
-	variable: "--font-heading",
-	display: "swap",
-});
-
-const fontMono = JetBrains_Mono({
-	subsets: ["latin"],
-	variable: "--font-mono",
-	display: "swap",
-});
 
 export const metadata: Metadata = {
 	title: "Manoj Malviya",
@@ -45,11 +25,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`${fontBody.variable} ${fontHeading.variable} ${fontMono.variable}`}
-		>
+		<html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
 			<body>
 				<ReactQueryProvider>
 					<Screen as="main" hAlign="center" vAlign="center">

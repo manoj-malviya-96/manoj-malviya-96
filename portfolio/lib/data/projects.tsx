@@ -55,22 +55,22 @@ export const Projects: Record<ProjectId, Project> = {
 		content: (
 			<List direction="col" gap="md" width="lg">
 				<li>
-					<Text variant="body">
+					<Text.Body>
 						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays a
 						runtime cost.
-					</Text>
+					</Text.Body>
 				</li>
 				<li>
-					<Text variant="body">
+					<Text.Body>
 						✅ Types generate straight from that CSS, so an illegal token can't
 						compile. Scripts catch what the type system can't.
-					</Text>
+					</Text.Body>
 				</li>
 				<li>
-					<Text variant="body">
+					<Text.Body>
 						✅ 20 KB gzipped for the core. Charts and system components ship
 						separately, each under its own budget.
-					</Text>
+					</Text.Body>
 				</li>
 			</List>
 		),
@@ -103,34 +103,34 @@ export const Projects: Record<ProjectId, Project> = {
 			<List direction="col" gap="md" width="lg">
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconVolumeHigh />
-					<Text variant="body">
+					<Text.Body>
 						A C++ pipeline (FFT, onset detection, key and rhythm extraction)
 						compiles to WebAssembly and analyzes a track once, in a Web Worker,
 						off the main thread.
-					</Text>
+					</Text.Body>
 				</Flex>
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconLightbulb />
-					<Text variant="body">
+					<Text.Body>
 						Every analyzed track is cached in IndexedDB by content hash, so
 						replaying it or re-adding the file skips analysis entirely.
-					</Text>
+					</Text.Body>
 				</Flex>
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconPaintBrush />
-					<Text variant="body">
+					<Text.Body>
 						The Three.js scene never touches audio directly. It’s a pure
 						function of the extracted features and playback time, so scrubbing
 						and switching tracks come for free.
-					</Text>
+					</Text.Body>
 				</Flex>
 				<Flex as="li" direction="row" gap="md" vAlign="center">
 					<IconVolumeHigh />
-					<Text variant="body">
+					<Text.Body>
 						It’s live at muviz.vercel.app, reacting to whatever you drop on it
 						in real time — the Winamp feeling, running on my own DSP instead of
 						someone else’s AI.
-					</Text>
+					</Text.Body>
 				</Flex>
 			</List>
 		),

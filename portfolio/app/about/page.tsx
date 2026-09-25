@@ -68,14 +68,14 @@ function Intro() {
 	return (
 		<Grid columns={2} gap="xl" className="about-intro">
 			<Flex direction="col" gap="md" hAlign="start">
-				<Text variant="body" muted>
+				<Text.Body ink="muted">
 					Seven years solving problems that sit between hardware and software:
 					CAD tools engineers depend on, patient-monitoring platforms that
 					can&apos;t afford downtime, real-time rendering that has to hit budget
 					every frame. I own the full path: system design, the algorithm
 					underneath, and the interface someone actually has to use.
-				</Text>
-				<Link url={ResumePDF} openNewTab variant="inline">
+				</Text.Body>
+				<Link url={ResumePDF} openNewTab>
 					Download PDF
 				</Link>
 			</Flex>
@@ -109,9 +109,7 @@ function SidebarRow({
 	return (
 		<Flex as="li" direction="row" gap="xs" vAlign="center">
 			<RowIcon size="sm" />
-			<Text variant="body" muted>
-				{label}
-			</Text>
+			<Text.Body ink="muted">{label}</Text.Body>
 		</Flex>
 	);
 }
@@ -151,10 +149,10 @@ function Research() {
 						{Patents.map((patent) => (
 							<li key={patent.title}>
 								<Flex direction="col" gap="xs">
-									<Text variant="body">{patent.title}</Text>
-									<Text variant="caption" muted>
+									<Text.Body>{patent.title}</Text.Body>
+									<Text.Caption ink="muted">
 										{patent.field} · {patent.year}
-									</Text>
+									</Text.Caption>
 								</Flex>
 							</li>
 						))}
@@ -167,24 +165,24 @@ function Research() {
 							{scholar.papers.map((paper) => (
 								<li key={paper.title}>
 									<Flex direction="col" gap="xs">
-										<Text variant="body">{paper.title}</Text>
-										<Text variant="caption" muted>
+										<Text.Body>{paper.title}</Text.Body>
+										<Text.Caption ink="muted">
 											{paper.venue} · {paper.year} · {paper.citations} citations
-										</Text>
+										</Text.Caption>
 									</Flex>
 								</li>
 							))}
 						</List>
 					) : isError ? (
-						<Link url={SocialLinks.Scholar} openNewTab variant="inline">
-							<Text variant="caption" muted>
+						<Link url={SocialLinks.Scholar} openNewTab>
+							<Text.Caption ink="muted">
 								See publications on Google Scholar →
-							</Text>
+							</Text.Caption>
 						</Link>
 					) : (
-						<Text variant="caption" muted>
+						<Text.Caption ink="muted">
 							Loading from Google Scholar…
-						</Text>
+						</Text.Caption>
 					)}
 				</Flex>
 			</Grid>

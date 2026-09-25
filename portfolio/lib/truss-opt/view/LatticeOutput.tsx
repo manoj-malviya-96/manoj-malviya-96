@@ -43,9 +43,7 @@ export function LatticeOutput() {
 				className="lattice-overlay"
 				data-hidden={isPending ? undefined : true}
 			>
-				<Text variant="caption" muted>
-					Solving…
-				</Text>
+				<Text.Caption ink="muted">Solving…</Text.Caption>
 			</Layer>
 
 			<Layer
@@ -55,10 +53,10 @@ export function LatticeOutput() {
 				className="lattice-overlay"
 				data-hidden={editing ? undefined : true}
 			>
-				<Text variant="caption" muted>
+				<Text.Caption ink="muted">
 					Click a node to{" "}
 					{run.type === "choosing_fix" ? "toggle a support" : "cycle its load"}.
-				</Text>
+				</Text.Caption>
 			</Layer>
 		</Layer>
 	);

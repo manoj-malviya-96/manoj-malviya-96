@@ -48,16 +48,56 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 	: never;
 
 export type LinkProps = DistributiveOmit<
-	ComponentProps<typeof AtomLink<"a">>,
+	ComponentProps<typeof AtomLink>,
 	"as" | "href"
 > & {
 	url: Href;
 };
 
-export function Link({ url, ...rest }: LinkProps) {
-	const isInternal = typeof url === "object" || url.startsWith("/");
-	return <AtomLink as={isInternal ? NextLink : "a"} href={url} {...rest} />;
+function LinkInline({ url, ...rest }: LinkProps) {
+	if (typeof url === "object" || url.startsWith("/"))
+		return (
+			<AtomLink
+				as={NextLink}
+				href={url}
+				{...rest}
+				// TODO: Atom has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+				style={{ textDecoration: "none" }}
+			/>
+		);
+	return (
+		// TODO: Atom has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+		<AtomLink as="a" href={url} {...rest} style={{ textDecoration: "none" }} />
+	);
 }
+
+type LinkButtonProps = {
+	url: Href;
+	label: string;
+	icon?: NonNullable<ReactNode>;
+	color?: "primary" | "secondary";
+	size?: "sm" | "md" | "lg";
+	openNewTab?: boolean;
+	rel?: string;
+	"aria-label"?: string;
+};
+
+function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
+	if (typeof url === "object" || url.startsWith("/")) {
+		return icon ? (
+			<AtomLink.Button as={NextLink} href={url} icon={icon} {...rest} />
+		) : (
+			<AtomLink.Button as={NextLink} href={url} {...rest} />
+		);
+	}
+	return icon ? (
+		<AtomLink.Button as="a" href={url} icon={icon} {...rest} />
+	) : (
+		<AtomLink.Button as="a" href={url} {...rest} />
+	);
+}
+
+export const Link = Object.assign(LinkInline, { Button: LinkButton });
 
 export function Media({
 	media,
@@ -137,12 +177,8 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	return (
 		<Flex direction="col" gap="sm">
 			{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-			<Text variant="heading">{title}</Text>
-			{caption && (
-				<Text variant="body" muted>
-					{caption}
-				</Text>
-			)}
+			<Text.Heading>{title}</Text.Heading>
+			{caption && <Text.Body ink="muted">{caption}</Text.Body>}
 		</Flex>
 	);
 }
@@ -173,23 +209,23 @@ export function PageHero({
 			padding={{ y: "md" }}
 			{...rest}
 		>
-			<Flex as="span" direction="col" gap="xs">
+			<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
 				{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-				<Text variant="hero">{title}</Text>
+				<Text.Hero>{title}</Text.Hero>
 			</Flex>
 			{caption && (
-				<Text variant="body" muted width="sm">
+				<Text.Body ink="muted" width="sm">
 					{caption}
-				</Text>
+				</Text.Body>
 			)}
 			{children}
 		</Flex>
 	);
 }
 
-export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
+export const Eyebrow = withDefaults(Text.Overline)({ mono: true });
 
-export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
+export const Prose = withDefaults(Text.Body)({ width: "lg" });
 
 export const EmText = ({ children }: { children: ReactNode }) => {
 	return <em style={{ color: "var(--color-subtle)" }}>{children}</em>;

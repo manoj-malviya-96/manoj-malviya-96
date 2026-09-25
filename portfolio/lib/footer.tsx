@@ -16,16 +16,16 @@ export default function Footer() {
 			wrap
 			width="content"
 		>
-			<Text variant="caption" mono muted>
+			<Text.Caption mono ink="muted">
 				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
-			</Text>
-			<Text variant="caption" mono muted selectable>
+			</Text.Caption>
+			<Text.Caption mono ink="muted" selectable>
 				{Email}
-			</Text>
+			</Text.Caption>
 			<List direction="row" gap="md">
 				{Object.entries(SocialLinks).map(([key, url]) => (
 					<li key={key}>
-						<Link url={url} openNewTab variant="inline" aria-label={key}>
+						<Link url={url} openNewTab aria-label={key}>
 							{key}
 						</Link>
 					</li>

@@ -2,7 +2,6 @@ import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
 import { IconGraduationCap } from "@manoj-malviya-96/atom/icons";
 import { DEGREE_IDS, Degrees, Organizations } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
-import Reveal from "@/lib/reveal";
 
 export default function Education() {
 	return (
@@ -10,26 +9,26 @@ export default function Education() {
 			{DEGREE_IDS.map((id) => {
 				const { organization, degree, field, focus, graduation } = Degrees[id];
 				return (
-					<Reveal key={id}>
-						<Flex
-							direction="col"
-							gap="sm"
-							padding="lg"
-							radius="lg"
-							bg="surface"
-						>
-							<Flex direction="row" gap="xs" vAlign="center">
-								<IconGraduationCap size="sm" />
-								<Text variant="title">{Organizations[organization].name}</Text>
-							</Flex>
-							<Text variant="body" muted>
-								{degree}, {field} · {formatDate(graduation)}
-							</Text>
-							<Text variant="caption" mono muted>
-								{focus}
-							</Text>
+					<Flex
+						key={id}
+						enter="rise"
+						direction="col"
+						gap="sm"
+						padding="lg"
+						radius="lg"
+						bg="surface"
+					>
+						<Flex direction="row" gap="xs" vAlign="center">
+							<IconGraduationCap size="sm" />
+							<Text.Title>{Organizations[organization].name}</Text.Title>
 						</Flex>
-					</Reveal>
+						<Text.Body ink="muted">
+							{degree}, {field} · {formatDate(graduation)}
+						</Text.Body>
+						<Text.Caption mono ink="muted">
+							{focus}
+						</Text.Caption>
+					</Flex>
 				);
 			})}
 		</Grid>

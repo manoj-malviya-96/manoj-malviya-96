@@ -10,11 +10,7 @@ import type { ValuesOf } from "@/lib/helper";
 import type { MediaSource, MonthAndYear } from "@/lib/types";
 
 function Highlight({ children }: { children: ReactNode }) {
-	return (
-		<Text as="span" variant="body">
-			{children}
-		</Text>
-	);
+	return <Text.Body as="span">{children}</Text.Body>;
 }
 
 function Bullets({ points }: { points: readonly ReactNode[] }) {
@@ -22,7 +18,7 @@ function Bullets({ points }: { points: readonly ReactNode[] }) {
 		<List direction="col" gap="xs">
 			{points.map((point, i) => (
 				<li key={i}>
-					<Text variant="body">{point}</Text>
+					<Text.Body>{point}</Text.Body>
 				</li>
 			))}
 		</List>

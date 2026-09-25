@@ -56,9 +56,7 @@ export function LatticeControls() {
 	return (
 		<Form onSubmit={optimize} gap="sm" width="sm">
 			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
-				<Text variant="overline" muted>
-					1 · Mesh
-				</Text>
+				<Text.Overline ink="muted">1 · Mesh</Text.Overline>
 
 				<Grid columns={3} gap="xs">
 					<Field label="Width" description={`${meshWidth_mm}mm`}>
@@ -112,7 +110,7 @@ export function LatticeControls() {
 				</Grid>
 
 				<Flex direction="col" gap="xs">
-					<Text variant="label">Lattice pattern</Text>
+					<Text.Label>Lattice pattern</Text.Label>
 					<Flex direction="row" gap="md" wrap>
 						{LATTICE_OPTIONS.map((option) => (
 							<Flex
@@ -134,7 +132,7 @@ export function LatticeControls() {
 										})
 									}
 								/>
-								<Text variant="body">{option.label}</Text>
+								<Text.Body>{option.label}</Text.Body>
 							</Flex>
 						))}
 					</Flex>
@@ -142,19 +140,17 @@ export function LatticeControls() {
 			</Flex>
 
 			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
-				<Text variant="overline" muted>
-					2 · Supports & loads
-				</Text>
+				<Text.Overline ink="muted">2 · Supports & loads</Text.Overline>
 				<Flex direction="row" gap="sm" wrap>
 					{run.type === "choosing_fix" ? (
-						<Button
+						<Button.Text
 							type="button"
 							color="secondary"
 							label="Place support"
 							onClick={() => setEditMode("idle")}
 						/>
 					) : (
-						<Button
+						<Button.Text
 							type="button"
 							color="transparent"
 							label="Place support"
@@ -163,14 +159,14 @@ export function LatticeControls() {
 						/>
 					)}
 					{run.type === "choosing_force" ? (
-						<Button
+						<Button.Text
 							type="button"
 							color="secondary"
 							label="Place load"
 							onClick={() => setEditMode("idle")}
 						/>
 					) : (
-						<Button
+						<Button.Text
 							type="button"
 							color="transparent"
 							label="Place load"
@@ -180,7 +176,7 @@ export function LatticeControls() {
 					)}
 				</Flex>
 				{hasResult ? (
-					<Button
+					<Button.Text
 						type="button"
 						color="transparent"
 						label="Clear simulation"
@@ -188,7 +184,7 @@ export function LatticeControls() {
 						disabled={editing}
 					/>
 				) : (
-					<Button
+					<Button.Text
 						type="button"
 						color="transparent"
 						label={isSimulating ? "Simulating…" : "Simulate"}
@@ -199,22 +195,20 @@ export function LatticeControls() {
 				{/* Reserved one-line slot, always mounted — swapping its text in and out of the
 				DOM (rather than just its content) shifted every panel below it. */}
 				{error ? (
-					<Text variant="caption" bg="red" radius="md" padding="xs">
+					<Text.Caption bg="red" radius="md" padding="xs">
 						{error}
-					</Text>
+					</Text.Caption>
 				) : (
-					<Text variant="caption" muted>
+					<Text.Caption ink="muted">
 						{canRunFea
 							? " "
 							: "Add at least one support and one load to simulate."}
-					</Text>
+					</Text.Caption>
 				)}
 			</Flex>
 
 			<Flex direction="col" gap="sm" bg="surface" radius="lg" padding="md">
-				<Text variant="overline" muted>
-					3 · Optimize
-				</Text>
+				<Text.Overline ink="muted">3 · Optimize</Text.Overline>
 				<Grid columns={2} gap="xs">
 					<Field label="Iterations" description={`${numIterations}`}>
 						{(control) => (
@@ -255,7 +249,7 @@ export function LatticeControls() {
 						)}
 					</Field>
 				</Grid>
-				<Button
+				<Button.Text
 					type="submit"
 					color="primary"
 					label={isOptimizing ? "Optimizing…" : "Optimize"}

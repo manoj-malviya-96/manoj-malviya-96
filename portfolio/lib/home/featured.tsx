@@ -6,13 +6,11 @@ export default function Featured() {
 	return (
 		<Grid columns={3} gap="md">
 			{RankedProjects.slice(0, 3).map((item) => (
-				<Link key={item.id} url={`/work#${item.id}`}>
+				<Link key={item.id} url={`/work#${item.id}`} style={{}}>
 					<Flex direction="col" gap="sm">
 						{item.media && <Media media={item.media} />}
-						<Text variant="title">{item.title}</Text>
-						<Text variant="caption" muted>
-							{item.dates}
-						</Text>
+						<Text.Title>{item.title}</Text.Title>
+						<Text.Caption ink="muted">{item.dates}</Text.Caption>
 					</Flex>
 				</Link>
 			))}

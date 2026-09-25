@@ -32,12 +32,12 @@ export default function ShowAndTell() {
 		>
 			{stats.map((stat) => (
 				<Flex key={stat.caption} direction="col" gap="xs" hAlign="center">
-					<Text variant="heading" align="center">
+					<Text.Heading align="center">
 						{stat.value === undefined ? "–" : stat.value.toLocaleString()}
-					</Text>
-					<Text variant="overline" muted align="center">
+					</Text.Heading>
+					<Text.Overline ink="muted" align="center">
 						{stat.caption}
-					</Text>
+					</Text.Overline>
 				</Flex>
 			))}
 		</Grid>

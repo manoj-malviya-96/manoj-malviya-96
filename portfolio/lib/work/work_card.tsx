@@ -8,7 +8,6 @@ import {
 import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
 import { dottedConcatString } from "@/lib/helper";
 import { MacbookMockup } from "@/lib/macbook_mockup";
-import Reveal from "@/lib/reveal";
 import { Link, Media } from "@/lib/shared";
 
 export default function WorkCard({ item }: { item: WorkItem }) {
@@ -36,16 +35,12 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 					hAlign="start"
 					width={{ value: "lg", max: "full" }}
 				>
-					<Text variant="heading">{item.title}</Text>
-					<Text variant="body" muted>
-						{item.summary}
-					</Text>
+					<Text.Heading>{item.title}</Text.Heading>
+					<Text.Body ink="muted">{item.summary}</Text.Body>
 					<WorkLinks item={item} />
 				</Flex>
 				{item.kind === "project" && item.media && (
-					<Reveal>
-						<ProjectMediaComponent media={item.media} />
-					</Reveal>
+					<ProjectMediaComponent media={item.media} />
 				)}
 				{item.kind === "project" && item.content && item.content}
 				<CardTags item={item} />
@@ -56,9 +51,9 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 
 function CardTags({ item }: { item: WorkItem }) {
 	return (
-		<Text variant="caption" muted>
+		<Text.Caption ink="muted">
 			{dottedConcatString([item.dates, ...item.tags])}
-		</Text>
+		</Text.Caption>
 	);
 }
 
@@ -66,10 +61,9 @@ function WorkLinks({ item }: { item: WorkItem }) {
 	if (item.kind === "blog") {
 		return (
 			<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-				<Link
+				<Link.Button
 					url={item.href}
 					openNewTab
-					variant="button"
 					color="primary"
 					label="Read on Medium"
 					size="sm"
@@ -94,7 +88,7 @@ function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
 	switch (media.mockup) {
 		case undefined:
 			return (
-				<Atom as="div" width={{ value: "lg", max: "full" }}>
+				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
 					<Media media={media} />
 				</Atom>
 			);
@@ -118,10 +112,9 @@ function ProjectLinkButton({
 }) {
 	const LinkIcon = linkIcon(link);
 	return (
-		<Link
+		<Link.Button
 			url={link.href}
 			openNewTab
-			variant="button"
 			{...(color && { color })}
 			label={linkLabel(link)}
 			size="sm"
