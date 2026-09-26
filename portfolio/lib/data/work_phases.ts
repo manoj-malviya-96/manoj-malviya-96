@@ -17,7 +17,7 @@ export const HowIWorkPhase = {
 	},
 	design: {
 		label: "Design",
-		copy: "Model the problem before the system. The Truss Optimizer started as a volume constraint and a stress bound, not a UI.",
+		copy: "Model the problem before the system. Blackhole started as a light-ray geodesic equation, not a shader.",
 	},
 	build: {
 		label: "Build",
