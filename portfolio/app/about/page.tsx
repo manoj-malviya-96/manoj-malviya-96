@@ -1,28 +1,31 @@
 "use client";
 
-import { Badge, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
+import { Flex, Grid, Image, List, Marquee, Text } from "@manoj-malviya-96/atom";
 import {
-	IconCircleDot,
+	IconGithub,
+	IconGlobe,
+	IconGolang,
 	IconLightbulb,
 	IconLocationDot,
+	IconPython,
+	IconReact,
+	IconRust,
+	IconSwift,
 } from "@manoj-malviya-96/atom/icons";
 import NextImage from "next/image";
 import type { ComponentType } from "react";
 import {
 	CurrentLocation,
-	CurrentStatus,
 	Interests,
-	Patents,
+	type ProjectTag,
 	ResumePDF,
 	SKILL_GROUPS,
-	SocialLinks,
 	UserAvatar,
-	useGoogleScholarQuery,
 } from "@/lib/data";
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import { Eyebrow, Link, Page, PageHero, SectionHeader } from "@/lib/shared";
+import { EmText, Link, Page, PageHero, SectionHeader } from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
@@ -31,34 +34,28 @@ export default function AboutPage() {
 				eyebrow="About"
 				title={
 					<>
-						What I actually <em>do</em>
+						The <EmText>Person</EmText>
 					</>
 				}
+				padding={{ y: "sm" }}
 			/>
-			<Flex direction="col" gap="xl" width="full">
+			<Flex direction="col" gap="lg" width="full">
 				<Intro />
+				<TechnicalSurface />
 				<Flex
 					as="section"
 					id={RESUME_SECTIONS[0].id}
 					direction="col"
 					gap="lg"
-					padding={{ y: "lg" }}
+					padding={{ y: "md" }}
 				>
-					<SectionHeader
-						eyebrow="Experience"
-						title="Where the last seven years went."
-					/>
+					<SectionHeader eyebrow="Experience" />
 					<WorkHistory />
 				</Flex>
-				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="xl">
-					<SectionHeader
-						eyebrow="Education"
-						title="Where the engineering started."
-					/>
+				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="lg">
+					<SectionHeader eyebrow="Education" />
 					<Education />
 				</Flex>
-				<TechnicalSurface />
-				<Research />
 			</Flex>
 		</Page>
 	);
@@ -91,7 +88,6 @@ function Intro() {
 				/>
 				<List direction="col" gap="sm">
 					<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
-					<SidebarRow icon={IconCircleDot} label={CurrentStatus} />
 					<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
 				</List>
 			</Flex>
@@ -103,89 +99,48 @@ function SidebarRow({
 	icon: RowIcon,
 	label,
 }: {
-	icon: ComponentType<{ size?: "sm" }>;
+	icon: ComponentType<{ size?: "text"; ink?: "muted" }>;
 	label: string;
 }) {
 	return (
 		<Flex as="li" direction="row" gap="xs" vAlign="center">
-			<RowIcon size="sm" />
+			<RowIcon size="text" ink="muted" />
 			<Text.Body ink="muted">{label}</Text.Body>
 		</Flex>
 	);
 }
 
 function TechnicalSurface() {
+	const skills = SKILL_GROUPS.flatMap((group) => group.skills);
 	return (
 		<Flex as="section" direction="col" gap="lg">
-			<SectionHeader eyebrow="Technical Surface" title="What I reach for." />
-			<Flex direction="col" gap="md">
-				{SKILL_GROUPS.map((group) => (
-					<Flex key={group.label} direction="col" gap="sm">
-						<Eyebrow>{group.label}</Eyebrow>
-						<Flex as="ul" direction="row" gap="sm" wrap>
-							{group.skills.map((skill) => (
-								<Badge as="li" key={skill}>
-									{skill}
-								</Badge>
-							))}
-						</Flex>
-					</Flex>
+			<SectionHeader eyebrow="Technical Surface" />
+			<Marquee aria-label="Languages, frameworks, and practices I use">
+				{skills.map((skill) => (
+					<SkillPill key={skill} skill={skill} />
 				))}
-			</Flex>
+			</Marquee>
 		</Flex>
 	);
 }
 
-function Research() {
-	const { data: scholar, isError } = useGoogleScholarQuery();
-
+function SkillPill({ skill }: { skill: ProjectTag }) {
+	const SkillIcon = SKILL_ICONS[skill];
 	return (
-		<Flex as="section" direction="col" gap="lg">
-			<SectionHeader eyebrow="Research" title="Patents & publications." />
-			<Grid columns={2} gap="lg" className="about-research">
-				<Flex direction="col" gap="sm">
-					<Eyebrow>Patents</Eyebrow>
-					<List direction="col" gap="md">
-						{Patents.map((patent) => (
-							<li key={patent.title}>
-								<Flex direction="col" gap="xs">
-									<Text.Body>{patent.title}</Text.Body>
-									<Text.Caption ink="muted">
-										{patent.field} · {patent.year}
-									</Text.Caption>
-								</Flex>
-							</li>
-						))}
-					</List>
-				</Flex>
-				<Flex direction="col" gap="sm">
-					<Eyebrow>Publications</Eyebrow>
-					{scholar ? (
-						<List direction="col" gap="md">
-							{scholar.papers.map((paper) => (
-								<li key={paper.title}>
-									<Flex direction="col" gap="xs">
-										<Text.Body>{paper.title}</Text.Body>
-										<Text.Caption ink="muted">
-											{paper.venue} · {paper.year} · {paper.citations} citations
-										</Text.Caption>
-									</Flex>
-								</li>
-							))}
-						</List>
-					) : isError ? (
-						<Link url={SocialLinks.Scholar} openNewTab>
-							<Text.Caption ink="muted">
-								See publications on Google Scholar →
-							</Text.Caption>
-						</Link>
-					) : (
-						<Text.Caption ink="muted">
-							Loading from Google Scholar…
-						</Text.Caption>
-					)}
-				</Flex>
-			</Grid>
+		<Flex as="span" direction="row" gap="xs" vAlign="center">
+			{SkillIcon && <SkillIcon size="sm" />}
+			<Text.Label as="span">{skill}</Text.Label>
 		</Flex>
 	);
 }
+
+const SKILL_ICONS: Partial<Record<ProjectTag, ComponentType<{ size?: "sm" }>>> =
+	{
+		react: IconReact,
+		python: IconPython,
+		rust: IconRust,
+		go: IconGolang,
+		swift: IconSwift,
+		"open-source": IconGithub,
+		web: IconGlobe,
+	};

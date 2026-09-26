@@ -20,7 +20,7 @@ export default function Education() {
 					>
 						<Flex direction="row" gap="xs" vAlign="center">
 							<IconGraduationCap size="sm" />
-							<Text.Title>{Organizations[organization].name}</Text.Title>
+							<Text.Body>{Organizations[organization].name}</Text.Body>
 						</Flex>
 						<Text.Body ink="muted">
 							{degree}, {field} · {formatDate(graduation)}
