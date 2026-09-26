@@ -1,3 +1,11 @@
+@import "@manoj-malviya-96/atom/styles.css";
+@layer atom.tokens,
+	atom.base,
+	atom.icon,
+	atom.components,
+	atom.utils,
+	overrides;
+
 html {
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
@@ -5,9 +13,17 @@ html {
 	scroll-behavior: smooth;
 }
 
-h1 {
-	font-size: 7rem;
-	line-height: 7.5rem;
+/* Named and ordered last so these values win over every atom.* layer,
+   regardless of how atom's own CSS is split across imported stylesheets. */
+@layer overrides {
+	:root {
+		--color-page: light-dark(oklch(100% 0.0025 228), oklch(9% 0.0025 228));
+		--color-ink: light-dark(oklch(8% 0.0025 228), oklch(93% 0.0025 228));
+		--color-surface: light-dark(
+			oklch(from var(--color-page) calc(l - 0.05) c h / 47%),
+			oklch(from var(--color-page) calc(l + 0.1) c h / 67%)
+		);
+	}
 }
 
 /* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
@@ -70,6 +86,12 @@ img {
 	gap: var(--space-lg);
 }
 
+/* ratio-square sizes the logo to 100% of its grid column; keep it compact
+   instead of filling the whole 9.5rem track-row column. */
+.track-logo {
+	width: 3rem;
+}
+
 .lattice-overlay {
 	transition: opacity var(--duration-base) var(--ease-out);
 	pointer-events: none;
@@ -87,8 +109,7 @@ img {
 	grid-template-columns: 1fr;
 }
 
-.about-intro,
-.about-research {
+.about-intro {
 	grid-template-columns: 1fr;
 }
 
@@ -101,8 +122,7 @@ img {
 		grid-template-columns: repeat(2, 1fr);
 	}
 
-	.about-intro,
-	.about-research {
+	.about-intro {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
@@ -113,15 +133,17 @@ img {
 	}
 }
 
+/* Todo integrate in atom: Text's `truncate` is single-line only; this section must fit one
+   viewport, so the summary paragraph needs a hard multi-line clamp. */
+.work-summary {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
 @media (max-width: 920px) {
 	.track-row {
 		grid-template-columns: 1fr;
-	}
-
-	/* Todo integrate in atom: ratio-square sizes the logo to 100% of its grid column, which is
-	   fine at the 9.5rem desktop track-row column but blows up to full card width once that
-	   column collapses to 1fr. */
-	.track-logo {
-		width: 3rem;
 	}
 }
