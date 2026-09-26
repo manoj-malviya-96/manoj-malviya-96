@@ -15,6 +15,7 @@ export default function Footer() {
 			gap="lg"
 			wrap
 			width="content"
+			padding={{ y: "lg" }}
 		>
 			<Text.Caption mono ink="muted">
 				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
