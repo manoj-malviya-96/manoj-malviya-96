@@ -23,6 +23,7 @@ export default function ShowAndTell() {
 	return (
 		<Grid
 			columns={stats.length === 3 ? 3 : 2}
+			className="stat-grid"
 			width="content"
 			bg="raised"
 			card
