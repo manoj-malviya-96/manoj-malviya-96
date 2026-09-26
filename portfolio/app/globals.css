@@ -133,15 +133,6 @@ img {
 	}
 }
 
-/* Todo integrate in atom: Text's `truncate` is single-line only; this section must fit one
-   viewport, so the summary paragraph needs a hard multi-line clamp. */
-.work-summary {
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-}
-
 @media (max-width: 920px) {
 	.track-row {
 		grid-template-columns: 1fr;
