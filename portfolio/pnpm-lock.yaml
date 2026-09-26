@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@legendapp/state':
-        specifier: 2.1.15
-        version: 2.1.15(react@19.2.8)
       '@manoj-malviya-96/atom':
         specifier: 0.3.3
         version: 0.3.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -305,14 +302,6 @@ packages:
     engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [win32]
-
-  '@legendapp/state@2.1.15':
-    resolution: {integrity: sha512-7/8Rgg7m38eznupr36QJeSkrtbhVxaRtQvRMjdBigSm+HW3ZIFgMtUX1DqZ2hJxbPqqAJamw5s+TLs8dRstUNw==}
-    peerDependencies:
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
 
   '@manoj-malviya-96/atom@0.3.3':
     resolution: {integrity: sha512-eN8CdZxficiIqUimCdlcVhFdng+8WHr4+CielhvpPoo9gRfWZtzuobF70ZEP8Q/Q0yHzjm0v9IMJfTSQEucynw==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.3.3/d577dc4af51944d2c094f360575e8708cda1b960}
@@ -1109,11 +1098,6 @@ packages:
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
-  use-sync-external-store@1.7.0:
-    resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   walk-up-path@4.0.0:
     resolution: {integrity: sha512-3hu+tD8YzSLGuFYtPRb48vdhKMi0KQV5sn+uWr8+7dMEq/2G/dtLrdDinkLjqq5TIbIBjYJ4Ax/n3YiaW7QM8A==}
     engines: {node: 20 || >=22}
@@ -1299,12 +1283,6 @@ snapshots:
 
   '@img/sharp-win32-x64@0.35.4':
     optional: true
-
-  '@legendapp/state@2.1.15(react@19.2.8)':
-    dependencies:
-      use-sync-external-store: 1.7.0(react@19.2.8)
-    optionalDependencies:
-      react: 19.2.8
 
   '@manoj-malviya-96/atom@0.3.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
@@ -1873,10 +1851,6 @@ snapshots:
   unbash@4.0.11: {}
 
   undici-types@8.9.0: {}
-
-  use-sync-external-store@1.7.0(react@19.2.8):
-    dependencies:
-      react: 19.2.8
 
   walk-up-path@4.0.0: {}
 

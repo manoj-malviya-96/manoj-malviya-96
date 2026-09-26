@@ -11,7 +11,6 @@ const AllProjectIds = [
 	"blackhole",
 	"ev_sim",
 	"mesha",
-	"truss_opt",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
@@ -197,30 +196,6 @@ export const Projects: Record<ProjectId, Project> = {
 			],
 		},
 	},
-	truss_opt: {
-		title: "Truss Optimizer",
-		summary:
-			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot: place supports and loads, and this site's own API route re-solves the FEA and bisects on the Lagrange multiplier at each of 200 iterations to hold volume at 40% of the start, with a minimum thickness clamp so no member vanishes to zero.",
-		dates: "2024",
-		tags: ["simulation", "optimization", "web", "react", "typescript"],
-		effort: "medium",
-		heroStat: { value: "200", label: "FEA solves per optimization" },
-		media: [
-			{
-				kind: "video",
-				src: getBlob("pixel-opt.webm"),
-				alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
-			},
-		],
-		links: {
-			primary: {
-				kind: "demo",
-				label: "Try it",
-				href: "/demos/truss-opt",
-			},
-			others: [],
-		},
-	},
 };
 
 const SOFTWARE_CONCEPTS = [
@@ -333,7 +308,6 @@ function showProject(id: ProjectId) {
 		case "honeycomb":
 		case "muviz":
 		case "blackhole":
-		case "truss_opt":
 			return true;
 
 		case "mesha":
