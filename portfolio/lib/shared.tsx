@@ -188,9 +188,9 @@ export function PageHero({
 			<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
 				{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
 				{heroTitle ? (
-					<Text.Hero>{title}</Text.Hero>
+					<Text.Hero as="h1">{title}</Text.Hero>
 				) : (
-					<Text.Heading>{title}</Text.Heading>
+					<Text.Heading as="h1">{title}</Text.Heading>
 				)}
 			</Flex>
 			{caption && (
