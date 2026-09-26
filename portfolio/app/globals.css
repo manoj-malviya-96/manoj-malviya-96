@@ -26,6 +26,20 @@ html {
 	}
 }
 
+/* Kept in the a11y tree but off-screen — for a screen-reader-only alternative
+   to a purely visual/animated node (e.g. the hero typewriter). */
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+	border: 0;
+}
+
 /* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
 .skip-link {
 	position: fixed;

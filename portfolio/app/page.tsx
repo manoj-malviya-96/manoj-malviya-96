@@ -61,7 +61,10 @@ function Hero() {
 				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
 			</Text.Body>
 			<Text.Body ink="muted" width="md">
-				<TypewriterText prefix="Also into" words={Hobbies} />
+				<span aria-hidden="true">
+					<TypewriterText prefix="Also into" words={Hobbies} />
+				</span>
+				<span className="visually-hidden">Also into {Hobbies.join(", ")}.</span>
 			</Text.Body>
 			<Flex
 				as="span"
