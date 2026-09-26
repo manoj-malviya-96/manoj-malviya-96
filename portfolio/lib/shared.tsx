@@ -141,7 +141,7 @@ export function Media({
 
 type SectionHeaderProps = {
 	eyebrow?: ReactNode;
-	title: ReactNode;
+	title?: ReactNode;
 	caption?: ReactNode;
 };
 
@@ -149,7 +149,7 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	return (
 		<Flex direction="col" gap="sm">
 			{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-			<Text.Heading>{title}</Text.Heading>
+			{title && <Text.Title>{title}</Text.Title>}
 			{caption && <Text.Body ink="muted">{caption}</Text.Body>}
 		</Flex>
 	);
@@ -157,19 +157,23 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 
 export const Page = withDefaults(Flex)({
 	direction: "col",
-	gap: "xl",
+	gap: "lg",
 	width: "content",
 });
 
 type PageHeroProps = SectionHeaderProps &
-	Omit<ComponentProps<typeof Flex>, "title">;
+	Omit<ComponentProps<typeof Flex>, "title"> & {
+		/** Only the landing page wants the large hero-sized title. */
+		heroTitle?: boolean;
+	};
 
-// Same eyebrow + hero-title intro on every page, so moving between pages feels seamless.
+// Same eyebrow + title intro on every page, so moving between pages feels seamless.
 export function PageHero({
 	eyebrow,
 	title,
 	caption,
 	children,
+	heroTitle = false,
 	...rest
 }: PageHeroProps) {
 	return (
@@ -183,7 +187,11 @@ export function PageHero({
 		>
 			<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
 				{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-				<Text.Hero>{title}</Text.Hero>
+				{heroTitle ? (
+					<Text.Hero>{title}</Text.Hero>
+				) : (
+					<Text.Heading>{title}</Text.Heading>
+				)}
 			</Flex>
 			{caption && (
 				<Text.Body ink="muted" width="sm">
