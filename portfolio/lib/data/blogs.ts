@@ -1,7 +1,7 @@
 import type { ProjectTag } from "@/lib/data/projects";
 import type { ExternalURL } from "@/lib/types";
 
-export type BlogId = "vectorized-python";
+export type BlogId = "qml-property-bindings";
 
 export type Blog = {
 	title: string;
@@ -13,12 +13,12 @@ export type Blog = {
 
 // NOTE: hand-maintained. Add a post here and it shows up on /work automatically.
 export const Blogs: Record<BlogId, Blog> = {
-	"vectorized-python": {
-		title: "Vectorized Python: A Step Towards Speed",
+	"qml-property-bindings": {
+		title: "QML: Learning Property Bindings",
 		summary:
-			"What actually got faster when I rewrote DTU's 99-line topology optimizer in NumPy — and which parts refused to.",
-		dates: "2021",
-		tags: ["python", "high-performance", "optimization"],
-		href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
+			"How QML's declarative bindings keep an interface reactive, and how I kept breaking that reactivity — an overridden binding, a circular dependency — before learning to spot the patterns that cause it.",
+		dates: "2024",
+		tags: ["qt/qml", "ui-development"],
+		href: "https://medium.com/@manoj-malviya/qml-learning-property-bindings-b6b367c40d96",
 	},
 };
