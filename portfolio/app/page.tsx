@@ -15,6 +15,7 @@ import {
 	HowIWorkPhase,
 	PHASE_IDS,
 	type Phase,
+	ResumePDF,
 	RoleTagline,
 } from "@/lib/data";
 import Featured from "@/lib/home/featured";
@@ -80,6 +81,9 @@ function Hero() {
 				</MagneticContainer>
 				<MagneticContainer>
 					<Link.Button url="/about" size="sm" label="About me" />
+				</MagneticContainer>
+				<MagneticContainer>
+					<Link.Button url={ResumePDF} openNewTab size="sm" label="Resume" />
 				</MagneticContainer>
 			</Flex>
 		</PageHero>
