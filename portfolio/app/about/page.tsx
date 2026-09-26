@@ -111,16 +111,26 @@ function SidebarRow({
 }
 
 function TechnicalSurface() {
-	const skills = SKILL_GROUPS.flatMap((group) => group.skills);
 	return (
 		<Flex as="section" direction="col" gap="lg">
 			<SectionHeader eyebrow="Technical Surface" />
 			<Marquee aria-label="Languages, frameworks, and practices I use">
-				{skills.map((skill) => (
-					<SkillPill key={skill} skill={skill} />
-				))}
+				{SKILL_GROUPS.flatMap((group) => [
+					<GroupLabel key={`label-${group.label}`} label={group.label} />,
+					...group.skills.map((skill) => (
+						<SkillPill key={skill} skill={skill} />
+					)),
+				])}
 			</Marquee>
 		</Flex>
+	);
+}
+
+function GroupLabel({ label }: { label: string }) {
+	return (
+		<Text.Overline mono ink="muted">
+			{label}
+		</Text.Overline>
 	);
 }
 
