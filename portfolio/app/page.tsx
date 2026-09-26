@@ -21,11 +21,11 @@ import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import {
 	EmText,
+	Eyebrow,
 	Link,
 	Page,
 	PageHero,
 	PageSection,
-	SectionHeader,
 } from "@/lib/shared";
 
 export default function Landing() {
@@ -44,6 +44,7 @@ function Hero() {
 	return (
 		<PageHero
 			id="home-hero"
+			heroTitle
 			eyebrow="Berlin, DE"
 			title={
 				<>
@@ -52,6 +53,7 @@ function Hero() {
 				</>
 			}
 			vAlign="center"
+			padding={{ y: "xl" }}
 		>
 			<Text.Body>
 				{RoleTagline[0]?.toUpperCase()}
@@ -86,9 +88,20 @@ function Hero() {
 
 function HowIWork() {
 	return (
-		<PageSection id="home-loop">
-			<SectionHeader title="The process." eyebrow="How I work" />
-			<Grid columns={2} gap="md">
+		<PageSection id="home-loop" gap="lg">
+			<Flex direction="col" gap="xs">
+				<Eyebrow>How I work</Eyebrow>
+				<Text.Hero>The process.</Text.Hero>
+			</Flex>
+			<Grid
+				columns={2}
+				className="loop-grid"
+				gap="lg"
+				bg="surface"
+				radius="lg"
+				card
+				padding="lg"
+			>
 				{PHASE_IDS.map((id, index) => (
 					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
 				))}
@@ -99,15 +112,7 @@ function HowIWork() {
 
 function PhaseCol({ index, label, copy }: { index: number } & Phase) {
 	return (
-		<Flex
-			as="span"
-			enter="rise"
-			direction="col"
-			gap="sm"
-			radius="lg"
-			bg="surface"
-			padding="md"
-		>
+		<Flex as="span" enter="rise" direction="col" gap="sm">
 			<Text.Overline mono>{String(index + 1).padStart(2, "0")}</Text.Overline>
 			<Text.Title>{label}</Text.Title>
 			<Text.Body ink="muted">{copy}</Text.Body>
@@ -131,11 +136,10 @@ function FeaturedWork() {
 
 function FinalCTA() {
 	return (
-		<PageSection id="home-cta" gap="lg" scheme="dark">
-			{/*TODO: Fix in atom- Section is not passing paddings. */}
-			<Flex direction="col" gap="lg" hAlign="center" height="xl">
+		<PageSection id="home-cta" gap="lg" bg="surface" radius="lg" card>
+			<Flex direction="col" gap="lg" hAlign="center" padding={{ y: "xl" }}>
 				<Text.Hero align="center">
-					Got a hard <EmText>problem ? </EmText>
+					Got a hard <EmText>problem?</EmText>
 				</Text.Hero>
 				<MagneticContainer>
 					<Link.Button url={EmailAddress} color="primary" label="Email me" />
