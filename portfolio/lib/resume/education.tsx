@@ -17,9 +17,10 @@ export default function Education() {
 						padding="lg"
 						radius="lg"
 						bg="surface"
+						blur
 					>
 						<Flex direction="row" gap="xs" vAlign="center">
-							<IconGraduationCap size="sm" />
+							<IconGraduationCap size="sm" ink="muted" />
 							<Text.Body>{Organizations[organization].name}</Text.Body>
 						</Flex>
 						<Text.Body ink="muted">

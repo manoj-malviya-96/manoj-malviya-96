@@ -1,6 +1,14 @@
 "use client";
 
-import { Flex, Grid, Image, List, Marquee, Text } from "@manoj-malviya-96/atom";
+import {
+	Badge,
+	Flex,
+	Grid,
+	Image,
+	List,
+	Marquee,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconGlobe,
@@ -34,7 +42,7 @@ export default function AboutPage() {
 				eyebrow="About"
 				title={
 					<>
-						The <EmText>Person</EmText>
+						The <EmText>Engineer</EmText>
 					</>
 				}
 				padding={{ y: "sm" }}
@@ -137,20 +145,23 @@ function GroupLabel({ label }: { label: string }) {
 function SkillPill({ skill }: { skill: ProjectTag }) {
 	const SkillIcon = SKILL_ICONS[skill];
 	return (
-		<Flex as="span" direction="row" gap="xs" vAlign="center">
-			{SkillIcon && <SkillIcon size="sm" />}
-			<Text.Label as="span">{skill}</Text.Label>
-		</Flex>
+		<Badge as="span">
+			<Flex as="span" direction="row" gap="xs" vAlign="center">
+				{SkillIcon && <SkillIcon size="sm" ink="muted" />}
+				<Text.Label as="span">{skill}</Text.Label>
+			</Flex>
+		</Badge>
 	);
 }
 
-const SKILL_ICONS: Partial<Record<ProjectTag, ComponentType<{ size?: "sm" }>>> =
-	{
-		react: IconReact,
-		python: IconPython,
-		rust: IconRust,
-		go: IconGolang,
-		swift: IconSwift,
-		"open-source": IconGithub,
-		web: IconGlobe,
-	};
+const SKILL_ICONS: Partial<
+	Record<ProjectTag, ComponentType<{ size?: "sm"; ink?: "muted" }>>
+> = {
+	react: IconReact,
+	python: IconPython,
+	rust: IconRust,
+	go: IconGolang,
+	swift: IconSwift,
+	"open-source": IconGithub,
+	web: IconGlobe,
+};

@@ -138,3 +138,70 @@ img {
 		grid-template-columns: 1fr;
 	}
 }
+
+.stat-grid {
+	grid-template-columns: 1fr;
+}
+
+.loop-grid {
+	grid-template-columns: 1fr;
+}
+
+.bento-grid {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+	.stat-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.stat-grid:has(> :nth-child(3)) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 640px) {
+	.loop-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 768px) {
+	.bento-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.bento-grid > :first-child {
+		grid-column: span 2;
+		grid-row: span 2;
+	}
+}
+
+/* Visually hidden but still reachable to screen readers — the typewriter's
+   full word list, since the animation itself is aria-hidden. */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.hero-title {
+	letter-spacing: -0.02em;
+}
+
+.hero-stats {
+	display: none;
+}
+
+@media (min-width: 960px) {
+	.hero-stats {
+		display: flex;
+	}
+}

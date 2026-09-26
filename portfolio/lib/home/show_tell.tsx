@@ -1,11 +1,12 @@
 "use client";
 
-import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { Flex, Grid, Progress, Text } from "@manoj-malviya-96/atom";
 import { Patents, useGoogleScholarQuery, YearsOfExperience } from "@/lib/data";
 
 type NumberStat = {
 	value: number | undefined;
 	caption: string;
+	loading?: boolean;
 };
 
 export default function ShowAndTell() {
@@ -15,7 +16,13 @@ export default function ShowAndTell() {
 	const stats: readonly NumberStat[] = [
 		...(scholar.isError
 			? []
-			: [{ value: scholar.data?.citations, caption: "Citations" }]),
+			: [
+					{
+						value: scholar.data?.citations,
+						caption: "Citations",
+						loading: scholar.isLoading,
+					},
+				]),
 		{ value: Patents.length, caption: "Patents" },
 		{ value: YearsOfExperience, caption: "Years" },
 	];
@@ -26,6 +33,7 @@ export default function ShowAndTell() {
 			className="stat-grid"
 			width="content"
 			bg="raised"
+			blur
 			card
 			padding={{ y: "md" }}
 			radius="md"
@@ -33,9 +41,17 @@ export default function ShowAndTell() {
 		>
 			{stats.map((stat) => (
 				<Flex key={stat.caption} direction="col" gap="xs" hAlign="center">
-					<Text.Heading align="center">
-						{stat.value === undefined ? "–" : stat.value.toLocaleString()}
-					</Text.Heading>
+					{stat.loading ? (
+						<Progress
+							shape="circle"
+							value="indeterminate"
+							aria-label="Loading"
+						/>
+					) : (
+						<Text.Heading align="center">
+							{stat.value === undefined ? "–" : stat.value.toLocaleString()}
+						</Text.Heading>
+					)}
 					<Text.Overline ink="muted" align="center">
 						{stat.caption}
 					</Text.Overline>

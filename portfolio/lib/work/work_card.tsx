@@ -25,6 +25,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			direction="col"
 			width="full"
 			bg="raised"
+			blur
 			radius="md"
 			card
 			gap="lg"

@@ -13,10 +13,12 @@ import {
 	EmailAddress,
 	Hobbies,
 	HowIWorkPhase,
+	Patents,
 	PHASE_IDS,
 	type Phase,
 	ResumePDF,
 	RoleTagline,
+	YearsOfExperience,
 } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
@@ -53,6 +55,7 @@ function Hero() {
 					<EmText> Malviya </EmText>
 				</>
 			}
+			aside={<HeroStats />}
 			vAlign="center"
 			padding={{ y: "xl" }}
 		>
@@ -61,7 +64,10 @@ function Hero() {
 				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
 			</Text.Body>
 			<Text.Body ink="muted" width="md">
-				<TypewriterText prefix="Also into" words={Hobbies} />
+				<span aria-hidden="true">
+					<TypewriterText prefix="Also into" words={Hobbies} />
+				</span>
+				<span className="sr-only">Also into {Hobbies.join(", ")}.</span>
 			</Text.Body>
 			<Flex
 				as="span"
@@ -90,18 +96,50 @@ function Hero() {
 	);
 }
 
+function HeroStats() {
+	const stats = [
+		{ value: Patents.length, caption: "Patents" },
+		{ value: YearsOfExperience, caption: "Years" },
+	];
+
+	return (
+		<Flex direction="col" gap="sm" className="hero-stats">
+			{stats.map((stat) => (
+				<Flex
+					key={stat.caption}
+					as="span"
+					direction="row"
+					gap="sm"
+					vAlign="center"
+					bg="surface"
+					blur
+					radius="lg"
+					card
+					padding={{ x: "lg", y: "sm" }}
+				>
+					<Text.Title>{stat.value}</Text.Title>
+					<Text.Overline mono ink="muted">
+						{stat.caption}
+					</Text.Overline>
+				</Flex>
+			))}
+		</Flex>
+	);
+}
+
 function HowIWork() {
 	return (
 		<PageSection id="home-loop" gap="lg">
 			<Flex direction="col" gap="xs">
 				<Eyebrow>How I work</Eyebrow>
-				<Text.Hero>The process.</Text.Hero>
+				<Text.Hero as="h2">The process.</Text.Hero>
 			</Flex>
 			<Grid
 				columns={2}
 				className="loop-grid"
 				gap="lg"
 				bg="surface"
+				blur
 				radius="lg"
 				card
 				padding="lg"
@@ -142,7 +180,7 @@ function FinalCTA() {
 	return (
 		<PageSection id="home-cta" gap="lg" bg="surface" radius="lg" card>
 			<Flex direction="col" gap="lg" hAlign="center" padding={{ y: "xl" }}>
-				<Text.Hero align="center">
+				<Text.Hero as="h2" align="center">
 					Got a hard <EmText>problem?</EmText>
 				</Text.Hero>
 				<MagneticContainer>

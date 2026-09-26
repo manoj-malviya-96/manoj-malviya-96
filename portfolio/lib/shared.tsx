@@ -165,6 +165,8 @@ type PageHeroProps = SectionHeaderProps &
 	Omit<ComponentProps<typeof Flex>, "title"> & {
 		/** Only the landing page wants the large hero-sized title. */
 		heroTitle?: boolean;
+		/** Floating companion content beside the title on wide viewports (e.g. a stat stack). */
+		aside?: ReactNode;
 	};
 
 // Same eyebrow + title intro on every page, so moving between pages feels seamless.
@@ -174,6 +176,7 @@ export function PageHero({
 	caption,
 	children,
 	heroTitle = false,
+	aside,
 	...rest
 }: PageHeroProps) {
 	return (
@@ -185,13 +188,16 @@ export function PageHero({
 			padding={{ y: "md" }}
 			{...rest}
 		>
-			<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
-				{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-				{heroTitle ? (
-					<Text.Hero>{title}</Text.Hero>
-				) : (
-					<Text.Heading>{title}</Text.Heading>
-				)}
+			<Flex direction="row" gap="xl" vAlign="center" hAlign="between" wrap>
+				<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
+					{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+					{heroTitle ? (
+						<Text.Hero className="hero-title">{title}</Text.Hero>
+					) : (
+						<Text.Heading as="h1">{title}</Text.Heading>
+					)}
+				</Flex>
+				{aside}
 			</Flex>
 			{caption && (
 				<Text.Body ink="muted" width="sm">

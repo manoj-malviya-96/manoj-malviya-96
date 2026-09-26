@@ -23,6 +23,8 @@ export const Projects: Record<ProjectId, Project> = {
 					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
 					built Atom: one primitive, one stylesheet, and a type system that generates straight
 					from that stylesheet, so an invalid token can't compile.`,
+		outcome:
+			"CSS-in-JS runtime or type-unsafe CSS — one primitive, one stylesheet, invalid tokens can't compile.",
 		dates: "2025-2026",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
@@ -56,6 +58,8 @@ export const Projects: Record<ProjectId, Project> = {
 					myself: a C++ DSP pipeline compiled to WebAssembly, analyzing each
 					track once in a Web Worker and caching the result, so the Three.js
 					scene reacts to real extracted features instead of an AI’s guess.`,
+		outcome:
+			"Visualizers that fake it with AI — Muviz analyzes real audio features once, then reacts to them live.",
 		dates: "2026",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
@@ -80,6 +84,8 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "HoneyMesh",
 		summary:
 			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real VTK mesh. The part that kept breaking was staggering the hexagon centers — get that wrong and the whole grid drifts.",
+		outcome:
+			"Hand-triangulating hex lattices for CAD — replaced with a C++ generator that extrudes a real VTK mesh.",
 		dates: "2025",
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
@@ -106,6 +112,8 @@ export const Projects: Record<ProjectId, Project> = {
 					SIMP algorithm and accuracy but running faster on the same problem —
 					caching the sparsity pattern instead of rebuilding it every iteration
 					drops a 5,000-element run from 4.8s to 2.6s.`,
+		outcome:
+			"A 99-line optimizer ran slow in pure Python — vectorized NumPy cut a 5k-element run from 4.8s to 2.6s.",
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "medium",
@@ -134,6 +142,8 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "Blackhole",
 		summary:
 			"Gravity, rendered in real time, because I couldn't wait for the movie. A compute shader integrates each pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3 million solar masses), while a lensing fragment shader bends the background grid around it — running as a Qt/OpenGL widget so it rotates live instead of playing back a rendered clip.",
+		outcome:
+			"Couldn't wait for the movie — a live compute shader now renders Sagittarius A*'s lensing in real time.",
 		dates: "2026",
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
@@ -157,6 +167,8 @@ export const Projects: Record<ProjectId, Project> = {
 		title: "EV Charging Simulator",
 		summary:
 			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first: 15-minute intervals with car arrivals drawn from a Poisson distribution per charge point, no queueing — a car that arrives to a busy point just leaves. Concurrency turned out to decay roughly exponentially as charger count grows.",
+		outcome:
+			"Not knowing how many chargers a lot needs — a year-long Poisson-arrival simulation answers it first.",
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
@@ -179,6 +191,8 @@ export const Projects: Record<ProjectId, Project> = {
 	mesha: {
 		title: "Mesha",
 		summary: "Mesh repair, from the command line to a real editor.",
+		outcome:
+			"Mesh repair stuck in the command line — Mesha brings it into a real editor.",
 		dates: "2025",
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 		effort: "low",
@@ -290,6 +304,8 @@ type ProjectMedia = readonly MediaSource[];
 export type Project = {
 	title: string;
 	summary: ReactNode;
+	/** One line, problem → result — what featured cards show instead of the full summary. */
+	outcome: string;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;

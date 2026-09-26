@@ -1,5 +1,6 @@
 import type { TimelineEvent } from "@manoj-malviya-96/atom";
 import {
+	Atom,
 	Badge,
 	Flex,
 	Grid,
@@ -58,13 +59,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid
-			columns={2}
-			enter="rise"
-			className="track-row"
-			padding="lg"
-			bg="surface"
-		>
+		<Grid columns={2} className="track-row" padding="lg" bg="surface" blur>
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<Image
 					as={NextImage}
@@ -104,7 +99,11 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 					<ExperienceSkills skills={skills} />
 				</Flex>
 				{summary}
-				{media && <Media media={media} />}
+				{media && (
+					<Atom as="div" enter="rise" width="full">
+						<Media media={media} />
+					</Atom>
+				)}
 			</Flex>
 		),
 	};
