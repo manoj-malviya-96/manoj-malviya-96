@@ -1,12 +1,6 @@
-import { assertNever, Flex, List, Text } from "@manoj-malviya-96/atom";
-import {
-	IconLightbulb,
-	IconPaintBrush,
-	IconVolumeHigh,
-} from "@manoj-malviya-96/atom/icons";
+import { assertNever } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
-import { Prose } from "@/lib/shared";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
 const AllProjectIds = [
@@ -25,12 +19,11 @@ export type ProjectId = ValuesOf<typeof AllProjectIds>;
 export const Projects: Record<ProjectId, Project> = {
 	atom: {
 		title: "Atom",
-		outcome:
-			"Design systems force a choice between runtime-cost CSS-in-JS and unchecked CSS → Atom ships both typed and zero-runtime, at 20 KB gzipped.",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
 					Every option out there made me choose between a CSS-in-JS styling library dragging
 					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
-					built Atom: one primitive, one stylesheet, and a type system that actually checks it.`,
+					built Atom: one primitive, one stylesheet, and a type system that generates straight
+					from that stylesheet, so an invalid token can't compile.`,
 		dates: "2025-2026",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
@@ -48,53 +41,33 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		media: {
-			mockup: "macbook",
-			kind: "video",
-			alt: "Atom framework demo",
-			src: getBlob("atom.webm"),
-		},
-		content: (
-			<List direction="col" gap="md" width="lg">
-				<li>
-					<Text.Body>
-						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays a
-						runtime cost.
-					</Text.Body>
-				</li>
-				<li>
-					<Text.Body>
-						✅ Types generate straight from that CSS, so an illegal token can't
-						compile. Scripts catch what the type system can't.
-					</Text.Body>
-				</li>
-				<li>
-					<Text.Body>
-						✅ 20 KB gzipped for the core. Charts and system components ship
-						separately, each under its own budget.
-					</Text.Body>
-				</li>
-			</List>
-		),
+		media: [
+			{
+				kind: "video",
+				alt: "Atom framework demo",
+				src: getBlob("atom.webm"),
+				mockup: "macbook",
+			},
+		],
 	},
 	muviz: {
 		title: "Muviz",
-		outcome:
-			"Wanted Winamp-style reactivity without faking it with AI → real DSP running in a WASM worker, analyzed once and cached per track.",
 		summary: `I grew up watching Winamp react to whatever was playing, and I never
 					stopped wanting that feeling back. So I’m building the real thing
-					myself: no AI, no faking it, DSP that actually understands the
-					music.`,
+					myself: a C++ DSP pipeline compiled to WebAssembly, analyzing each
+					track once in a Web Worker and caching the result, so the Three.js
+					scene reacts to real extracted features instead of an AI’s guess.`,
 		dates: "2026",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
 		heroStat: { value: "1×", label: "Analysis per track, then cached" },
-		media: {
-			mockup: "macbook",
-			kind: "video",
-			src: getBlob("muviz.webm"),
-			alt: "Muviz reacting to a track in real time.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("muviz.webm"),
+				alt: "Muviz reacting to a track in real time.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "demo",
@@ -103,56 +76,21 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<List direction="col" gap="md" width="lg">
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconVolumeHigh />
-					<Text.Body>
-						A C++ pipeline (FFT, onset detection, key and rhythm extraction)
-						compiles to WebAssembly and analyzes a track once, in a Web Worker,
-						off the main thread.
-					</Text.Body>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconLightbulb />
-					<Text.Body>
-						Every analyzed track is cached in IndexedDB by content hash, so
-						replaying it or re-adding the file skips analysis entirely.
-					</Text.Body>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconPaintBrush />
-					<Text.Body>
-						The Three.js scene never touches audio directly. It’s a pure
-						function of the extracted features and playback time, so scrubbing
-						and switching tracks come for free.
-					</Text.Body>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconVolumeHigh />
-					<Text.Body>
-						It’s live at muviz.vercel.app, reacting to whatever you drop on it
-						in real time — the Winamp feeling, running on my own DSP instead of
-						someone else’s AI.
-					</Text.Body>
-				</Flex>
-			</List>
-		),
 	},
 	honeycomb: {
 		title: "HoneyMesh",
-		outcome:
-			"Triangulating hexagonal lattices by hand for CAD work → a C++ generator that exports straight to a VTK mesh.",
 		summary:
-			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
+			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real VTK mesh. The part that kept breaking was staggering the hexagon centers — get that wrong and the whole grid drifts.",
 		dates: "2025",
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
-		media: {
-			kind: "video",
-			src: getBlob("honeycomb_demo.webm"),
-			alt: "A honeycomb lattice generated and rendered in VTK.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("honeycomb_demo.webm"),
+				alt: "A honeycomb lattice generated and rendered in VTK.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -160,35 +98,26 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Give it a shape and get back a honeycomb lattice, skeletonized in C++
-				and exported straight to a VTK mesh, ready for your CAD tool. No manual
-				triangulation, no format conversion. The skeleton is a functional
-				pipeline: an unordered_set for edges, a sorted map for vertices, every
-				function pure input to output. The part that kept breaking was
-				staggering the hexagon centers correctly. Get that wrong and the whole
-				grid drifts.
-			</Prose>
-		),
 	},
 	topopt_py: {
 		title: "topopt-py",
-		outcome:
-			"DTU's reference topology optimizer was elegant but slow in pure Python → vectorized NumPy assembly, 1.8× faster at the same accuracy.",
 		summary: `I found DTU's 99-line topology-optimization script and loved how
 					compact it was, but the inner loop was nested Python. I rewrote the
 					stiffness assembly and filtering as vectorized NumPy, keeping the same
-					SIMP algorithm and accuracy but running faster on the same problem.`,
+					SIMP algorithm and accuracy but running faster on the same problem —
+					caching the sparsity pattern instead of rebuilding it every iteration
+					drops a 5,000-element run from 4.8s to 2.6s.`,
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "medium",
 		heroStat: { value: "1.8×", label: "Faster on a 5k-element MBB beam" },
-		media: {
-			kind: "video",
-			src: getBlob("pixel-opt.webm"),
-			alt: "A topology optimization converging on a solution.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("pixel-opt.webm"),
+				alt: "A topology optimization converging on a solution.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -201,32 +130,22 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: (
-			<Prose>
-				The stiffness assembler now caches its sparsity pattern instead of
-				rebuilding it every iteration, and strain energy is a single einsum call
-				instead of a manual reshape-and-sum. Filtering swapped four nested loops
-				for one scipy.ndimage.convolve. Solver time still dominates, which is
-				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
-				to 2.6s.
-			</Prose>
-		),
 	},
 	blackhole: {
 		title: "Blackhole",
-		outcome:
-			"Wanted to see black-hole lensing without waiting for the movie → a real-time GPU renderer modeled on Sagittarius A*.",
 		summary:
-			"Gravity, rendered in real time, because I couldn't wait for the movie.",
+			"Gravity, rendered in real time, because I couldn't wait for the movie. A compute shader integrates each pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3 million solar masses), while a lensing fragment shader bends the background grid around it — running as a Qt/OpenGL widget so it rotates live instead of playing back a rendered clip.",
 		dates: "2026",
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
 		heroStat: { value: "4.3M M☉", label: "Simulated mass (Sgr A*)" },
-		media: {
-			kind: "video",
-			src: getBlob("blackhole.webm"),
-			alt: "Cover art for the black hole renderer.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("blackhole.webm"),
+				alt: "Cover art for the black hole renderer.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -234,32 +153,22 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Simulates real black-hole gravity. A compute shader integrates each
-				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
-				million solar masses), and a separate lensing fragment shader bends the
-				background grid around it. It runs as a Qt/OpenGL widget, falling back
-				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
-				rotates live instead of playing back a pre-rendered clip.
-			</Prose>
-		),
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
-		outcome:
-			"Didn't know how many chargers a lot actually needs → a year-long Poisson-based demand simulator that answers it instantly.",
 		summary:
-			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first.",
+			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first: 15-minute intervals with car arrivals drawn from a Poisson distribution per charge point, no queueing — a car that arrives to a busy point just leaves. Concurrency turned out to decay roughly exponentially as charger count grows.",
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
 		heroStat: { value: "35,040", label: "15-minute intervals per run" },
-		media: {
-			kind: "image",
-			src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
-			alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
-		},
+		media: [
+			{
+				kind: "image",
+				src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+				alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -267,22 +176,9 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Answers one question: how many chargers do you actually need? Each run
-				simulates a year of 15-minute intervals, drawing car arrivals from a
-				Poisson-derived probability per charge point, with no queueing: a car
-				that arrives to a busy point leaves. Change the charger count or power
-				draw and watch demand, cost, and concurrency update immediately;
-				concurrency turned out to decay roughly exponentially as charger count
-				grows.
-			</Prose>
-		),
 	},
 	mesha: {
 		title: "Mesha",
-		outcome:
-			"Mesh-repair tools live on the command line → building a real interactive editor around them.",
 		summary: "Mesh repair, from the command line to a real editor.",
 		dates: "2025",
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
@@ -300,23 +196,22 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: <Prose>Todo</Prose>,
 	},
 	truss_opt: {
 		title: "Truss Optimizer",
-		outcome:
-			"Wanted to watch material redistribute in real time → a browser truss editor backed by a live FEA/optimization API.",
 		summary:
-			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
+			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot: place supports and loads, and this site's own API route re-solves the FEA and bisects on the Lagrange multiplier at each of 200 iterations to hold volume at 40% of the start, with a minimum thickness clamp so no member vanishes to zero.",
 		dates: "2024",
 		tags: ["simulation", "optimization", "web", "react", "typescript"],
 		effort: "medium",
 		heroStat: { value: "200", label: "FEA solves per optimization" },
-		media: {
-			kind: "video",
-			src: getBlob("pixel-opt.webm"),
-			alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("pixel-opt.webm"),
+				alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "demo",
@@ -325,16 +220,6 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Place supports and loads on a cantilever lattice and this site's own API
-				route solves the FEA and runs an optimality-criteria search to
-				redistribute material. The browser only ever draws the answer. Each of
-				the 200 iterations re-solves the FEA, then bisects on the Lagrange
-				multiplier to hold total volume at 40% of the start, with a minimum
-				thickness clamp so no member vanishes to zero.
-			</Prose>
-		),
 	},
 };
 
@@ -425,20 +310,17 @@ type ProjectLinks = {
 	others: readonly ProjectLink[];
 };
 
-export type ProjectMedia = { mockup?: "macbook" } & MediaSource;
+type ProjectMedia = readonly MediaSource[];
 
 export type Project = {
 	title: string;
 	summary: ReactNode;
-	/** One line, problem → result — for the featured-card grid. */
-	outcome: string;
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
 	heroStat?: HeroStat;
 	media?: ProjectMedia;
 	links: ProjectLinks;
-	content?: ReactNode;
 };
 
 export type ProjectSummary = Project & { id: ProjectId };

@@ -11,10 +11,6 @@ export function withDefaults<P extends object>(Component: ComponentType<P>) {
 	};
 }
 
-export function dottedConcatString(inputs: string[]) {
-	return inputs.join(" · ");
-}
-
 const MONTH_ABBREVIATIONS = [
 	"Jan",
 	"Feb",

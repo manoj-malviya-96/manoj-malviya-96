@@ -8,9 +8,11 @@ export default function Featured() {
 			{RankedProjects.slice(0, 3).map((item) => (
 				<Link key={item.id} url={`/work#${item.id}`} style={{}}>
 					<Flex direction="col" gap="sm">
-						{item.media && <Media media={item.media} />}
+						{item.media?.[0] && <Media media={item.media[0]} />}
 						<Text.Title>{item.title}</Text.Title>
-						<Text.Body ink="muted">{item.outcome}</Text.Body>
+						<Text.Body ink="muted" className="work-summary">
+							{item.summary}
+						</Text.Body>
 					</Flex>
 				</Link>
 			))}

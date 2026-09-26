@@ -1,7 +1,7 @@
 import { Flex } from "@manoj-malviya-96/atom";
 import { type ReactNode, useId } from "react";
 
-export function MacbookMockup({ children }: { children: ReactNode }) {
+export function Macbook({ children }: { children: ReactNode }) {
 	const uid = useId();
 
 	return (

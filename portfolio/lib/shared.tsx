@@ -200,5 +200,4 @@ export const PageSection = withDefaults(AtomSection)({
 	width: "content",
 	margin: { x: "auto" },
 });
-export const Prose = withDefaults(Text.Body)({ width: "lg" });
 export const EmText = withDefaults(Text.Italic)({ ink: "muted" });

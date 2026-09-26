@@ -1,14 +1,21 @@
-import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
+import {
+	Atom,
+	assertNever,
+	Badge,
+	Flex,
+	Grid,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
-import { dottedConcatString } from "@/lib/helper";
-import { MacbookMockup } from "@/lib/macbook_mockup";
+import type { ProjectLink, WorkItem } from "@/lib/data";
+import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
+import type { MediaSource } from "@/lib/types";
 
 export default function WorkCard({ item }: { item: WorkItem }) {
 	return (
@@ -20,47 +27,85 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			bg="raised"
 			radius="md"
 			card
-			padding={{ x: "none", y: "lg" }}
+			gap="lg"
+			padding="lg"
 		>
-			<Flex
-				direction="col"
-				gap="lg"
-				hAlign="center"
-				margin={{ x: "auto" }}
-				width={{ value: "content", max: "full" }}
-			>
-				<Flex
-					direction="col"
-					gap="md"
-					hAlign="start"
-					width={{ value: "lg", max: "full" }}
-				>
-					<Text.Heading>{item.title}</Text.Heading>
-					<Text.Body ink="muted">{item.summary}</Text.Body>
-					<WorkLinks item={item} />
+			<Flex direction="col" gap="sm" hAlign="start">
+				<Flex direction="row" gap="sm" vAlign="center" wrap>
+					<Text.Title>{item.title}</Text.Title>
+					<Text.Caption ink="muted">{item.dates}</Text.Caption>
 				</Flex>
-				{item.kind === "project" && item.media && (
-					<ProjectMediaComponent media={item.media} />
-				)}
-				{item.kind === "project" && item.content && item.content}
 				<CardTags item={item} />
+			</Flex>
+			{item.kind === "project" && item.media && item.media.length > 0 && (
+				<ProjectMedia media={item.media} />
+			)}
+			<Flex direction="col" gap="sm" hAlign="start">
+				<Text.Body>{item.summary}</Text.Body>
+				<WorkLinks item={item} />
 			</Flex>
 		</Flex>
 	);
 }
 
+function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
+	if (media.length > 1) {
+		return (
+			<Grid columns={2} gap="sm" width="full">
+				{media.map((item, i) => (
+					<MediaMockup key={i} media={item} />
+				))}
+			</Grid>
+		);
+	}
+	return (
+		<Flex direction="row" hAlign="center" width="full">
+			<MediaMockup media={media[0]} />
+		</Flex>
+	);
+}
+
+function MediaMockup({ media }: { media: MediaSource }) {
+	switch (media.mockup) {
+		case undefined:
+			return (
+				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
+					<Media media={media} />
+				</Atom>
+			);
+		case "macbook":
+			return (
+				<Macbook>
+					<Media media={media} stretch />
+				</Macbook>
+			);
+		default:
+			return assertNever(media.mockup);
+	}
+}
+
 function CardTags({ item }: { item: WorkItem }) {
 	return (
-		<Text.Caption ink="muted">
-			{dottedConcatString([item.dates, ...item.tags])}
-		</Text.Caption>
+		<Flex
+			as="ul"
+			direction="row"
+			gap="xs"
+			wrap
+			style={{ listStyle: "none", paddingInlineStart: 0, margin: 0 }}
+		>
+			{item.tags.map((tag) => (
+				<Badge as="li" key={tag}>
+					{tag}
+				</Badge>
+			))}
+		</Flex>
 	);
 }
 
 function WorkLinks({ item }: { item: WorkItem }) {
 	if (item.kind === "blog") {
 		return (
-			<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+			<Flex direction="row" gap="sm" wrap>
 				<Link.Button
 					url={item.href}
 					openNewTab
@@ -75,32 +120,13 @@ function WorkLinks({ item }: { item: WorkItem }) {
 
 	const { primary, others } = item.links;
 	return (
-		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+		<Flex direction="row" gap="sm" wrap>
 			<ProjectLinkButton link={primary} color="primary" />
 			{others.map((link) => (
 				<ProjectLinkButton key={link.href} link={link} />
 			))}
 		</Flex>
 	);
-}
-
-function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
-	switch (media.mockup) {
-		case undefined:
-			return (
-				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
-					<Media media={media} />
-				</Atom>
-			);
-		case "macbook":
-			return (
-				<MacbookMockup>
-					<Media media={media} />
-				</MacbookMockup>
-			);
-		default:
-			assertNever(media.mockup);
-	}
 }
 
 function ProjectLinkButton({
