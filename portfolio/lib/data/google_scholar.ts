@@ -22,7 +22,7 @@ const googleScholarResponseSchema = z.object({
 	),
 });
 
-export type ScholarPublication = {
+type ScholarPublication = {
 	title: string;
 	authors: string;
 	venue: string;

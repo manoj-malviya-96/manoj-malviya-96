@@ -1,15 +1,10 @@
-import { assertNever, Flex, List, Text } from "@manoj-malviya-96/atom";
-import {
-	IconLightbulb,
-	IconPaintBrush,
-	IconVolumeHigh,
-} from "@manoj-malviya-96/atom/icons";
+import { assertNever, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
-import { Prose } from "@/lib/shared";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
 const AllProjectIds = [
+	"wrapped",
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -17,22 +12,71 @@ const AllProjectIds = [
 	"blackhole",
 	"ev_sim",
 	"mesha",
-	"truss_opt",
 ] as const;
 
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
 export const Projects: Record<ProjectId, Project> = {
+	wrapped: {
+		title: "Wrapped",
+		summary: (
+			<>
+				Life happens in photos, steps, sleep, and moments scattered across a
+				dozen apps, and nobody actually looks back at it honestly. I wanted a
+				recap that felt real instead of curated for Instagram, so I'm building{" "}
+				<Text.Italic ink="blue" family="serif">
+					Wrapped
+				</Text.Italic>
+				. Mainly build on SwiftUI, and Core Foundational Models with a
+				postgressql based database.
+			</>
+		),
+		outcome:
+			"Curated social-media recaps — Wrapped turns your own photos and health data into an honest video recap.",
+		startsAt: new Date("2026-08-01"),
+		tags: ["mobile", "swift", "ai", "ui/ux"],
+		effort: "medium",
+		links: {
+			primary: {
+				kind: "demo",
+				label: "Preview",
+				href: "https://wrapped.vercel.app",
+			},
+			others: [],
+		},
+		media: [
+			{
+				kind: "image",
+				src: getBlob("wrapped-1.png"),
+				alt: "Wrapped's photo recap slide.",
+			},
+			{
+				kind: "image",
+				src: getBlob("wrapped-2.png"),
+				alt: "Wrapped's stats slide for a past year.",
+			},
+		],
+	},
 	atom: {
 		title: "Atom",
-		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
-					Every option out there made me choose between a CSS-in-JS styling library dragging
-					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
-					built Atom: one primitive, one stylesheet, and a type system that actually checks it.`,
-		dates: "2024–2025",
+		summary: (
+			<>
+				I wanted Apple-grade design discipline: one visual language, everywhere.
+				Every option out there made me choose between a CSS-in-JS styling
+				library dragging its own runtime and CSS that throws out type safety. I
+				got tired of choosing, so I built <Text.Bold>Atom</Text.Bold>:{" "}
+				<Text.Italic>
+					one primitive, one stylesheet, and a type system that generates
+					straight from that stylesheet
+				</Text.Italic>
+				, so an invalid token can't compile.
+			</>
+		),
+		outcome:
+			"CSS-in-JS runtime or type-unsafe CSS — one primitive, one stylesheet, invalid tokens can't compile.",
+		startsAt: new Date("2025-01-01"),
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
-		heroStat: { value: "20 KB", label: "Gzipped core bundle" },
 		links: {
 			primary: {
 				kind: "demo",
@@ -46,51 +90,41 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		media: {
-			mockup: "macbook",
-			kind: "video",
-			alt: "Atom framework demo",
-			src: getBlob("atom.webm"),
-		},
-		content: (
-			<List direction="col" gap="md" width="lg">
-				<li>
-					<Text variant="body">
-						✅ Styling and motion live in CSS, never JS-in-JS, so nothing pays a
-						runtime cost.
-					</Text>
-				</li>
-				<li>
-					<Text variant="body">
-						✅ Types generate straight from that CSS, so an illegal token can't
-						compile. Scripts catch what the type system can't.
-					</Text>
-				</li>
-				<li>
-					<Text variant="body">
-						✅ 20 KB gzipped for the core. Charts and system components ship
-						separately, each under its own budget.
-					</Text>
-				</li>
-			</List>
-		),
+		media: [
+			{
+				kind: "video",
+				alt: "Atom framework demo",
+				src: getBlob("atom.webm"),
+				mockup: "macbook",
+			},
+		],
 	},
 	muviz: {
 		title: "Muviz",
-		summary: `I grew up watching Winamp react to whatever was playing, and I never
-					stopped wanting that feeling back. So I’m building the real thing
-					myself: no AI, no faking it, DSP that actually understands the
-					music.`,
-		dates: "2023",
+		summary: (
+			<>
+				I grew up watching Winamp react to whatever was playing, and I never
+				stopped wanting that feeling back. So I'm building the real thing
+				myself: a{" "}
+				<Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>,
+				analyzing each track once in a Web Worker and caching the result, so the
+				Three.js scene reacts to{" "}
+				<Text.Italic>real extracted features</Text.Italic> instead of an AI's
+				guess.
+			</>
+		),
+		outcome:
+			"Visualizers that fake it with AI — Muviz analyzes real audio features once, then reacts to them live.",
+		startsAt: new Date("2026-01-01"),
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
-		heroStat: { value: "1×", label: "Analysis per track, then cached" },
-		media: {
-			mockup: "macbook",
-			kind: "video",
-			src: getBlob("muviz.webm"),
-			alt: "Muviz reacting to a track in real time.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("muviz.webm"),
+				alt: "Muviz reacting to a track in real time.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "demo",
@@ -99,54 +133,34 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<List direction="col" gap="md" width="lg">
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconVolumeHigh />
-					<Text variant="body">
-						A C++ pipeline (FFT, onset detection, key and rhythm extraction)
-						compiles to WebAssembly and analyzes a track once, in a Web Worker,
-						off the main thread.
-					</Text>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconLightbulb />
-					<Text variant="body">
-						Every analyzed track is cached in IndexedDB by content hash, so
-						replaying it or re-adding the file skips analysis entirely.
-					</Text>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconPaintBrush />
-					<Text variant="body">
-						The Three.js scene never touches audio directly. It’s a pure
-						function of the extracted features and playback time, so scrubbing
-						and switching tracks come for free.
-					</Text>
-				</Flex>
-				<Flex as="li" direction="row" gap="md" vAlign="center">
-					<IconVolumeHigh />
-					<Text variant="body">
-						It’s live at muviz.vercel.app, reacting to whatever you drop on it
-						in real time — the Winamp feeling, running on my own DSP instead of
-						someone else’s AI.
-					</Text>
-				</Flex>
-			</List>
-		),
 	},
 	honeycomb: {
 		title: "HoneyMesh",
-		summary:
-			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real mesh with VTK.",
-		dates: "2022",
+		summary: (
+			<>
+				I kept needing hexagonal lattices for CAD work and got tired of
+				triangulating them by hand, so I wrote a generator:{" "}
+				<Text.Bold>
+					a 2D skeleton graph in C++, extruded into a real VTK mesh
+				</Text.Bold>
+				. The part that kept breaking was{" "}
+				<Text.Italic>staggering the hexagon centers</Text.Italic> — get that
+				wrong and the whole grid drifts.
+			</>
+		),
+		outcome:
+			"Hand-triangulating hex lattices for CAD — replaced with a C++ generator that extrudes a real VTK mesh.",
+		startsAt: new Date("2025-01-01"),
+		endsAt: new Date("2025-12-01"),
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
-		media: {
-			kind: "video",
-			src: getBlob("honeycomb_demo.webm"),
-			alt: "A honeycomb lattice generated and rendered in VTK.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("honeycomb_demo.webm"),
+				alt: "A honeycomb lattice generated and rendered in VTK.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -154,33 +168,35 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Give it a shape and get back a honeycomb lattice, skeletonized in C++
-				and exported straight to a VTK mesh, ready for your CAD tool. No manual
-				triangulation, no format conversion. The skeleton is a functional
-				pipeline: an unordered_set for edges, a sorted map for vertices, every
-				function pure input to output. The part that kept breaking was
-				staggering the hexagon centers correctly. Get that wrong and the whole
-				grid drifts.
-			</Prose>
-		),
 	},
 	topopt_py: {
 		title: "topopt-py",
-		summary: `I found DTU's 99-line topology-optimization script and loved how
-					compact it was, but the inner loop was nested Python. I rewrote the
-					stiffness assembly and filtering as vectorized NumPy, keeping the same
-					SIMP algorithm and accuracy but running faster on the same problem.`,
-		dates: "2021",
+		summary: (
+			<>
+				I found DTU's 99-line topology-optimization script and loved how compact
+				it was, but the inner loop was nested Python. I rewrote the stiffness
+				assembly and filtering as <Text.Bold>vectorized NumPy</Text.Bold>,
+				keeping the same SIMP algorithm and accuracy but running faster on the
+				same problem —{" "}
+				<Text.Italic>
+					caching the sparsity pattern instead of rebuilding it every iteration
+				</Text.Italic>{" "}
+				drops a 5,000-element run from 4.8s to 2.6s.
+			</>
+		),
+		outcome:
+			"A 99-line optimizer ran slow in pure Python — vectorized NumPy cut a 5k-element run from 4.8s to 2.6s.",
+		startsAt: new Date("2021-01-01"),
+		endsAt: new Date("2021-12-01"),
 		tags: ["simulation", "optimization", "high-performance", "python"],
-		effort: "high",
-		heroStat: { value: "1.8×", label: "Faster on a 5k-element MBB beam" },
-		media: {
-			kind: "video",
-			src: getBlob("pixel-opt.webm"),
-			alt: "A topology optimization converging on a solution.",
-		},
+		effort: "medium",
+		media: [
+			{
+				kind: "video",
+				src: getBlob("pixel-opt.webm"),
+				alt: "A topology optimization converging on a solution.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -193,30 +209,33 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: (
-			<Prose>
-				The stiffness assembler now caches its sparsity pattern instead of
-				rebuilding it every iteration, and strain energy is a single einsum call
-				instead of a manual reshape-and-sum. Filtering swapped four nested loops
-				for one scipy.ndimage.convolve. Solver time still dominates, which is
-				inherent to FEM, but on a 5,000-element MBB beam the run drops from 4.8s
-				to 2.6s.
-			</Prose>
-		),
 	},
 	blackhole: {
 		title: "Blackhole",
-		summary:
-			"Gravity, rendered in real time, because I couldn't wait for the movie.",
-		dates: "2023",
+		summary: (
+			<>
+				Gravity, rendered <Text.Italic>in real time</Text.Italic>, because I
+				couldn't wait for the movie. A compute shader integrates each pixel's
+				light-ray geodesic against a mass modeled on{" "}
+				<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, while
+				a lensing fragment shader bends the background grid around it — running
+				as a Qt/OpenGL widget so it rotates live instead of playing back a
+				rendered clip.
+			</>
+		),
+		outcome:
+			"Couldn't wait for the movie — a live compute shader now renders Sagittarius A*'s lensing in real time.",
+		startsAt: new Date("2026-01-01"),
+		endsAt: new Date("2026-06-01"),
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
-		heroStat: { value: "4.3M M☉", label: "Simulated mass (Sgr A*)" },
-		media: {
-			kind: "video",
-			src: getBlob("blackhole.webm"),
-			alt: "Cover art for the black hole renderer.",
-		},
+		media: [
+			{
+				kind: "video",
+				src: getBlob("blackhole.webm"),
+				alt: "Cover art for the black hole renderer.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -224,30 +243,35 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Simulates real black-hole gravity. A compute shader integrates each
-				pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3
-				million solar masses), and a separate lensing fragment shader bends the
-				background grid around it. It runs as a Qt/OpenGL widget, falling back
-				to GL_ARB_compute_shader on GPUs without core GL 4.3, so it still
-				rotates live instead of playing back a pre-rendered clip.
-			</Prose>
-		),
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
-		summary:
-			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first.",
-		dates: "2024",
+		summary: (
+			<>
+				I wanted to know how many chargers a lot actually needs before buying
+				them, so I simulated a year of demand first:{" "}
+				<Text.Bold>
+					15-minute intervals with car arrivals drawn from a Poisson
+					distribution per charge point
+				</Text.Bold>
+				, <Text.Italic>no queueing</Text.Italic> — a car that arrives to a busy
+				point just leaves. Concurrency turned out to decay roughly exponentially
+				as charger count grows.
+			</>
+		),
+		outcome:
+			"Not knowing how many chargers a lot needs — a year-long Poisson-arrival simulation answers it first.",
+		startsAt: new Date("2024-01-01"),
+		endsAt: new Date("2024-12-01"),
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
-		heroStat: { value: "35,040", label: "15-minute intervals per run" },
-		media: {
-			kind: "image",
-			src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
-			alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
-		},
+		media: [
+			{
+				kind: "image",
+				src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+				alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
+			},
+		],
 		links: {
 			primary: {
 				kind: "github",
@@ -255,22 +279,19 @@ export const Projects: Record<ProjectId, Project> = {
 			},
 			others: [],
 		},
-		content: (
-			<Prose>
-				Answers one question: how many chargers do you actually need? Each run
-				simulates a year of 15-minute intervals, drawing car arrivals from a
-				Poisson-derived probability per charge point, with no queueing: a car
-				that arrives to a busy point leaves. Change the charger count or power
-				draw and watch demand, cost, and concurrency update immediately;
-				concurrency turned out to decay roughly exponentially as charger count
-				grows.
-			</Prose>
-		),
 	},
 	mesha: {
 		title: "Mesha",
-		summary: "Mesh repair, from the command line to a real editor.",
-		dates: "2025",
+		summary: (
+			<>
+				Mesh repair, <Text.Italic>from the command line</Text.Italic> to a{" "}
+				<Text.Bold>real editor</Text.Bold>.
+			</>
+		),
+		outcome:
+			"Mesh repair stuck in the command line — Mesha brings it into a real editor.",
+		startsAt: new Date("2025-01-01"),
+		endsAt: new Date("2025-06-01"),
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 		effort: "low",
 		links: {
@@ -286,39 +307,6 @@ export const Projects: Record<ProjectId, Project> = {
 				},
 			],
 		},
-		content: <Prose>Todo</Prose>,
-	},
-	truss_opt: {
-		title: "Truss Optimizer",
-		summary:
-			"I wanted to watch material redistribute itself in real time, so I built a truss you can draw into and optimize on the spot.",
-		dates: "2025",
-		tags: ["simulation", "optimization", "web", "react", "typescript"],
-		effort: "medium",
-		heroStat: { value: "200", label: "FEA solves per optimization" },
-		media: {
-			kind: "video",
-			src: getBlob("pixel-opt.webm"),
-			alt: "The truss optimizer mid-run: a cantilever lattice colored by member stress.",
-		},
-		links: {
-			primary: {
-				kind: "demo",
-				label: "Try it",
-				href: "/demos/truss-opt",
-			},
-			others: [],
-		},
-		content: (
-			<Prose>
-				Place supports and loads on a cantilever lattice and this site's own API
-				route solves the FEA and runs an optimality-criteria search to
-				redistribute material. The browser only ever draws the answer. Each of
-				the 200 iterations re-solves the FEA, then bisects on the Lagrange
-				multiplier to hold total volume at 40% of the start, with a minimum
-				thickness clamp so no member vanishes to zero.
-			</Prose>
-		),
 	},
 };
 
@@ -392,8 +380,6 @@ export type ProjectTag =
 
 type ProjectEffort = "low" | "medium" | "high";
 
-type HeroStat = { value: string; label: string };
-
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
 type InternalPath = `/${string}`;
@@ -409,33 +395,45 @@ type ProjectLinks = {
 	others: readonly ProjectLink[];
 };
 
-export type ProjectMedia = { mockup?: "macbook" } & MediaSource;
+type ProjectMedia = readonly MediaSource[];
 
 export type Project = {
 	title: string;
 	summary: ReactNode;
-	dates: string;
+	/** One line, problem → result — what featured cards show instead of the full summary. */
+	outcome: string;
+	/** Omit `endsAt` while the project is still in progress. */
+	startsAt: Date;
+	endsAt?: Date;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	heroStat?: HeroStat;
 	media?: ProjectMedia;
 	links: ProjectLinks;
-	content?: ReactNode;
 };
 
-export type ProjectSummary = Project & { id: ProjectId };
+export type ProjectSummary = Project & { id: ProjectId; isNew: boolean };
+
+/** "2025" for a project that started and ended the same year, "2025-2026" otherwise — ongoing projects run through today. */
+export function formatDates(startsAt: Date, endsAt?: Date): string {
+	const startYear = startsAt.getFullYear();
+	const endYear = (endsAt ?? new Date()).getFullYear();
+	return startYear === endYear ? `${startYear}` : `${startYear}-${endYear}`;
+}
+
+export function isProjectInProgress(project: Pick<Project, "endsAt">) {
+	return project.endsAt === undefined;
+}
 
 function showProject(id: ProjectId) {
 	switch (id) {
+		case "wrapped":
 		case "atom":
-		case "ev_sim":
 		case "topopt_py":
 		case "honeycomb":
 		case "muviz":
 		case "blackhole":
-		case "truss_opt":
+		case "ev_sim":
 			return true;
-
 		case "mesha":
 			return false;
 		default:
@@ -449,12 +447,21 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
-	(id) => showProject(id),
-)
-	.map((id) => ({ id, ...Projects[id] }))
-	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
+const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
+const LATEST_STARTS_AT = Math.max(
+	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+);
 
-function getBlob(filename: string) {
+export const RankedProjects: readonly ProjectSummary[] =
+	VISIBLE_PROJECT_IDS.map((id) => ({
+		id,
+		...Projects[id],
+		isNew: Projects[id].startsAt.getTime() === LATEST_STARTS_AT,
+	})).sort((a, b) => {
+		if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
+		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
+	});
+
+export function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }

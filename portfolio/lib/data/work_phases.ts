@@ -10,21 +10,21 @@ export type Phase = {
 	copy: string;
 };
 
-export const Phases = {
+export const HowIWorkPhase = {
 	discover: {
 		label: "Discover",
-		copy: "Understand the problem, not just the requirement..",
+		copy: "Problem understanding over requirement-taking. The EV Charging Simulator started as 'how many chargers does this lot need,' not 'build a simulator.'",
 	},
 	design: {
 		label: "Design",
-		copy: "Model the problem before modeling the system",
+		copy: "Model the problem before the system. Blackhole started as a light-ray geodesic equation, not a shader.",
 	},
 	build: {
 		label: "Build",
-		copy: "Correct first. Fast second. Maintainable always.",
+		copy: "Correct first. Fast second. topopt-py got the SIMP algorithm right in plain Python before vectorizing it into NumPy.",
 	},
 	measure: {
 		label: "Measure",
-		copy: "Ship it. Measure it. Learn from it.",
+		copy: "Metrics are a contract with reality. Muviz's audio pipeline only moved to a Web Worker after profiling showed it blocking the main thread.",
 	},
 } satisfies Record<PhaseId, Phase>;

@@ -1,47 +1,47 @@
-import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
-import { Page } from "@manoj-malviya-96/atom/system";
-import { PHASE_IDS, type Phase, Phases } from "@/lib/data";
-import { withDefaults } from "@/lib/helper";
+"use client";
+
+import { Flex, MagneticContainer, Text, TypewriterText } from "@manoj-malviya-96/atom";
+import type { ComponentPropsWithoutRef } from "react";
+import { CurrentStatus, EmailAddress, Hobbies, RoleTagline } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
-import Magnetic from "@/lib/magnetic";
-import Reveal from "@/lib/reveal";
-import { Accent, Eyebrow, Link, Section, SectionHeader } from "@/lib/shared";
-import TypeWriter from "@/lib/typewriter";
+import {
+	EmText,
+	Eyebrow,
+	Link,
+	Page,
+	PageHeroHeader,
+	PageHeroSection,
+	PageSection,
+} from "@/lib/shared";
 
 export default function Landing() {
 	return (
-		<Page variant="content" gap="xl">
+		<Page>
 			<Hero />
-			<Loop />
 			<FeaturedWork />
+			<FinalCTA />
 		</Page>
 	);
 }
 
 function Hero() {
 	return (
-		<HeroSection id="home-hero" gap="lg">
-			<Eyebrow>Berlin, DE</Eyebrow>
-			<Text variant="hero">
-				<Accent color="indigo">Manoj Malviya </Accent>
-			</Text>
-
-			<TypeWriter
-				prefix="-"
-				words={[
-					"Lead Software Engineer",
-					"High Performance Computing",
-					"Product Designer",
-					"Computation Design Research",
-					"Part-time DJ",
-					"3D Printing",
-				]}
-			/>
-			<Text variant="body" muted>
-				I transform complex problems into intelligent products — focusing on
-				correctness, then performance, then everything else.
-			</Text>
+		<PageHeroSection id="home-hero" vAlign="center" padding={{ y: "xl" }}>
+			<PageHeroHeader>
+				<Eyebrow>Berlin, DE</Eyebrow>
+				<Text.Hero className="hero-title">
+					Manoj
+					<EmText> Malviya </EmText>
+				</Text.Hero>
+			</PageHeroHeader>
+			<Text.Body width="lg">
+				{RoleTagline[0]?.toUpperCase()}
+				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
+			</Text.Body>
+			<Text.Body ink="muted" width="md">
+				<TypewriterWrapped prefix="Also into" words={Hobbies} />
+			</Text.Body>
 			<Flex
 				as="span"
 				direction="row"
@@ -50,78 +50,77 @@ function Hero() {
 				hAlign="start"
 				wrap
 			>
-				<Magnetic>
-					<Link
+				<MagneticContainer>
+					<Link.Button
 						url="/work"
-						variant="button"
-						buttonVariant="filled"
 						color="primary"
 						size="sm"
-						label="Personal Projects"
+						label="View work →"
 					/>
-				</Magnetic>
-				<Magnetic>
-					<Link
-						url="/resume"
-						variant="button"
-						buttonVariant="filled"
-						size="sm"
-						label="Past Experience"
-					/>
-				</Magnetic>
+				</MagneticContainer>
+				<MagneticContainer>
+					<Link.Button url="/about" size="sm" label="About me" />
+				</MagneticContainer>
 			</Flex>
-		</HeroSection>
+		</PageHeroSection>
 	);
 }
 
-function Loop() {
+/* TODO:[Atom] should accessibility for Typewriter. */
+function TypewriterWrapped({
+	prefix,
+	words,
+	...rest
+}: ComponentPropsWithoutRef<typeof TypewriterText>) {
 	return (
-		<Section id="home-loop">
-			<Grid columns={4} gap="md">
-				{PHASE_IDS.map((id, index) => (
-					<Reveal key={id} delay={index * 120}>
-						<PhaseCol index={index} {...Phases[id]} />
-					</Reveal>
-				))}
-			</Grid>
-		</Section>
-	);
-}
-
-function PhaseCol({ index, label, copy }: { index: number } & Phase) {
-	return (
-		<Flex direction="col" gap="sm">
-			<Text variant="overline" mono>
-				{String(index + 1).padStart(2, "0")}
-			</Text>
-			<Text variant="title">{label}</Text>
-			<Text variant="body" muted>
-				{copy}
-			</Text>
-		</Flex>
+		<>
+			<span aria-hidden="true">
+				<TypewriterText
+					{...(prefix !== undefined && { prefix })}
+					words={words}
+					{...rest}
+				/>
+			</span>
+			<span className="sr-only">{`${prefix} ${Hobbies.join(", ")}`}.</span>
+		</>
 	);
 }
 
 function FeaturedWork() {
 	return (
-		<Section id="home-feature" gap="lg">
-			<SectionHeader title="Proof, briefly." />
-			<ShowAndTell />
+		<PageSection id="home-feature" gap="lg">
+			<Flex as="span" direction="row" vAlign="center" hAlign="between">
+				<Text.Heading>Featured Work</Text.Heading>
+				<Link url="/work">
+					<Text.Body ink="muted">View all Work</Text.Body>
+				</Link>
+			</Flex>
 			<Featured />
-		</Section>
+			<ShowAndTell />
+		</PageSection>
 	);
 }
 
-const HeroSection = withDefaults(Section)({
-	as: "header",
-	direction: "col",
-	gap: "md",
-	width: {
-		max: "md",
-	},
-	variant: "plain",
-	padding: {
-		y: "lg",
-	},
-	vAlign: "between",
-});
+function FinalCTA() {
+	return (
+		<PageSection
+			id="home-cta"
+			gap="sm"
+			bg="surface"
+			padding="xl"
+			radius="lg"
+			hAlign="center"
+		>
+			<Text.Heading as="h2" align="center">
+				Got a complex <EmText>problem?</EmText>
+			</Text.Heading>
+			<Text.Caption ink="muted" align="center" width="sm">
+				I'm selective. If it's genuinely interesting and the constraints are
+				real, let's talk.
+			</Text.Caption>
+			<MagneticContainer>
+				<Link.Button url={EmailAddress} color="primary" label="Say hello →" />
+			</MagneticContainer>
+		</PageSection>
+	);
+}

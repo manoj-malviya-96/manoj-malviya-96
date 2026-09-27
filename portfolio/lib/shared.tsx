@@ -1,47 +1,17 @@
 "use client";
 
-import type { ColorToken } from "@manoj-malviya-96/atom";
 import {
 	Link as AtomLink,
+	Section as AtomSection,
 	Flex,
-	Image,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
-
-type SectionId = "home-loop" | "home-feature" | "home-hero";
-
-type SectionProps = {
-	id: SectionId;
-} & Omit<ComponentProps<typeof Flex>, "id">;
-
-export function Section({
-	id,
-	gap = "lg",
-	className,
-	children,
-	...rest
-}: SectionProps) {
-	return (
-		<Flex
-			as="section"
-			id={id}
-			direction="col"
-			width="full"
-			gap={gap}
-			padding={{ y: "lg" }}
-			className={className}
-			{...rest}
-		>
-			{children}
-		</Flex>
-	);
-}
 
 type Href = ComponentProps<typeof NextLink>["href"];
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
@@ -49,27 +19,79 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 	: never;
 
 export type LinkProps = DistributiveOmit<
-	ComponentProps<typeof AtomLink<"a">>,
+	ComponentProps<typeof AtomLink>,
 	"as" | "href"
 > & {
 	url: Href;
 };
 
-export function Link({ url, ...rest }: LinkProps) {
-	const isInternal = typeof url === "object" || url.startsWith("/");
-	return <AtomLink as={isInternal ? NextLink : "a"} href={url} {...rest} />;
+function LinkInline({ url, ...rest }: LinkProps) {
+	if (typeof url === "object" || url.startsWith("/"))
+		return (
+			<AtomLink
+				as={NextLink}
+				href={url}
+				{...rest}
+				// TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+				style={{ textDecoration: "none" }}
+			/>
+		);
+	return (
+		// TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+		<AtomLink as="a" href={url} {...rest} style={{ textDecoration: "none" }} />
+	);
 }
+
+type LinkButtonProps = {
+	url: Href;
+	label: string;
+	icon?: NonNullable<ReactNode>;
+	color?: "primary" | "secondary";
+	size?: "sm" | "md" | "lg";
+	openNewTab?: boolean;
+	rel?: string;
+	"aria-label"?: string;
+};
+
+function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
+	if (typeof url === "object" || url.startsWith("/")) {
+		return icon ? (
+			<AtomLink.Button
+				as={NextLink}
+				href={url}
+				collapseOnMobile={false} // TODO - [ATOM] needs to make it not default
+				icon={icon}
+				{...rest}
+			/>
+		) : (
+			<AtomLink.Button as={NextLink} href={url} {...rest} />
+		);
+	}
+	return icon ? (
+		<AtomLink.Button
+			as="a"
+			href={url}
+			collapseOnMobile={false}
+			icon={icon}
+			{...rest}
+		/>
+	) : (
+		<AtomLink.Button as="a" href={url} {...rest} />
+	);
+}
+
+export const Link = Object.assign(LinkInline, { Button: LinkButton });
 
 export function Media({
 	media,
-	stretch,
+	layout = "frame",
 }: {
 	media: MediaSource;
-	// Fills the parent's own box instead of the media's own fixed ratio — for
-	// placing media inside a container with a pre-set aspect ratio, like the
-	// MacBook mockup's screen cutout.
-	stretch?: boolean;
+	// frame: fixed 16:9 box. fill: the parent's own box, like the MacBook
+	// mockup's screen cutout. natural: full width at the image's own ratio.
+	layout?: "frame" | "fill" | "natural";
 }) {
+	const stretch = layout === "fill";
 	if (media.kind === "video") {
 		return (
 			<Video
@@ -91,46 +113,59 @@ export function Media({
 			/>
 		);
 	}
-	if (typeof media.src === "string") {
-		// Todo integrate in atom: Image's width/height are its own Size-token scale, so they can't
-		// carry the pixel dimensions next/image needs to build a srcset for a remote (non-static-import)
-		// source — `fill` is the only next/image sizing mode that doesn't require those. Falls back to a
-		// plain sized+clipped box instead of atom's fit/ratio classes, which the same reason rules out.
+	if (layout === "natural") {
+		// Remote blobs carry no intrinsic size; 0×0 lets CSS size it from the loaded image.
 		return (
-			<div
+			<NextImage
+				src={media.src}
+				alt={media.alt}
+				width={0}
+				height={0}
+				sizes="(min-width: 768px) 25vw, 50vw"
 				style={{
-					position: "relative",
-					aspectRatio: "16 / 9",
 					width: "100%",
-					overflow: "hidden",
-					borderRadius: "var(--radius-md)", // TODO
+					height: "auto",
+					borderRadius: "var(--radius-md)",
 				}}
-			>
-				<NextImage
-					src={media.src}
-					alt={media.alt}
-					fill
-					sizes="(min-width: 920px) 50vw, 100vw"
-					style={{ objectFit: "cover" }}
-				/>
-			</div>
+			/>
 		);
 	}
+	// Every src is now a remote blob URL with no build-time intrinsic size, so
+	// next/image can only lay it out via `fill` — which needs a sized,
+	// positioned ancestor. Own that box here instead of relying on callers to
+	// remember to provide one (they didn't, hence images rendering viewport-sized).
+	// Non-mockup images sit on their own next to text, so they're shown in full
+	// (`contain`) rather than cropped to a fixed ratio; `stretch` images fill a
+	// mockup's screen cutout, where `cover` is the correct look.
 	return (
-		<Image
-			as={NextImage}
-			src={media.src}
-			alt={media.alt}
-			fit="cover"
-			ratio="video"
-			radius="md"
-		/>
+		<div
+			style={
+				stretch
+					? { position: "relative", width: "100%", height: "100%" }
+					: {
+							position: "relative",
+							width: "100%",
+							aspectRatio: "16 / 9",
+							background: "var(--color-surface)",
+							borderRadius: "var(--radius-md)",
+							overflow: "hidden",
+						}
+			}
+		>
+			<NextImage
+				src={media.src}
+				alt={media.alt}
+				fill
+				sizes="(min-width: 768px) 50vw, 100vw"
+				style={{ objectFit: stretch ? "cover" : "contain" }}
+			/>
+		</div>
 	);
 }
 
 type SectionHeaderProps = {
 	eyebrow?: ReactNode;
-	title: ReactNode;
+	title?: ReactNode;
 	caption?: ReactNode;
 };
 
@@ -138,33 +173,55 @@ export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
 	return (
 		<Flex direction="col" gap="sm">
 			{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-			<Text variant="heading">{title}</Text>
-			{caption && (
-				<Text variant="body" muted>
-					{caption}
-				</Text>
-			)}
+			{title && <Text.Title>{title}</Text.Title>}
+			{caption && <Text.Body ink="muted">{caption}</Text.Body>}
 		</Flex>
 	);
 }
 
-export const Eyebrow = withDefaults(Text)({ variant: "overline", mono: true });
+export const Page = withDefaults(Flex)({
+	direction: "col",
+	gap: "lg",
+	width: "content",
+});
 
-export const Prose = withDefaults(Text)({ variant: "body", width: "lg" });
+type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
 
-export function Accent({
-	children,
-	color = "indigo",
-}: {
-	children: ReactNode;
-	color?: ColorToken;
-}) {
+// Same header shell on every page, so moving between pages feels seamless.
+export function PageHeroSection({ children, ...rest }: PageHeroSectionProps) {
 	return (
-		<span
-			className="accent"
-			style={{ color: `var(--color-${color})` } as CSSProperties} // TODO: Atom integration
+		<Flex
+			as="header"
+			direction="col"
+			gap="lg"
+			width="full"
+			padding={{ y: "md" }}
+			{...rest}
 		>
 			{children}
-		</span>
+		</Flex>
 	);
 }
+
+type PageHeroHeaderProps = Omit<
+	ComponentProps<typeof Flex>,
+	"direction" | "gap"
+>;
+
+// The eyebrow + title stack at the top of a PageHeroSection — compose it from
+// <Eyebrow> and a Text.Heading/Text.Hero child rather than passing props, so
+// each page picks its own title element.
+export function PageHeroHeader({ children, ...rest }: PageHeroHeaderProps) {
+	return (
+		<Flex as="span" direction="col" gap="xs" width={{ max: "md" }} {...rest}>
+			{children}
+		</Flex>
+	);
+}
+
+export const Eyebrow = withDefaults(Text.Overline)({ mono: true });
+export const PageSection = withDefaults(AtomSection)({
+	width: "content",
+	margin: { x: "auto" },
+});
+export const EmText = withDefaults(Text.Italic)({ ink: "muted" });

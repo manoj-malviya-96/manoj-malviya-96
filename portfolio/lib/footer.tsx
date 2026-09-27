@@ -1,49 +1,33 @@
 "use client";
 
 import { Flex, List, Text } from "@manoj-malviya-96/atom";
-import {
-	IconGithub,
-	IconGraduationCap,
-	IconInstagram,
-	IconLinkedin,
-	IconMedium,
-} from "@manoj-malviya-96/atom/icons";
-import { SocialLinks, type SocialMedia } from "@/lib/data";
-import { Link } from "@/lib/shared";
 
-const SOCIALS: ReadonlyArray<{ name: SocialMedia; icon: typeof IconGithub }> = [
-	{ name: "Github", icon: IconGithub },
-	{ name: "Linkedin", icon: IconLinkedin },
-	{ name: "Scholar", icon: IconGraduationCap },
-	{ name: "Medium", icon: IconMedium },
-	{ name: "Instagram", icon: IconInstagram },
-];
+import { SocialLinks } from "@/lib/data";
+import { Link } from "@/lib/shared";
 
 export default function Footer() {
 	return (
 		<Flex
-			as="footer"
+			as="footer" // TODO [ATOM] - system needs to have a footer.
 			direction="row"
 			hAlign="between"
-			vAlign="center"
+			vAlign="end"
 			gap="lg"
 			wrap
 			width="content"
+			padding={{ y: "lg" }}
+			// TODO [ATOM] - needs to handle ink on atom
+			style={{
+				color: "var(--color-muted)",
+			}}
 		>
-			<Text variant="caption" mono>
-				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
-			</Text>
+			<Text.Body>{`© ${new Date().getFullYear()} Manoj Malviya`}</Text.Body>
 			<List direction="row" gap="md">
-				{SOCIALS.map(({ name, icon: SocialIcon }) => (
-					<li key={name}>
-						<Link
-							url={SocialLinks[name]}
-							openNewTab
-							variant="button"
-							buttonVariant="plain"
-							icon={<SocialIcon size="sm" />}
-							aria-label={name}
-						/>
+				{Object.entries(SocialLinks).map(([key, url]) => (
+					<li key={key}>
+						<Link url={url} openNewTab aria-label={key}>
+							{key}
+						</Link>
 					</li>
 				))}
 			</List>

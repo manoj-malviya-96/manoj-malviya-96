@@ -1,9 +1,9 @@
 import type { TimelineEvent } from "@manoj-malviya-96/atom";
 import {
+	Atom,
 	Badge,
 	Flex,
 	Grid,
-	Image,
 	List,
 	Text,
 	Timeline,
@@ -18,7 +18,6 @@ import {
 	type OrganizationId,
 } from "@/lib/data";
 import { formatDate } from "@/lib/helper";
-import Reveal from "@/lib/reveal";
 import { Media } from "@/lib/shared";
 
 type ExperienceGroup = {
@@ -46,9 +45,7 @@ export default function WorkHistory() {
 	return (
 		<Flex direction="col" className="track-list">
 			{EXPERIENCE_GROUPS.map((group) => (
-				<Reveal key={group.organization}>
-					<TrackRow group={group} />
-				</Reveal>
+				<TrackRow key={group.organization} group={group} />
 			))}
 		</Flex>
 	);
@@ -61,30 +58,28 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid columns={2} className="track-row" padding="lg" bg="surface">
+		<Grid columns={2} className="track-row" padding="lg" bg="surface" blur>
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
-				<Image
-					as={NextImage}
-					src={logo}
-					alt={`${name} logo`}
-					fit="contain"
-					ratio="square"
-					radius="md"
-					className="track-logo"
-				/>
-				<Text variant="title" muted>
-					{name}
-				</Text>
-				<Text variant="caption" muted>
+				<div className="track-logo">
+					<NextImage
+						src={logo}
+						alt={`${name} logo`}
+						fill
+						sizes="48px"
+						style={{ objectFit: "contain" }}
+					/>
+				</div>
+				<Text.Title ink="muted">{name}</Text.Title>
+				<Text.Caption ink="muted">
 					{formatDate(start)} — {end ? formatDate(end) : "Present"}
-				</Text>
+				</Text.Caption>
 			</Flex>
-			<Timeline
-				events={experiences.map(roleEvent)}
-				className={
-					experiences.length === 1 ? "track-timeline-single" : undefined
-				}
-			/>
+			{/* A lone role skips Timeline: its marker and rail mean nothing without a second event. */}
+			{experiences.length === 1 ? (
+				roleEvent(experiences[0]).children
+			) : (
+				<Timeline events={experiences.map(roleEvent)} />
+			)}
 		</Grid>
 	);
 }
@@ -99,13 +94,15 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 		children: (
 			<Flex direction="col" gap="md" hAlign="start">
 				<Flex direction="col" gap="sm" vAlign="center">
-					<Text variant="title" bold>
-						{position}
-					</Text>
+					<Text.Title>{position}</Text.Title>
 					<ExperienceSkills skills={skills} />
 				</Flex>
 				{summary}
-				{media && <Media media={media} />}
+				{media && (
+					<Atom as="div" enter="rise" width="full">
+						<Media media={media} />
+					</Atom>
+				)}
 			</Flex>
 		),
 	};
@@ -115,7 +112,7 @@ function ExperienceSkills({ skills }: { skills: Experience["skills"] }) {
 	return (
 		<List direction="row" gap="sm">
 			{skills.map((skill) => (
-				<Badge as="li" key={skill} color="blue">
+				<Badge as="li" key={skill}>
 					{skill}
 				</Badge>
 			))}

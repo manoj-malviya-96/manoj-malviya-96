@@ -1,15 +1,22 @@
-import { Atom, assertNever, Flex, Text } from "@manoj-malviya-96/atom";
+import {
+	Atom,
+	assertNever,
+	Badge,
+	Flex,
+	Grid,
+	Text,
+} from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import type { ProjectLink, ProjectMedia, WorkItem } from "@/lib/data";
-import { dottedConcatString } from "@/lib/helper";
-import { MacbookMockup } from "@/lib/macbook_mockup";
-import Reveal from "@/lib/reveal";
+import type { ProjectLink, WorkItem } from "@/lib/data";
+import { formatDates, isProjectInProgress } from "@/lib/data/projects";
+import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
+import type { MediaSource } from "@/lib/types";
 
 export default function WorkCard({ item }: { item: WorkItem }) {
 	return (
@@ -18,63 +25,113 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			id={item.id}
 			direction="col"
 			width="full"
-			bg="raised"
+			bg="surface"
 			radius="md"
-			padding={{ x: "none", y: "lg" }}
+			overflow="clip"
+			gap="lg"
+			padding="lg"
 		>
-			<Flex
-				direction="col"
-				gap="lg"
-				hAlign="center"
-				margin={{ x: "auto" }}
-				width={{ value: "content", max: "full" }}
-			>
-				<Reveal>
-					<Flex
-						direction="col"
-						gap="md"
-						hAlign="start"
-						width={{ value: "lg", max: "full" }}
-					>
-						<Text variant="hero">{item.title}</Text>
-						<Text variant="subtitle" muted>
-							{item.summary}
-						</Text>
-						<WorkLinks item={item} />
-					</Flex>
-				</Reveal>
-				{item.kind === "project" && item.media && (
-					<Reveal delay={140}>
-						<ProjectMediaComponent media={item.media} />
-					</Reveal>
+			<Flex direction="col" gap="sm" hAlign="start">
+				<Flex direction="row" gap="sm" vAlign="center" wrap>
+					<Text.Title>{item.title}</Text.Title>
+					{item.kind === "project" ? (
+						<Text.Caption ink="muted">
+							{formatDates(item.startsAt, item.endsAt)}
+						</Text.Caption>
+					) : (
+						<Text.Caption ink="muted">{item.dates}</Text.Caption>
+					)}
+					{item.kind === "project" && item.isNew && (
+						<Badge ink="green">New</Badge>
+					)}
+					{item.kind === "project" && isProjectInProgress(item) && (
+						<Badge ink="orange">In progress</Badge>
+					)}
+				</Flex>
+				<CardTags item={item} />
+			</Flex>
+
+			<Flex direction="row" gap="md" hAlign="start" stack>
+				<Flex as="span" vAlign="start" gap="lg" direction="col">
+					<Text.Body>{item.summary}</Text.Body>
+					<WorkLinks item={item} />
+				</Flex>
+				{item.kind === "project" && item.media && item.media.length > 0 && (
+					<ProjectMedia media={item.media} />
 				)}
-				{item.kind === "project" && item.content && (
-					<Reveal delay={220}>{item.content}</Reveal>
-				)}
-				<Reveal delay={300}>
-					<CardTags item={item} />
-				</Reveal>
 			</Flex>
 		</Flex>
 	);
 }
 
+function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
+	if (media.length > 1) {
+		return (
+			<Grid
+				columns={2}
+				gap="sm"
+				width="full"
+				enter="rise"
+				// No Atom token for a half-row share; basis is ignored once the row stacks.
+				style={{ flex: "0 0 50%" }}
+			>
+				{media.map((item, i) => (
+					<Media key={i} media={item} layout="natural" />
+				))}
+			</Grid>
+		);
+	}
+	return (
+		<Flex direction="row" hAlign="center" width="full">
+			<MediaMockup media={media[0]} />
+		</Flex>
+	);
+}
+
+function MediaMockup({ media }: { media: MediaSource }) {
+	switch (media.mockup) {
+		case undefined:
+			return (
+				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
+					<Media media={media} />
+				</Atom>
+			);
+		case "macbook":
+			return (
+				<Macbook>
+					<Media media={media} layout="fill" />
+				</Macbook>
+			);
+		default:
+			return assertNever(media.mockup);
+	}
+}
+
 function CardTags({ item }: { item: WorkItem }) {
 	return (
-		<Text variant="caption" muted>
-			{dottedConcatString([item.dates, ...item.tags])}
-		</Text>
+		<Flex
+			as="ul"
+			direction="row"
+			gap="xs"
+			wrap
+			style={{ listStyle: "none", paddingInlineStart: 0, margin: 0 }}
+		>
+			{item.tags.map((tag) => (
+				<Badge as="li" key={tag}>
+					{tag}
+				</Badge>
+			))}
+		</Flex>
 	);
 }
 
 function WorkLinks({ item }: { item: WorkItem }) {
 	if (item.kind === "blog") {
 		return (
-			<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
-				<Link
+			<Flex direction="row" gap="sm" wrap>
+				<Link.Button
 					url={item.href}
 					openNewTab
-					variant="button"
 					color="primary"
 					label="Read on Medium"
 					size="sm"
@@ -86,32 +143,13 @@ function WorkLinks({ item }: { item: WorkItem }) {
 
 	const { primary, others } = item.links;
 	return (
-		<Flex direction="row" gap="md" wrap padding={{ x: "xs" }}>
+		<Flex direction="row" gap="sm" wrap>
 			<ProjectLinkButton link={primary} color="primary" />
 			{others.map((link) => (
 				<ProjectLinkButton key={link.href} link={link} />
 			))}
 		</Flex>
 	);
-}
-
-function ProjectMediaComponent({ media }: { media: ProjectMedia }) {
-	switch (media.mockup) {
-		case undefined:
-			return (
-				<Atom as="div" width={{ value: "lg", max: "full" }}>
-					<Media media={media} />
-				</Atom>
-			);
-		case "macbook":
-			return (
-				<MacbookMockup>
-					<Media media={media} />
-				</MacbookMockup>
-			);
-		default:
-			assertNever(media.mockup);
-	}
 }
 
 function ProjectLinkButton({
@@ -123,13 +161,14 @@ function ProjectLinkButton({
 }) {
 	const LinkIcon = linkIcon(link);
 	return (
-		<Link
+		<Link.Button
 			url={link.href}
 			openNewTab
-			variant="button"
 			{...(color && { color })}
 			label={linkLabel(link)}
 			size="sm"
+			//@ts-expect-error - IDK why ts compiler cant find it.
+			collapseOnMobile={false}
 			icon={<LinkIcon size="sm" />}
 		/>
 	);

@@ -1,5 +1,4 @@
 type Config = {
-	githubContributionsApi: string;
 	scholarTargetUrl: string;
 };
 
@@ -7,10 +6,6 @@ let cached: Config | null = null;
 
 export default function getConfig(): Config {
 	cached ??= {
-		githubContributionsApi: required(
-			"NEXT_PUBLIC_GITHUB_API",
-			process.env.NEXT_PUBLIC_GITHUB_API,
-		),
 		scholarTargetUrl: required(
 			"NEXT_PUBLIC_SCHOLAR_API",
 			process.env.NEXT_PUBLIC_SCHOLAR_API,

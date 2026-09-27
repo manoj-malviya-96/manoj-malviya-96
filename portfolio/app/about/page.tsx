@@ -1,182 +1,109 @@
 "use client";
 
-import { Badge, Flex, Grid, Image, List, Text } from "@manoj-malviya-96/atom";
-import {
-	IconCircleDot,
-	IconLightbulb,
-	IconLocationDot,
-} from "@manoj-malviya-96/atom/icons";
-import { Page } from "@manoj-malviya-96/atom/system";
+import { Flex, Grid, Image, Text } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
-import type { ComponentType } from "react";
 import {
-	CurrentLocation,
 	CurrentStatus,
+	Hobbies,
+	HowIWorkPhase,
 	Interests,
-	Patents,
-	ResumePDF,
-	SKILL_GROUPS,
+	PHASE_IDS,
+	type Phase,
+	SocialLinks,
 	UserAvatar,
-	useGoogleScholarQuery,
 } from "@/lib/data";
-import Education from "@/lib/resume/education";
-import { RESUME_SECTIONS } from "@/lib/resume/sections";
-import WorkHistory from "@/lib/resume/work_history";
-import { Accent, Eyebrow, Link, SectionHeader } from "@/lib/shared";
+import {
+	EmText,
+	Eyebrow,
+	Link,
+	Page,
+	PageHeroHeader,
+	PageHeroSection,
+	PageSection,
+} from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
-		<Page variant="content">
-			<Flex direction="col" gap="xl" width="full" margin={{ top: "xl" }}>
-				<Intro />
-				<Flex
-					as="section"
-					id={RESUME_SECTIONS[0].id}
-					direction="col"
-					gap="lg"
-					padding={{ y: "lg" }}
-				>
-					<SectionHeader
-						eyebrow="Experience"
-						title="Where the last seven years went."
-					/>
-					<WorkHistory />
-				</Flex>
-				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="xl">
-					<SectionHeader
-						eyebrow="Education"
-						title="Where the engineering started."
-					/>
-					<Education />
-				</Flex>
-				<TechnicalSurface />
-				<Research />
-			</Flex>
+		<Page>
+			<PageHeroSection padding={{ y: "sm" }}>
+				<PageHeroHeader>
+					<Eyebrow>About</Eyebrow>
+					<Text.Heading as="h1">
+						The <EmText>Person</EmText>
+					</Text.Heading>
+				</PageHeroHeader>
+			</PageHeroSection>
+			<Story />
+			<HowIWork />
+			<Elsewhere />
 		</Page>
 	);
 }
 
-function Intro() {
+function Story() {
 	return (
-		<Grid columns={2} gap="xl" className="about-intro">
-			<Flex direction="col" gap="md" hAlign="start">
-				<Text variant="heading">
-					The <Accent color="indigo">Person</Accent>
-				</Text>
-				<Text variant="subtitle" muted>
-					Seven years solving problems that sit between hardware and software:
-					CAD tools engineers depend on, patient-monitoring platforms that
-					can&apos;t afford downtime, real-time rendering that has to hit budget
-					every frame. I own the full path: system design, the algorithm
-					underneath, and the interface someone actually has to use.
-				</Text>
-				<Link url={ResumePDF} openNewTab variant="inline">
-					Download PDF
-				</Link>
-			</Flex>
-			<Flex as="aside" direction="col" gap="md" hAlign="start">
+		<PageSection gap="md">
+			<Flex direction="row" gap="lg" hAlign="start">
+				<Flex direction="col" gap="md">
+					<Text.Body>
+						I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up
+						here by chasing the same question through a few very different
+						industries: what happens when the interface between hardware and
+						software is the part nobody wants to own. CAD kernels,
+						patient-monitoring firmware, rendering pipelines that miss frame
+						budget — the domains changed, the itch didn't.
+					</Text.Body>
+					<Text.Body>
+						Outside of work I'm still doing the same thing at a smaller
+						scale: {Interests.join(", ").toLowerCase()} on the technical
+						side, {Hobbies.join(" and ").toLowerCase()} on the side that has
+						nothing to do with a keyboard.
+					</Text.Body>
+				</Flex>
 				<Image
 					as={NextImage}
 					src={UserAvatar}
 					alt="Manoj Malviya"
-					fit="cover"
-					ratio="square"
-					radius="lg"
-					width={{ value: "sm", max: "full" }}
+					style={{ width: "12rem", height: "12rem", objectFit: "contain" }}
 				/>
-				<List direction="col" gap="sm">
-					<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
-					<SidebarRow icon={IconCircleDot} label={CurrentStatus} />
-					<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
-				</List>
 			</Flex>
-		</Grid>
+		</PageSection>
 	);
 }
 
-function SidebarRow({
-	icon: RowIcon,
-	label,
-}: {
-	icon: ComponentType<{ size?: "sm" }>;
-	label: string;
-}) {
+function HowIWork() {
 	return (
-		<Flex as="li" direction="row" gap="xs" vAlign="center">
-			<RowIcon size="sm" />
-			<Text variant="body" muted>
-				{label}
-			</Text>
-		</Flex>
-	);
-}
-
-function TechnicalSurface() {
-	return (
-		<Flex as="section" direction="col" gap="lg">
-			<SectionHeader eyebrow="Technical Surface" title="What I reach for." />
-			<Flex direction="col" gap="md">
-				{SKILL_GROUPS.map((group) => (
-					<Flex key={group.label} direction="col" gap="sm">
-						<Eyebrow>{group.label}</Eyebrow>
-						<Flex as="ul" direction="row" gap="sm" wrap>
-							{group.skills.map((skill) => (
-								<Badge as="li" key={skill}>
-									{skill}
-								</Badge>
-							))}
-						</Flex>
-					</Flex>
+		<PageSection gap="lg">
+			<Text.Heading>How I work.</Text.Heading>
+			<Grid columns={2} className="loop-grid" gap="lg" padding="sm">
+				{PHASE_IDS.map((id, index) => (
+					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
 				))}
-			</Flex>
+			</Grid>
+		</PageSection>
+	);
+}
+
+function PhaseCol({ index, label, copy }: { index: number } & Phase) {
+	return (
+		<Flex as="span" enter="rise" direction="col" gap="sm">
+			<Text.Overline mono>{String(index + 1).padStart(2, "0")}</Text.Overline>
+			<Text.Title>{label}</Text.Title>
+			<Text.Body ink="muted">{copy}</Text.Body>
 		</Flex>
 	);
 }
 
-function Research() {
-	const scholar = useGoogleScholarQuery().data;
-
+function Elsewhere() {
 	return (
-		<Flex as="section" direction="col" gap="lg">
-			<SectionHeader eyebrow="Research" title="Patents & publications." />
-			<Grid columns={2} gap="lg" className="about-research">
-				<Flex direction="col" gap="sm">
-					<Eyebrow>Patents</Eyebrow>
-					<List direction="col" gap="md">
-						{Patents.map((patent) => (
-							<li key={patent.title}>
-								<Flex direction="col" gap="xs">
-									<Text variant="body">{patent.title}</Text>
-									<Text variant="caption" muted>
-										{patent.field} · {patent.year}
-									</Text>
-								</Flex>
-							</li>
-						))}
-					</List>
-				</Flex>
-				<Flex direction="col" gap="sm">
-					<Eyebrow>Publications</Eyebrow>
-					{scholar ? (
-						<List direction="col" gap="md">
-							{scholar.papers.map((paper) => (
-								<li key={paper.title}>
-									<Flex direction="col" gap="xs">
-										<Text variant="body">{paper.title}</Text>
-										<Text variant="caption" muted>
-											{paper.venue} · {paper.year} · {paper.citations} citations
-										</Text>
-									</Flex>
-								</li>
-							))}
-						</List>
-					) : (
-						<Text variant="caption" muted>
-							Loading from Google Scholar…
-						</Text>
-					)}
-				</Flex>
-			</Grid>
-		</Flex>
+		<PageSection gap="md">
+			<Text.Heading>Elsewhere.</Text.Heading>
+			<Text.Body ink="muted">
+				<Link url={SocialLinks.Linktree} openNewTab>
+					linktr.ee/manoj_malviya
+				</Link>{" "}
+				has the rest of the links in one place.
+			</Text.Body>
+		</PageSection>
 	);
 }

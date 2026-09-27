@@ -17,6 +17,13 @@ type Year = `${number}${number}${number}${number}`; // "2023"
 export type MonthAndYear = `${Year}-${Month}`; // "MM/YYYY"
 export type ExternalURL = `https://${string}`;
 
+type MediaMockup = "macbook";
+
 export type MediaSource =
-	| { kind: "image"; src: LocalImage | string; alt: string }
-	| { kind: "video"; src: string; alt: string };
+	| {
+			kind: "image";
+			src: LocalImage | string;
+			alt: string;
+			mockup?: MediaMockup;
+	  }
+	| { kind: "video"; src: string; alt: string; mockup?: MediaMockup };
