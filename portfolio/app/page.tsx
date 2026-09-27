@@ -1,22 +1,8 @@
 "use client";
 
-import {
-	Flex,
-	Grid,
-	MagneticContainer,
-	Text,
-	TypewriterText,
-} from "@manoj-malviya-96/atom";
+import { Flex, MagneticContainer, Text, TypewriterText } from "@manoj-malviya-96/atom";
 import type { ComponentPropsWithoutRef } from "react";
-import {
-	CurrentStatus,
-	EmailAddress,
-	Hobbies,
-	HowIWorkPhase,
-	PHASE_IDS,
-	type Phase,
-	RoleTagline,
-} from "@/lib/data";
+import { CurrentStatus, EmailAddress, Hobbies, RoleTagline } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import {
@@ -34,7 +20,6 @@ export default function Landing() {
 		<Page>
 			<Hero />
 			<FeaturedWork />
-			<HowIWork />
 			<FinalCTA />
 		</Page>
 	);
@@ -98,29 +83,6 @@ function TypewriterWrapped({
 			</span>
 			<span className="sr-only">{`${prefix} ${Hobbies.join(", ")}`}.</span>
 		</>
-	);
-}
-
-function HowIWork() {
-	return (
-		<PageSection id="home-loop" gap="lg">
-			<Text.Heading>The Process.</Text.Heading>
-			<Grid columns={2} className="loop-grid" gap="lg" padding="sm">
-				{PHASE_IDS.map((id, index) => (
-					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
-				))}
-			</Grid>
-		</PageSection>
-	);
-}
-
-function PhaseCol({ index, label, copy }: { index: number } & Phase) {
-	return (
-		<Flex as="span" enter="rise" direction="col" gap="sm">
-			<Text.Overline mono>{String(index + 1).padStart(2, "0")}</Text.Overline>
-			<Text.Title>{label}</Text.Title>
-			<Text.Body ink="muted">{copy}</Text.Body>
-		</Flex>
 	);
 }
 

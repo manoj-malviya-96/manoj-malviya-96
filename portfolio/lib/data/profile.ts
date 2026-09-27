@@ -14,6 +14,7 @@ export const SocialUsersID = {
 	Medium: "@manoj-malviya",
 	Instagram: "manoj_malviya_",
 	Scholar: "0oMXOy0AAAAJ",
+	Linktree: "manoj_malviya",
 } as const;
 
 export type SocialMedia = keyof typeof SocialUsersID;
@@ -24,6 +25,7 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Medium: `https://medium.com/${SocialUsersID.Medium}`,
 	Instagram: `https://www.instagram.com/${SocialUsersID.Instagram}`,
 	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
+	Linktree: `https://linktr.ee/${SocialUsersID.Linktree}`,
 } as const;
 
 export const ResumePDF = getBlob("resume.pdf");
