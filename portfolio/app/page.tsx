@@ -7,18 +7,16 @@ import {
 	Text,
 	TypewriterText,
 } from "@manoj-malviya-96/atom";
+import type { ComponentPropsWithoutRef } from "react";
 import {
 	CurrentStatus,
 	Email,
 	EmailAddress,
 	Hobbies,
 	HowIWorkPhase,
-	Patents,
 	PHASE_IDS,
 	type Phase,
-	ResumePDF,
 	RoleTagline,
-	YearsOfExperience,
 } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
@@ -27,7 +25,8 @@ import {
 	Eyebrow,
 	Link,
 	Page,
-	PageHero,
+	PageHeroHeader,
+	PageHeroSection,
 	PageSection,
 } from "@/lib/shared";
 
@@ -45,29 +44,20 @@ export default function Landing() {
 
 function Hero() {
 	return (
-		<PageHero
-			id="home-hero"
-			heroTitle
-			eyebrow="Berlin, DE"
-			title={
-				<>
+		<PageHeroSection id="home-hero" vAlign="center" padding={{ y: "xl" }}>
+			<PageHeroHeader>
+				<Eyebrow>Berlin, DE</Eyebrow>
+				<Text.Hero className="hero-title">
 					Manoj
 					<EmText> Malviya </EmText>
-				</>
-			}
-			aside={<HeroStats />}
-			vAlign="center"
-			padding={{ y: "xl" }}
-		>
-			<Text.Body>
+				</Text.Hero>
+			</PageHeroHeader>
+			<Text.Body width="lg">
 				{RoleTagline[0]?.toUpperCase()}
 				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
 			</Text.Body>
 			<Text.Body ink="muted" width="md">
-				<span aria-hidden="true">
-					<TypewriterText prefix="Also into" words={Hobbies} />
-				</span>
-				<span className="sr-only">Also into {Hobbies.join(", ")}.</span>
+				<TypewriterWrapped prefix="Also into" words={Hobbies} />
 			</Text.Body>
 			<Flex
 				as="span"
@@ -88,42 +78,28 @@ function Hero() {
 				<MagneticContainer>
 					<Link.Button url="/about" size="sm" label="About me" />
 				</MagneticContainer>
-				<MagneticContainer>
-					<Link.Button url={ResumePDF} openNewTab size="sm" label="Resume" />
-				</MagneticContainer>
 			</Flex>
-		</PageHero>
+		</PageHeroSection>
 	);
 }
 
-function HeroStats() {
-	const stats = [
-		{ value: Patents.length, caption: "Patents" },
-		{ value: YearsOfExperience, caption: "Years" },
-	];
-
+/* TODO:[Atom] should accessibility for Typewriter. */
+function TypewriterWrapped({
+	prefix,
+	words,
+	...rest
+}: ComponentPropsWithoutRef<typeof TypewriterText>) {
 	return (
-		<Flex direction="col" gap="sm" className="hero-stats">
-			{stats.map((stat) => (
-				<Flex
-					key={stat.caption}
-					as="span"
-					direction="row"
-					gap="sm"
-					vAlign="center"
-					bg="surface"
-					blur
-					radius="lg"
-					card
-					padding={{ x: "lg", y: "sm" }}
-				>
-					<Text.Title>{stat.value}</Text.Title>
-					<Text.Overline mono ink="muted">
-						{stat.caption}
-					</Text.Overline>
-				</Flex>
-			))}
-		</Flex>
+		<>
+			<span aria-hidden="true">
+				<TypewriterText
+					{...(prefix !== undefined && { prefix })}
+					words={words}
+					{...rest}
+				/>
+			</span>
+			<span className="sr-only">{`${prefix} ${Hobbies.join(", ")}`}.</span>
+		</>
 	);
 }
 

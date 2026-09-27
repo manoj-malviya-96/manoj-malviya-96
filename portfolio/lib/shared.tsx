@@ -173,24 +173,10 @@ export const Page = withDefaults(Flex)({
 	width: "content",
 });
 
-type PageHeroProps = SectionHeaderProps &
-	Omit<ComponentProps<typeof Flex>, "title"> & {
-		/** Only the landing page wants the large hero-sized title. */
-		heroTitle?: boolean;
-		/** Floating companion content beside the title on wide viewports (e.g. a stat stack). */
-		aside?: ReactNode;
-	};
+type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
 
-// Same eyebrow + title intro on every page, so moving between pages feels seamless.
-export function PageHero({
-	eyebrow,
-	title,
-	caption,
-	children,
-	heroTitle = false,
-	aside,
-	...rest
-}: PageHeroProps) {
+// Same header shell on every page, so moving between pages feels seamless.
+export function PageHeroSection({ children, ...rest }: PageHeroSectionProps) {
 	return (
 		<Flex
 			as="header"
@@ -200,22 +186,22 @@ export function PageHero({
 			padding={{ y: "md" }}
 			{...rest}
 		>
-			<Flex direction="row" gap="xl" vAlign="center" hAlign="between" wrap>
-				<Flex as="span" direction="col" gap="xs" width={{ max: "md" }}>
-					{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-					{heroTitle ? (
-						<Text.Hero className="hero-title">{title}</Text.Hero>
-					) : (
-						<Text.Heading as="h1">{title}</Text.Heading>
-					)}
-				</Flex>
-				{aside}
-			</Flex>
-			{caption && (
-				<Text.Body ink="muted" width="sm">
-					{caption}
-				</Text.Body>
-			)}
+			{children}
+		</Flex>
+	);
+}
+
+type PageHeroHeaderProps = Omit<
+	ComponentProps<typeof Flex>,
+	"direction" | "gap"
+>;
+
+// The eyebrow + title stack at the top of a PageHeroSection — compose it from
+// <Eyebrow> and a Text.Heading/Text.Hero child rather than passing props, so
+// each page picks its own title element.
+export function PageHeroHeader({ children, ...rest }: PageHeroHeaderProps) {
+	return (
+		<Flex as="span" direction="col" gap="xs" width={{ max: "md" }} {...rest}>
 			{children}
 		</Flex>
 	);

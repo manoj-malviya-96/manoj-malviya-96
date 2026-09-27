@@ -33,20 +33,27 @@ import {
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import { EmText, Link, Page, PageHero, SectionHeader } from "@/lib/shared";
+import {
+	EmText,
+	Eyebrow,
+	Link,
+	Page,
+	PageHeroHeader,
+	PageHeroSection,
+	SectionHeader,
+} from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
 		<Page>
-			<PageHero
-				eyebrow="About"
-				title={
-					<>
+			<PageHeroSection padding={{ y: "sm" }}>
+				<PageHeroHeader>
+					<Eyebrow>About</Eyebrow>
+					<Text.Heading as="h1">
 						The <EmText>Engineer</EmText>
-					</>
-				}
-				padding={{ y: "sm" }}
-			/>
+					</Text.Heading>
+				</PageHeroHeader>
+			</PageHeroSection>
 			<Flex direction="col" gap="lg" width="full">
 				<Intro />
 				<TechnicalSurface />

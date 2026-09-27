@@ -160,13 +160,3 @@ img {
 .hero-title {
 	letter-spacing: -0.02em;
 }
-
-.hero-stats {
-	display: none;
-}
-
-@media (min-width: 960px) {
-	.hero-stats {
-		display: flex;
-	}
-}

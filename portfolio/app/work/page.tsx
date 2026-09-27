@@ -1,10 +1,16 @@
 "use client";
 
-import { FilterBar, Flex } from "@manoj-malviya-96/atom";
+import { FilterBar, Flex, Text } from "@manoj-malviya-96/atom";
 import { useScrollBar } from "@manoj-malviya-96/atom/system";
 import { useState } from "react";
 import { type ProjectTag, WorkItems } from "@/lib/data";
-import { EmText, Page, PageHero } from "@/lib/shared";
+import {
+	EmText,
+	Eyebrow,
+	Page,
+	PageHeroHeader,
+	PageHeroSection,
+} from "@/lib/shared";
 import WorkCard from "@/lib/work/work_card";
 
 const WORK_SECTIONS = WorkItems.map(({ id, title }) => ({
@@ -38,12 +44,14 @@ export default function WorkPage() {
 
 	return (
 		<Page>
-			<PageHero
-				eyebrow="Work"
-				title=<>
-					Things I've <br /> <EmText>built</EmText>
-				</>
-			/>
+			<PageHeroSection>
+				<PageHeroHeader>
+					<Eyebrow>Work</Eyebrow>
+					<Text.Heading as="h1">
+						Things I've <br /> <EmText>built</EmText>
+					</Text.Heading>
+				</PageHeroHeader>
+			</PageHeroSection>
 			<FilterBar
 				mode="multiple"
 				aria-label="Filter by tag"
