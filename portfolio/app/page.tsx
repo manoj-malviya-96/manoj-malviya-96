@@ -105,20 +105,8 @@ function TypewriterWrapped({
 function HowIWork() {
 	return (
 		<PageSection id="home-loop" gap="lg">
-			<Flex direction="col" gap="xs">
-				<Eyebrow>How I work</Eyebrow>
-				<Text.Hero as="h2">The process.</Text.Hero>
-			</Flex>
-			<Grid
-				columns={2}
-				className="loop-grid"
-				gap="lg"
-				bg="surface"
-				blur
-				radius="lg"
-				card
-				padding="lg"
-			>
+			<Text.Heading>The Process.</Text.Heading>
+			<Grid columns={2} className="loop-grid" gap="lg" padding="sm">
 				{PHASE_IDS.map((id, index) => (
 					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
 				))}
