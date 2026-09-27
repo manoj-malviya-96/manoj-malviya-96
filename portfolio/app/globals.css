@@ -113,7 +113,7 @@ img {
 	grid-template-columns: 1fr;
 }
 
-.bento-grid {
+.featured-grid {
 	grid-template-columns: 1fr;
 }
 
@@ -131,16 +131,15 @@ img {
 	.loop-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
+
+	.featured-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
-@media (min-width: 768px) {
-	.bento-grid {
+@media (min-width: 1024px) {
+	.featured-grid {
 		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.bento-grid > :first-child {
-		grid-column: span 2;
-		grid-row: span 2;
 	}
 }
 
