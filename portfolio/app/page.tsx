@@ -1,6 +1,11 @@
 "use client";
 
-import { Flex, MagneticContainer, Text, TypewriterText } from "@manoj-malviya-96/atom";
+import {
+	Flex,
+	MagneticContainer,
+	Text,
+	TypewriterText,
+} from "@manoj-malviya-96/atom";
 import type { ComponentPropsWithoutRef } from "react";
 import { CurrentStatus, EmailAddress, Hobbies, RoleTagline } from "@/lib/data";
 import Featured from "@/lib/home/featured";
