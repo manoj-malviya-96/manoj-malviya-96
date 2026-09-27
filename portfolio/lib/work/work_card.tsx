@@ -24,10 +24,9 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			id={item.id}
 			direction="col"
 			width="full"
-			bg="raised"
-			blur
+			bg="surface"
 			radius="md"
-			card
+			overflow="clip"
 			gap="lg"
 			padding="lg"
 		>
@@ -38,12 +37,15 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 				</Flex>
 				<CardTags item={item} />
 			</Flex>
-			{item.kind === "project" && item.media && item.media.length > 0 && (
-				<ProjectMedia media={item.media} />
-			)}
-			<Flex direction="col" gap="sm" hAlign="start">
-				<Text.Body>{item.summary}</Text.Body>
-				<WorkLinks item={item} />
+
+			<Flex direction="row" gap="md" hAlign="start" stack>
+				<Flex as="span" vAlign="start" gap="lg" direction="col">
+					<Text.Body>{item.summary}</Text.Body>
+					<WorkLinks item={item} />
+				</Flex>
+				{item.kind === "project" && item.media && item.media.length > 0 && (
+					<ProjectMedia media={item.media} />
+				)}
 			</Flex>
 		</Flex>
 	);
@@ -145,6 +147,8 @@ function ProjectLinkButton({
 			{...(color && { color })}
 			label={linkLabel(link)}
 			size="sm"
+			//@ts-expect-error - IDK why ts compiler cant find it.
+			collapseOnMobile={false}
 			icon={<LinkIcon size="sm" />}
 		/>
 	);
