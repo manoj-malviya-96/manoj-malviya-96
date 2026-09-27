@@ -10,7 +10,6 @@ import {
 import type { ComponentPropsWithoutRef } from "react";
 import {
 	CurrentStatus,
-	Email,
 	EmailAddress,
 	Hobbies,
 	HowIWorkPhase,
@@ -142,18 +141,24 @@ function FeaturedWork() {
 
 function FinalCTA() {
 	return (
-		<PageSection id="home-cta" gap="lg" bg="surface" radius="lg" card>
-			<Flex direction="col" gap="lg" hAlign="center" padding={{ y: "xl" }}>
-				<Text.Hero as="h2" align="center">
-					Got a hard <EmText>problem?</EmText>
-				</Text.Hero>
-				<MagneticContainer>
-					<Link.Button url={EmailAddress} color="primary" label="Email me" />
-				</MagneticContainer>
-				<Text.Body ink="muted" selectable>
-					{Email}
-				</Text.Body>
-			</Flex>
+		<PageSection
+			id="home-cta"
+			gap="sm"
+			bg="surface"
+			padding="xl"
+			radius="lg"
+			hAlign="center"
+		>
+			<Text.Heading as="h2" align="center">
+				Got a complex <EmText>problem?</EmText>
+			</Text.Heading>
+			<Text.Caption ink="muted" align="center" width="sm">
+				I'm selective. If it's genuinely interesting and the constraints are
+				real, let's talk.
+			</Text.Caption>
+			<MagneticContainer>
+				<Link.Button url={EmailAddress} color="primary" label="Say hello →" />
+			</MagneticContainer>
 		</PageSection>
 	);
 }
