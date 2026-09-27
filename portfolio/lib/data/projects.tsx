@@ -28,7 +28,6 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2025-2026",
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
-		heroStat: { value: "20 KB", label: "Gzipped core bundle" },
 		links: {
 			primary: {
 				kind: "demo",
@@ -63,7 +62,6 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2026",
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
-		heroStat: { value: "1×", label: "Analysis per track, then cached" },
 		media: [
 			{
 				kind: "video",
@@ -117,7 +115,6 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2021",
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "medium",
-		heroStat: { value: "1.8×", label: "Faster on a 5k-element MBB beam" },
 		media: [
 			{
 				kind: "video",
@@ -147,7 +144,6 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2026",
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
-		heroStat: { value: "4.3M M☉", label: "Simulated mass (Sgr A*)" },
 		media: [
 			{
 				kind: "video",
@@ -172,7 +168,6 @@ export const Projects: Record<ProjectId, Project> = {
 		dates: "2024",
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
-		heroStat: { value: "35,040", label: "15-minute intervals per run" },
 		media: [
 			{
 				kind: "image",
@@ -282,8 +277,6 @@ export type ProjectTag =
 
 type ProjectEffort = "low" | "medium" | "high";
 
-type HeroStat = { value: string; label: string };
-
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
 type InternalPath = `/${string}`;
@@ -309,7 +302,6 @@ export type Project = {
 	dates: string;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
-	heroStat?: HeroStat;
 	media?: ProjectMedia;
 	links: ProjectLinks;
 };
