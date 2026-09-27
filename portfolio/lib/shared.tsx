@@ -4,7 +4,6 @@ import {
 	Link as AtomLink,
 	Section as AtomSection,
 	Flex,
-	Image,
 	Text,
 	Video,
 } from "@manoj-malviya-96/atom";
@@ -114,40 +113,26 @@ export function Media({
 			/>
 		);
 	}
-	if (typeof media.src === "string") {
-		// TODO [Atom]: Image's width/height are its own Size-token scale, so they can't
-		// carry the pixel dimensions next/image needs to build a srcset for a remote (non-static-import)
-		// source — `fill` is the only next/image sizing mode that doesn't require those. Falls back to a
-		// plain sized+clipped box instead of atom's fit/ratio classes, which the same reason rules out.
-		return (
-			<div
-				style={{
-					position: "relative",
-					aspectRatio: "16 / 9",
-					width: "100%",
-					overflow: "hidden",
-					borderRadius: "var(--radius-md)", // TODO
-				}}
-			>
-				<NextImage
-					src={media.src}
-					alt={media.alt}
-					fill
-					sizes="(min-width: 920px) 50vw, 100vw"
-					style={{ objectFit: "cover" }}
-				/>
-			</div>
-		);
-	}
+	// Every src is now a remote blob URL with no build-time intrinsic size, so
+	// next/image can only lay it out via `fill` — which needs a sized,
+	// positioned ancestor. Own that box here instead of relying on callers to
+	// remember to provide one (they didn't, hence images rendering viewport-sized).
 	return (
-		<Image
-			as={NextImage}
-			src={media.src}
-			alt={media.alt}
-			fit="cover"
-			ratio="video"
-			radius="md"
-		/>
+		<div
+			style={
+				stretch
+					? { position: "relative", width: "100%", height: "100%" }
+					: { position: "relative", width: "100%", aspectRatio: "16 / 9" }
+			}
+		>
+			<NextImage
+				src={media.src}
+				alt={media.alt}
+				fill
+				sizes="(min-width: 768px) 50vw, 100vw"
+				style={{ objectFit: "cover" }}
+			/>
+		</div>
 	);
 }
 

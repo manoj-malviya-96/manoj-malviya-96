@@ -1,14 +1,6 @@
 "use client";
 
-import {
-	Badge,
-	Flex,
-	Grid,
-	Image,
-	List,
-	Marquee,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { Flex, Image, List, Marquee, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconGlobe,
@@ -78,24 +70,13 @@ export default function AboutPage() {
 
 function Intro() {
 	return (
-		<Grid columns={2} gap="xl" className="about-intro">
-			<Flex as="aside" direction="col" gap="md" hAlign="start">
-				<Image
-					as={NextImage}
-					src={UserAvatar}
-					alt="Manoj Malviya"
-					fit="cover"
-					ratio="square"
-					radius="lg"
-					width={{ value: "sm", max: "full" }}
-				/>
+		<Flex direction="row" gap="lg" hAlign="start">
+			<Flex direction="col" gap="md" hAlign="start">
 				<List direction="col" gap="sm">
 					<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
 					<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
 				</List>
-			</Flex>
-			<Flex direction="col" gap="md" hAlign="start">
-				<Text.Body ink="muted">
+				<Text.Body>
 					Seven years solving problems that sit between hardware and software:
 					CAD tools engineers depend on, patient-monitoring platforms that
 					can&apos;t afford downtime, real-time rendering that has to hit budget
@@ -106,7 +87,14 @@ function Intro() {
 					Download PDF
 				</Link>
 			</Flex>
-		</Grid>
+			<Image
+				as={NextImage}
+				src={UserAvatar}
+				alt="Manoj Malviya"
+				width="lg"
+				style={{ objectFit: "contain" }}
+			/>
+		</Flex>
 	);
 }
 
@@ -127,37 +115,21 @@ function SidebarRow({
 
 function TechnicalSurface() {
 	return (
-		<Flex as="section" direction="col" gap="lg">
-			<SectionHeader eyebrow="Technical Surface" />
-			<Marquee aria-label="Languages, frameworks, and practices I use">
-				{SKILL_GROUPS.flatMap((group) => [
-					<GroupLabel key={`label-${group.label}`} label={group.label} />,
-					...group.skills.map((skill) => (
-						<SkillPill key={skill} skill={skill} />
-					)),
-				])}
-			</Marquee>
-		</Flex>
-	);
-}
-
-function GroupLabel({ label }: { label: string }) {
-	return (
-		<Text.Overline mono ink="muted">
-			{label}
-		</Text.Overline>
+		<Marquee aria-label="Languages, frameworks, and practices I use">
+			{SKILL_GROUPS.flatMap((group) => [
+				group.skills.map((skill) => <SkillPill key={skill} skill={skill} />),
+			])}
+		</Marquee>
 	);
 }
 
 function SkillPill({ skill }: { skill: ProjectTag }) {
 	const SkillIcon = SKILL_ICONS[skill];
 	return (
-		<Badge as="span">
-			<Flex as="span" direction="row" gap="xs" vAlign="center">
-				{SkillIcon && <SkillIcon size="sm" ink="muted" />}
-				<Text.Label as="span">{skill}</Text.Label>
-			</Flex>
-		</Badge>
+		<Flex as="span" direction="row" gap="xs" vAlign="center">
+			{SkillIcon && <SkillIcon size="sm" ink="muted" />}
+			<Text.Label as="span">{skill}</Text.Label>
+		</Flex>
 	);
 }
 

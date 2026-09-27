@@ -52,10 +52,14 @@ img {
 	gap: var(--space-lg);
 }
 
-/* ratio-square sizes the logo to 100% of its grid column; keep it compact
-   instead of filling the whole 9.5rem track-row column. */
+/* Sized square wrapper for a next/image `fill` logo — kept compact instead of
+   filling the whole 9.5rem track-row column. */
 .track-logo {
+	position: relative;
 	width: 3rem;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: var(--radius-md);
 }
 
 .lattice-overlay {

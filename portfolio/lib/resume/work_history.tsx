@@ -4,7 +4,6 @@ import {
 	Badge,
 	Flex,
 	Grid,
-	Image,
 	List,
 	Text,
 	Timeline,
@@ -61,15 +60,15 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	return (
 		<Grid columns={2} className="track-row" padding="lg" bg="surface" blur>
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
-				<Image
-					as={NextImage}
-					src={logo}
-					alt={`${name} logo`}
-					fit="contain"
-					ratio="square"
-					radius="md"
-					className="track-logo"
-				/>
+				<div className="track-logo">
+					<NextImage
+						src={logo}
+						alt={`${name} logo`}
+						fill
+						sizes="48px"
+						style={{ objectFit: "contain" }}
+					/>
+				</div>
 				<Text.Title ink="muted">{name}</Text.Title>
 				<Text.Caption ink="muted">
 					{formatDate(start)} — {end ? formatDate(end) : "Present"}

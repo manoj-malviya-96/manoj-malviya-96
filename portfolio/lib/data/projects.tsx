@@ -1,4 +1,4 @@
-import { assertNever } from "@manoj-malviya-96/atom";
+import { assertNever, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
@@ -19,15 +19,18 @@ export type ProjectId = ValuesOf<typeof AllProjectIds>;
 export const Projects: Record<ProjectId, Project> = {
 	wrapped: {
 		title: "Wrapped",
-		summary: `Life happens in photos, steps, sleep, and moments scattered across a dozen apps,
-					and nobody actually looks back at it honestly. I wanted a recap that felt real
-					instead of curated for Instagram, so I'm building Wrapped: it pulls straight from
-					your photo library and your health data — no manual journaling — ranks the photos
-					that actually mattered with on-device face detection, and turns the result into a
-					short Story-style video you can play back and share. Gratitude over vanity metrics:
-					what happened, not how it compares to anyone else. Face detection and the
-					story-style playback are working, past recaps are archived, and I'm now wiring in
-					full health-tracker data and iCloud sync so it works across devices.`,
+		summary: (
+			<>
+				Life happens in photos, steps, sleep, and moments scattered across a
+				dozen apps, and nobody actually looks back at it honestly. I wanted a
+				recap that felt real instead of curated for Instagram, so I'm building{" "}
+				<Text.Italic ink="blue" family="serif">
+					Wrapped
+				</Text.Italic>
+				. Mainly build on SwiftUI, and Core Foundational Models with a
+				postgressql based database.
+			</>
+		),
 		outcome:
 			"Curated social-media recaps — Wrapped turns your own photos and health data into an honest video recap.",
 		startsAt: new Date("2026-08-01"),
@@ -52,20 +55,23 @@ export const Projects: Record<ProjectId, Project> = {
 				src: getBlob("wrapped-2.png"),
 				alt: "Wrapped's stats slide for a past year.",
 			},
-			{
-				kind: "video",
-				src: getBlob("wrapped-3.webm"),
-				alt: "Wrapped playing back a Story-style recap.",
-			},
 		],
 	},
 	atom: {
 		title: "Atom",
-		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
-					Every option out there made me choose between a CSS-in-JS styling library dragging
-					its own runtime and CSS that throws out type safety. I got tired of choosing, so I
-					built Atom: one primitive, one stylesheet, and a type system that generates straight
-					from that stylesheet, so an invalid token can't compile.`,
+		summary: (
+			<>
+				I wanted Apple-grade design discipline: one visual language, everywhere.
+				Every option out there made me choose between a CSS-in-JS styling
+				library dragging its own runtime and CSS that throws out type safety. I
+				got tired of choosing, so I built <Text.Bold>Atom</Text.Bold>:{" "}
+				<Text.Italic>
+					one primitive, one stylesheet, and a type system that generates
+					straight from that stylesheet
+				</Text.Italic>
+				, so an invalid token can't compile.
+			</>
+		),
 		outcome:
 			"CSS-in-JS runtime or type-unsafe CSS — one primitive, one stylesheet, invalid tokens can't compile.",
 		startsAt: new Date("2025-01-01"),
@@ -95,11 +101,18 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	muviz: {
 		title: "Muviz",
-		summary: `I grew up watching Winamp react to whatever was playing, and I never
-					stopped wanting that feeling back. So I’m building the real thing
-					myself: a C++ DSP pipeline compiled to WebAssembly, analyzing each
-					track once in a Web Worker and caching the result, so the Three.js
-					scene reacts to real extracted features instead of an AI’s guess.`,
+		summary: (
+			<>
+				I grew up watching Winamp react to whatever was playing, and I never
+				stopped wanting that feeling back. So I'm building the real thing
+				myself: a{" "}
+				<Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>,
+				analyzing each track once in a Web Worker and caching the result, so the
+				Three.js scene reacts to{" "}
+				<Text.Italic>real extracted features</Text.Italic> instead of an AI's
+				guess.
+			</>
+		),
 		outcome:
 			"Visualizers that fake it with AI — Muviz analyzes real audio features once, then reacts to them live.",
 		startsAt: new Date("2026-01-01"),
@@ -123,8 +136,18 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	honeycomb: {
 		title: "HoneyMesh",
-		summary:
-			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real VTK mesh. The part that kept breaking was staggering the hexagon centers — get that wrong and the whole grid drifts.",
+		summary: (
+			<>
+				I kept needing hexagonal lattices for CAD work and got tired of
+				triangulating them by hand, so I wrote a generator:{" "}
+				<Text.Bold>
+					a 2D skeleton graph in C++, extruded into a real VTK mesh
+				</Text.Bold>
+				. The part that kept breaking was{" "}
+				<Text.Italic>staggering the hexagon centers</Text.Italic> — get that
+				wrong and the whole grid drifts.
+			</>
+		),
 		outcome:
 			"Hand-triangulating hex lattices for CAD — replaced with a C++ generator that extrudes a real VTK mesh.",
 		startsAt: new Date("2025-01-01"),
@@ -148,12 +171,19 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	topopt_py: {
 		title: "topopt-py",
-		summary: `I found DTU's 99-line topology-optimization script and loved how
-					compact it was, but the inner loop was nested Python. I rewrote the
-					stiffness assembly and filtering as vectorized NumPy, keeping the same
-					SIMP algorithm and accuracy but running faster on the same problem —
+		summary: (
+			<>
+				I found DTU's 99-line topology-optimization script and loved how compact
+				it was, but the inner loop was nested Python. I rewrote the stiffness
+				assembly and filtering as <Text.Bold>vectorized NumPy</Text.Bold>,
+				keeping the same SIMP algorithm and accuracy but running faster on the
+				same problem —{" "}
+				<Text.Italic>
 					caching the sparsity pattern instead of rebuilding it every iteration
-					drops a 5,000-element run from 4.8s to 2.6s.`,
+				</Text.Italic>{" "}
+				drops a 5,000-element run from 4.8s to 2.6s.
+			</>
+		),
 		outcome:
 			"A 99-line optimizer ran slow in pure Python — vectorized NumPy cut a 5k-element run from 4.8s to 2.6s.",
 		startsAt: new Date("2021-01-01"),
@@ -182,8 +212,17 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	blackhole: {
 		title: "Blackhole",
-		summary:
-			"Gravity, rendered in real time, because I couldn't wait for the movie. A compute shader integrates each pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3 million solar masses), while a lensing fragment shader bends the background grid around it — running as a Qt/OpenGL widget so it rotates live instead of playing back a rendered clip.",
+		summary: (
+			<>
+				Gravity, rendered <Text.Italic>in real time</Text.Italic>, because I
+				couldn't wait for the movie. A compute shader integrates each pixel's
+				light-ray geodesic against a mass modeled on{" "}
+				<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, while
+				a lensing fragment shader bends the background grid around it — running
+				as a Qt/OpenGL widget so it rotates live instead of playing back a
+				rendered clip.
+			</>
+		),
 		outcome:
 			"Couldn't wait for the movie — a live compute shader now renders Sagittarius A*'s lensing in real time.",
 		startsAt: new Date("2026-01-01"),
@@ -207,8 +246,19 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	ev_sim: {
 		title: "EV Charging Simulator",
-		summary:
-			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first: 15-minute intervals with car arrivals drawn from a Poisson distribution per charge point, no queueing — a car that arrives to a busy point just leaves. Concurrency turned out to decay roughly exponentially as charger count grows.",
+		summary: (
+			<>
+				I wanted to know how many chargers a lot actually needs before buying
+				them, so I simulated a year of demand first:{" "}
+				<Text.Bold>
+					15-minute intervals with car arrivals drawn from a Poisson
+					distribution per charge point
+				</Text.Bold>
+				, <Text.Italic>no queueing</Text.Italic> — a car that arrives to a busy
+				point just leaves. Concurrency turned out to decay roughly exponentially
+				as charger count grows.
+			</>
+		),
 		outcome:
 			"Not knowing how many chargers a lot needs — a year-long Poisson-arrival simulation answers it first.",
 		startsAt: new Date("2024-01-01"),
@@ -232,7 +282,12 @@ export const Projects: Record<ProjectId, Project> = {
 	},
 	mesha: {
 		title: "Mesha",
-		summary: "Mesh repair, from the command line to a real editor.",
+		summary: (
+			<>
+				Mesh repair, <Text.Italic>from the command line</Text.Italic> to a{" "}
+				<Text.Bold>real editor</Text.Bold>.
+			</>
+		),
 		outcome:
 			"Mesh repair stuck in the command line — Mesha brings it into a real editor.",
 		startsAt: new Date("2025-01-01"),
@@ -373,14 +428,13 @@ function showProject(id: ProjectId) {
 	switch (id) {
 		case "wrapped":
 		case "atom":
-		case "ev_sim":
 		case "topopt_py":
 		case "honeycomb":
 		case "muviz":
 		case "blackhole":
 			return true;
-
 		case "mesha":
+		case "ev_sim":
 			return false;
 		default:
 			assertNever(id);
