@@ -4,6 +4,7 @@ import type { ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
 const AllProjectIds = [
+	"wrapped",
 	"atom",
 	"muviz",
 	"honeycomb",
@@ -16,6 +17,48 @@ const AllProjectIds = [
 export type ProjectId = ValuesOf<typeof AllProjectIds>;
 
 export const Projects: Record<ProjectId, Project> = {
+	wrapped: {
+		title: "Wrapped",
+		summary: `Life happens in photos, steps, sleep, and moments scattered across a dozen apps,
+					and nobody actually looks back at it honestly. I wanted a recap that felt real
+					instead of curated for Instagram, so I'm building Wrapped: it pulls straight from
+					your photo library and your health data — no manual journaling — ranks the photos
+					that actually mattered with on-device face detection, and turns the result into a
+					short Story-style video you can play back and share. Gratitude over vanity metrics:
+					what happened, not how it compares to anyone else. Face detection and the
+					story-style playback are working, past recaps are archived, and I'm now wiring in
+					full health-tracker data and iCloud sync so it works across devices.`,
+		outcome:
+			"Curated social-media recaps — Wrapped turns your own photos and health data into an honest video recap.",
+		startsAt: new Date("2026-08-01"),
+		tags: ["mobile", "swift", "ai", "ui/ux"],
+		effort: "medium",
+		links: {
+			primary: {
+				kind: "demo",
+				label: "Preview",
+				href: "https://wrapped.vercel.app",
+			},
+			others: [],
+		},
+		media: [
+			{
+				kind: "image",
+				src: getBlob("wrapped-1.png"),
+				alt: "Wrapped's photo recap slide.",
+			},
+			{
+				kind: "image",
+				src: getBlob("wrapped-2.png"),
+				alt: "Wrapped's stats slide for a past year.",
+			},
+			{
+				kind: "video",
+				src: getBlob("wrapped-3.webm"),
+				alt: "Wrapped playing back a Story-style recap.",
+			},
+		],
+	},
 	atom: {
 		title: "Atom",
 		summary: `I wanted Apple-grade design discipline: one visual language, everywhere.
@@ -328,6 +371,7 @@ export function isProjectInProgress(project: Pick<Project, "endsAt">) {
 
 function showProject(id: ProjectId) {
 	switch (id) {
+		case "wrapped":
 		case "atom":
 		case "ev_sim":
 		case "topopt_py":
