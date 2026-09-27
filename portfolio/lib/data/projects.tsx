@@ -462,6 +462,6 @@ export const RankedProjects: readonly ProjectSummary[] =
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
 
-export function getBlob(filename: string) {
+function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }
