@@ -67,9 +67,16 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
 	if (media.length > 1) {
 		return (
-			<Grid columns={2} gap="sm" width="full">
+			<Grid
+				columns={2}
+				gap="sm"
+				width="full"
+				enter="rise"
+				// No Atom token for a half-row share; basis is ignored once the row stacks.
+				style={{ flex: "0 0 50%" }}
+			>
 				{media.map((item, i) => (
-					<MediaMockup key={i} media={item} />
+					<Media key={i} media={item} layout="natural" />
 				))}
 			</Grid>
 		);
@@ -92,7 +99,7 @@ function MediaMockup({ media }: { media: MediaSource }) {
 		case "macbook":
 			return (
 				<Macbook>
-					<Media media={media} stretch />
+					<Media media={media} layout="fill" />
 				</Macbook>
 			);
 		default:

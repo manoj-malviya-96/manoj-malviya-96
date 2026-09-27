@@ -84,14 +84,14 @@ export const Link = Object.assign(LinkInline, { Button: LinkButton });
 
 export function Media({
 	media,
-	stretch,
+	layout = "frame",
 }: {
 	media: MediaSource;
-	// Fills the parent's own box instead of the media's own fixed ratio — for
-	// placing media inside a container with a pre-set aspect ratio, like the
-	// MacBook mockup's screen cutout.
-	stretch?: boolean;
+	// frame: fixed 16:9 box. fill: the parent's own box, like the MacBook
+	// mockup's screen cutout. natural: full width at the image's own ratio.
+	layout?: "frame" | "fill" | "natural";
 }) {
+	const stretch = layout === "fill";
 	if (media.kind === "video") {
 		return (
 			<Video
@@ -113,16 +113,43 @@ export function Media({
 			/>
 		);
 	}
+	if (layout === "natural") {
+		// Remote blobs carry no intrinsic size; 0×0 lets CSS size it from the loaded image.
+		return (
+			<NextImage
+				src={media.src}
+				alt={media.alt}
+				width={0}
+				height={0}
+				sizes="(min-width: 768px) 25vw, 50vw"
+				style={{
+					width: "100%",
+					height: "auto",
+					borderRadius: "var(--radius-md)",
+				}}
+			/>
+		);
+	}
 	// Every src is now a remote blob URL with no build-time intrinsic size, so
 	// next/image can only lay it out via `fill` — which needs a sized,
 	// positioned ancestor. Own that box here instead of relying on callers to
 	// remember to provide one (they didn't, hence images rendering viewport-sized).
+	// Non-mockup images sit on their own next to text, so they're shown in full
+	// (`contain`) rather than cropped to a fixed ratio; `stretch` images fill a
+	// mockup's screen cutout, where `cover` is the correct look.
 	return (
 		<div
 			style={
 				stretch
 					? { position: "relative", width: "100%", height: "100%" }
-					: { position: "relative", width: "100%", aspectRatio: "16 / 9" }
+					: {
+							position: "relative",
+							width: "100%",
+							aspectRatio: "16 / 9",
+							background: "var(--color-surface)",
+							borderRadius: "var(--radius-md)",
+							overflow: "hidden",
+						}
 			}
 		>
 			<NextImage
@@ -130,7 +157,7 @@ export function Media({
 				alt={media.alt}
 				fill
 				sizes="(min-width: 768px) 50vw, 100vw"
-				style={{ objectFit: "cover" }}
+				style={{ objectFit: stretch ? "cover" : "contain" }}
 			/>
 		</div>
 	);
