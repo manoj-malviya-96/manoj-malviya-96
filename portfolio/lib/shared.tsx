@@ -33,12 +33,12 @@ function LinkInline({ url, ...rest }: LinkProps) {
 				as={NextLink}
 				href={url}
 				{...rest}
-				// TODO: Atom has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+				// TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
 				style={{ textDecoration: "none" }}
 			/>
 		);
 	return (
-		// TODO: Atom has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
+		// TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this.
 		<AtomLink as="a" href={url} {...rest} style={{ textDecoration: "none" }} />
 	);
 }
@@ -57,13 +57,25 @@ type LinkButtonProps = {
 function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
 	if (typeof url === "object" || url.startsWith("/")) {
 		return icon ? (
-			<AtomLink.Button as={NextLink} href={url} icon={icon} {...rest} />
+			<AtomLink.Button
+				as={NextLink}
+				href={url}
+				collapseOnMobile={false} // TODO - [ATOM] needs to make it not default
+				icon={icon}
+				{...rest}
+			/>
 		) : (
 			<AtomLink.Button as={NextLink} href={url} {...rest} />
 		);
 	}
 	return icon ? (
-		<AtomLink.Button as="a" href={url} icon={icon} {...rest} />
+		<AtomLink.Button
+			as="a"
+			href={url}
+			collapseOnMobile={false}
+			icon={icon}
+			{...rest}
+		/>
 	) : (
 		<AtomLink.Button as="a" href={url} {...rest} />
 	);
@@ -103,7 +115,7 @@ export function Media({
 		);
 	}
 	if (typeof media.src === "string") {
-		// Todo integrate in atom: Image's width/height are its own Size-token scale, so they can't
+		// TODO [Atom]: Image's width/height are its own Size-token scale, so they can't
 		// carry the pixel dimensions next/image needs to build a srcset for a remote (non-static-import)
 		// source — `fill` is the only next/image sizing mode that doesn't require those. Falls back to a
 		// plain sized+clipped box instead of atom's fit/ratio classes, which the same reason rules out.
