@@ -35,7 +35,6 @@ export default function Landing() {
 		<Page>
 			<Hero />
 			<FeaturedWork />
-			<ShowAndTell />
 			<HowIWork />
 			<FinalCTA />
 		</Page>
@@ -148,6 +147,7 @@ function FeaturedWork() {
 				</Link>
 			</Flex>
 			<Featured />
+			<ShowAndTell />
 		</PageSection>
 	);
 }

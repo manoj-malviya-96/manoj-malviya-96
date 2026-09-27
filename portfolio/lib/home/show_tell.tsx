@@ -28,35 +28,32 @@ export default function ShowAndTell() {
 	];
 
 	return (
-		<Grid
-			columns={stats.length === 3 ? 3 : 2}
-			className="stat-grid"
-			width="content"
-			bg="raised"
-			blur
-			card
-			padding={{ y: "md" }}
-			radius="md"
-			margin={{ x: "auto" }}
-		>
-			{stats.map((stat) => (
-				<Flex key={stat.caption} direction="col" gap="xs" hAlign="center">
-					{stat.loading ? (
-						<Progress
-							shape="circle"
-							value="indeterminate"
-							aria-label="Loading"
-						/>
-					) : (
-						<Text.Heading align="center">
-							{stat.value === undefined ? "–" : stat.value.toLocaleString()}
-						</Text.Heading>
-					)}
-					<Text.Overline ink="muted" align="center">
-						{stat.caption}
-					</Text.Overline>
-				</Flex>
-			))}
-		</Grid>
+		<Flex direction="col" radius="lg" bg="surface" padding={{ y: "md" }}>
+			<Grid
+				columns={stats.length === 3 ? 3 : 2}
+				className="stat-grid"
+				width="content"
+				margin={{ x: "auto" }}
+			>
+				{stats.map((stat) => (
+					<Flex key={stat.caption} direction="col" gap="xs" hAlign="center">
+						{stat.loading ? (
+							<Progress
+								shape="circle"
+								value="indeterminate"
+								aria-label="Loading"
+							/>
+						) : (
+							<Text.Heading align="center">
+								{stat.value === undefined ? "–" : stat.value.toLocaleString()}
+							</Text.Heading>
+						)}
+						<Text.Overline ink="muted" align="center">
+							{stat.caption}
+						</Text.Overline>
+					</Flex>
+				))}
+			</Grid>
+		</Flex>
 	);
 }
