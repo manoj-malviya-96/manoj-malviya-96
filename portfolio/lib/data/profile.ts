@@ -1,4 +1,5 @@
 import type { StaticImageData as LocalImage } from "next/image";
+import { getBlob } from "@/lib/data/projects";
 import {
 	EXPERIENCE_BY_RECENCY,
 	Experiences,
@@ -25,7 +26,7 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Scholar: `https://scholar.google.com/citations?user=${SocialUsersID.Scholar}&hl=en`,
 } as const;
 
-export const ResumePDF = "/resume.pdf";
+export const ResumePDF = getBlob("resume.pdf");
 
 export const Email = "malviyamanoj1896@gmail.com";
 export const EmailAddress = `mailto:${Email}`;

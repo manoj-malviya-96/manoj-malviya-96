@@ -79,18 +79,6 @@ export default function AboutPage() {
 function Intro() {
 	return (
 		<Grid columns={2} gap="xl" className="about-intro">
-			<Flex direction="col" gap="md" hAlign="start">
-				<Text.Body ink="muted">
-					Seven years solving problems that sit between hardware and software:
-					CAD tools engineers depend on, patient-monitoring platforms that
-					can&apos;t afford downtime, real-time rendering that has to hit budget
-					every frame. I own the full path: system design, the algorithm
-					underneath, and the interface someone actually has to use.
-				</Text.Body>
-				<Link url={ResumePDF} openNewTab>
-					Download PDF
-				</Link>
-			</Flex>
 			<Flex as="aside" direction="col" gap="md" hAlign="start">
 				<Image
 					as={NextImage}
@@ -105,6 +93,18 @@ function Intro() {
 					<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
 					<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
 				</List>
+			</Flex>
+			<Flex direction="col" gap="md" hAlign="start">
+				<Text.Body ink="muted">
+					Seven years solving problems that sit between hardware and software:
+					CAD tools engineers depend on, patient-monitoring platforms that
+					can&apos;t afford downtime, real-time rendering that has to hit budget
+					every frame. I own the full path: system design, the algorithm
+					underneath, and the interface someone actually has to use.
+				</Text.Body>
+				<Link url={ResumePDF} openNewTab>
+					Download PDF
+				</Link>
 			</Flex>
 		</Grid>
 	);
