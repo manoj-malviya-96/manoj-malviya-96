@@ -34,50 +34,8 @@ html {
 	}
 }
 
-/* Off-screen until focused, so keyboard/screen-reader users can jump past the nav. */
-.skip-link {
-	position: fixed;
-	top: var(--space-sm);
-	left: var(--space-sm);
-	z-index: 10;
-	padding: var(--space-sm) var(--space-md);
-	border-radius: var(--radius-md);
-	background-color: var(--color-surface);
-	backdrop-filter: var(--material-blur);
-	color: var(--color-content);
-	transform: translateY(-200%);
-}
-
-.skip-link:focus-visible {
-	transform: translateY(0);
-}
-
-@media (max-width: 480px) {
-	.wordmark-text {
-		display: none;
-	}
-}
-
 img {
 	content-visibility: auto;
-}
-
-.magnetic {
-	display: inline-flex;
-	transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
-	transition: transform var(--duration-base) var(--ease-out);
-}
-
-@media (hover: hover) {
-	.magnetic {
-		will-change: transform;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.magnetic {
-		transition: none;
-	}
 }
 
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
