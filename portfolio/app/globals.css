@@ -6,11 +6,19 @@
 	atom.utils,
 	overrides;
 
+/* TODO - [ATOM] fix needed */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
 html {
 	text-rendering: optimizeLegibility;
 	font-synthesis: none;
 	color-scheme: light;
 	scroll-behavior: smooth;
+	font-size: 18px; /* DEFAULT FONT SIZE */
 }
 
 /* Named and ordered last so these values win over every atom.* layer,
