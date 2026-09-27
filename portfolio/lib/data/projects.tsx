@@ -432,9 +432,9 @@ function showProject(id: ProjectId) {
 		case "honeycomb":
 		case "muviz":
 		case "blackhole":
+		case "ev_sim":
 			return true;
 		case "mesha":
-		case "ev_sim":
 			return false;
 		default:
 			assertNever(id);
