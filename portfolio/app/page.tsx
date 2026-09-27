@@ -36,8 +36,7 @@ function Hero() {
 				</Text.Hero>
 			</PageHeroHeader>
 			<Text.Body width="lg">
-				{RoleTagline[0]?.toUpperCase()}
-				{RoleTagline.slice(1)}. Currently {CurrentStatus}.
+				I'm a {RoleTagline} — currently {CurrentStatus}.
 			</Text.Body>
 			<Text.Body ink="muted" width="md">
 				<TypewriterWrapped prefix="Also into" words={Hobbies} />

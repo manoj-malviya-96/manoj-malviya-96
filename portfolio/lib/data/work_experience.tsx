@@ -62,14 +62,15 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			<Bullets
 				points={[
 					<>
-						Own a <Highlight>patient app</Highlight> with on-device ML for live,
-						real-time feedback from connected devices.
+						I own the <Highlight>patient app</Highlight> — on-device ML gives
+						people live feedback from their connected devices as it happens.
 					</>,
 					<>
-						Built a <Highlight>clinician platform</Highlight> around patented
-						voice-based heart-failure detection and real-time alerts.
+						Built the <Highlight>clinician platform</Highlight> too, wrapped
+						around our patented voice-based heart-failure detection and
+						real-time alerts.
 					</>,
-					"Run production myself end to end, covering architecture, observability, and deployment.",
+					"There's no ops team here, it's just me running production — architecture, observability, deploys, all of it.",
 				]}
 			/>
 		),
@@ -91,14 +92,14 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			<Bullets
 				points={[
 					<>
-						Redesigned Formlabs' support-structure algorithm into a{" "}
-						<Highlight>patent-pending topology-optimization method</Highlight>,
-						cutting print cost ~20%, improving reliability ~17%, and lifting
-						feature adoption ~50%.
+						I redesigned Formlabs' support-structure algorithm into a{" "}
+						<Highlight>patent-pending topology-optimization method</Highlight> —
+						cut print cost ~20%, made it ~17% more reliable, and adoption went
+						up roughly 50%.
 					</>,
-					"Rebuilt the print-time estimator, ~20% more accurate on half the compute.",
-					"Modeled physics on next-gen printers and materials, lifting reliability ~40% and speed ~35%.",
-					"Recognized twice with Formlabs' Top Performance Award.",
+					"Also rebuilt the print-time estimator so it's ~20% more accurate while using half the compute.",
+					"Modeled the physics for next-gen printers and materials, which pushed reliability up ~40% and speed ~35%.",
+					"Won Formlabs' Top Performance Award twice for this work.",
 				]}
 			/>
 		),
@@ -115,14 +116,15 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			<Bullets
 				points={[
 					<>
-						UI/UX tech lead for PreForm, owning{" "}
+						I was UI/UX tech lead for PreForm, owning{" "}
 						<Highlight>CAD features engineers actually rely on</Highlight>{" "}
-						(model labeling, grouping, part cages), shipped at ~95% CSAT.
+						(model labeling, grouping, part cages). Shipped at ~95% CSAT, which
+						I'm still proud of.
 					</>,
-					"Rebuilt the component framework underneath, cutting load times ~30–50% and speeding up large-scene rendering 60%.",
-					"Wired hardware integrations, including secure camera streaming.",
-					"Built the firmware updater and maintenance tooling behind every printer in the field.",
-					"Simplified core workflows like print upload, lifting NPS ~15%.",
+					"Rebuilt the component framework underneath everything, cutting load times ~30-50% and speeding up large-scene rendering 60%.",
+					"Wired up hardware integrations, including secure camera streaming.",
+					"Built the firmware updater and the maintenance tooling every printer in the field depends on.",
+					"Simplified print upload and a few other core workflows — NPS went up ~15%.",
 				]}
 			/>
 		),
@@ -139,10 +141,10 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			<Bullets
 				points={[
 					<>
-						Cut <Highlight>music-score rendering</Highlight> from ~30 seconds to
-						~200ms.
+						Got <Highlight>music-score rendering</Highlight> down from ~30
+						seconds to ~200ms.
 					</>,
-					"Rebuilt the audio-to-MIDI ML pipeline to ~50ms inference at ~98% accuracy.",
+					"Rebuilt the audio-to-MIDI pipeline so inference runs in ~50ms at ~98% accuracy.",
 				]}
 			/>
 		),
@@ -158,16 +160,16 @@ export const Experiences: Record<ExperienceId, Experience> = {
 		summary: (
 			<Bullets
 				points={[
-					"Automated embedding design for 3D-printed parts, no expert in the loop needed.",
-					"Built eye-tracking and ML tooling to study how engineers actually design.",
+					"Automated embedding design for 3D-printed parts, so you didn't need an expert babysitting it.",
+					"Built eye-tracking and ML tooling to actually study how engineers design, instead of guessing.",
 					<>
 						Pioneered a{" "}
 						<Highlight>
 							deep-learning generative model for topology optimization
 						</Highlight>{" "}
-						that cut design iterations ~3×.
+						that cut design iterations roughly 3x.
 					</>,
-					"Coauthored 8 peer-reviewed papers and presented the work at conferences.",
+					"Coauthored 8 peer-reviewed papers and presented the work at a bunch of conferences.",
 				]}
 			/>
 		),
