@@ -25,7 +25,7 @@ export const Projects: Record<ProjectId, Project> = {
 					from that stylesheet, so an invalid token can't compile.`,
 		outcome:
 			"CSS-in-JS runtime or type-unsafe CSS — one primitive, one stylesheet, invalid tokens can't compile.",
-		dates: "2025-2026",
+		startsAt: new Date("2025-01-01"),
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
 		links: {
@@ -59,7 +59,7 @@ export const Projects: Record<ProjectId, Project> = {
 					scene reacts to real extracted features instead of an AI’s guess.`,
 		outcome:
 			"Visualizers that fake it with AI — Muviz analyzes real audio features once, then reacts to them live.",
-		dates: "2026",
+		startsAt: new Date("2026-01-01"),
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
 		media: [
@@ -84,7 +84,8 @@ export const Projects: Record<ProjectId, Project> = {
 			"I kept needing hexagonal lattices for CAD work and got tired of triangulating them by hand, so I wrote a generator: a 2D skeleton graph in C++, extruded into a real VTK mesh. The part that kept breaking was staggering the hexagon centers — get that wrong and the whole grid drifts.",
 		outcome:
 			"Hand-triangulating hex lattices for CAD — replaced with a C++ generator that extrudes a real VTK mesh.",
-		dates: "2025",
+		startsAt: new Date("2025-01-01"),
+		endsAt: new Date("2025-12-01"),
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
 		effort: "medium",
 		media: [
@@ -112,7 +113,8 @@ export const Projects: Record<ProjectId, Project> = {
 					drops a 5,000-element run from 4.8s to 2.6s.`,
 		outcome:
 			"A 99-line optimizer ran slow in pure Python — vectorized NumPy cut a 5k-element run from 4.8s to 2.6s.",
-		dates: "2021",
+		startsAt: new Date("2021-01-01"),
+		endsAt: new Date("2021-12-01"),
 		tags: ["simulation", "optimization", "high-performance", "python"],
 		effort: "medium",
 		media: [
@@ -141,7 +143,8 @@ export const Projects: Record<ProjectId, Project> = {
 			"Gravity, rendered in real time, because I couldn't wait for the movie. A compute shader integrates each pixel's light-ray geodesic against a mass modeled on Sagittarius A* (4.3 million solar masses), while a lensing fragment shader bends the background grid around it — running as a Qt/OpenGL widget so it rotates live instead of playing back a rendered clip.",
 		outcome:
 			"Couldn't wait for the movie — a live compute shader now renders Sagittarius A*'s lensing in real time.",
-		dates: "2026",
+		startsAt: new Date("2026-01-01"),
+		endsAt: new Date("2026-06-01"),
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
 		effort: "high",
 		media: [
@@ -165,7 +168,8 @@ export const Projects: Record<ProjectId, Project> = {
 			"I wanted to know how many chargers a lot actually needs before buying them, so I simulated a year of demand first: 15-minute intervals with car arrivals drawn from a Poisson distribution per charge point, no queueing — a car that arrives to a busy point just leaves. Concurrency turned out to decay roughly exponentially as charger count grows.",
 		outcome:
 			"Not knowing how many chargers a lot needs — a year-long Poisson-arrival simulation answers it first.",
-		dates: "2024",
+		startsAt: new Date("2024-01-01"),
+		endsAt: new Date("2024-12-01"),
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
 		effort: "medium",
 		media: [
@@ -188,7 +192,8 @@ export const Projects: Record<ProjectId, Project> = {
 		summary: "Mesh repair, from the command line to a real editor.",
 		outcome:
 			"Mesh repair stuck in the command line — Mesha brings it into a real editor.",
-		dates: "2025",
+		startsAt: new Date("2025-01-01"),
+		endsAt: new Date("2025-06-01"),
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
 		effort: "low",
 		links: {
@@ -299,14 +304,27 @@ export type Project = {
 	summary: ReactNode;
 	/** One line, problem → result — what featured cards show instead of the full summary. */
 	outcome: string;
-	dates: string;
+	/** Omit `endsAt` while the project is still in progress. */
+	startsAt: Date;
+	endsAt?: Date;
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
 	media?: ProjectMedia;
 	links: ProjectLinks;
 };
 
-export type ProjectSummary = Project & { id: ProjectId };
+export type ProjectSummary = Project & { id: ProjectId; isNew: boolean };
+
+/** "2025" for a project that started and ended the same year, "2025-2026" otherwise — ongoing projects run through today. */
+export function formatDates(startsAt: Date, endsAt?: Date): string {
+	const startYear = startsAt.getFullYear();
+	const endYear = (endsAt ?? new Date()).getFullYear();
+	return startYear === endYear ? `${startYear}` : `${startYear}-${endYear}`;
+}
+
+export function isProjectInProgress(project: Pick<Project, "endsAt">) {
+	return project.endsAt === undefined;
+}
 
 function showProject(id: ProjectId) {
 	switch (id) {
@@ -331,12 +349,21 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-export const RankedProjects: readonly ProjectSummary[] = AllProjectIds.filter(
-	(id) => showProject(id),
-)
-	.map((id) => ({ id, ...Projects[id] }))
-	.sort((a, b) => EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort]);
+const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
+const LATEST_STARTS_AT = Math.max(
+	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+);
 
-function getBlob(filename: string) {
+export const RankedProjects: readonly ProjectSummary[] =
+	VISIBLE_PROJECT_IDS.map((id) => ({
+		id,
+		...Projects[id],
+		isNew: Projects[id].startsAt.getTime() === LATEST_STARTS_AT,
+	})).sort((a, b) => {
+		if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
+		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
+	});
+
+export function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }

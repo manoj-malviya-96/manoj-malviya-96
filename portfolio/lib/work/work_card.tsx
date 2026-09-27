@@ -13,6 +13,7 @@ import {
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
 import type { ProjectLink, WorkItem } from "@/lib/data";
+import { formatDates, isProjectInProgress } from "@/lib/data/projects";
 import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 import type { MediaSource } from "@/lib/types";
@@ -33,7 +34,19 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			<Flex direction="col" gap="sm" hAlign="start">
 				<Flex direction="row" gap="sm" vAlign="center" wrap>
 					<Text.Title>{item.title}</Text.Title>
-					<Text.Caption ink="muted">{item.dates}</Text.Caption>
+					{item.kind === "project" ? (
+						<Text.Caption ink="muted">
+							{formatDates(item.startsAt, item.endsAt)}
+						</Text.Caption>
+					) : (
+						<Text.Caption ink="muted">{item.dates}</Text.Caption>
+					)}
+					{item.kind === "project" && item.isNew && (
+						<Badge ink="green">New</Badge>
+					)}
+					{item.kind === "project" && isProjectInProgress(item) && (
+						<Badge ink="orange">In progress</Badge>
+					)}
 				</Flex>
 				<CardTags item={item} />
 			</Flex>
