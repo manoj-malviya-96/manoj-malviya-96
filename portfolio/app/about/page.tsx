@@ -1,6 +1,7 @@
 "use client";
 
-import { Flex, Grid, Text } from "@manoj-malviya-96/atom";
+import { Flex, Grid, Image, Text } from "@manoj-malviya-96/atom";
+import NextImage from "next/image";
 import {
 	CurrentStatus,
 	Hobbies,
@@ -9,6 +10,7 @@ import {
 	PHASE_IDS,
 	type Phase,
 	SocialLinks,
+	UserAvatar,
 } from "@/lib/data";
 import {
 	EmText,
@@ -41,20 +43,30 @@ export default function AboutPage() {
 function Story() {
 	return (
 		<PageSection gap="md">
-			<Text.Body>
-				I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up here by
-				chasing the same question through a few very different industries:
-				what happens when the interface between hardware and software is the
-				part nobody wants to own. CAD kernels, patient-monitoring firmware,
-				rendering pipelines that miss frame budget — the domains changed, the
-				itch didn't.
-			</Text.Body>
-			<Text.Body>
-				Outside of work I'm still doing the same thing at a smaller scale:{" "}
-				{Interests.join(", ").toLowerCase()} on the technical side,{" "}
-				{Hobbies.join(" and ").toLowerCase()} on the side that has nothing to
-				do with a keyboard.
-			</Text.Body>
+			<Flex direction="row" gap="lg" hAlign="start">
+				<Flex direction="col" gap="md">
+					<Text.Body>
+						I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up
+						here by chasing the same question through a few very different
+						industries: what happens when the interface between hardware and
+						software is the part nobody wants to own. CAD kernels,
+						patient-monitoring firmware, rendering pipelines that miss frame
+						budget — the domains changed, the itch didn't.
+					</Text.Body>
+					<Text.Body>
+						Outside of work I'm still doing the same thing at a smaller
+						scale: {Interests.join(", ").toLowerCase()} on the technical
+						side, {Hobbies.join(" and ").toLowerCase()} on the side that has
+						nothing to do with a keyboard.
+					</Text.Body>
+				</Flex>
+				<Image
+					as={NextImage}
+					src={UserAvatar}
+					alt="Manoj Malviya"
+					style={{ width: "12rem", height: "12rem", objectFit: "contain" }}
+				/>
+			</Flex>
 		</PageSection>
 	);
 }

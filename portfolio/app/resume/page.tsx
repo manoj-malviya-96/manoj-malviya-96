@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Image, List, Marquee, Text } from "@manoj-malviya-96/atom";
+import { Flex, List, Marquee, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconGlobe,
@@ -12,7 +12,6 @@ import {
 	IconRust,
 	IconSwift,
 } from "@manoj-malviya-96/atom/icons";
-import NextImage from "next/image";
 import type { ComponentType } from "react";
 import {
 	CurrentLocation,
@@ -20,7 +19,6 @@ import {
 	type ProjectTag,
 	ResumePDF,
 	SKILL_GROUPS,
-	UserAvatar,
 } from "@/lib/data";
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
@@ -70,25 +68,17 @@ export default function ResumePage() {
 
 function Intro() {
 	return (
-		<Flex direction="row" gap="lg" hAlign="start">
-			<Flex direction="col" gap="md" hAlign="start">
-				<List direction="col" gap="sm">
-					<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
-					<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
-				</List>
-				<Text.Body ink="muted">
-					Everything below, but formatted for a robot to skim in six seconds.
-				</Text.Body>
-				<Link url={ResumePDF} openNewTab>
-					Download PDF
-				</Link>
-			</Flex>
-			<Image
-				as={NextImage}
-				src={UserAvatar}
-				alt="Manoj Malviya"
-				style={{ width: "12rem", height: "12rem", objectFit: "contain" }}
-			/>
+		<Flex direction="col" gap="md" hAlign="start">
+			<List direction="col" gap="sm">
+				<SidebarRow icon={IconLocationDot} label={CurrentLocation} />
+				<SidebarRow icon={IconLightbulb} label={Interests.join(" · ")} />
+			</List>
+			<Text.Body ink="muted">
+				Everything below, but formatted for a robot to skim in six seconds.
+			</Text.Body>
+			<Link url={ResumePDF} openNewTab>
+				Download PDF
+			</Link>
 		</Flex>
 	);
 }
