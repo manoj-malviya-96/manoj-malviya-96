@@ -2,27 +2,26 @@
 
 import { Flex, List, Text } from "@manoj-malviya-96/atom";
 
-import { Email, SocialLinks } from "@/lib/data";
+import { SocialLinks } from "@/lib/data";
 import { Link } from "@/lib/shared";
 
 export default function Footer() {
 	return (
 		<Flex
-			as="footer"
+			as="footer" // TODO [ATOM] - system needs to have a footer.
 			direction="row"
 			hAlign="between"
-			vAlign="center"
+			vAlign="end"
 			gap="lg"
 			wrap
 			width="content"
 			padding={{ y: "lg" }}
+			// TODO [ATOM] - needs to handle ink on atom
+			style={{
+				color: "var(--color-muted)",
+			}}
 		>
-			<Text.Caption mono ink="muted">
-				{`© ${new Date().getFullYear()} MANOJ MALVIYA`}
-			</Text.Caption>
-			<Text.Caption mono ink="muted" selectable>
-				{Email}
-			</Text.Caption>
+			<Text.Body>{`© ${new Date().getFullYear()} Manoj Malviya`}</Text.Body>
 			<List direction="row" gap="md">
 				{Object.entries(SocialLinks).map(([key, url]) => (
 					<li key={key}>
