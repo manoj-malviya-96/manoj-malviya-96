@@ -46,18 +46,18 @@ function Story() {
 			<Flex direction="row" gap="lg" hAlign="start">
 				<Flex direction="col" gap="md">
 					<Text.Body>
-						I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up
-						here by chasing the same question through a few very different
+						I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up here
+						by chasing the same question through a few very different
 						industries: what happens when the interface between hardware and
 						software is the part nobody wants to own. CAD kernels,
 						patient-monitoring firmware, rendering pipelines that miss frame
 						budget — the domains changed, the itch didn't.
 					</Text.Body>
 					<Text.Body>
-						Outside of work I'm still doing the same thing at a smaller
-						scale: {Interests.join(", ").toLowerCase()} on the technical
-						side, {Hobbies.join(" and ").toLowerCase()} on the side that has
-						nothing to do with a keyboard.
+						Outside of work I'm still doing the same thing at a smaller scale:{" "}
+						{Interests.join(", ").toLowerCase()} on the technical side,{" "}
+						{Hobbies.join(" and ").toLowerCase()} on the side that has nothing
+						to do with a keyboard.
 					</Text.Body>
 				</Flex>
 				<Image

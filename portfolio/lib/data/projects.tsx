@@ -31,8 +31,6 @@ export const Projects: Record<ProjectId, Project> = {
 				postgressql based database.
 			</>
 		),
-		outcome:
-			"Curated social-media recaps — Wrapped turns your own photos and health data into an honest video recap.",
 		startsAt: new Date("2026-08-01"),
 		tags: ["mobile", "swift", "ai", "ui/ux"],
 		effort: "medium",
@@ -72,8 +70,6 @@ export const Projects: Record<ProjectId, Project> = {
 				, so an invalid token can't compile.
 			</>
 		),
-		outcome:
-			"CSS-in-JS runtime or type-unsafe CSS — one primitive, one stylesheet, invalid tokens can't compile.",
 		startsAt: new Date("2025-01-01"),
 		tags: ["react", "typescript", "web", "open-source", "ui/ux"],
 		effort: "high",
@@ -113,8 +109,6 @@ export const Projects: Record<ProjectId, Project> = {
 				guess.
 			</>
 		),
-		outcome:
-			"Visualizers that fake it with AI — Muviz analyzes real audio features once, then reacts to them live.",
 		startsAt: new Date("2026-01-01"),
 		tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 		effort: "high",
@@ -148,8 +142,6 @@ export const Projects: Record<ProjectId, Project> = {
 				wrong and the whole grid drifts.
 			</>
 		),
-		outcome:
-			"Hand-triangulating hex lattices for CAD — replaced with a C++ generator that extrudes a real VTK mesh.",
 		startsAt: new Date("2025-01-01"),
 		endsAt: new Date("2025-12-01"),
 		tags: ["rendering", "high-performance", "open-source", "c++", "vtk", "cad"],
@@ -184,8 +176,6 @@ export const Projects: Record<ProjectId, Project> = {
 				drops a 5,000-element run from 4.8s to 2.6s.
 			</>
 		),
-		outcome:
-			"A 99-line optimizer ran slow in pure Python — vectorized NumPy cut a 5k-element run from 4.8s to 2.6s.",
 		startsAt: new Date("2021-01-01"),
 		endsAt: new Date("2021-12-01"),
 		tags: ["simulation", "optimization", "high-performance", "python"],
@@ -223,8 +213,6 @@ export const Projects: Record<ProjectId, Project> = {
 				rendered clip.
 			</>
 		),
-		outcome:
-			"Couldn't wait for the movie — a live compute shader now renders Sagittarius A*'s lensing in real time.",
 		startsAt: new Date("2026-01-01"),
 		endsAt: new Date("2026-06-01"),
 		tags: ["rendering", "gpu", "optimization", "c++", "opengl"],
@@ -259,8 +247,6 @@ export const Projects: Record<ProjectId, Project> = {
 				as charger count grows.
 			</>
 		),
-		outcome:
-			"Not knowing how many chargers a lot needs — a year-long Poisson-arrival simulation answers it first.",
 		startsAt: new Date("2024-01-01"),
 		endsAt: new Date("2024-12-01"),
 		tags: ["web", "react", "typescript", "tailwind", "simulation", "ui/ux"],
@@ -288,8 +274,6 @@ export const Projects: Record<ProjectId, Project> = {
 				<Text.Bold>real editor</Text.Bold>.
 			</>
 		),
-		outcome:
-			"Mesh repair stuck in the command line — Mesha brings it into a real editor.",
 		startsAt: new Date("2025-01-01"),
 		endsAt: new Date("2025-06-01"),
 		tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
@@ -400,8 +384,6 @@ type ProjectMedia = readonly MediaSource[];
 export type Project = {
 	title: string;
 	summary: ReactNode;
-	/** One line, problem → result — what featured cards show instead of the full summary. */
-	outcome: string;
 	/** Omit `endsAt` while the project is still in progress. */
 	startsAt: Date;
 	endsAt?: Date;
@@ -462,6 +444,6 @@ export const RankedProjects: readonly ProjectSummary[] =
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
 
-export function getBlob(filename: string) {
+function getBlob(filename: string) {
 	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
 }

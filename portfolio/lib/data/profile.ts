@@ -1,5 +1,4 @@
 import type { StaticImageData as LocalImage } from "next/image";
-import { getBlob } from "@/lib/data/projects";
 import {
 	EXPERIENCE_BY_RECENCY,
 	Experiences,
@@ -28,9 +27,7 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Linktree: `https://linktr.ee/${SocialUsersID.Linktree}`,
 } as const;
 
-export const ResumePDF = getBlob("resume.pdf");
-
-export const Email = "malviyamanoj1896@gmail.com";
+const Email = "malviyamanoj1896@gmail.com";
 export const EmailAddress = `mailto:${Email}`;
 
 export const UserAvatar: LocalImage = userAvatar;
@@ -39,7 +36,6 @@ export const UserAvatar: LocalImage = userAvatar;
 const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
 const currentExperience = Experiences[currentExperienceId];
 
-export const CurrentLocation: string = currentExperience.location;
 export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
 
 // Same phrase everywhere the role gets summarized in one line — hero, layout metadata.
