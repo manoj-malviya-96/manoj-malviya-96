@@ -3,6 +3,7 @@
 import {
 	IconBriefcase,
 	IconEnvelope,
+	IconGraduationCap,
 	IconHouse,
 	IconUser,
 } from "@manoj-malviya-96/atom/icons";
@@ -15,6 +16,7 @@ const NAV_LINKS = [
 	{ url: "/", label: "Home", Icon: IconHouse },
 	{ url: "/work", label: "Work", Icon: IconBriefcase },
 	{ url: "/about", label: "About", Icon: IconUser },
+	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
 ] as const;
 
 export default function AppControlCenter() {
