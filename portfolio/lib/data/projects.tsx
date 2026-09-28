@@ -461,12 +461,12 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 
 const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
 
-const LATEST_STARTED_AT = Math.max(
-	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-);
-
 export const RankedProjects: readonly ProjectSummary[] =
 	VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort((a, b) => {
 		if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
+
+const LATEST_STARTED_AT = Math.max(
+	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+);
