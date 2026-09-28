@@ -87,6 +87,7 @@ const wrappedProject: Project = {
 	},
 	media: [
 		{
+			mockup: "iphone",
 			kind: "video",
 			src: getBlob("wrapped.webm"),
 			width: 1206,
@@ -94,18 +95,12 @@ const wrappedProject: Project = {
 			alt: "An example video.",
 		},
 		{
+			mockup: "iphone",
 			kind: "image",
 			src: getBlob("wrapped-1.png"),
 			width: 1206,
 			height: 2622,
 			alt: "Wrapped's photo recap slide.",
-		},
-		{
-			kind: "image",
-			src: getBlob("wrapped-2.png"),
-			width: 1206,
-			height: 2622,
-			alt: "Wrapped's stats slide for a past year.",
 		},
 	],
 };

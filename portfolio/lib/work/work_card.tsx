@@ -1,11 +1,4 @@
-import {
-	Atom,
-	assertNever,
-	Badge,
-	Flex,
-	Grid,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Badge, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
@@ -18,6 +11,7 @@ import {
 	type ProjectLink,
 	type WorkItem,
 } from "@/lib/data";
+import { Iphone } from "@/lib/iphone_mockup";
 import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 import type { MediaSource } from "@/lib/types";
@@ -60,25 +54,11 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 }
 
 function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
-	if (media.length > 1) {
-		return (
-			<Grid
-				columns={2}
-				gap="sm"
-				width="full"
-				enter="rise"
-				/** No Atom token for a half-row share; basis is ignored once the row stacks. */
-				style={{ flex: "0 0 50%" }}
-			>
-				{media.map((item, i) => (
-					<Media key={i} {...item} sizes="(min-width: 768px) 25vw, 50vw" />
-				))}
-			</Grid>
-		);
-	}
 	return (
-		<Flex direction="row" hAlign="center" width="full">
-			<MediaMockup media={media[0]} />
+		<Flex direction="row" hAlign="center" gap="md" width="full">
+			{media.map((item, i) => (
+				<MediaMockup media={item} key={i} />
+			))}
 		</Flex>
 	);
 }
@@ -96,6 +76,12 @@ function MediaMockup({ media }: { media: MediaSource }) {
 				<Macbook>
 					<Media {...media} />
 				</Macbook>
+			);
+		case "iphone":
+			return (
+				<Iphone>
+					<Media {...media} />
+				</Iphone>
 			);
 		default:
 			return assertNever(media.mockup);
