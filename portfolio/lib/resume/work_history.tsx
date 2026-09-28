@@ -20,10 +20,22 @@ import {
 import { formatDate } from "@/lib/helper";
 import { Media } from "@/lib/shared";
 
+export default function WorkHistory() {
+	return (
+		<Flex direction="col" className="track-list">
+			{EXPERIENCE_GROUPS.map((group) => (
+				<TrackRow key={group.organization} group={group} />
+			))}
+		</Flex>
+	);
+}
+
 type ExperienceGroup = {
 	organization: OrganizationId;
 	experiences: ExperienceId[];
 };
+
+const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);
 
 function groupByOrganization(ids: readonly ExperienceId[]): ExperienceGroup[] {
 	const groups: ExperienceGroup[] = [];
@@ -37,18 +49,6 @@ function groupByOrganization(ids: readonly ExperienceId[]): ExperienceGroup[] {
 		}
 	}
 	return groups;
-}
-
-const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);
-
-export default function WorkHistory() {
-	return (
-		<Flex direction="col" className="track-list">
-			{EXPERIENCE_GROUPS.map((group) => (
-				<TrackRow key={group.organization} group={group} />
-			))}
-		</Flex>
-	);
 }
 
 function TrackRow({ group }: { group: ExperienceGroup }) {
@@ -74,7 +74,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 					{formatDate(start)} — {end ? formatDate(end) : "Present"}
 				</Text.Caption>
 			</Flex>
-			{/* A lone role skips Timeline: its marker and rail mean nothing without a second event. */}
+			{/** A lone role skips Timeline: its marker and rail mean nothing without a second event. */}
 			{experiences.length === 1 ? (
 				roleEvent(experiences[0]).children
 			) : (
@@ -100,7 +100,7 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 				{summary}
 				{media && (
 					<Atom as="div" enter="rise" width="full">
-						<Media media={media} />
+						<Media {...media} />
 					</Atom>
 				)}
 			</Flex>

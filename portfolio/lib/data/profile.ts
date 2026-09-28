@@ -4,8 +4,11 @@ import {
 	Experiences,
 	getEmployer,
 } from "@/lib/data/work_experience";
-import type { ExternalURL } from "@/lib/types";
+import { getBlob } from "@/lib/helper";
+import type { ExternalURL, MediaSource } from "@/lib/types";
 import userAvatar from "./manoj-1.png";
+
+export type SocialMedia = keyof typeof SocialUsersID;
 
 export const SocialUsersID = {
 	Github: "manoj-malviya-96",
@@ -16,8 +19,6 @@ export const SocialUsersID = {
 	Linktree: "manoj_malviya",
 } as const;
 
-export type SocialMedia = keyof typeof SocialUsersID;
-
 export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Github: `https://github.com/${SocialUsersID.Github}`,
 	Linkedin: `https://www.linkedin.com/in/${SocialUsersID.Linkedin}`,
@@ -27,20 +28,15 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Linktree: `https://linktr.ee/${SocialUsersID.Linktree}`,
 } as const;
 
-const Email = "malviyamanoj1896@gmail.com";
-export const EmailAddress = `mailto:${Email}`;
-
 export const UserAvatar: LocalImage = userAvatar;
 
-// Ongoing roles sort first (see EXPERIENCE_BY_RECENCY), so index 0 is current.
-const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
-const currentExperience = Experiences[currentExperienceId];
-
-export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
-
-// Same phrase everywhere the role gets summarized in one line — hero, layout metadata.
-export const RoleTagline =
-	"senior product engineer building health-tech, CAD, and real-time systems";
+export const HeroImage: MediaSource = {
+	kind: "image",
+	src: getBlob("hero.jpg"),
+	alt: "Manoj Malviya",
+	width: 1026,
+	height: 766,
+};
 
 export const Interests: readonly string[] = [
 	"Generative design",
@@ -48,5 +44,16 @@ export const Interests: readonly string[] = [
 	"Robotics",
 ];
 
-// Hero typewriter — hobbies only, not job titles (those live in RoleTagline/CurrentStatus).
-export const Hobbies: readonly string[] = ["Part-time DJ", "3D Printing"];
+export const Hobbies: readonly string[] = [
+	"Part-time DJ",
+	"3D Printing",
+	"Photography",
+];
+
+const Email = "malviyamanoj1896@gmail.com";
+export const EmailAddress = `mailto:${Email}`;
+
+const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
+const currentExperience = Experiences[currentExperienceId];
+
+export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;

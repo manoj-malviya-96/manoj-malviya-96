@@ -1,8 +1,6 @@
 import type { OrganizationId } from "@/lib/data/organizations";
 import type { ValuesOf } from "@/lib/helper";
 import type { MonthAndYear } from "@/lib/types";
-
-export const DEGREE_IDS = ["penn-state-ms", "iitj-btech"] as const;
 export type DegreeId = ValuesOf<typeof DEGREE_IDS>;
 
 export type Degree = {
@@ -12,6 +10,8 @@ export type Degree = {
 	focus: string;
 	graduation: MonthAndYear;
 };
+
+export const DEGREE_IDS = ["penn-state-ms", "iitj-btech"] as const;
 
 export const Degrees = {
 	"penn-state-ms": {

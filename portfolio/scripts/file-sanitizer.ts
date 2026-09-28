@@ -5,9 +5,10 @@
  *    `/** *\/` block, a lone `//` or trailing `//` becomes an inline
  *    `/** … *\/`, and `/* *\/` gains its second star. Tool pragmas
  *    (`biome-ignore`, `@ts-…`, `/// <reference>`, `#__PURE__`) are left alone.
- * 2. Order: after the imports, exported before internal, and within each
- *    level functions > types > variables. `const f = () => …` is a function.
- *    Top-level statements go after declarations and `export {…}` lists last.
+ * 2. Order: after the imports, every export first (any kind, in file order),
+ *    then internal constants and types, then internal functions.
+ *    `const f = () => …` is a function. Top-level statements go after
+ *    declarations and `export {…}` lists last.
  *
  * Reordering never breaks load order: a declaration whose initializer reads a
  * `const`/`let`/`class`/`enum` at module-evaluation time (directly, or through a
@@ -18,6 +19,97 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseSync } from "oxc-parser";
+
+type Node = {
+	type: string;
+	start: number;
+	end: number;
+	[key: string]: unknown;
+};
+
+type Comment = {
+	type: "Line" | "Block";
+	value: string;
+	start: number;
+	end: number;
+};
+
+type ParseResult = { program: { body: Node[] }; comments: Comment[] };
+
+type TextEdit = { start: number; end: number; text: string };
+
+type Kind = "function" | "type" | "variable" | "statement" | "list";
+
+type Refs = {
+	eager: Set<string>;
+	calls: Set<string>;
+	all: Set<string>;
+	allCalls: Set<string>;
+	/** Names read from type positions; only ambient `declare const`s care. */
+	types: Set<string>;
+};
+
+type Entry = {
+	index: number;
+	rank: number;
+	isDefault: boolean;
+	names: string[];
+	listed: string[];
+	refs: Refs;
+	/** `declare const`: no runtime cost, but Biome wants it above its type-level readers. */
+	ambient: boolean;
+	/** Reading it before its declaration runs throws or yields `undefined`. */
+	tdz: boolean;
+	/** Evaluating it can have side effects, so statements keep their order around it. */
+	effectful: boolean;
+};
+
+const ROOTS = ["lib", "scripts"];
+
+const EXTENSION = /\.(ts|tsx|mts|js|jsx|mjs)$/;
+
+const IGNORED = [/\.module\.css\.d\.ts$/, /^src\/icons\.tsx$/];
+
+const PRAGMA =
+	/^(biome-ignore|@|#|\/|eslint|prettier-ignore|c8 |istanbul |webpackChunkName)/;
+
+const FUNCTIONS = new Set([
+	"FunctionDeclaration",
+	"FunctionExpression",
+	"ArrowFunctionExpression",
+]);
+
+const RUNTIME_TS = new Set([
+	"TSAsExpression",
+	"TSSatisfiesExpression",
+	"TSNonNullExpression",
+	"TSInstantiationExpression",
+	"TSTypeAssertion",
+	"TSEnumDeclaration",
+	"TSEnumBody",
+	"TSEnumMember",
+	"TSExportAssignment",
+	"TSParameterProperty",
+]);
+
+const MEMBER_KEYED = new Set([
+	"Property",
+	"MethodDefinition",
+	"PropertyDefinition",
+	"AccessorProperty",
+]);
+
+const TYPE_KEYS = new Set([
+	"typeAnnotation",
+	"returnType",
+	"typeParameters",
+	"typeArguments",
+	"superTypeArguments",
+	"superTypeParameters",
+	"implements",
+]);
+
+const SKIPPED_KEYS = new Set(["type", "start", "end", "range", "loc"]);
 
 function main(): void {
 	const write = process.argv.includes("--write");
@@ -246,7 +338,11 @@ function classify(node: Node, index: number): Entry {
 				? 6
 				: kind === "list"
 					? 7
-					: (exported ? 0 : 3) + KIND_RANK[kind],
+					: exported
+						? 0
+						: kind === "function"
+							? 2
+							: 1,
 		isDefault: node.type === "ExportDefaultDeclaration",
 		names: boundNames(declaration),
 		listed,
@@ -486,98 +582,5 @@ function compareEntries(a: Entry, b: Entry): number {
 		a.index - b.index
 	);
 }
-
-type Node = {
-	type: string;
-	start: number;
-	end: number;
-	[key: string]: unknown;
-};
-
-type Comment = {
-	type: "Line" | "Block";
-	value: string;
-	start: number;
-	end: number;
-};
-
-type ParseResult = { program: { body: Node[] }; comments: Comment[] };
-
-type TextEdit = { start: number; end: number; text: string };
-
-type Kind = "function" | "type" | "variable" | "statement" | "list";
-
-type Refs = {
-	eager: Set<string>;
-	calls: Set<string>;
-	all: Set<string>;
-	allCalls: Set<string>;
-	/** Names read from type positions; only ambient `declare const`s care. */
-	types: Set<string>;
-};
-
-type Entry = {
-	index: number;
-	rank: number;
-	isDefault: boolean;
-	names: string[];
-	listed: string[];
-	refs: Refs;
-	/** `declare const`: no runtime cost, but Biome wants it above its type-level readers. */
-	ambient: boolean;
-	/** Reading it before its declaration runs throws or yields `undefined`. */
-	tdz: boolean;
-	/** Evaluating it can have side effects, so statements keep their order around it. */
-	effectful: boolean;
-};
-
-const ROOTS = ["src", "scripts", "site"];
-
-const EXTENSION = /\.(ts|tsx|mts|js|jsx|mjs)$/;
-
-const IGNORED = [/\.module\.css\.d\.ts$/, /^src\/icons\.tsx$/];
-
-const PRAGMA =
-	/^(biome-ignore|@|#|\/|eslint|prettier-ignore|c8 |istanbul |webpackChunkName)/;
-
-const KIND_RANK = { function: 0, type: 1, variable: 2 } as const;
-
-const FUNCTIONS = new Set([
-	"FunctionDeclaration",
-	"FunctionExpression",
-	"ArrowFunctionExpression",
-]);
-
-const RUNTIME_TS = new Set([
-	"TSAsExpression",
-	"TSSatisfiesExpression",
-	"TSNonNullExpression",
-	"TSInstantiationExpression",
-	"TSTypeAssertion",
-	"TSEnumDeclaration",
-	"TSEnumBody",
-	"TSEnumMember",
-	"TSExportAssignment",
-	"TSParameterProperty",
-]);
-
-const MEMBER_KEYED = new Set([
-	"Property",
-	"MethodDefinition",
-	"PropertyDefinition",
-	"AccessorProperty",
-]);
-
-const TYPE_KEYS = new Set([
-	"typeAnnotation",
-	"returnType",
-	"typeParameters",
-	"typeArguments",
-	"superTypeArguments",
-	"superTypeParameters",
-	"implements",
-]);
-
-const SKIPPED_KEYS = new Set(["type", "start", "end", "range", "loc"]);
 
 main();

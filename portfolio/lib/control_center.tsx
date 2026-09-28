@@ -1,23 +1,16 @@
 "use client";
 
 import {
-	IconBriefcase,
 	IconEnvelope,
 	IconGraduationCap,
 	IconHouse,
+	IconRocket,
 	IconUser,
 } from "@manoj-malviya-96/atom/icons";
 import { ControlCenter } from "@manoj-malviya-96/atom/system";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { EmailAddress } from "@/lib/data";
-
-const NAV_LINKS = [
-	{ url: "/", label: "Home", Icon: IconHouse },
-	{ url: "/work", label: "Work", Icon: IconBriefcase },
-	{ url: "/about", label: "About", Icon: IconUser },
-	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
-] as const;
 
 export default function AppControlCenter() {
 	const pathname = usePathname();
@@ -52,6 +45,13 @@ export default function AppControlCenter() {
 		</ControlCenter>
 	);
 }
+
+const NAV_LINKS = [
+	{ url: "/", label: "Home", Icon: IconHouse },
+	{ url: "/work", label: "Work", Icon: IconRocket },
+	{ url: "/about", label: "About", Icon: IconUser },
+	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
+] as const;
 
 function Logo({
 	size = 64,

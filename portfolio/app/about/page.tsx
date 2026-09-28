@@ -1,109 +1,82 @@
 "use client";
 
-import { Flex, Grid, Image, Text } from "@manoj-malviya-96/atom";
-import NextImage from "next/image";
 import {
-	CurrentStatus,
-	Hobbies,
-	HowIWorkPhase,
-	Interests,
-	PHASE_IDS,
-	type Phase,
-	SocialLinks,
-	UserAvatar,
-} from "@/lib/data";
+	Atom,
+	type CarouselSlide,
+	Flex,
+	ImageCarousel,
+	Text,
+} from "@manoj-malviya-96/atom";
+import { getBlob } from "@/lib/helper";
 import {
 	EmText,
 	Eyebrow,
-	Link,
 	Page,
 	PageHeroHeader,
-	PageHeroSection,
 	PageSection,
 } from "@/lib/shared";
 
 export default function AboutPage() {
 	return (
 		<Page>
-			<PageHeroSection padding={{ y: "sm" }}>
-				<PageHeroHeader>
-					<Eyebrow>About</Eyebrow>
-					<Text.Heading as="h1">
-						The <EmText>Person</EmText>
-					</Text.Heading>
-				</PageHeroHeader>
-			</PageHeroSection>
-			<Story />
-			<HowIWork />
-			<Elsewhere />
+			<PageHeroHeader>
+				<Eyebrow>About</Eyebrow>
+				<Text.Heading as="h1">
+					The <EmText>Person</EmText>
+				</Text.Heading>
+			</PageHeroHeader>
+			<PageSection gap="md">
+				<Flex direction="row" gap="lg" hAlign="start">
+					<Flex direction="col" gap="md">
+						<Text.Body>
+							Hello there again! Wow, you really are stalking me — fine, here's
+							my story.
+							<br /> <br />I was born in Udaipur, a small town in India, and
+							grew up like most middle-class kids do: pressure, ideal-life
+							aspirations, and a stubborn streak of passion. Somewhere along the
+							way I picked up a habit of solving problems in an elegant,
+							thorough way — no half measures. I still aim to be efficient about
+							it, though.
+							<br /> <br />
+							<strong>Controversial opinions</strong>, since you asked: maths is
+							the language of the universe, sleep is everything, AI is a tool,
+							20% of the work drives 80% of the impact, and the butterfly effect
+							is real.
+							<br /> <br />
+							Outside of work I'm doing the same thing at a smaller scale —
+							generative design, real-time rendering, and robotics keep my hands
+							busy on the technical side; DJing part-time, 3D printing, and
+							photography keep them busy everywhere else.
+						</Text.Body>
+					</Flex>
+				</Flex>
+			</PageSection>
+			<Atom margin={{ x: "auto" }} width="md" padding="lg">
+				<ImageCarousel slides={Slides} aria-label="Slides" ratio="portrait" />
+			</Atom>
 		</Page>
 	);
 }
 
-function Story() {
-	return (
-		<PageSection gap="md">
-			<Flex direction="row" gap="lg" hAlign="start">
-				<Flex direction="col" gap="md">
-					<Text.Body>
-						I'm {CurrentStatus.toLowerCase()}, based in Berlin. I ended up here
-						by chasing the same question through a few very different
-						industries: what happens when the interface between hardware and
-						software is the part nobody wants to own. CAD kernels,
-						patient-monitoring firmware, rendering pipelines that miss frame
-						budget — the domains changed, the itch didn't.
-					</Text.Body>
-					<Text.Body>
-						Outside of work I'm still doing the same thing at a smaller scale:{" "}
-						{Interests.join(", ").toLowerCase()} on the technical side,{" "}
-						{Hobbies.join(" and ").toLowerCase()} on the side that has nothing
-						to do with a keyboard.
-					</Text.Body>
-				</Flex>
-				<Image
-					as={NextImage}
-					src={UserAvatar}
-					alt="Manoj Malviya"
-					style={{ width: "12rem", height: "12rem", objectFit: "contain" }}
-				/>
-			</Flex>
-		</PageSection>
-	);
-}
-
-function HowIWork() {
-	return (
-		<PageSection gap="lg">
-			<Text.Heading>How I work.</Text.Heading>
-			<Grid columns={2} className="loop-grid" gap="lg" padding="sm">
-				{PHASE_IDS.map((id, index) => (
-					<PhaseCol key={id} index={index} {...HowIWorkPhase[id]} />
-				))}
-			</Grid>
-		</PageSection>
-	);
-}
-
-function PhaseCol({ index, label, copy }: { index: number } & Phase) {
-	return (
-		<Flex as="span" enter="rise" direction="col" gap="sm">
-			<Text.Overline mono>{String(index + 1).padStart(2, "0")}</Text.Overline>
-			<Text.Title>{label}</Text.Title>
-			<Text.Body ink="muted">{copy}</Text.Body>
-		</Flex>
-	);
-}
-
-function Elsewhere() {
-	return (
-		<PageSection gap="md">
-			<Text.Heading>Elsewhere.</Text.Heading>
-			<Text.Body ink="muted">
-				<Link url={SocialLinks.Linktree} openNewTab>
-					linktr.ee/manoj_malviya
-				</Link>{" "}
-				has the rest of the links in one place.
-			</Text.Body>
-		</PageSection>
-	);
-}
+const Slides: CarouselSlide[] = [
+	{
+		alt: "DJing",
+		src: getBlob("about-1.jpg"),
+	},
+	{
+		alt: "DJing",
+		src: getBlob("about-2.jpg"),
+	},
+	{
+		alt: "App development in Swift UI at my fav place - called any cafe in world",
+		src: getBlob("about-3.jpg"),
+	},
+	{
+		alt: "Before AI, there was whiteboard and a nightowl solving complex linear algebra to get the patent",
+		src: getBlob("about-5.jpg"),
+	},
+	{
+		alt: "Hypothesised a true agentic workflow for better problem solving in Oct 2019",
+		src: getBlob("about-6.jpg"),
+	},
+];

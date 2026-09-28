@@ -1,18 +1,17 @@
+import { memoizedOnce } from "@/lib/helper";
+
 type Config = {
 	scholarTargetUrl: string;
 };
 
-let cached: Config | null = null;
+const getConfig: () => Config = memoizedOnce(() => ({
+	scholarTargetUrl: required(
+		"NEXT_PUBLIC_SCHOLAR_API",
+		process.env.NEXT_PUBLIC_SCHOLAR_API,
+	),
+}));
 
-export default function getConfig(): Config {
-	cached ??= {
-		scholarTargetUrl: required(
-			"NEXT_PUBLIC_SCHOLAR_API",
-			process.env.NEXT_PUBLIC_SCHOLAR_API,
-		),
-	};
-	return cached;
-}
+export default getConfig;
 
 /**
  * Reads the literal `process.env.NEXT_PUBLIC_*` member at the call site rather

@@ -7,14 +7,6 @@ import iitjLogo from "./iitj.png";
 import noahLabsLogo from "./noahlabs-logo.png";
 import pennStateLogo from "./pennstate-blue.png";
 
-const ORGANIZATION_IDS = [
-	"noah-labs",
-	"flow-key",
-	"form-labs",
-	"penn-state",
-	"iit-j",
-] as const;
-
 export type OrganizationId = ValuesOf<typeof ORGANIZATION_IDS>;
 
 export type Organization = {
@@ -50,3 +42,11 @@ export const Organizations = {
 		logo: iitjLogo,
 	},
 } satisfies Record<OrganizationId, Organization>;
+
+const ORGANIZATION_IDS = [
+	"noah-labs",
+	"flow-key",
+	"form-labs",
+	"penn-state",
+	"iit-j",
+] as const;

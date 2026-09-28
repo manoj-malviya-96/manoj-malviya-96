@@ -1,24 +1,23 @@
-import {
-	Atom,
-	assertNever,
-	Badge,
-	Flex,
-	Grid,
-	Text,
-} from "@manoj-malviya-96/atom";
+import { Atom, assertNever, Badge, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
 	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import type { ProjectLink, WorkItem } from "@/lib/data";
-import { formatDates, isProjectInProgress } from "@/lib/data/projects";
+import {
+	formatDates,
+	getAttributes,
+	type ProjectLink,
+	type WorkItem,
+} from "@/lib/data";
+import { Iphone } from "@/lib/iphone_mockup";
 import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 import type { MediaSource } from "@/lib/types";
 
 export default function WorkCard({ item }: { item: WorkItem }) {
+	const attributes = getAttributes(item);
 	return (
 		<Flex
 			as="section"
@@ -34,56 +33,32 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			<Flex direction="col" gap="sm" hAlign="start">
 				<Flex direction="row" gap="sm" vAlign="center" wrap>
 					<Text.Title>{item.title}</Text.Title>
-					{item.kind === "project" ? (
-						<Text.Caption ink="muted">
-							{formatDates(item.startsAt, item.endsAt)}
-						</Text.Caption>
-					) : (
-						<Text.Caption ink="muted">{item.dates}</Text.Caption>
-					)}
-					{item.kind === "project" && item.isNew && (
-						<Badge ink="green">New</Badge>
-					)}
-					{item.kind === "project" && isProjectInProgress(item) && (
+					<Text.Caption ink="muted">{formatDates(item)}</Text.Caption>
+					{attributes.includes("new") && <Badge ink="green">New</Badge>}
+					{attributes.includes("in_progress") && (
 						<Badge ink="orange">In progress</Badge>
 					)}
 				</Flex>
 				<CardTags item={item} />
 			</Flex>
 
-			<Flex direction="row" gap="md" hAlign="start" stack>
-				<Flex as="span" vAlign="start" gap="lg" direction="col">
-					<Text.Body>{item.summary}</Text.Body>
-					<WorkLinks item={item} />
-				</Flex>
-				{item.kind === "project" && item.media && item.media.length > 0 && (
-					<ProjectMedia media={item.media} />
-				)}
+			<Flex as="span" vAlign="start" gap="sm" direction="col">
+				<Text.Body>{item.summary}</Text.Body>
+				<WorkLinks item={item} />
 			</Flex>
+			{item.kind === "project" && item.media && item.media.length > 0 && (
+				<ProjectMedia media={item.media} />
+			)}
 		</Flex>
 	);
 }
 
 function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
-	if (media.length > 1) {
-		return (
-			<Grid
-				columns={2}
-				gap="sm"
-				width="full"
-				enter="rise"
-				// No Atom token for a half-row share; basis is ignored once the row stacks.
-				style={{ flex: "0 0 50%" }}
-			>
-				{media.map((item, i) => (
-					<Media key={i} media={item} layout="natural" />
-				))}
-			</Grid>
-		);
-	}
 	return (
-		<Flex direction="row" hAlign="center" width="full">
-			<MediaMockup media={media[0]} />
+		<Flex direction="row" hAlign="center" gap="md" width="full">
+			{media.map((item, i) => (
+				<MediaMockup media={item} key={i} />
+			))}
 		</Flex>
 	);
 }
@@ -93,14 +68,20 @@ function MediaMockup({ media }: { media: MediaSource }) {
 		case undefined:
 			return (
 				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
-					<Media media={media} />
+					<Media {...media} />
 				</Atom>
 			);
 		case "macbook":
 			return (
 				<Macbook>
-					<Media media={media} layout="fill" />
+					<Media {...media} />
 				</Macbook>
+			);
+		case "iphone":
+			return (
+				<Iphone>
+					<Media {...media} />
+				</Iphone>
 			);
 		default:
 			return assertNever(media.mockup);
@@ -126,30 +107,34 @@ function CardTags({ item }: { item: WorkItem }) {
 }
 
 function WorkLinks({ item }: { item: WorkItem }) {
-	if (item.kind === "blog") {
-		return (
-			<Flex direction="row" gap="sm" wrap>
-				<Link.Button
-					url={item.href}
-					openNewTab
-					color="primary"
-					label="Read on Medium"
-					size="sm"
-					icon={<IconMedium size="sm" />}
-				/>
-			</Flex>
-		);
+	switch (item.kind) {
+		case "blog":
+			return (
+				<Flex direction="row" gap="sm" wrap>
+					<Link.Button
+						url={item.href}
+						openNewTab
+						color="primary"
+						label="Read on Medium"
+						size="sm"
+						icon={<IconMedium size="sm" />}
+					/>
+				</Flex>
+			);
+		case "project": {
+			const { primary, others } = item.links;
+			return (
+				<Flex direction="row" gap="sm" wrap>
+					<ProjectLinkButton link={primary} color="primary" />
+					{others.map((link) => (
+						<ProjectLinkButton key={link.href} link={link} />
+					))}
+				</Flex>
+			);
+		}
+		default:
+			return assertNever(item);
 	}
-
-	const { primary, others } = item.links;
-	return (
-		<Flex direction="row" gap="sm" wrap>
-			<ProjectLinkButton link={primary} color="primary" />
-			{others.map((link) => (
-				<ProjectLinkButton key={link.href} link={link} />
-			))}
-		</Flex>
-	);
 }
 
 function ProjectLinkButton({
