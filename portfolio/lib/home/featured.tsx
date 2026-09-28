@@ -15,10 +15,9 @@ export default function Featured() {
 function WorkHighlightCard({ item }: { item: ProjectSummary }) {
 	return (
 		<Link key={item.id} url={`/work#${item.id}`}>
-			<Flex direction="col" gap="sm" padding="lg" height="full">
+			<Flex direction="col" gap="sm" height="full">
 				{item.media?.[0] && <Media media={item.media[0]} />}
 				<Text.Title>{item.title}</Text.Title>
-				<Text.Body ink="muted">{item.summary}</Text.Body>
 			</Flex>
 		</Link>
 	);

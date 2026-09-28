@@ -224,4 +224,21 @@ export const PageSection = withDefaults(AtomSection)({
 	width: "content",
 	margin: { x: "auto" },
 });
+export const PageSectionCard = withDefaults(PageSection)({
+	gap: "md",
+	bg: "surface",
+	padding: "xl",
+	radius: "lg",
+	hAlign: "center",
+});
+
+// Todo: [ATOM] should be good helper
+export const ButtonRow = withDefaults(Flex)({
+	as: "span",
+	direction: "row",
+	gap: "sm",
+	vAlign: "center",
+	hAlign: "start",
+	wrap: true,
+});
 export const EmText = withDefaults(Text.Italic)({ ink: "muted" });

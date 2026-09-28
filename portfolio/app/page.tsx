@@ -7,10 +7,11 @@ import {
 	TypewriterText,
 } from "@manoj-malviya-96/atom";
 import type { ComponentPropsWithoutRef } from "react";
-import { CurrentStatus, EmailAddress, Hobbies, RoleTagline } from "@/lib/data";
+import { EmailAddress, Hobbies } from "@/lib/data";
 import Featured from "@/lib/home/featured";
 import ShowAndTell from "@/lib/home/show_tell";
 import {
+	ButtonRow,
 	EmText,
 	Eyebrow,
 	Link,
@@ -18,55 +19,60 @@ import {
 	PageHeroHeader,
 	PageHeroSection,
 	PageSection,
+	PageSectionCard,
 } from "@/lib/shared";
 
 export default function Landing() {
 	return (
 		<Page>
-			<Hero />
-			<FeaturedWork />
-			<FinalCTA />
-		</Page>
-	);
-}
-
-function Hero() {
-	return (
-		<PageHeroSection id="home-hero" vAlign="center" padding={{ y: "xl" }}>
-			<PageHeroHeader>
-				<Eyebrow>Berlin, DE</Eyebrow>
-				<Text.Hero className="hero-title">
-					Manoj
-					<EmText> Malviya </EmText>
-				</Text.Hero>
-			</PageHeroHeader>
-			<Text.Body width="lg">
-				I'm a {RoleTagline} — currently {CurrentStatus}.
-			</Text.Body>
-			<Text.Body ink="muted" width="md">
+			<PageHeroSection id="home-hero" vAlign="center" padding={{ y: "xl" }}>
+				<PageHeroHeader>
+					<Eyebrow>Berlin, DE</Eyebrow>
+					<Text.Hero className="hero-title">
+						Manoj
+						<EmText> Malviya </EmText>
+					</Text.Hero>
+				</PageHeroHeader>
+				<Text.Body width="md">
+					Thank you for visiting my dungeon. I am Manoj Malviya, a lead software
+					engineer at a healthcare startup. <br /> I am using this website as a
+					tool to showcase my projects; my thoughts; my interests and my career
+					history all in once place.
+				</Text.Body>
 				<TypewriterWrapped prefix="Also into" words={Hobbies} />
-			</Text.Body>
-			<Flex
-				as="span"
-				direction="row"
-				gap="sm"
-				vAlign="center"
-				hAlign="start"
-				wrap
-			>
+				<ButtonRow>
+					<MagneticContainer>
+						<Link.Button
+							url="/work"
+							color="primary"
+							size="sm"
+							label="View work →"
+						/>
+					</MagneticContainer>
+					<MagneticContainer>
+						<Link.Button url="/about" size="sm" label="About me" />
+					</MagneticContainer>
+				</ButtonRow>
+			</PageHeroSection>
+			<PageSection id="home-feature" gap="lg">
+				<Flex as="span" direction="row" vAlign="center" hAlign="between">
+					<Text.Heading>Featured</Text.Heading>
+					<Link url="/work">
+						<Text.Body ink="muted">View all Projects</Text.Body>
+					</Link>
+				</Flex>
+				<Featured />
+				<ShowAndTell />
+			</PageSection>
+			<PageSectionCard id="home-cta">
+				<Text.Heading as="h2" align="center">
+					Interested in <EmText>coffee</EmText> with me ?
+				</Text.Heading>
 				<MagneticContainer>
-					<Link.Button
-						url="/work"
-						color="primary"
-						size="sm"
-						label="View work →"
-					/>
+					<Link.Button url={EmailAddress} color="primary" label="Say hello →" />
 				</MagneticContainer>
-				<MagneticContainer>
-					<Link.Button url="/about" size="sm" label="About me" />
-				</MagneticContainer>
-			</Flex>
-		</PageHeroSection>
+			</PageSectionCard>
+		</Page>
 	);
 }
 
@@ -77,7 +83,7 @@ function TypewriterWrapped({
 	...rest
 }: ComponentPropsWithoutRef<typeof TypewriterText>) {
 	return (
-		<>
+		<Text.Body ink="muted" width="md">
 			<span aria-hidden="true">
 				<TypewriterText
 					{...(prefix !== undefined && { prefix })}
@@ -86,45 +92,6 @@ function TypewriterWrapped({
 				/>
 			</span>
 			<span className="sr-only">{`${prefix} ${Hobbies.join(", ")}`}.</span>
-		</>
-	);
-}
-
-function FeaturedWork() {
-	return (
-		<PageSection id="home-feature" gap="lg">
-			<Flex as="span" direction="row" vAlign="center" hAlign="between">
-				<Text.Heading>Featured Work</Text.Heading>
-				<Link url="/work">
-					<Text.Body ink="muted">View all Work</Text.Body>
-				</Link>
-			</Flex>
-			<Featured />
-			<ShowAndTell />
-		</PageSection>
-	);
-}
-
-function FinalCTA() {
-	return (
-		<PageSection
-			id="home-cta"
-			gap="sm"
-			bg="surface"
-			padding="xl"
-			radius="lg"
-			hAlign="center"
-		>
-			<Text.Heading as="h2" align="center">
-				Got a complex <EmText>problem?</EmText>
-			</Text.Heading>
-			<Text.Caption ink="muted" align="center" width="sm">
-				I'm selective. If it's genuinely interesting and the constraints are
-				real, let's talk.
-			</Text.Caption>
-			<MagneticContainer>
-				<Link.Button url={EmailAddress} color="primary" label="Say hello →" />
-			</MagneticContainer>
-		</PageSection>
+		</Text.Body>
 	);
 }

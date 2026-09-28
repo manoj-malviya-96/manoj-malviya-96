@@ -38,15 +38,14 @@ const currentExperience = Experiences[currentExperienceId];
 
 export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
 
-// Same phrase everywhere the role gets summarized in one line — hero, layout metadata.
-export const RoleTagline =
-	"senior product engineer building health-tech, CAD, and real-time systems";
-
 export const Interests: readonly string[] = [
 	"Generative design",
 	"Real-time rendering",
 	"Robotics",
 ];
 
-// Hero typewriter — hobbies only, not job titles (those live in RoleTagline/CurrentStatus).
-export const Hobbies: readonly string[] = ["Part-time DJ", "3D Printing"];
+export const Hobbies: readonly string[] = [
+	"Part-time DJ",
+	"3D Printing",
+	"Photography",
+];
