@@ -1,5 +1,3 @@
-import type { StaticImageData as LocalImage } from "next/image";
-
 type Month =
 	| "01"
 	| "02"
@@ -19,11 +17,13 @@ export type ExternalURL = `https://${string}`;
 
 type MediaMockup = "macbook";
 
-export type MediaSource =
-	| {
-			kind: "image";
-			src: LocalImage | string;
-			alt: string;
-			mockup?: MediaMockup;
-	  }
-	| { kind: "video"; src: string; alt: string; mockup?: MediaMockup };
+// width/height are the file's intrinsic pixels: remote files carry no
+// build-time size, and knowing the ratio up front reserves the box before load.
+export type MediaSource = {
+	kind: "image" | "video";
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+	mockup?: MediaMockup;
+};

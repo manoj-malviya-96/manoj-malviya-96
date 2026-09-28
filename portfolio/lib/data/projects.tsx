@@ -1,6 +1,6 @@
 import { assertNever, Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
-import type { ValuesOf } from "@/lib/helper";
+import { getBlob, type ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
 const AllProjectIds = [
@@ -46,11 +46,15 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "image",
 				src: getBlob("wrapped-1.png"),
+				width: 1206,
+				height: 2622,
 				alt: "Wrapped's photo recap slide.",
 			},
 			{
 				kind: "image",
 				src: getBlob("wrapped-2.png"),
+				width: 1206,
+				height: 2622,
 				alt: "Wrapped's stats slide for a past year.",
 			},
 		],
@@ -91,6 +95,8 @@ export const Projects: Record<ProjectId, Project> = {
 				kind: "video",
 				alt: "Atom framework demo",
 				src: getBlob("atom.webm"),
+				width: 3390,
+				height: 2082,
 				mockup: "macbook",
 			},
 		],
@@ -116,6 +122,8 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "video",
 				src: getBlob("muviz.webm"),
+				width: 3594,
+				height: 2052,
 				alt: "Muviz reacting to a track in real time.",
 			},
 		],
@@ -150,6 +158,8 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "video",
 				src: getBlob("honeycomb_demo.webm"),
+				width: 1920,
+				height: 1080,
 				alt: "A honeycomb lattice generated and rendered in VTK.",
 			},
 		],
@@ -184,6 +194,8 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "video",
 				src: getBlob("pixel-opt.webm"),
+				width: 320,
+				height: 240,
 				alt: "A topology optimization converging on a solution.",
 			},
 		],
@@ -221,6 +233,8 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "video",
 				src: getBlob("blackhole.webm"),
+				width: 640,
+				height: 480,
 				alt: "Cover art for the black hole renderer.",
 			},
 		],
@@ -255,6 +269,8 @@ export const Projects: Record<ProjectId, Project> = {
 			{
 				kind: "image",
 				src: "https://github.com/user-attachments/assets/d8adc197-ee42-406b-bed8-8892df091d47",
+				width: 2612,
+				height: 1392,
 				alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
 			},
 		],
@@ -443,7 +459,3 @@ export const RankedProjects: readonly ProjectSummary[] =
 		if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
-
-function getBlob(filename: string) {
-	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
-}

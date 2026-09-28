@@ -5,11 +5,16 @@ import {
 	Section as AtomSection,
 	Flex,
 	Text,
-	Video,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import {
+	type ComponentProps,
+	type CSSProperties,
+	type ReactNode,
+	useEffect,
+	useRef,
+} from "react";
 import { withDefaults } from "@/lib/helper";
 import type { MediaSource } from "@/lib/types";
 
@@ -82,84 +87,87 @@ function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
 
 export const Link = Object.assign(LinkInline, { Button: LinkButton });
 
+type MediaProps = MediaSource & {
+	// Rendered width per viewport, so next/image picks the smallest file that
+	// stays sharp. Callers in narrower slots should pass their own.
+	sizes?: string;
+};
+
+// Sized entirely by `.media-fit` in globals.css: full parent width, capped by
+// the parent's `--media-max-h`, always at the file's own ratio — never cropped.
 export function Media({
-	media,
-	layout = "frame",
-}: {
-	media: MediaSource;
-	// frame: fixed 16:9 box. fill: the parent's own box, like the MacBook
-	// mockup's screen cutout. natural: full width at the image's own ratio.
-	layout?: "frame" | "fill" | "natural";
-}) {
-	const stretch = layout === "fill";
-	if (media.kind === "video") {
+	kind,
+	src,
+	alt,
+	width,
+	height,
+	sizes = "(min-width: 768px) 50vw, 100vw",
+}: MediaProps) {
+	const ratio: CSSProperties & Record<`--${string}`, number> = {
+		"--media-w": width,
+		"--media-h": height,
+	};
+	if (kind === "video")
 		return (
-			<Video
-				src={media.src}
-				aria-label={media.alt}
-				fit="cover"
-				ratio="video"
-				radius="md"
-				autoPlay
-				preload="none"
-				muted
-				loop
-				role="img"
-				playsInline
-				controls={false}
-				{...(stretch && {
-					style: { width: "100%", height: "100%", aspectRatio: "auto" },
-				})}
+			<InViewVideo
+				src={src}
+				alt={alt}
+				width={width}
+				height={height}
+				style={ratio}
 			/>
 		);
-	}
-	if (layout === "natural") {
-		// Remote blobs carry no intrinsic size; 0×0 lets CSS size it from the loaded image.
-		return (
-			<NextImage
-				src={media.src}
-				alt={media.alt}
-				width={0}
-				height={0}
-				sizes="(min-width: 768px) 25vw, 50vw"
-				style={{
-					width: "100%",
-					height: "auto",
-					borderRadius: "var(--radius-md)",
-				}}
-			/>
-		);
-	}
-	// Every src is now a remote blob URL with no build-time intrinsic size, so
-	// next/image can only lay it out via `fill` — which needs a sized,
-	// positioned ancestor. Own that box here instead of relying on callers to
-	// remember to provide one (they didn't, hence images rendering viewport-sized).
-	// Non-mockup images sit on their own next to text, so they're shown in full
-	// (`contain`) rather than cropped to a fixed ratio; `stretch` images fill a
-	// mockup's screen cutout, where `cover` is the correct look.
 	return (
-		<div
-			style={
-				stretch
-					? { position: "relative", width: "100%", height: "100%" }
-					: {
-							position: "relative",
-							width: "100%",
-							aspectRatio: "16 / 9",
-							background: "var(--color-surface)",
-							borderRadius: "var(--radius-md)",
-							overflow: "hidden",
-						}
-			}
-		>
-			<NextImage
-				src={media.src}
-				alt={media.alt}
-				fill
-				sizes="(min-width: 768px) 50vw, 100vw"
-				style={{ objectFit: stretch ? "cover" : "contain" }}
-			/>
-		</div>
+		<NextImage
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			sizes={sizes}
+			loading="eager"
+			className="media-fit"
+			style={ratio}
+		/>
+	);
+}
+
+// Plays only while on screen: every card autoplaying meant every video on the
+// page downloaded at once. preload="none" defers the fetch to first view.
+function InViewVideo({
+	src,
+	alt,
+	width,
+	height,
+	style,
+}: Pick<MediaSource, "src" | "alt" | "width" | "height"> & {
+	style: CSSProperties;
+}) {
+	const ref = useRef<HTMLVideoElement>(null);
+	useEffect(() => {
+		const video = ref.current;
+		if (!video) return;
+		const observer = new IntersectionObserver(([entry]) => {
+			if (!entry?.isIntersecting) return video.pause();
+			// Rejects when a pause interrupts the pending play — expected while scrolling past.
+			video.play().catch(() => {});
+		});
+		observer.observe(video);
+		return () => observer.disconnect();
+	}, []);
+	return (
+		<video
+			ref={ref}
+			src={src}
+			aria-label={alt}
+			width={width}
+			height={height}
+			className="media-fit"
+			style={style}
+			preload="none"
+			muted
+			loop
+			playsInline
+		/>
 	);
 }
 

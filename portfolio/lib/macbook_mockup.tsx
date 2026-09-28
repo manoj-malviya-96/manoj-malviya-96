@@ -52,7 +52,10 @@ export function Macbook({ children }: { children: ReactNode }) {
 						width="1481.84"
 						height="909.687"
 					>
-						<div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+						<div
+							className="media-slot"
+							style={{ width: "100%", height: "100%" }}
+						>
 							{children}
 						</div>
 					</foreignObject>

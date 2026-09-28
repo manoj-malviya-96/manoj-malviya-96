@@ -30,3 +30,7 @@ export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
 	return `${MONTH_ABBREVIATIONS[Number.parseInt(month, 10) - 1]} ${year}`;
 }
+
+export function getBlob(filename: string) {
+	return `https://bpnrfzeuxj6iqkm6.public.blob.vercel-storage.com/${filename}`;
+}
