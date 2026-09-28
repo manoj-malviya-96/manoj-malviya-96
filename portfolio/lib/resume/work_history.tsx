@@ -30,6 +30,13 @@ export default function WorkHistory() {
 	);
 }
 
+type ExperienceGroup = {
+	organization: OrganizationId;
+	experiences: ExperienceId[];
+};
+
+const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);
+
 function groupByOrganization(ids: readonly ExperienceId[]): ExperienceGroup[] {
 	const groups: ExperienceGroup[] = [];
 	for (const id of ids) {
@@ -112,10 +119,3 @@ function ExperienceSkills({ skills }: { skills: Experience["skills"] }) {
 		</List>
 	);
 }
-
-type ExperienceGroup = {
-	organization: OrganizationId;
-	experiences: ExperienceId[];
-};
-
-const EXPERIENCE_GROUPS = groupByOrganization(EXPERIENCE_BY_RECENCY);

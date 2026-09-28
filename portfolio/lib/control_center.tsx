@@ -46,6 +46,13 @@ export default function AppControlCenter() {
 	);
 }
 
+const NAV_LINKS = [
+	{ url: "/", label: "Home", Icon: IconHouse },
+	{ url: "/work", label: "Work", Icon: IconRocket },
+	{ url: "/about", label: "About", Icon: IconUser },
+	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
+] as const;
+
 function Logo({
 	size = 64,
 	title = "Manoj Malviya",
@@ -92,10 +99,3 @@ function Logo({
 		</svg>
 	);
 }
-
-const NAV_LINKS = [
-	{ url: "/", label: "Home", Icon: IconHouse },
-	{ url: "/work", label: "Work", Icon: IconRocket },
-	{ url: "/about", label: "About", Icon: IconUser },
-	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
-] as const;

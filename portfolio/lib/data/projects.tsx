@@ -31,26 +31,6 @@ export type Project = {
 
 export type ProjectSummary = Project & { id: ProjectId };
 
-function showProject(id: ProjectId) {
-	switch (id) {
-		case "wrapped":
-		case "atom":
-		case "topopt_py":
-		case "honeycomb":
-		case "muviz":
-		case "blackhole":
-		case "ev_sim":
-			return true;
-		case "mesha":
-			return false;
-		default:
-			assertNever(id);
-	}
-}
-
-const isLatest = (project: Project) =>
-	project.startsAt.getTime() === LATEST_STARTED_AT;
-
 type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
 type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
 type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
@@ -461,12 +441,35 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 
 const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
 
-export const RankedProjects: readonly ProjectSummary[] =
-	VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort((a, b) => {
-		if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
-		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
-	});
+export const RankedProjects: readonly ProjectSummary[] = rankProjects();
 
-const LATEST_STARTED_AT = Math.max(
-	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-);
+function showProject(id: ProjectId) {
+	switch (id) {
+		case "wrapped":
+		case "atom":
+		case "topopt_py":
+		case "honeycomb":
+		case "muviz":
+		case "blackhole":
+		case "ev_sim":
+			return true;
+		case "mesha":
+			return false;
+		default:
+			assertNever(id);
+	}
+}
+
+function rankProjects(): readonly ProjectSummary[] {
+	const latestStartedAt = Math.max(
+		...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+	);
+	const isLatest = (project: Project) =>
+		project.startsAt.getTime() === latestStartedAt;
+	return VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort(
+		(a, b) => {
+			if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
+			return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
+		},
+	);
+}

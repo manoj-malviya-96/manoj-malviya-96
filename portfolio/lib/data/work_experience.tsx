@@ -156,22 +156,6 @@ export const Experiences: Record<ExperienceId, Experience> = {
 	},
 };
 
-function Highlight({ children }: { children: ReactNode }) {
-	return <Text.Body as="span">{children}</Text.Body>;
-}
-
-function Bullets({ points }: { points: readonly ReactNode[] }) {
-	return (
-		<List direction="col" gap="xs">
-			{points.map((point, i) => (
-				<li key={i}>
-					<Text.Body>{point}</Text.Body>
-				</li>
-			))}
-		</List>
-	);
-}
-
 type EmploymentType = "Full-time" | "Part-time" | "Internship" | "Contract";
 
 const EXPERIENCE_IDS = [
@@ -202,3 +186,19 @@ const earliestStartYear = Math.min(
 
 export const YearsOfExperience: number =
 	new Date().getFullYear() - earliestStartYear;
+
+function Highlight({ children }: { children: ReactNode }) {
+	return <Text.Body as="span">{children}</Text.Body>;
+}
+
+function Bullets({ points }: { points: readonly ReactNode[] }) {
+	return (
+		<List direction="col" gap="xs">
+			{points.map((point, i) => (
+				<li key={i}>
+					<Text.Body>{point}</Text.Body>
+				</li>
+			))}
+		</List>
+	);
+}

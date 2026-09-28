@@ -31,6 +31,21 @@ export type WorkItem =
 
 export type WorkAttribute = "new" | "in_progress";
 
+const BLOG_ITEMS: readonly WorkItem[] = (Object.keys(Blogs) as BlogId[]).map(
+	(id) => ({ kind: "blog" as const, id, ...Blogs[id] }),
+);
+
+const PROJECT_ITEMS: readonly WorkItem[] = RankedProjects.map((project) => ({
+	kind: "project" as const,
+	...project,
+}));
+
+export const WorkItems: readonly WorkItem[] = [...PROJECT_ITEMS, ...BLOG_ITEMS];
+
+const LATEST_STARTED_AT = Math.max(
+	...WorkItems.map((item) => startedAt(item).getTime()),
+);
+
 function startedAt(item: WorkItem): Date {
 	switch (item.kind) {
 		case "project":
@@ -52,18 +67,3 @@ function isInProgress(item: WorkItem): boolean {
 			return assertNever(item);
 	}
 }
-
-const BLOG_ITEMS: readonly WorkItem[] = (Object.keys(Blogs) as BlogId[]).map(
-	(id) => ({ kind: "blog" as const, id, ...Blogs[id] }),
-);
-
-const PROJECT_ITEMS: readonly WorkItem[] = RankedProjects.map((project) => ({
-	kind: "project" as const,
-	...project,
-}));
-
-export const WorkItems: readonly WorkItem[] = [...PROJECT_ITEMS, ...BLOG_ITEMS];
-
-const LATEST_STARTED_AT = Math.max(
-	...WorkItems.map((item) => startedAt(item).getTime()),
-);

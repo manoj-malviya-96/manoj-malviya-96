@@ -8,6 +8,10 @@ export function useGithubContributionsQuery() {
 	});
 }
 
+const githubContributionsResponseSchema = z.object({
+	total: z.record(z.string(), z.number()),
+});
+
 async function fetchGithubContributions(): Promise<number> {
 	const response = await fetch("/api/github", {
 		method: "GET",
@@ -21,7 +25,3 @@ async function fetchGithubContributions(): Promise<number> {
 	if (lastYear === undefined) throw new Error("No lastYear total in response");
 	return lastYear;
 }
-
-const githubContributionsResponseSchema = z.object({
-	total: z.record(z.string(), z.number()),
-});

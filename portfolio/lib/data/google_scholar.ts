@@ -8,6 +8,37 @@ export function useGoogleScholarQuery() {
 	});
 }
 
+type ScholarPublication = {
+	title: string;
+	authors: string;
+	venue: string;
+	citations: number;
+	year: number;
+};
+
+interface ScholarMetrics {
+	citations: number;
+	hIndex: number;
+	publications: number;
+	recentYearCitations: number;
+	citationsPerYear: { [year: string]: number };
+	papers: readonly ScholarPublication[];
+}
+
+const googleScholarResponseSchema = z.object({
+	total_citations: z.number(),
+	citations_per_year: z.record(z.string(), z.number()),
+	publications: z.array(
+		z.object({
+			title: z.string(),
+			authors: z.string(),
+			venue: z.string(),
+			citations: z.number(),
+			year: z.number(),
+		}),
+	),
+});
+
 function computeHIndex(sortedCitations: number[]): number {
 	let hIndex = 0;
 	for (let i = 0; i < sortedCitations.length; i++) {
@@ -52,34 +83,3 @@ async function fetchScholarMetrics(): Promise<ScholarMetrics> {
 		papers: data.publications,
 	};
 }
-
-type ScholarPublication = {
-	title: string;
-	authors: string;
-	venue: string;
-	citations: number;
-	year: number;
-};
-
-interface ScholarMetrics {
-	citations: number;
-	hIndex: number;
-	publications: number;
-	recentYearCitations: number;
-	citationsPerYear: { [year: string]: number };
-	papers: readonly ScholarPublication[];
-}
-
-const googleScholarResponseSchema = z.object({
-	total_citations: z.number(),
-	citations_per_year: z.record(z.string(), z.number()),
-	publications: z.array(
-		z.object({
-			title: z.string(),
-			authors: z.string(),
-			venue: z.string(),
-			citations: z.number(),
-			year: z.number(),
-		}),
-	),
-});

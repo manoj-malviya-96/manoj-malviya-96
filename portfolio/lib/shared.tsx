@@ -146,6 +146,48 @@ export const ButtonRow = withDefaults(Flex)({
 });
 export const EmText = withDefaults(Text.Italic)({ ink: "muted" });
 
+type Href = ComponentProps<typeof NextLink>["href"];
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+	? Omit<T, K>
+	: never;
+
+type LinkButtonProps = {
+	url: Href;
+	label: string;
+	icon?: NonNullable<ReactNode>;
+	color?: "primary" | "secondary";
+	size?: "sm" | "md" | "lg";
+	openNewTab?: boolean;
+	rel?: string;
+	"aria-label"?: string;
+};
+
+type MediaProps = MediaSource & {
+	/**
+	 * Rendered width per viewport, so next/image picks the smallest file that
+	 * stays sharp. Callers in narrower slots should pass their own.
+	 */
+	sizes?: string;
+	/**
+	 * Fills and crops to its positioned parent instead of keeping the file's own
+	 * aspect ratio — for a parent that already defines the shape, e.g. <Backdrop.Media>.
+	 */
+	fill?: boolean;
+};
+
+type SectionHeaderProps = {
+	eyebrow?: ReactNode;
+	title?: ReactNode;
+	caption?: ReactNode;
+};
+
+type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
+
+type PageHeroHeaderProps = Omit<
+	ComponentProps<typeof Flex>,
+	"direction" | "gap"
+>;
+
 function LinkInline({ url, ...rest }: LinkProps) {
 	if (typeof url === "object" || url.startsWith("/"))
 		return (
@@ -234,45 +276,3 @@ function InViewVideo({
 		/>
 	);
 }
-
-type Href = ComponentProps<typeof NextLink>["href"];
-type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
-	? Omit<T, K>
-	: never;
-
-type LinkButtonProps = {
-	url: Href;
-	label: string;
-	icon?: NonNullable<ReactNode>;
-	color?: "primary" | "secondary";
-	size?: "sm" | "md" | "lg";
-	openNewTab?: boolean;
-	rel?: string;
-	"aria-label"?: string;
-};
-
-type MediaProps = MediaSource & {
-	/**
-	 * Rendered width per viewport, so next/image picks the smallest file that
-	 * stays sharp. Callers in narrower slots should pass their own.
-	 */
-	sizes?: string;
-	/**
-	 * Fills and crops to its positioned parent instead of keeping the file's own
-	 * aspect ratio — for a parent that already defines the shape, e.g. <Backdrop.Media>.
-	 */
-	fill?: boolean;
-};
-
-type SectionHeaderProps = {
-	eyebrow?: ReactNode;
-	title?: ReactNode;
-	caption?: ReactNode;
-};
-
-type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
-
-type PageHeroHeaderProps = Omit<
-	ComponentProps<typeof Flex>,
-	"direction" | "gap"
->;
