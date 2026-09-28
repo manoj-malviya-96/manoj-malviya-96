@@ -11,7 +11,7 @@ export type Blog = {
 	href: ExternalURL;
 };
 
-// NOTE: hand-maintained. Add a post here and it shows up on /work automatically.
+/** NOTE: hand-maintained. Add a post here and it shows up on /work automatically. */
 export const Blogs: Record<BlogId, Blog> = {
 	"qml-property-bindings": {
 		title: "QML: Learning Property Bindings",

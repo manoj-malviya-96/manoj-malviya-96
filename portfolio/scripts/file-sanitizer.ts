@@ -531,7 +531,7 @@ type Entry = {
 	effectful: boolean;
 };
 
-const ROOTS = ["src", "scripts", "site"];
+const ROOTS = ["lib", "scripts"];
 
 const EXTENSION = /\.(ts|tsx|mts|js|jsx|mjs)$/;
 

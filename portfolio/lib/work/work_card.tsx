@@ -67,7 +67,7 @@ function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
 				gap="sm"
 				width="full"
 				enter="rise"
-				// No Atom token for a half-row share; basis is ignored once the row stacks.
+				/** No Atom token for a half-row share; basis is ignored once the row stacks. */
 				style={{ flex: "0 0 50%" }}
 			>
 				{media.map((item, i) => (

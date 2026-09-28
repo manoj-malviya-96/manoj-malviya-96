@@ -9,33 +9,11 @@ import type { ProjectTag } from "@/lib/data/projects";
 import type { ValuesOf } from "@/lib/helper";
 import type { MediaSource, MonthAndYear } from "@/lib/types";
 
-function Highlight({ children }: { children: ReactNode }) {
-	return <Text.Body as="span">{children}</Text.Body>;
+export function getEmployer(experience: ExperienceId): Organization {
+	return Organizations[Experiences[experience].organization];
 }
-
-function Bullets({ points }: { points: readonly ReactNode[] }) {
-	return (
-		<List direction="col" gap="xs">
-			{points.map((point, i) => (
-				<li key={i}>
-					<Text.Body>{point}</Text.Body>
-				</li>
-			))}
-		</List>
-	);
-}
-
-const EXPERIENCE_IDS = [
-	"noah-labs-lead",
-	"form-labs-rd",
-	"form-labs-se",
-	"flow-key-se",
-	"penn-state-gra",
-] as const;
 
 export type ExperienceId = ValuesOf<typeof EXPERIENCE_IDS>;
-
-type EmploymentType = "Full-time" | "Part-time" | "Internship" | "Contract";
 
 export type Experience = {
 	organization: OrganizationId;
@@ -178,18 +156,31 @@ export const Experiences: Record<ExperienceId, Experience> = {
 	},
 };
 
-export function getEmployer(experience: ExperienceId): Organization {
-	return Organizations[Experiences[experience].organization];
+function Highlight({ children }: { children: ReactNode }) {
+	return <Text.Body as="span">{children}</Text.Body>;
 }
 
-const earliestStartYear = Math.min(
-	...Object.values(Experiences).map((experience) =>
-		Number(experience.start.slice(0, 4)),
-	),
-);
+function Bullets({ points }: { points: readonly ReactNode[] }) {
+	return (
+		<List direction="col" gap="xs">
+			{points.map((point, i) => (
+				<li key={i}>
+					<Text.Body>{point}</Text.Body>
+				</li>
+			))}
+		</List>
+	);
+}
 
-export const YearsOfExperience: number =
-	new Date().getFullYear() - earliestStartYear;
+type EmploymentType = "Full-time" | "Part-time" | "Internship" | "Contract";
+
+const EXPERIENCE_IDS = [
+	"noah-labs-lead",
+	"form-labs-rd",
+	"form-labs-se",
+	"flow-key-se",
+	"penn-state-gra",
+] as const;
 
 /** Ongoing roles first, then most recently ended. */
 export const EXPERIENCE_BY_RECENCY: readonly ExperienceId[] = [
@@ -202,3 +193,12 @@ export const EXPERIENCE_BY_RECENCY: readonly ExperienceId[] = [
 	if (!right.end) return 1;
 	return left.end < right.end ? 1 : -1;
 });
+
+const earliestStartYear = Math.min(
+	...Object.values(Experiences).map((experience) =>
+		Number(experience.start.slice(0, 4)),
+	),
+);
+
+export const YearsOfExperience: number =
+	new Date().getFullYear() - earliestStartYear;

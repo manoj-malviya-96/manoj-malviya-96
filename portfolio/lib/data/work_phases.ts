@@ -1,14 +1,14 @@
 import type { ValuesOf } from "@/lib/helper";
 
-/** The "how I work" loop, in the order it's presented. */
-export const PHASE_IDS = ["discover", "design", "build", "measure"] as const;
-
 export type PhaseId = ValuesOf<typeof PHASE_IDS>;
 
 export type Phase = {
 	label: string;
 	copy: string;
 };
+
+/** The "how I work" loop, in the order it's presented. */
+export const PHASE_IDS = ["discover", "design", "build", "measure"] as const;
 
 export const HowIWorkPhase = {
 	discover: {

@@ -1,10 +1,4 @@
-type Patent = {
-	title: string;
-	field: string;
-	year: number;
-};
-
-// TODO: confirm exact filed title and year against the filing.
+/** TODO: confirm exact filed title and year against the filing. */
 export const Patents: readonly Patent[] = [
 	{
 		title: "CAD Topology Optimization via Gradient Descent on Mesh Primitives",
@@ -12,3 +6,9 @@ export const Patents: readonly Patent[] = [
 		year: 2022,
 	},
 ];
+
+type Patent = {
+	title: string;
+	field: string;
+	year: number;
+};

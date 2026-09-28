@@ -1,9 +1,3 @@
-type Config = {
-	scholarTargetUrl: string;
-};
-
-let cached: Config | null = null;
-
 export default function getConfig(): Config {
 	cached ??= {
 		scholarTargetUrl: required(
@@ -26,3 +20,9 @@ function required(name: string, value: string | undefined): string {
 	}
 	return value;
 }
+
+type Config = {
+	scholarTargetUrl: string;
+};
+
+let cached: Config | null = null;

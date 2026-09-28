@@ -8,6 +8,8 @@ import { getBlob } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 import userAvatar from "./manoj-1.png";
 
+export type SocialMedia = keyof typeof SocialUsersID;
+
 export const SocialUsersID = {
 	Github: "manoj-malviya-96",
 	Linkedin: "manoj-malviya-",
@@ -16,8 +18,6 @@ export const SocialUsersID = {
 	Scholar: "0oMXOy0AAAAJ",
 	Linktree: "manoj_malviya",
 } as const;
-
-export type SocialMedia = keyof typeof SocialUsersID;
 
 export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Github: `https://github.com/${SocialUsersID.Github}`,
@@ -28,9 +28,6 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Linktree: `https://linktr.ee/${SocialUsersID.Linktree}`,
 } as const;
 
-const Email = "malviyamanoj1896@gmail.com";
-export const EmailAddress = `mailto:${Email}`;
-
 export const UserAvatar: LocalImage = userAvatar;
 
 export const HeroImage: MediaSource = {
@@ -40,11 +37,6 @@ export const HeroImage: MediaSource = {
 	width: 1026,
 	height: 766,
 };
-
-const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
-const currentExperience = Experiences[currentExperienceId];
-
-export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
 
 export const Interests: readonly string[] = [
 	"Generative design",
@@ -57,3 +49,11 @@ export const Hobbies: readonly string[] = [
 	"3D Printing",
 	"Photography",
 ];
+
+const Email = "malviyamanoj1896@gmail.com";
+export const EmailAddress = `mailto:${Email}`;
+
+const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
+const currentExperience = Experiences[currentExperienceId];
+
+export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;

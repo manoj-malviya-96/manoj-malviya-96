@@ -8,7 +8,7 @@ import { Link } from "@/lib/shared";
 export default function Footer() {
 	return (
 		<Flex
-			as="footer" // TODO [ATOM] - system needs to have a footer.
+			as="footer" /** TODO [ATOM] - system needs to have a footer. */
 			direction="row"
 			hAlign="between"
 			vAlign="end"
@@ -16,7 +16,7 @@ export default function Footer() {
 			wrap
 			width="content"
 			padding={{ y: "lg" }}
-			// TODO [ATOM] - needs to handle ink on atom
+			/** TODO [ATOM] - needs to handle ink on atom */
 			style={{
 				color: "var(--color-muted)",
 			}}

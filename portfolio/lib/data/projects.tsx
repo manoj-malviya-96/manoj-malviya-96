@@ -3,6 +3,72 @@ import type { ReactNode } from "react";
 import { getBlob, type ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
 
+export type ProjectId = ValuesOf<typeof AllProjectIds>;
+
+export type ProjectTag =
+	| ProgrammingFrameworks
+	| ProgrammingLanguage
+	| SoftwareConcepts
+	| SoftSkills;
+
+export type ProjectLink =
+	| { kind: "github"; href: GithubRepo }
+	| { kind: "medium"; href: MediumPost }
+	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
+	| { kind: "external"; label: string; href: ExternalURL };
+
+export type Project = {
+	title: string;
+	summary: ReactNode;
+	/** Omit `endsAt` while the project is still in progress. */
+	startsAt: Date;
+	endsAt?: Date;
+	tags: readonly ProjectTag[];
+	effort: ProjectEffort;
+	media?: ProjectMedia;
+	links: ProjectLinks;
+};
+
+export type ProjectSummary = Project & { id: ProjectId };
+
+function showProject(id: ProjectId) {
+	switch (id) {
+		case "wrapped":
+		case "atom":
+		case "topopt_py":
+		case "honeycomb":
+		case "muviz":
+		case "blackhole":
+		case "ev_sim":
+			return true;
+		case "mesha":
+			return false;
+		default:
+			assertNever(id);
+	}
+}
+
+const isLatest = (project: Project) =>
+	project.startsAt.getTime() === LATEST_STARTS_AT;
+
+type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
+type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
+type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
+type ProgrammingLanguage = ValuesOf<typeof PROGRAMMING_LANGUAGES>;
+
+type ProjectEffort = "low" | "medium" | "high";
+
+type GithubRepo = `https://github.com/${string}/${string}`;
+type MediumPost = `https://medium.com/@${string}/${string}`;
+type InternalPath = `/${string}`;
+
+type ProjectLinks = {
+	primary: ProjectLink;
+	others: readonly ProjectLink[];
+};
+
+type ProjectMedia = readonly MediaSource[];
+
 const AllProjectIds = [
 	"wrapped",
 	"atom",
@@ -14,20 +80,18 @@ const AllProjectIds = [
 	"mesha",
 ] as const;
 
-export type ProjectId = ValuesOf<typeof AllProjectIds>;
-
 const wrappedProject: Project = {
 	title: "Wrapped",
 	summary: (
 		<>
-			Life happens in photos, steps, sleep, and moments scattered across a
-			dozen apps, and nobody actually looks back at it honestly. I wanted a
-			recap that felt real instead of curated for Instagram, so I'm building{" "}
+			Life happens in photos, steps, sleep, and moments scattered across a dozen
+			apps, and nobody actually looks back at it honestly. I wanted a recap that
+			felt real instead of curated for Instagram, so I'm building{" "}
 			<Text.Italic ink="blue" family="serif">
 				Wrapped
 			</Text.Italic>
-			. Mainly build on SwiftUI, and Core Foundational Models with a
-			postgressql based database.
+			. Mainly build on SwiftUI, and Core Foundational Models with a postgressql
+			based database.
 		</>
 	),
 	startsAt: new Date("2026-08-01"),
@@ -64,12 +128,12 @@ const atomProject: Project = {
 	summary: (
 		<>
 			I wanted Apple-grade design discipline: one visual language, everywhere.
-			Every option out there made me choose between a CSS-in-JS styling
-			library dragging its own runtime and CSS that throws out type safety. I
-			got tired of choosing, so I built <Text.Bold>Atom</Text.Bold>:{" "}
+			Every option out there made me choose between a CSS-in-JS styling library
+			dragging its own runtime and CSS that throws out type safety. I got tired
+			of choosing, so I built <Text.Bold>Atom</Text.Bold>:{" "}
 			<Text.Italic>
-				one primitive, one stylesheet, and a type system that generates
-				straight from that stylesheet
+				one primitive, one stylesheet, and a type system that generates straight
+				from that stylesheet
 			</Text.Italic>
 			, so an invalid token can't compile.
 		</>
@@ -107,9 +171,8 @@ const muvizProject: Project = {
 	summary: (
 		<>
 			I grew up watching Winamp react to whatever was playing, and I never
-			stopped wanting that feeling back. So I'm building the real thing
-			myself: a{" "}
-			<Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>,
+			stopped wanting that feeling back. So I'm building the real thing myself:
+			a <Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>,
 			analyzing each track once in a Web Worker and caching the result, so the
 			Three.js scene reacts to{" "}
 			<Text.Italic>real extracted features</Text.Italic> instead of an AI's
@@ -148,8 +211,8 @@ const honeycombProject: Project = {
 				a 2D skeleton graph in C++, extruded into a real VTK mesh
 			</Text.Bold>
 			. The part that kept breaking was{" "}
-			<Text.Italic>staggering the hexagon centers</Text.Italic> — get that
-			wrong and the whole grid drifts.
+			<Text.Italic>staggering the hexagon centers</Text.Italic> — get that wrong
+			and the whole grid drifts.
 		</>
 	),
 	startsAt: new Date("2025-01-01"),
@@ -180,9 +243,9 @@ const topoptPyProject: Project = {
 		<>
 			I found DTU's 99-line topology-optimization script and loved how compact
 			it was, but the inner loop was nested Python. I rewrote the stiffness
-			assembly and filtering as <Text.Bold>vectorized NumPy</Text.Bold>,
-			keeping the same SIMP algorithm and accuracy but running faster on the
-			same problem —{" "}
+			assembly and filtering as <Text.Bold>vectorized NumPy</Text.Bold>, keeping
+			the same SIMP algorithm and accuracy but running faster on the same
+			problem —{" "}
 			<Text.Italic>
 				caching the sparsity pattern instead of rebuilding it every iteration
 			</Text.Italic>{" "}
@@ -223,10 +286,10 @@ const blackholeProject: Project = {
 			Gravity, rendered <Text.Italic>in real time</Text.Italic>, because I
 			couldn't wait for the movie. A compute shader integrates each pixel's
 			light-ray geodesic against a mass modeled on{" "}
-			<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, while
-			a lensing fragment shader bends the background grid around it — running
-			as a Qt/OpenGL widget so it rotates live instead of playing back a
-			rendered clip.
+			<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, while a
+			lensing fragment shader bends the background grid around it — running as a
+			Qt/OpenGL widget so it rotates live instead of playing back a rendered
+			clip.
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
@@ -258,8 +321,8 @@ const evSimProject: Project = {
 			I wanted to know how many chargers a lot actually needs before buying
 			them, so I simulated a year of demand first:{" "}
 			<Text.Bold>
-				15-minute intervals with car arrivals drawn from a Poisson
-				distribution per charge point
+				15-minute intervals with car arrivals drawn from a Poisson distribution
+				per charge point
 			</Text.Bold>
 			, <Text.Italic>no queueing</Text.Italic> — a car that arrives to a busy
 			point just leaves. Concurrency turned out to decay roughly exponentially
@@ -373,11 +436,6 @@ const PROGRAMMING_LANGUAGES = [
 	"swift",
 ] as const;
 
-type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
-type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
-type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
-type ProgrammingLanguage = ValuesOf<typeof PROGRAMMING_LANGUAGES>;
-
 export const TAG_GROUPS = [
 	{ label: "Languages", tags: PROGRAMMING_LANGUAGES },
 	{ label: "Frameworks", tags: PROGRAMMING_FRAMEWORKS },
@@ -388,62 +446,6 @@ export const TAG_GROUPS = [
 	tags: readonly ProjectTag[];
 }>;
 
-export type ProjectTag =
-	| ProgrammingFrameworks
-	| ProgrammingLanguage
-	| SoftwareConcepts
-	| SoftSkills;
-
-type ProjectEffort = "low" | "medium" | "high";
-
-type GithubRepo = `https://github.com/${string}/${string}`;
-type MediumPost = `https://medium.com/@${string}/${string}`;
-type InternalPath = `/${string}`;
-
-export type ProjectLink =
-	| { kind: "github"; href: GithubRepo }
-	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
-	| { kind: "external"; label: string; href: ExternalURL };
-
-type ProjectLinks = {
-	primary: ProjectLink;
-	others: readonly ProjectLink[];
-};
-
-type ProjectMedia = readonly MediaSource[];
-
-export type Project = {
-	title: string;
-	summary: ReactNode;
-	/** Omit `endsAt` while the project is still in progress. */
-	startsAt: Date;
-	endsAt?: Date;
-	tags: readonly ProjectTag[];
-	effort: ProjectEffort;
-	media?: ProjectMedia;
-	links: ProjectLinks;
-};
-
-export type ProjectSummary = Project & { id: ProjectId };
-
-function showProject(id: ProjectId) {
-	switch (id) {
-		case "wrapped":
-		case "atom":
-		case "topopt_py":
-		case "honeycomb":
-		case "muviz":
-		case "blackhole":
-		case "ev_sim":
-			return true;
-		case "mesha":
-			return false;
-		default:
-			assertNever(id);
-	}
-}
-
 const EFFORT_RANK: Record<ProjectEffort, number> = {
 	high: 3,
 	medium: 2,
@@ -451,19 +453,12 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 };
 
 const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
-const LATEST_STARTS_AT = Math.max(
-	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-);
-
-const isLatest = (project: Project) =>
-	project.startsAt.getTime() === LATEST_STARTS_AT;
 
 export const RankedProjects: readonly ProjectSummary[] =
 	VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort((a, b) => {
 		if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
-
-export function getProjectSummary(id: ProjectId): ProjectSummary {
-	return { id, ...Projects[id] };
-}
+const LATEST_STARTS_AT = Math.max(
+	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+);

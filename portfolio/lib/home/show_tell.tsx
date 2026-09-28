@@ -8,13 +8,6 @@ import {
 	YearsOfExperience,
 } from "@/lib/data";
 
-type NumberStat = {
-	value: number | undefined;
-	caption: string;
-	loading?: boolean;
-	isError?: boolean;
-};
-
 export default function ShowAndTell() {
 	const scholar = useGoogleScholarQuery();
 	const github = useGithubContributionsQuery();
@@ -70,3 +63,10 @@ export default function ShowAndTell() {
 		</Flex>
 	);
 }
+
+type NumberStat = {
+	value: number | undefined;
+	caption: string;
+	loading?: boolean;
+	isError?: boolean;
+};
