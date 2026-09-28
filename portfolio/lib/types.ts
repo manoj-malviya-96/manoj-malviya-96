@@ -29,4 +29,4 @@ type Month =
 	| "12";
 type Year = `${number}${number}${number}${number}`; /** "2023" */
 
-type MediaMockup = "macbook";
+type MediaMockup = "macbook" | "iphone";
