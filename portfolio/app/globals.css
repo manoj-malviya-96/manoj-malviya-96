@@ -32,6 +32,10 @@ html {
 			oklch(from var(--color-page) calc(l + 0.1) c h / 67%)
 		);
 		--size-content: min(67rem, 100%);
+		--text-heading: clamp(2.2rem, 2.2rem + 1.5vw, 5rem);
+		--text-title: clamp(1rem, 1rem + 0.5vw, 1.2rem);
+		--text-caption: 0.67rem;
+		--font-weight-bold: 700;
 	}
 }
 
@@ -62,18 +66,20 @@ img {
 	--media-max-h: 100cqh;
 }
 
-/* Uniform thumbnail shape so the featured row lines up whatever each file's ratio. */
-.featured-thumb {
-	width: 100%;
-	aspect-ratio: 16 / 9;
+/* Fixed-size box for the home hero photo so it stays a supporting portrait
+   beside the intro copy; the image fills and crops to it. */
+.hero-media {
+	position: relative;
+	flex: none;
+	width: 32rem;
+	max-width: 100%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	border-radius: var(--radius-md);
 }
 
-/* Caps the home hero photo so it stays a supporting portrait beside the
-   intro copy, not a full-bleed image once the row stacks on narrow viewports. */
-.hero-media {
-	width: 100%;
-	max-width: 22rem;
-	--media-max-h: 28rem;
+.hero-media img {
+	object-fit: cover;
 }
 
 /* Atom's `stack` prop stacks via a container query, which needs a sized
@@ -82,6 +88,12 @@ img {
 @media (max-width: 640px) {
 	.hero-row {
 		flex-direction: column;
+	}
+
+	/* Once stacked, the photo is a supporting beat below the intro copy and
+	   CTAs, not a second hero — cap it much shorter than the side-by-side height. */
+	.hero-media {
+		width: 98vw;
 	}
 }
 

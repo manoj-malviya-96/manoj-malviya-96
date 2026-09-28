@@ -3,6 +3,7 @@
 import {
 	Link as AtomLink,
 	Section as AtomSection,
+	assertNever,
 	Flex,
 	Text,
 } from "@manoj-malviya-96/atom";
@@ -91,6 +92,9 @@ type MediaProps = MediaSource & {
 	// Rendered width per viewport, so next/image picks the smallest file that
 	// stays sharp. Callers in narrower slots should pass their own.
 	sizes?: string;
+	// Fills and crops to its positioned parent instead of keeping the file's own
+	// aspect ratio — for a parent that already defines the shape, e.g. <Backdrop.Media>.
+	fill?: boolean;
 };
 
 // Sized entirely by `.media-fit` in globals.css: full parent width, capped by
@@ -102,33 +106,42 @@ export function Media({
 	width,
 	height,
 	sizes = "(min-width: 768px) 50vw, 100vw",
+	fill = false,
 }: MediaProps) {
 	const ratio: CSSProperties & Record<`--${string}`, number> = {
 		"--media-w": width,
 		"--media-h": height,
 	};
-	if (kind === "video")
-		return (
-			<InViewVideo
-				src={src}
-				alt={alt}
-				width={width}
-				height={height}
-				style={ratio}
-			/>
-		);
-	return (
-		<NextImage
-			src={src}
-			alt={alt}
-			width={width}
-			height={height}
-			sizes={sizes}
-			loading="eager"
-			className="media-fit"
-			style={ratio}
-		/>
-	);
+	switch (kind) {
+		case "video":
+			return (
+				<InViewVideo
+					src={src}
+					alt={alt}
+					width={width}
+					height={height}
+					{...(fill ? {} : { style: ratio })}
+					fill={fill}
+				/>
+			);
+		case "image":
+			return fill ? (
+				<NextImage src={src} alt={alt} fill sizes={sizes} loading="eager" />
+			) : (
+				<NextImage
+					src={src}
+					alt={alt}
+					width={width}
+					height={height}
+					sizes={sizes}
+					loading="eager"
+					className="media-fit"
+					style={ratio}
+				/>
+			);
+		default:
+			return assertNever(kind);
+	}
 }
 
 // Plays only while on screen: every card autoplaying meant every video on the
@@ -139,8 +152,10 @@ function InViewVideo({
 	width,
 	height,
 	style,
+	fill,
 }: Pick<MediaSource, "src" | "alt" | "width" | "height"> & {
-	style: CSSProperties;
+	style?: CSSProperties;
+	fill?: boolean;
 }) {
 	const ref = useRef<HTMLVideoElement>(null);
 	useEffect(() => {
@@ -159,9 +174,8 @@ function InViewVideo({
 			ref={ref}
 			src={src}
 			aria-label={alt}
-			width={width}
-			height={height}
-			className="media-fit"
+			{...(fill ? {} : { width, height })}
+			className={fill ? undefined : "media-fit"}
 			style={style}
 			preload="none"
 			muted

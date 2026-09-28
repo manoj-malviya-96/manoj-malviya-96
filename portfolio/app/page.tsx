@@ -19,7 +19,7 @@ import {
 export default function Landing() {
 	return (
 		<Page>
-			<PageHeroSection id="home-hero" direction="row" className="hero-row">
+			<PageHeroSection id="home-hero" direction="row" hAlign="between" stack>
 				<Flex direction="col" gap="lg">
 					<PageHeroHeader>
 						<Text.Hero className="hero-title">
@@ -53,8 +53,8 @@ export default function Landing() {
 						</MagneticContainer>
 					</ButtonRow>
 				</Flex>
-				<div className="media-slot hero-media">
-					<Media {...HeroImage} sizes="(min-width: 768px) 40vw, 100vw" />
+				<div className="hero-media">
+					<Media {...HeroImage} fill sizes="(min-width: 640px) 24rem, 16rem" />
 				</div>
 			</PageHeroSection>
 			<PageSection id="home-feature" gap="lg">
