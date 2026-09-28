@@ -14,7 +14,7 @@ import { EmailAddress } from "@/lib/data";
 
 const NAV_LINKS = [
 	{ url: "/", label: "Home", Icon: IconHouse },
-	{ url: "/experiments", label: "Experiments", Icon: IconRocket },
+	{ url: "/work", label: "Work", Icon: IconRocket },
 	{ url: "/about", label: "About", Icon: IconUser },
 	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
 ] as const;

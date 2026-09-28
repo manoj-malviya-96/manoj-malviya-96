@@ -42,10 +42,10 @@ export default function Landing() {
 					<ButtonRow>
 						<MagneticContainer>
 							<Link.Button
-								url="/experiments"
+								url="/work"
 								color="primary"
 								size="sm"
-								label="View experiments →"
+								label="View work →"
 							/>
 						</MagneticContainer>
 						<MagneticContainer>
@@ -60,7 +60,7 @@ export default function Landing() {
 			<PageSection id="home-feature" gap="lg">
 				<Flex as="span" direction="row" vAlign="center" hAlign="between">
 					<Text.Heading>Featured</Text.Heading>
-					<Link url="/experiments">
+					<Link url="/work">
 						<Text.Body ink="muted">View all Projects</Text.Body>
 					</Link>
 				</Flex>

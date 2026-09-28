@@ -13,16 +13,16 @@ import {
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
 import {
-	type ExperimentItem,
 	formatDates,
 	getAttributes,
 	type ProjectLink,
+	type WorkItem,
 } from "@/lib/data";
 import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 import type { MediaSource } from "@/lib/types";
 
-export default function ExperimentCard({ item }: { item: ExperimentItem }) {
+export default function WorkCard({ item }: { item: WorkItem }) {
 	const attributes = getAttributes(item);
 	return (
 		<Flex
@@ -50,7 +50,7 @@ export default function ExperimentCard({ item }: { item: ExperimentItem }) {
 
 			<Flex as="span" vAlign="start" gap="sm" direction="col">
 				<Text.Body>{item.summary}</Text.Body>
-				<ExperimentLinks item={item} />
+				<WorkLinks item={item} />
 			</Flex>
 			{item.kind === "project" && item.media && item.media.length > 0 && (
 				<ProjectMedia media={item.media} />
@@ -102,7 +102,7 @@ function MediaMockup({ media }: { media: MediaSource }) {
 	}
 }
 
-function CardTags({ item }: { item: ExperimentItem }) {
+function CardTags({ item }: { item: WorkItem }) {
 	return (
 		<Flex
 			as="ul"
@@ -120,7 +120,7 @@ function CardTags({ item }: { item: ExperimentItem }) {
 	);
 }
 
-function ExperimentLinks({ item }: { item: ExperimentItem }) {
+function WorkLinks({ item }: { item: WorkItem }) {
 	if (item.kind === "blog") {
 		return (
 			<Flex direction="row" gap="sm" wrap>

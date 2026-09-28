@@ -3,21 +3,19 @@
 import { FilterBar, Flex, Text } from "@manoj-malviya-96/atom";
 import { useScrollBar } from "@manoj-malviya-96/atom/system";
 import { useState } from "react";
-import { ExperimentItems, type ProjectTag } from "@/lib/data";
-import ExperimentCard from "@/lib/experiments/experiment_card";
+import { type ProjectTag, WorkItems } from "@/lib/data";
 import { EmText, Eyebrow, Page, PageHeroHeader } from "@/lib/shared";
+import WorkCard from "@/lib/work/work_card";
 
-const EXPERIMENT_SECTIONS = ExperimentItems.map(({ id, title }) => ({
+const WORK_SECTIONS = WorkItems.map(({ id, title }) => ({
 	id,
 	label: title,
 }));
 
 const TOP_TAG_COUNT = 10;
-const TOP_TAGS = rankTagsByFrequency(ExperimentItems).slice(0, TOP_TAG_COUNT);
+const TOP_TAGS = rankTagsByFrequency(WorkItems).slice(0, TOP_TAG_COUNT);
 
-function rankTagsByFrequency(
-	items: typeof ExperimentItems,
-): readonly ProjectTag[] {
+function rankTagsByFrequency(items: typeof WorkItems): readonly ProjectTag[] {
 	const counts = new Map<ProjectTag, number>();
 	for (const item of items) {
 		for (const tag of item.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
@@ -27,21 +25,21 @@ function rankTagsByFrequency(
 		.map(([tag]) => tag);
 }
 
-export default function ExperimentsPage() {
-	useScrollBar({ sections: EXPERIMENT_SECTIONS });
+export default function WorkPage() {
+	useScrollBar({ sections: WORK_SECTIONS });
 	const [activeTags, setActiveTags] = useState<readonly ProjectTag[]>([]);
 
 	const visibleItems =
 		activeTags.length === 0
-			? ExperimentItems
-			: ExperimentItems.filter((item) =>
+			? WorkItems
+			: WorkItems.filter((item) =>
 					item.tags.some((tag) => activeTags.includes(tag)),
 				);
 
 	return (
 		<Page>
 			<PageHeroHeader>
-				<Eyebrow>Experiments</Eyebrow>
+				<Eyebrow>Work</Eyebrow>
 				<Text.Heading as="h1">
 					Things I've <br /> <EmText>built</EmText>
 				</Text.Heading>
@@ -55,7 +53,7 @@ export default function ExperimentsPage() {
 			/>
 			<Flex as="article" direction="col" gap="lg" width="full">
 				{visibleItems.map((item) => (
-					<ExperimentCard key={item.id} item={item} />
+					<WorkCard key={item.id} item={item} />
 				))}
 			</Flex>
 		</Page>
