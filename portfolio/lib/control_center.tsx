@@ -1,10 +1,10 @@
 "use client";
 
 import {
-	IconBriefcase,
 	IconEnvelope,
 	IconGraduationCap,
 	IconHouse,
+	IconRocket,
 	IconUser,
 } from "@manoj-malviya-96/atom/icons";
 import { ControlCenter } from "@manoj-malviya-96/atom/system";
@@ -14,7 +14,7 @@ import { EmailAddress } from "@/lib/data";
 
 const NAV_LINKS = [
 	{ url: "/", label: "Home", Icon: IconHouse },
-	{ url: "/work", label: "Work", Icon: IconBriefcase },
+	{ url: "/experiments", label: "Experiments", Icon: IconRocket },
 	{ url: "/about", label: "About", Icon: IconUser },
 	{ url: "/resume", label: "Resume", Icon: IconGraduationCap },
 ] as const;

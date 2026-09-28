@@ -6,17 +6,21 @@ export default function Featured() {
 	return (
 		<Grid columns={3} gap="md">
 			{RankedProjects.slice(0, 3).map((item) => (
-				<WorkHighlightCard item={item} key={item.id} />
+				<ExperimentHighlightCard item={item} key={item.id} />
 			))}
 		</Grid>
 	);
 }
 
-function WorkHighlightCard({ item }: { item: ProjectSummary }) {
+function ExperimentHighlightCard({ item }: { item: ProjectSummary }) {
 	return (
-		<Link key={item.id} url={`/work#${item.id}`}>
+		<Link key={item.id} url={`/experiments#${item.id}`}>
 			<Flex direction="col" gap="sm" height="full">
-				{item.media?.[0] && <Media media={item.media[0]} />}
+				{item.media?.[0] && (
+					<div className="media-slot featured-thumb">
+						<Media {...item.media[0]} sizes="(min-width: 1024px) 33vw, 100vw" />
+					</div>
+				)}
 				<Text.Title>{item.title}</Text.Title>
 			</Flex>
 		</Link>
