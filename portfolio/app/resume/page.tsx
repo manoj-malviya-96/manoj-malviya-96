@@ -33,10 +33,6 @@ export default function ResumePage() {
 				</Text.Heading>
 			</PageHeroHeader>
 			<Flex direction="col" gap="lg" width="full">
-				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="lg">
-					<SectionHeader eyebrow="Education" />
-					<Education />
-				</Flex>
 				<Marquee aria-label="Languages, frameworks, and practices I use">
 					{SKILL_GROUPS.flatMap((group) => [
 						group.skills.map((skill) => (
@@ -48,11 +44,15 @@ export default function ResumePage() {
 					as="section"
 					id={RESUME_SECTIONS[0].id}
 					direction="col"
-					gap="lg"
+					gap="sm"
 					padding={{ y: "md" }}
 				>
 					<SectionHeader eyebrow="Experience" />
 					<WorkHistory />
+				</Flex>
+				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="sm">
+					<SectionHeader eyebrow="Education" />
+					<Education />
 				</Flex>
 			</Flex>
 		</Page>

@@ -33,7 +33,7 @@ html {
 		);
 		--size-content: min(67rem, 100%);
 		--text-heading: clamp(2rem, 2rem + 1.5vw, 5rem);
-		--text-title: clamp(1rem, 1rem + 0.5vw, 1.2rem);
+		--text-title: clamp(1.2rem, 1.2rem + 0.5vw, 1.4rem);
 		--text-caption: 0.67rem;
 		--font-weight-bold: 700;
 	}

@@ -34,8 +34,8 @@ export default function Landing() {
 						</Text.Hero>
 					</PageHeroHeader>
 					<Text.Body width="md">
-						I am <Text.Italic ink="blue">Manoj Malviya</Text.Italic>, “I’m Manoj
-						Malviya, a Lead Software Engineer at a{" "}
+						I am <Text.Italic ink="blue">Manoj Malviya</Text.Italic>, a Lead
+						Software Engineer at a{" "}
 						<Link url="https://www.noah-labs.com/">
 							<u>health-tech</u>
 						</Link>{" "}
@@ -65,13 +65,14 @@ export default function Landing() {
 			</PageHeroSection>
 			<PageSection id="home-feature" gap="lg">
 				<Flex as="span" direction="row" vAlign="center" hAlign="between">
-					<Text.Heading>Featured</Text.Heading>
+					<Text.Title family="serif">Featured</Text.Title>
 					<Link url="/work">
 						<Text.Body ink="muted">View all Projects</Text.Body>
 					</Link>
 				</Flex>
-				<Featured />
+
 				<ShowAndTell />
+				<Featured />
 			</PageSection>
 			<PageSectionCard id="home-cta">
 				<Text.Heading as="h2" align="center">

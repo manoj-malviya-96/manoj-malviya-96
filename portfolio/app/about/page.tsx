@@ -31,17 +31,18 @@ export default function AboutPage() {
 						<Text.Body>
 							Hello there again! Wow, you really are stalking me — fine, here's
 							my story.
-							<br />I was born in Udaipur, a small town in India, and grew up
-							like most middle-class kids do: pressure, ideal-life aspirations,
-							and a stubborn streak of passion. Somewhere along the way I picked
-							up a habit of solving problems in an elegant, thorough way — no
-							half measures. I still aim to be efficient about it, though.
-							<br />
+							<br /> <br />I was born in Udaipur, a small town in India, and
+							grew up like most middle-class kids do: pressure, ideal-life
+							aspirations, and a stubborn streak of passion. Somewhere along the
+							way I picked up a habit of solving problems in an elegant,
+							thorough way — no half measures. I still aim to be efficient about
+							it, though.
+							<br /> <br />
 							<strong>Controversial opinions</strong>, since you asked: maths is
 							the language of the universe, sleep is everything, AI is a tool,
 							20% of the work drives 80% of the impact, and the butterfly effect
 							is real.
-							<br />
+							<br /> <br />
 							Outside of work I'm doing the same thing at a smaller scale —
 							generative design, real-time rendering, and robotics keep my hands
 							busy on the technical side; DJing part-time, 3D printing, and

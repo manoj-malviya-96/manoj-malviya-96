@@ -9,26 +9,15 @@ export default function Education() {
 			{DEGREE_IDS.map((id) => {
 				const { organization, degree, field, focus, graduation } = Degrees[id];
 				return (
-					<Flex
-						key={id}
-						enter="rise"
-						direction="col"
-						gap="sm"
-						padding="lg"
-						radius="lg"
-						bg="surface"
-						blur
-					>
+					<Flex key={id} enter="rise" direction="col" gap="sm">
 						<Flex direction="row" gap="xs" vAlign="center">
-							<IconGraduationCap size="sm" ink="muted" />
-							<Text.Body>{Organizations[organization].name}</Text.Body>
+							<IconGraduationCap size="sm" />
+							<Text.Title>{Organizations[organization].name}</Text.Title>
 						</Flex>
-						<Text.Body ink="muted">
+						<Text.Body>
 							{degree}, {field} · {formatDate(graduation)}
 						</Text.Body>
-						<Text.Caption mono ink="muted">
-							{focus}
-						</Text.Caption>
+						<Text.Caption>{focus}</Text.Caption>
 					</Flex>
 				);
 			})}
