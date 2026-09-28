@@ -18,7 +18,7 @@ html {
 	font-synthesis: none;
 	color-scheme: light;
 	scroll-behavior: smooth;
-	font-size: 18px; /* DEFAULT FONT SIZE */
+	font-size: 16px; /* DEFAULT FONT SIZE */
 }
 
 /* Named and ordered last so these values win over every atom.* layer,
@@ -32,7 +32,7 @@ html {
 			oklch(from var(--color-page) calc(l + 0.1) c h / 67%)
 		);
 		--size-content: min(67rem, 100%);
-		--text-heading: clamp(2.2rem, 2.2rem + 1.5vw, 5rem);
+		--text-heading: clamp(2rem, 2rem + 1.5vw, 5rem);
 		--text-title: clamp(1rem, 1rem + 0.5vw, 1.2rem);
 		--text-caption: 0.67rem;
 		--font-weight-bold: 700;
