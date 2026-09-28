@@ -1,12 +1,13 @@
-export default function getConfig(): Config {
-	cached ??= {
-		scholarTargetUrl: required(
-			"NEXT_PUBLIC_SCHOLAR_API",
-			process.env.NEXT_PUBLIC_SCHOLAR_API,
-		),
-	};
-	return cached;
-}
+import { memoizedOnce } from "@/lib/helper";
+
+const getConfig: () => Config = memoizedOnce(() => ({
+	scholarTargetUrl: required(
+		"NEXT_PUBLIC_SCHOLAR_API",
+		process.env.NEXT_PUBLIC_SCHOLAR_API,
+	),
+}));
+
+export default getConfig;
 
 /**
  * Reads the literal `process.env.NEXT_PUBLIC_*` member at the call site rather
@@ -24,5 +25,3 @@ function required(name: string, value: string | undefined): string {
 type Config = {
 	scholarTargetUrl: string;
 };
-
-let cached: Config | null = null;

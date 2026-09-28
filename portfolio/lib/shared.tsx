@@ -169,7 +169,9 @@ function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
 			<AtomLink.Button
 				as={NextLink}
 				href={url}
-				collapseOnMobile={false} /** TODO - [ATOM] needs to make it not default */
+				collapseOnMobile={
+					false
+				} /** TODO - [ATOM] needs to make it not default */
 				icon={icon}
 				{...rest}
 			/>

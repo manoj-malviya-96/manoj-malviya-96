@@ -49,7 +49,7 @@ function showProject(id: ProjectId) {
 }
 
 const isLatest = (project: Project) =>
-	project.startsAt.getTime() === LATEST_STARTS_AT;
+	project.startsAt.getTime() === LATEST_STARTED_AT;
 
 type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
 type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
@@ -106,6 +106,13 @@ const wrappedProject: Project = {
 		others: [],
 	},
 	media: [
+		{
+			kind: "video",
+			src: getBlob("wrapped.webm"),
+			width: 1206,
+			height: 2622,
+			alt: "An example video.",
+		},
 		{
 			kind: "image",
 			src: getBlob("wrapped-1.png"),
@@ -454,11 +461,12 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 
 const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
 
+const LATEST_STARTED_AT = Math.max(
+	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
+);
+
 export const RankedProjects: readonly ProjectSummary[] =
 	VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort((a, b) => {
 		if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});
-const LATEST_STARTS_AT = Math.max(
-	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-);

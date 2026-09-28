@@ -34,3 +34,15 @@ const MONTH_ABBREVIATIONS = [
 	"Nov",
 	"Dec",
 ] as const;
+
+export function memoizedOnce<T>(fn: () => T): () => T {
+	let cached: T | undefined;
+	let hasRun = false;
+	return () => {
+		if (!hasRun) {
+			cached = fn();
+			hasRun = true;
+		}
+		return cached as T;
+	};
+}
