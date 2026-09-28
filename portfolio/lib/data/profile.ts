@@ -4,7 +4,8 @@ import {
 	Experiences,
 	getEmployer,
 } from "@/lib/data/work_experience";
-import type { ExternalURL } from "@/lib/types";
+import { getBlob } from "@/lib/helper";
+import type { ExternalURL, MediaSource } from "@/lib/types";
 import userAvatar from "./manoj-1.png";
 
 export const SocialUsersID = {
@@ -31,6 +32,14 @@ const Email = "malviyamanoj1896@gmail.com";
 export const EmailAddress = `mailto:${Email}`;
 
 export const UserAvatar: LocalImage = userAvatar;
+
+export const HeroImage: MediaSource = {
+	kind: "image",
+	src: getBlob("hero.jpg"),
+	alt: "Manoj Malviya",
+	width: 1026,
+	height: 766,
+};
 
 // Ongoing roles sort first (see EXPERIENCE_BY_RECENCY), so index 0 is current.
 const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
