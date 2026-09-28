@@ -1,5 +1,6 @@
 export * from "@/lib/data/blogs";
 export * from "@/lib/data/degrees";
+export * from "@/lib/data/experiment_items";
 export * from "@/lib/data/google_scholar";
 export * from "@/lib/data/organizations";
 export * from "@/lib/data/patents";
@@ -7,5 +8,4 @@ export * from "@/lib/data/profile";
 export * from "@/lib/data/projects";
 export * from "@/lib/data/skills";
 export * from "@/lib/data/work_experience";
-export * from "@/lib/data/work_items";
 export * from "@/lib/data/work_phases";

@@ -409,18 +409,7 @@ export type Project = {
 	links: ProjectLinks;
 };
 
-export type ProjectSummary = Project & { id: ProjectId; isNew: boolean };
-
-/** "2025" for a project that started and ended the same year, "2025-2026" otherwise — ongoing projects run through today. */
-export function formatDates(startsAt: Date, endsAt?: Date): string {
-	const startYear = startsAt.getFullYear();
-	const endYear = (endsAt ?? new Date()).getFullYear();
-	return startYear === endYear ? `${startYear}` : `${startYear}-${endYear}`;
-}
-
-export function isProjectInProgress(project: Pick<Project, "endsAt">) {
-	return project.endsAt === undefined;
-}
+export type ProjectSummary = Project & { id: ProjectId };
 
 function showProject(id: ProjectId) {
 	switch (id) {
@@ -450,12 +439,11 @@ const LATEST_STARTS_AT = Math.max(
 	...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
 );
 
+const isLatest = (project: Project) =>
+	project.startsAt.getTime() === LATEST_STARTS_AT;
+
 export const RankedProjects: readonly ProjectSummary[] =
-	VISIBLE_PROJECT_IDS.map((id) => ({
-		id,
-		...Projects[id],
-		isNew: Projects[id].startsAt.getTime() === LATEST_STARTS_AT,
-	})).sort((a, b) => {
-		if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
+	VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort((a, b) => {
+		if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
 		return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
 	});

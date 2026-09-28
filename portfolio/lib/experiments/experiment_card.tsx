@@ -12,13 +12,18 @@ import {
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
-import type { ProjectLink, WorkItem } from "@/lib/data";
-import { formatDates, isProjectInProgress } from "@/lib/data/projects";
+import {
+	type ExperimentItem,
+	formatDates,
+	getAttributes,
+	type ProjectLink,
+} from "@/lib/data";
 import { Macbook } from "@/lib/macbook_mockup";
 import { Link, Media } from "@/lib/shared";
 import type { MediaSource } from "@/lib/types";
 
-export default function WorkCard({ item }: { item: WorkItem }) {
+export default function ExperimentCard({ item }: { item: ExperimentItem }) {
+	const attributes = getAttributes(item);
 	return (
 		<Flex
 			as="section"
@@ -34,32 +39,22 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			<Flex direction="col" gap="sm" hAlign="start">
 				<Flex direction="row" gap="sm" vAlign="center" wrap>
 					<Text.Title>{item.title}</Text.Title>
-					{item.kind === "project" ? (
-						<Text.Caption ink="muted">
-							{formatDates(item.startsAt, item.endsAt)}
-						</Text.Caption>
-					) : (
-						<Text.Caption ink="muted">{item.dates}</Text.Caption>
-					)}
-					{item.kind === "project" && item.isNew && (
-						<Badge ink="green">New</Badge>
-					)}
-					{item.kind === "project" && isProjectInProgress(item) && (
+					<Text.Caption ink="muted">{formatDates(item)}</Text.Caption>
+					{attributes.includes("new") && <Badge ink="green">New</Badge>}
+					{attributes.includes("in_progress") && (
 						<Badge ink="orange">In progress</Badge>
 					)}
 				</Flex>
 				<CardTags item={item} />
 			</Flex>
 
-			<Flex direction="row" gap="md" hAlign="start" stack>
-				<Flex as="span" vAlign="start" gap="lg" direction="col">
-					<Text.Body>{item.summary}</Text.Body>
-					<WorkLinks item={item} />
-				</Flex>
-				{item.kind === "project" && item.media && item.media.length > 0 && (
-					<ProjectMedia media={item.media} />
-				)}
+			<Flex as="span" vAlign="start" gap="sm" direction="col">
+				<Text.Body>{item.summary}</Text.Body>
+				<ExperimentLinks item={item} />
 			</Flex>
+			{item.kind === "project" && item.media && item.media.length > 0 && (
+				<ProjectMedia media={item.media} />
+			)}
 		</Flex>
 	);
 }
@@ -76,7 +71,7 @@ function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
 				style={{ flex: "0 0 50%" }}
 			>
 				{media.map((item, i) => (
-					<Media key={i} media={item} layout="natural" />
+					<Media key={i} {...item} sizes="(min-width: 768px) 25vw, 50vw" />
 				))}
 			</Grid>
 		);
@@ -93,13 +88,13 @@ function MediaMockup({ media }: { media: MediaSource }) {
 		case undefined:
 			return (
 				<Atom as="div" enter="rise" width={{ value: "lg", max: "full" }}>
-					<Media media={media} />
+					<Media {...media} />
 				</Atom>
 			);
 		case "macbook":
 			return (
 				<Macbook>
-					<Media media={media} layout="fill" />
+					<Media {...media} />
 				</Macbook>
 			);
 		default:
@@ -107,7 +102,7 @@ function MediaMockup({ media }: { media: MediaSource }) {
 	}
 }
 
-function CardTags({ item }: { item: WorkItem }) {
+function CardTags({ item }: { item: ExperimentItem }) {
 	return (
 		<Flex
 			as="ul"
@@ -125,7 +120,7 @@ function CardTags({ item }: { item: WorkItem }) {
 	);
 }
 
-function WorkLinks({ item }: { item: WorkItem }) {
+function ExperimentLinks({ item }: { item: ExperimentItem }) {
 	if (item.kind === "blog") {
 		return (
 			<Flex direction="row" gap="sm" wrap>
