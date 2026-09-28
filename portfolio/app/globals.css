@@ -39,6 +39,52 @@ img {
 	content-visibility: auto;
 }
 
+/* <Media>: fills the parent's width until it would pass --media-max-h, then
+   shrinks — always at the file's own ratio, never cropped. --media-w/--media-h
+   are the file's pixels, set inline. The cap defaults to the viewport; a parent
+   overrides it by setting --media-max-h (a length, not a %). */
+.media-fit {
+	display: block;
+	aspect-ratio: var(--media-w) / var(--media-h);
+	width: min(100%, var(--media-max-h, 70svh) * var(--media-w) / var(--media-h));
+	height: auto;
+	border-radius: var(--radius-md);
+}
+
+/* A fixed-shape slot that <Media> fits inside, centered, e.g. a mockup's
+   screen or a uniform card thumbnail. Size containment makes cqh resolve
+   against this box. */
+.media-slot {
+	container-type: size;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	--media-max-h: 100cqh;
+}
+
+/* Uniform thumbnail shape so the featured row lines up whatever each file's ratio. */
+.featured-thumb {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+}
+
+/* Caps the home hero photo so it stays a supporting portrait beside the
+   intro copy, not a full-bleed image once the row stacks on narrow viewports. */
+.hero-media {
+	width: 100%;
+	max-width: 22rem;
+	--media-max-h: 28rem;
+}
+
+/* Atom's `stack` prop stacks via a container query, which needs a sized
+   container-type ancestor this row doesn't have — so it never fires here.
+   A viewport query does the same job directly on the row itself. */
+@media (max-width: 640px) {
+	.hero-row {
+		flex-direction: column;
+	}
+}
+
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {
