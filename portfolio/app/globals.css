@@ -200,7 +200,3 @@ img {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
-
-.hero-title {
-	letter-spacing: -0.02em;
-}

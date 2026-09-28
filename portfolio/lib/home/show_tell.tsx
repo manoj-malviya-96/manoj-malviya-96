@@ -50,7 +50,7 @@ export default function ShowAndTell() {
 								N/A
 							</Text.Heading>
 						) : (
-							<Text.Heading align="center">
+							<Text.Heading align="center" family="sans">
 								{stat.value === undefined ? "–" : stat.value.toLocaleString()}
 							</Text.Heading>
 						)}

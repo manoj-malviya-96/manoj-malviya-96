@@ -19,25 +19,31 @@ import {
 export default function Landing() {
 	return (
 		<Page>
-			<PageHeroSection id="home-hero" direction="row" hAlign="between" stack>
+			<PageHeroSection
+				id="home-hero"
+				direction="row"
+				hAlign="between"
+				stack
+				padding={{ y: "xl" }}
+			>
 				<Flex direction="col" gap="lg">
 					<PageHeroHeader>
-						<Text.Hero className="hero-title">
+						<Text.Hero>
 							Hello
-							<EmText> there </EmText>
+							<EmText> there! </EmText>
 						</Text.Hero>
 					</PageHeroHeader>
 					<Text.Body width="md">
-						Hi there, I am <Text.Italic ink="blue">Manoj Malviya</Text.Italic>,
-						a Lead Software engineer at a{" "}
+						I am <Text.Italic ink="blue">Manoj Malviya</Text.Italic>, “I’m Manoj
+						Malviya, a Lead Software Engineer at a{" "}
 						<Link url="https://www.noah-labs.com/">
-							<u>Health Tech Startup</u>
-						</Link>
-						.
+							<u>health-tech</u>
+						</Link>{" "}
+						startup.
 						<br /> <br />
 						Thank you for visiting my dungeon - where you can find all of my
-						side projects; my thoughts; my interests and my career history all
-						in once place.
+						side projects; my thoughts and experiements; my interests and my
+						career history.
 					</Text.Body>
 					<ButtonRow>
 						<MagneticContainer>
