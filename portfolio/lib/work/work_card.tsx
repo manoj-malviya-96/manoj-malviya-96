@@ -121,30 +121,34 @@ function CardTags({ item }: { item: WorkItem }) {
 }
 
 function WorkLinks({ item }: { item: WorkItem }) {
-	if (item.kind === "blog") {
-		return (
-			<Flex direction="row" gap="sm" wrap>
-				<Link.Button
-					url={item.href}
-					openNewTab
-					color="primary"
-					label="Read on Medium"
-					size="sm"
-					icon={<IconMedium size="sm" />}
-				/>
-			</Flex>
-		);
+	switch (item.kind) {
+		case "blog":
+			return (
+				<Flex direction="row" gap="sm" wrap>
+					<Link.Button
+						url={item.href}
+						openNewTab
+						color="primary"
+						label="Read on Medium"
+						size="sm"
+						icon={<IconMedium size="sm" />}
+					/>
+				</Flex>
+			);
+		case "project": {
+			const { primary, others } = item.links;
+			return (
+				<Flex direction="row" gap="sm" wrap>
+					<ProjectLinkButton link={primary} color="primary" />
+					{others.map((link) => (
+						<ProjectLinkButton key={link.href} link={link} />
+					))}
+				</Flex>
+			);
+		}
+		default:
+			return assertNever(item);
 	}
-
-	const { primary, others } = item.links;
-	return (
-		<Flex direction="row" gap="sm" wrap>
-			<ProjectLinkButton link={primary} color="primary" />
-			{others.map((link) => (
-				<ProjectLinkButton key={link.href} link={link} />
-			))}
-		</Flex>
-	);
 }
 
 function ProjectLinkButton({
