@@ -109,15 +109,6 @@ img {
 	border-radius: var(--radius-md);
 }
 
-.lattice-overlay {
-	transition: opacity var(--duration-base) var(--ease-out);
-	pointer-events: none;
-}
-
-.lattice-overlay[data-hidden] {
-	opacity: 0;
-}
-
 .edu-grid {
 	grid-template-columns: 1fr;
 }
@@ -192,20 +183,6 @@ img {
 	.featured-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}
-}
-
-/* Visually hidden but still reachable to screen readers — the typewriter's
-   full word list, since the animation itself is aria-hidden. */
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
 }
 
 .hero-title {
