@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, List, Text } from "@manoj-malviya-96/atom";
+import { Flex, Text } from "@manoj-malviya-96/atom";
 
 import { SocialLinks } from "@/lib/data";
 import { Link } from "@/lib/shared";
@@ -22,15 +22,13 @@ export default function Footer() {
 			}}
 		>
 			<Text.Body>{`© ${new Date().getFullYear()} Manoj Malviya`}</Text.Body>
-			<List direction="row" gap="md">
+			<Flex as="span" direction="row" gap="sm" stack>
 				{Object.entries(SocialLinks).map(([key, url]) => (
-					<li key={key}>
-						<Link url={url} openNewTab aria-label={key}>
-							{key}
-						</Link>
-					</li>
+					<Link key={key} url={url} openNewTab aria-label={key}>
+						{key}
+					</Link>
 				))}
-			</List>
+			</Flex>
 		</Flex>
 	);
 }
