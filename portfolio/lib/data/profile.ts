@@ -41,7 +41,6 @@ export const HeroImage: MediaSource = {
 	height: 766,
 };
 
-// Ongoing roles sort first (see EXPERIENCE_BY_RECENCY), so index 0 is current.
 const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
 const currentExperience = Experiences[currentExperienceId];
 
