@@ -87,6 +87,8 @@ export const Experiences: Record<ExperienceId, Experience> = {
 			kind: "video",
 			src: "https://formlabs-media.formlabs.com/filer_public/e3/51/e35140a1-b576-4dba-a335-f4c0a45d4ca3/supportsv2_clip_improvedaccuracy01_4x3.mp4#t=0.1",
 			alt: "Formlabs' redesigned support-structure algorithm generating supports on a 3D-printed part.",
+			width: 1440,
+			height: 1080,
 		},
 		summary: (
 			<Bullets

@@ -100,7 +100,7 @@ function roleEvent(experience: ExperienceId): TimelineEvent {
 				{summary}
 				{media && (
 					<Atom as="div" enter="rise" width="full">
-						<Media media={media} />
+						<Media {...media} />
 					</Atom>
 				)}
 			</Flex>
