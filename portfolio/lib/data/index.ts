@@ -1,5 +1,6 @@
 export * from "@/lib/data/blogs";
 export * from "@/lib/data/degrees";
+export * from "@/lib/data/github";
 export * from "@/lib/data/google_scholar";
 export * from "@/lib/data/organizations";
 export * from "@/lib/data/patents";

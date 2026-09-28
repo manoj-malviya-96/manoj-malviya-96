@@ -167,6 +167,10 @@ img {
 	.stat-grid:has(> :nth-child(3)) {
 		grid-template-columns: repeat(3, 1fr);
 	}
+
+	.stat-grid:has(> :nth-child(4)) {
+		grid-template-columns: repeat(4, 1fr);
+	}
 }
 
 @media (min-width: 640px) {
