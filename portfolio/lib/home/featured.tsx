@@ -20,6 +20,7 @@ function WorkHighlightCard({ item }: { item: ProjectSummary }) {
 			url={`/work#${item.id}`}
 			ratio="video"
 			radius="md"
+			theme="dark"
 		>
 			{item.media?.[0] && (
 				<Backdrop.Media>
