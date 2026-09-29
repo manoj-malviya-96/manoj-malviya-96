@@ -15,13 +15,7 @@ import { type ProjectTag, SKILL_GROUPS } from "@/lib/data";
 import Education from "@/lib/resume/education";
 import { RESUME_SECTIONS } from "@/lib/resume/sections";
 import WorkHistory from "@/lib/resume/work_history";
-import {
-	EmText,
-	Eyebrow,
-	Page,
-	PageHeroHeader,
-	SectionHeader,
-} from "@/lib/shared";
+import { EmText, Eyebrow, Page, PageHeroHeader } from "@/lib/shared";
 
 export default function ResumePage() {
 	return (
@@ -47,11 +41,11 @@ export default function ResumePage() {
 					gap="sm"
 					padding={{ y: "md" }}
 				>
-					<SectionHeader eyebrow="Experience" />
+					<Eyebrow>Experience</Eyebrow>
 					<WorkHistory />
 				</Flex>
 				<Flex as="section" id={RESUME_SECTIONS[1].id} direction="col" gap="sm">
-					<SectionHeader eyebrow="Education" />
+					<Eyebrow>Education</Eyebrow>
 					<Education />
 				</Flex>
 			</Flex>

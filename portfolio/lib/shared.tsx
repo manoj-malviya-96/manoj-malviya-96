@@ -6,17 +6,12 @@ import {
 	assertNever,
 	Flex,
 	Text,
+	Video,
+	withDefaults,
 } from "@manoj-malviya-96/atom";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import {
-	type ComponentProps,
-	type CSSProperties,
-	type ReactNode,
-	useEffect,
-	useRef,
-} from "react";
-import { withDefaults } from "@/lib/helper";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { MediaSource } from "@/lib/types";
 
 /**
@@ -39,13 +34,11 @@ export function Media({
 	switch (kind) {
 		case "video":
 			return (
-				<InViewVideo
+				<Video
+					autoPlayInView
 					src={src}
-					alt={alt}
-					width={width}
-					height={height}
-					{...(fill ? {} : { style: ratio })}
-					fill={fill}
+					aria-label={alt}
+					{...(fill ? {} : { className: "media-fit", style: ratio })}
 				/>
 			);
 		case "image":
@@ -66,16 +59,6 @@ export function Media({
 		default:
 			return assertNever(kind);
 	}
-}
-
-export function SectionHeader({ eyebrow, title, caption }: SectionHeaderProps) {
-	return (
-		<Flex direction="col" gap="sm">
-			{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-			{title && <Text.Title>{title}</Text.Title>}
-			{caption && <Text.Body ink="muted">{caption}</Text.Body>}
-		</Flex>
-	);
 }
 
 /** Same header shell on every page, so moving between pages feels seamless. */
@@ -99,13 +82,12 @@ export function PageHeroSection({ children, ...rest }: PageHeroSectionProps) {
  * <Eyebrow> and a Text.Heading/Text.Hero child rather than passing props, so
  * each page picks its own title element.
  */
-export function PageHeroHeader({ children, ...rest }: PageHeroHeaderProps) {
-	return (
-		<Flex as="span" direction="col" gap="xs" width={{ max: "md" }} {...rest}>
-			{children}
-		</Flex>
-	);
-}
+export const PageHeroHeader = withDefaults(Flex)({
+	as: "span",
+	direction: "col",
+	gap: "xs",
+	width: { max: "md" },
+});
 
 export type LinkProps = DistributiveOmit<
 	ComponentProps<typeof AtomLink>,
@@ -142,7 +124,7 @@ export const ButtonRow = withDefaults(Flex)({
 	gap: "sm",
 	vAlign: "center",
 	hAlign: "start",
-	wrap: true,
+	flexMode: "wrap",
 });
 export const EmText = withDefaults(Text.Italic)({ ink: "muted" });
 
@@ -175,104 +157,30 @@ type MediaProps = MediaSource & {
 	fill?: boolean;
 };
 
-type SectionHeaderProps = {
-	eyebrow?: ReactNode;
-	title?: ReactNode;
-	caption?: ReactNode;
-};
-
 type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
 
-type PageHeroHeaderProps = Omit<
-	ComponentProps<typeof Flex>,
-	"direction" | "gap"
->;
-
 function LinkInline({ url, ...rest }: LinkProps) {
-	if (typeof url === "object" || url.startsWith("/"))
-		return (
-			<AtomLink
-				as={NextLink}
-				href={url}
-				{...rest}
-				/** TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this. */
-				style={{ textDecoration: "none" }}
-			/>
-		);
 	return (
-		/** TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this. */
-		<AtomLink as="a" href={url} {...rest} style={{ textDecoration: "none" }} />
+		<AtomLink
+			as={NextLink}
+			href={url}
+			{...rest}
+			/** TODO:[Atom] has defaulted to underline in 0.3.3. When its removed and it will be - removed this. */
+			style={{ textDecoration: "none" }}
+		/>
 	);
 }
 
 function LinkButton({ url, icon, ...rest }: LinkButtonProps) {
-	if (typeof url === "object" || url.startsWith("/")) {
-		return icon ? (
-			<AtomLink.Button
-				as={NextLink}
-				href={url}
-				collapseOnMobile={
-					false
-				} /** TODO - [ATOM] needs to make it not default */
-				icon={icon}
-				{...rest}
-			/>
-		) : (
-			<AtomLink.Button as={NextLink} href={url} {...rest} />
-		);
-	}
 	return icon ? (
 		<AtomLink.Button
-			as="a"
+			as={NextLink}
 			href={url}
-			collapseOnMobile={false}
+			collapseOnMobile={false} /** TODO - [ATOM] needs to make it not default */
 			icon={icon}
 			{...rest}
 		/>
 	) : (
-		<AtomLink.Button as="a" href={url} {...rest} />
-	);
-}
-
-/**
- * Plays only while on screen: every card autoplaying meant every video on the
- * page downloaded at once. preload="none" defers the fetch to first view.
- */
-function InViewVideo({
-	src,
-	alt,
-	width,
-	height,
-	style,
-	fill,
-}: Pick<MediaSource, "src" | "alt" | "width" | "height"> & {
-	style?: CSSProperties;
-	fill?: boolean;
-}) {
-	const ref = useRef<HTMLVideoElement>(null);
-	useEffect(() => {
-		const video = ref.current;
-		if (!video) return;
-		const observer = new IntersectionObserver(([entry]) => {
-			if (!entry?.isIntersecting) return video.pause();
-			/** Rejects when a pause interrupts the pending play — expected while scrolling past. */
-			video.play().catch(() => {});
-		});
-		observer.observe(video);
-		return () => observer.disconnect();
-	}, []);
-	return (
-		<video
-			ref={ref}
-			src={src}
-			aria-label={alt}
-			{...(fill ? {} : { width, height })}
-			className={fill ? undefined : "media-fit"}
-			style={style}
-			preload="none"
-			muted
-			loop
-			playsInline
-		/>
+		<AtomLink.Button as={NextLink} href={url} {...rest} />
 	);
 }

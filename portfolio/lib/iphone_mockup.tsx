@@ -35,14 +35,7 @@ export function Iphone({ children }: { children: ReactNode }) {
 						{children}
 					</div>
 				</foreignObject>
-				<rect
-					x="146"
-					y="24"
-					width="110"
-					height="32"
-					rx="16"
-					fill="#0D0F10"
-				/>
+				<rect x="146" y="24" width="110" height="32" rx="16" fill="#0D0F10" />
 			</svg>
 		</Flex>
 	);

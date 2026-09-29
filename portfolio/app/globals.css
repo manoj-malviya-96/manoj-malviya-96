@@ -1,42 +1,7 @@
 @import "@manoj-malviya-96/atom/styles.css";
-@layer atom.tokens,
-	atom.base,
-	atom.icon,
-	atom.components,
-	atom.utils,
-	overrides;
-
-/* TODO - [ATOM] fix needed */
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
-
 html {
 	text-rendering: optimizeLegibility;
-	font-synthesis: none;
 	color-scheme: light;
-	scroll-behavior: smooth;
-	font-size: 16px; /* DEFAULT FONT SIZE */
-}
-
-/* Named and ordered last so these values win over every atom.* layer,
-   regardless of how atom's own CSS is split across imported stylesheets. */
-@layer overrides {
-	:root {
-		--color-page: light-dark(oklch(100% 0.0025 228), oklch(9% 0.0025 228));
-		--color-ink: light-dark(oklch(8% 0.0025 228), oklch(93% 0.0025 228));
-		--color-surface: light-dark(
-			oklch(from var(--color-page) calc(l - 0.05) c h / 47%),
-			oklch(from var(--color-page) calc(l + 0.1) c h / 67%)
-		);
-		--size-content: min(67rem, 100%);
-		--text-heading: clamp(2rem, 2rem + 1.5vw, 5rem);
-		--text-title: clamp(1.2rem, 1.2rem + 0.5vw, 1.4rem);
-		--text-caption: 0.67rem;
-		--font-weight-bold: 700;
-	}
 }
 
 img {
@@ -82,21 +47,6 @@ img {
 	object-fit: cover;
 }
 
-/* Atom's `stack` prop stacks via a container query, which needs a sized
-   container-type ancestor this row doesn't have — so it never fires here.
-   A viewport query does the same job directly on the row itself. */
-@media (max-width: 640px) {
-	.hero-row {
-		flex-direction: column;
-	}
-
-	/* Once stacked, the photo is a supporting beat below the intro copy and
-	   CTAs, not a second hero — cap it much shorter than the side-by-side height. */
-	.hero-media {
-		width: 98vw;
-	}
-}
-
 /* Todo integrate in atom: custom track sizing (a fixed date-column width, not an equal-fr count) is past
    what Grid's `columns` prop (a count, 1–6) can express. */
 .track-list {
@@ -121,38 +71,6 @@ img {
 	border-radius: var(--radius-md);
 }
 
-.edu-grid {
-	grid-template-columns: 1fr;
-}
-
-.project-toc {
-	grid-template-columns: 1fr;
-}
-
-.about-intro {
-	grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-	.edu-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.project-toc {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.about-intro {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 1024px) {
-	.project-toc {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
 @media (max-width: 920px) {
 	.track-row {
 		grid-template-columns: 1fr;
@@ -160,14 +78,6 @@ img {
 }
 
 .stat-grid {
-	grid-template-columns: 1fr;
-}
-
-.loop-grid {
-	grid-template-columns: 1fr;
-}
-
-.featured-grid {
 	grid-template-columns: 1fr;
 }
 
@@ -182,21 +92,5 @@ img {
 
 	.stat-grid:has(> :nth-child(4)) {
 		grid-template-columns: repeat(4, 1fr);
-	}
-}
-
-@media (min-width: 640px) {
-	.loop-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.featured-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 1024px) {
-	.featured-grid {
-		grid-template-columns: repeat(3, 1fr);
 	}
 }

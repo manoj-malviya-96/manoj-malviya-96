@@ -75,8 +75,8 @@ export const Experiences: Record<ExperienceId, Experience> = {
 					<>
 						I redesigned Formlabs' support-structure algorithm into a{" "}
 						<Highlight>patent-pending topology-optimization method</Highlight>,
-						cutting print cost ~20%, making it ~17% more reliable, and
-						pushing adoption up roughly 50%.
+						cutting print cost ~20%, making it ~17% more reliable, and pushing
+						adoption up roughly 50%.
 					</>,
 					"I also rebuilt the print-time estimator so it's ~20% more accurate while using half the compute.",
 					"I modeled the physics for next-gen printers and materials, which pushed reliability up ~40% and speed ~35%.",

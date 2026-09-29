@@ -31,7 +31,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			padding="lg"
 		>
 			<Flex direction="col" gap="sm" hAlign="start">
-				<Flex direction="row" gap="sm" vAlign="center" wrap>
+				<Flex direction="row" gap="sm" vAlign="center">
 					<Text.Title>{item.title}</Text.Title>
 					<Text.Caption ink="muted">{formatDates(item)}</Text.Caption>
 					{attributes.includes("new") && <Badge ink="green">New</Badge>}
@@ -94,7 +94,6 @@ function CardTags({ item }: { item: WorkItem }) {
 			as="ul"
 			direction="row"
 			gap="xs"
-			wrap
 			style={{ listStyle: "none", paddingInlineStart: 0, margin: 0 }}
 		>
 			{item.tags.map((tag) => (
@@ -110,7 +109,7 @@ function WorkLinks({ item }: { item: WorkItem }) {
 	switch (item.kind) {
 		case "blog":
 			return (
-				<Flex direction="row" gap="sm" wrap>
+				<Flex direction="row" gap="sm">
 					<Link.Button
 						url={item.href}
 						openNewTab
@@ -124,7 +123,7 @@ function WorkLinks({ item }: { item: WorkItem }) {
 		case "project": {
 			const { primary, others } = item.links;
 			return (
-				<Flex direction="row" gap="sm" wrap>
+				<Flex direction="row" gap="sm">
 					<ProjectLinkButton link={primary} color="primary" />
 					{others.map((link) => (
 						<ProjectLinkButton key={link.href} link={link} />

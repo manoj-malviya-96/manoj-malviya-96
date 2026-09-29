@@ -13,7 +13,6 @@ export default function Footer() {
 			hAlign="between"
 			vAlign="end"
 			gap="lg"
-			wrap
 			width="content"
 			padding={{ y: "lg" }}
 			/** TODO [ATOM] - needs to handle ink on atom */
@@ -22,7 +21,7 @@ export default function Footer() {
 			}}
 		>
 			<Text.Body>{`© ${new Date().getFullYear()} Manoj Malviya`}</Text.Body>
-			<Flex as="span" direction="row" gap="sm" stack>
+			<Flex as="span" direction="row" gap="sm" flexMode="stack">
 				{Object.entries(SocialLinks).map(([key, url]) => (
 					<Link key={key} url={url} openNewTab aria-label={key}>
 						{key}

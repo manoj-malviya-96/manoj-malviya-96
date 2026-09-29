@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@manoj-malviya-96/atom':
-        specifier: 0.3.4
-        version: 0.3.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 0.3.5
+        version: 0.3.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@tanstack/react-query':
         specifier: ^5.104.0
         version: 5.104.0(react@19.2.8)
@@ -303,8 +303,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@manoj-malviya-96/atom@0.3.4':
-    resolution: {integrity: sha512-QHujr/r88edU4kys+5TSgTsI0gOYB4WuVF812sfnBADGJuwB796mRwwxQcqT5/6sdtGN1Wkbd32z+25acN90Zg==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.3.4/e04e4a588cbfd51128e0cda6b57794e3e26ff163}
+  '@manoj-malviya-96/atom@0.3.5':
+    resolution: {integrity: sha512-YijX0CGptdguG+7co2wJVHcudsJ82BTHF0QGoIL56qdiuwu/AwJDb30UUrwV2B6fBVO34WCuvjVZau5RqTC4FQ==, tarball: https://npm.pkg.github.com/download/@manoj-malviya-96/atom/0.3.5/00fc54e9b5f50aac19131354f44c1bd0018567c0}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -1284,7 +1284,7 @@ snapshots:
   '@img/sharp-win32-x64@0.35.5':
     optional: true
 
-  '@manoj-malviya-96/atom@0.3.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@manoj-malviya-96/atom@0.3.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)

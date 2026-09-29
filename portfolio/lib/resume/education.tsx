@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/helper";
 
 export default function Education() {
 	return (
-		<Grid columns={2} gap="md" className="edu-grid">
+		<Grid columns={2} gap="md">
 			{DEGREE_IDS.map((id) => {
 				const { organization, degree, field, focus, graduation } = Degrees[id];
 				return (
