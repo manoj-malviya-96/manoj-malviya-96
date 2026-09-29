@@ -28,8 +28,6 @@ export const SocialLinks: Record<SocialMedia, ExternalURL> = {
 	Linktree: `https://linktr.ee/${SocialUsersID.Linktree}`,
 } as const;
 
-export const UserAvatar: LocalImage = userAvatar;
-
 export const HeroImage: MediaSource = {
 	kind: "image",
 	src: getBlob("hero.jpg"),
@@ -38,13 +36,15 @@ export const HeroImage: MediaSource = {
 	height: 766,
 };
 
-export const Interests: readonly string[] = [
+const UserAvatar: LocalImage = userAvatar;
+
+const Interests: readonly string[] = [
 	"Generative design",
 	"Real-time rendering",
 	"Robotics",
 ];
 
-export const Hobbies: readonly string[] = [
+const Hobbies: readonly string[] = [
 	"Part-time DJ",
 	"3D Printing",
 	"Photography",
@@ -56,4 +56,4 @@ export const EmailAddress = `mailto:${Email}`;
 const currentExperienceId = EXPERIENCE_BY_RECENCY[0];
 const currentExperience = Experiences[currentExperienceId];
 
-export const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;
+const CurrentStatus = `${currentExperience.position} at ${getEmployer(currentExperienceId).name}`;

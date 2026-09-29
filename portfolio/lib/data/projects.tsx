@@ -31,6 +31,10 @@ export type Project = {
 
 export type ProjectSummary = Project & { id: ProjectId };
 
+/** Native capture dimensions shared by the phone and desktop recordings. */
+const mobileSize = { width: 1206, height: 2622 };
+const webVideoSize = { width: 3390, height: 2082 };
+
 type SoftwareConcepts = ValuesOf<typeof SOFTWARE_CONCEPTS>;
 type SoftSkills = ValuesOf<typeof SOFT_SKILLS>;
 type ProgrammingFrameworks = ValuesOf<typeof PROGRAMMING_FRAMEWORKS>;
@@ -58,6 +62,7 @@ const AllProjectIds = [
 	"blackhole",
 	"ev_sim",
 	"mesha",
+	"suction_cup",
 ] as const;
 
 const wrappedProject: Project = {
@@ -90,17 +95,56 @@ const wrappedProject: Project = {
 			mockup: "iphone",
 			kind: "video",
 			src: getBlob("wrapped.webm"),
-			width: 1206,
-			height: 2622,
+			...mobileSize,
 			alt: "An example video.",
 		},
 		{
 			mockup: "iphone",
 			kind: "image",
 			src: getBlob("wrapped-1.png"),
-			width: 1206,
-			height: 2622,
+			...mobileSize,
 			alt: "Wrapped's photo recap slide.",
+		},
+	],
+};
+
+const suctionCupProject: Project = {
+	title: "Suction Cup Simulation",
+	summary: (
+		<>
+			Simulating suction cups is a challenging engineering problem—one that
+			first caught my interest. In SLA 3D printing, a cured layer can adhere to
+			the bottom of the resin tank and behave like a suction cup during the peel
+			motion. Without a sharp edge to break the seal, this suction can increase
+			peel forces and lead to print failures.
+			<br /> <br /> While optimizing for 3D Printing, out of curosity i made
+			this tool to explore the underlying mechanics and demonstrate how a
+			seemingly simple suction cup can produce complex behavior and surprisingly
+			powerful forces.
+		</>
+	),
+	startsAt: new Date("2023-05-01"),
+	tags: ["simulation", "optimization", "web"],
+	effort: "low",
+	links: {
+		primary: {
+			kind: "demo",
+			label: "Preview",
+			href: "https://suction-cup.vercel.app/",
+		},
+		others: [
+			{
+				kind: "github",
+				href: "https://github.com/manoj-malviya-96/suction-cup",
+			},
+		],
+	},
+	media: [
+		{
+			kind: "video",
+			src: getBlob("suction-cup.webm"),
+			...webVideoSize,
+			alt: "Simulation of Suction Cup",
 		},
 	],
 };
@@ -141,8 +185,7 @@ const atomProject: Project = {
 			kind: "video",
 			alt: "Atom framework demo",
 			src: getBlob("atom.webm"),
-			width: 3390,
-			height: 2082,
+			...webVideoSize,
 			mockup: "macbook",
 		},
 	],
@@ -369,6 +412,7 @@ export const Projects: Record<ProjectId, Project> = {
 	blackhole: blackholeProject,
 	ev_sim: evSimProject,
 	mesha: meshaProject,
+	suction_cup: suctionCupProject,
 };
 
 const SOFTWARE_CONCEPTS = [
@@ -446,6 +490,7 @@ function showProject(id: ProjectId) {
 		case "honeycomb":
 		case "muviz":
 		case "blackhole":
+		case "suction_cup":
 		case "ev_sim":
 			return true;
 		case "mesha":
