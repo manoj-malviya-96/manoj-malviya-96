@@ -9,6 +9,12 @@
 	"sideEffects": [
 		"*.css"
 	],
+	"browserslist": [
+		"chrome >= 123",
+		"safari >= 17.5",
+		"firefox >= 120",
+		"edge >= 123"
+	],
 	"scripts": {
 		"dev": "next dev --turbo",
 		"build": "next build",
