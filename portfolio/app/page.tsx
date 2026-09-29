@@ -23,7 +23,7 @@ export default function Landing() {
 				id="home-hero"
 				direction="row"
 				hAlign="between"
-				stack
+				flexMode="stack"
 				padding={{ y: "xl" }}
 			>
 				<Flex direction="col" gap="lg">
@@ -63,14 +63,13 @@ export default function Landing() {
 					<Media {...HeroImage} fill sizes="(min-width: 640px) 24rem, 16rem" />
 				</div>
 			</PageHeroSection>
-			<PageSection id="home-feature" gap="lg">
+			<PageSection id="home-feature" gap="lg" bg={undefined}>
 				<Flex as="span" direction="row" vAlign="center" hAlign="between">
 					<Text.Title family="serif">Featured</Text.Title>
 					<Link url="/work">
 						<Text.Body ink="muted">View all Projects</Text.Body>
 					</Link>
 				</Flex>
-
 				<ShowAndTell />
 				<Featured />
 			</PageSection>

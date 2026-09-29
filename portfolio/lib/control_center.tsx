@@ -17,6 +17,7 @@ export default function AppControlCenter() {
 
 	return (
 		<ControlCenter
+			defaultExpanded
 			header={<Logo size={24} />}
 			actions={
 				<ControlCenter.Item

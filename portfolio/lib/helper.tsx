@@ -1,13 +1,4 @@
-import type { ComponentType } from "react";
 import type { MonthAndYear } from "@/lib/types";
-
-export function withDefaults<P extends object>(Component: ComponentType<P>) {
-	return function preset<D extends Partial<P>>(defaultProps: D) {
-		return function Styled(props: Omit<P, keyof D> & Partial<D>) {
-			return <Component {...defaultProps} {...(props as P)} />;
-		};
-	};
-}
 
 export function formatDate(date: MonthAndYear): string {
 	const [year, month] = date.split("-");
