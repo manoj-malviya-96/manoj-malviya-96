@@ -63,6 +63,7 @@ const AllProjectIds = [
 	"ev_sim",
 	"mesha",
 	"suction_cup",
+	"name_weave",
 ] as const;
 
 const wrappedProject: Project = {
@@ -403,6 +404,50 @@ const meshaProject: Project = {
 	},
 };
 
+const nameWeaveProject: Project = {
+	title: "NameWeave",
+	summary: (
+		<>
+			A nameplate that reads one name from the left diagonal and a different
+			name from the right. Each letter pair is two glyph outlines from
+			opentype.js, <Text.Bold>extruded, rotated ±45° and intersected</Text.Bold>{" "}
+			with Manifold's WASM booleans, so what survives reads as one letter from
+			each side.
+			<br /> <br /> It all runs in the browser: a Web Worker builds the mesh,
+			Three.js previews it, and a binary STL comes out ready to print.{" "}
+			<Text.Italic>Not every pair works</Text.Italic> — some letter combinations
+			leave no usable solid, and the app names the pair instead of faking one.
+		</>
+	),
+	startsAt: new Date("2026-09-01"),
+	tags: [
+		"web",
+		"react",
+		"typescript",
+		"threejs",
+		"wasm",
+		"rendering",
+		"cad",
+		"open-source",
+	],
+	effort: "medium",
+	media: [
+		{
+			kind: "video",
+			src: getBlob("name-weave.webm"),
+			...webVideoSize,
+			alt: "NameWeave previewing a nameplate that reads a different name from each diagonal.",
+		},
+	],
+	links: {
+		primary: {
+			kind: "github",
+			href: "https://github.com/manoj-malviya-96/name-weave",
+		},
+		others: [],
+	},
+};
+
 export const Projects: Record<ProjectId, Project> = {
 	wrapped: wrappedProject,
 	atom: atomProject,
@@ -413,6 +458,7 @@ export const Projects: Record<ProjectId, Project> = {
 	ev_sim: evSimProject,
 	mesha: meshaProject,
 	suction_cup: suctionCupProject,
+	name_weave: nameWeaveProject,
 };
 
 const SOFTWARE_CONCEPTS = [
@@ -492,6 +538,7 @@ function showProject(id: ProjectId) {
 		case "blackhole":
 		case "suction_cup":
 		case "ev_sim":
+		case "name_weave":
 			return true;
 		case "mesha":
 			return false;
