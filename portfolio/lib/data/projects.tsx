@@ -434,7 +434,7 @@ const nameWeaveProject: Project = {
 	media: [
 		{
 			kind: "video",
-			src: getBlob("name_weave.webm"),
+			src: getBlob("name-weave.webm"),
 			...webVideoSize,
 			alt: "NameWeave previewing a nameplate that reads a different name from each diagonal.",
 		},
