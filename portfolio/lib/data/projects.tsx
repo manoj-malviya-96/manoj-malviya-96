@@ -470,6 +470,7 @@ const nameWeaveProject: Project = {
 		</>
 	),
 	startsAt: new Date("2026-09-01"),
+	endsAt: new Date("2026-09-03"),
 	tags: [
 		"web",
 		"react",
