@@ -20,6 +20,44 @@ img {
 	border-radius: var(--radius-md);
 }
 
+/* <Media> code: a scrollable source listing that follows the theme through
+   currentColor, so it needs no syntax-highlighter dependency. */
+.code-block {
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+	border-radius: var(--radius-md);
+	background: color-mix(in srgb, currentColor 6%, transparent);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 12%, transparent);
+	text-align: start;
+}
+
+.code-block figcaption {
+	padding: var(--space-sm) var(--space-lg);
+	font: 0.75rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+	opacity: 0.6;
+	border-block-end: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.code-block pre {
+	margin: 0;
+	padding: var(--space-lg);
+	overflow-x: auto;
+	font: 0.8125rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+	tab-size: 2;
+}
+
+/* In a fixed-shape parent (<Backdrop.Media>) the listing fills it and clips. */
+.code-block-fill {
+	position: absolute;
+	inset: 0;
+	border-radius: 0;
+}
+
+.code-block-fill pre {
+	overflow: hidden;
+}
+
 /* A fixed-shape slot that <Media> fits inside, centered, e.g. a mockup's
    screen or a uniform card thumbnail. Size containment makes cqh resolve
    against this box. */

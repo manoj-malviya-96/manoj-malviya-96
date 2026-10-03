@@ -64,6 +64,7 @@ const AllProjectIds = [
 	"mesha",
 	"suction_cup",
 	"name_weave",
+	"mosby",
 ] as const;
 
 const wrappedProject: Project = {
@@ -105,6 +106,55 @@ const wrappedProject: Project = {
 			src: getBlob("wrapped-1.png"),
 			...mobileSize,
 			alt: "Wrapped's photo recap slide.",
+		},
+	],
+};
+
+const mosbyProject: Project = {
+	title: "Mosby",
+	summary: (
+		<>
+			Building a web interface means learning a UI library, a styling system and
+			a build pipeline, then keeping all three in sync. I wanted one language
+			instead, so I'm building{" "}
+			<Text.Italic ink="blue" family="serif">
+				Mosby
+			</Text.Italic>
+			: a TypeScript-first UI language and compiler. You describe the interface
+			once with typed builders, themes and reactive state, and a Rust compiler
+			turns it into semantic HTML, CSS in cascade layers and minimal JavaScript.
+			A bad token or variant is a type error, never a runtime surprise.
+		</>
+	),
+	startsAt: new Date("2026-09-01"),
+	tags: ["typescript", "rust", "web", "ui-development", "open-source"],
+	effort: "high",
+	links: {
+		primary: {
+			kind: "github",
+			href: "https://github.com/manoj-malviya-96/mosby",
+		},
+		others: [],
+	},
+	media: [
+		{
+			kind: "code",
+			language: "typescript",
+			filename: "app.ts",
+			alt: "A Mosby counter screen written with typed builders.",
+			code: `import { App, Button, Screen, Text, VStack, brandTheme } from "@mosby/ui";
+import { state } from "@mosby/runtime";
+
+export default App({ theme: brandTheme }, () =>
+  Screen("Counter", () => {
+    const count = state(0);
+
+    return VStack(
+      Text(() => \`Count: \${count.value}\`).style("heading"),
+      Button("Add", () => count.value++).variant("primary"),
+    ).spacing("md");
+  }),
+);`,
 		},
 	],
 };
@@ -459,6 +509,7 @@ export const Projects: Record<ProjectId, Project> = {
 	mesha: meshaProject,
 	suction_cup: suctionCupProject,
 	name_weave: nameWeaveProject,
+	mosby: mosbyProject,
 };
 
 const SOFTWARE_CONCEPTS = [
@@ -539,6 +590,7 @@ function showProject(id: ProjectId) {
 		case "suction_cup":
 		case "ev_sim":
 		case "name_weave":
+		case "mosby":
 			return true;
 		case "mesha":
 			return false;

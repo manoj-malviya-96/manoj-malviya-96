@@ -5,7 +5,7 @@ export type ExternalURL = `https://${string}`;
  * width/height are the file's intrinsic pixels: remote files carry no
  * build-time size, and knowing the ratio up front reserves the box before load.
  */
-export type MediaSource = {
+export type VisualMedia = {
 	kind: "image" | "video";
 	src: string;
 	alt: string;
@@ -13,6 +13,17 @@ export type MediaSource = {
 	height: number;
 	mockup?: MediaMockup;
 };
+
+/** A source snippet shown as text, e.g. what a UI language looks like to write. */
+export type CodeMedia = {
+	kind: "code";
+	code: string;
+	language: string;
+	alt: string;
+	filename?: string;
+};
+
+export type MediaSource = VisualMedia | CodeMedia;
 
 type Month =
 	| "01"

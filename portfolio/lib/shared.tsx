@@ -12,21 +12,18 @@ import {
 import NextImage from "next/image";
 import NextLink from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import type { MediaSource } from "@/lib/types";
+import type { CodeMedia, MediaSource } from "@/lib/types";
 
 /**
  * Sized entirely by `.media-fit` in globals.css: full parent width, capped by
  * the parent's `--media-max-h`, always at the file's own ratio — never cropped.
  */
-export function Media({
-	kind,
-	src,
-	alt,
-	width,
-	height,
-	sizes = "(min-width: 768px) 50vw, 100vw",
-	fill = false,
-}: MediaProps) {
+export function Media(props: MediaProps) {
+	const { sizes = "(min-width: 768px) 50vw, 100vw", fill = false } = props;
+	if (props.kind === "code") {
+		return <CodeBlock {...props} fill={fill} />;
+	}
+	const { kind, src, alt, width, height } = props;
 	const ratio: CSSProperties & Record<`--${string}`, number> = {
 		"--media-w": width,
 		"--media-h": height,
@@ -59,6 +56,26 @@ export function Media({
 		default:
 			return assertNever(kind);
 	}
+}
+
+function CodeBlock({
+	code,
+	language,
+	alt,
+	filename,
+	fill,
+}: CodeMedia & { fill: boolean }) {
+	return (
+		<figure
+			className={fill ? "code-block code-block-fill" : "code-block"}
+			aria-label={alt}
+		>
+			{filename && <figcaption>{filename}</figcaption>}
+			<pre>
+				<code className={`language-${language}`}>{code}</code>
+			</pre>
+		</figure>
+	);
 }
 
 /** Same header shell on every page, so moving between pages feels seamless. */

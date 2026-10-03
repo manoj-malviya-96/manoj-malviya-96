@@ -64,6 +64,13 @@ function ProjectMedia({ media }: { media: readonly MediaSource[] }) {
 }
 
 function MediaMockup({ media }: { media: MediaSource }) {
+	if (media.kind === "code") {
+		return (
+			<Atom as="div" enter="rise" width="full">
+				<Media {...media} />
+			</Atom>
+		);
+	}
 	switch (media.mockup) {
 		case undefined:
 			return (
