@@ -34,7 +34,11 @@ img {
 
 .code-block figcaption {
 	padding: var(--space-sm) var(--space-lg);
-	font: 0.75rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+	font:
+		0.75rem / 1 ui-monospace,
+		SFMono-Regular,
+		Menlo,
+		monospace;
 	opacity: 0.6;
 	border-block-end: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
@@ -43,7 +47,11 @@ img {
 	margin: 0;
 	padding: var(--space-lg);
 	overflow-x: auto;
-	font: 0.8125rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+	font:
+		0.8125rem / 1.6 ui-monospace,
+		SFMono-Regular,
+		Menlo,
+		monospace;
 	tab-size: 2;
 }
 
