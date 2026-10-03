@@ -175,6 +175,7 @@ const suctionCupProject: Project = {
 		</>
 	),
 	startsAt: new Date("2023-05-01"),
+	endsAt: new Date("2023-05-04"),
 	tags: ["simulation", "optimization", "web"],
 	effort: "low",
 	links: {
@@ -256,6 +257,7 @@ const muvizProject: Project = {
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
+	endsAt: new Date("2026-09-01"),
 	tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 	effort: "high",
 	media: [
