@@ -58,26 +58,6 @@ export function Media(props: MediaProps) {
 	}
 }
 
-function CodeBlock({
-	code,
-	language,
-	alt,
-	filename,
-	fill,
-}: CodeMedia & { fill: boolean }) {
-	return (
-		<figure
-			className={fill ? "code-block code-block-fill" : "code-block"}
-			aria-label={alt}
-		>
-			{filename && <figcaption>{filename}</figcaption>}
-			<pre>
-				<code className={`language-${language}`}>{code}</code>
-			</pre>
-		</figure>
-	);
-}
-
 /** Same header shell on every page, so moving between pages feels seamless. */
 export function PageHeroSection({ children, ...rest }: PageHeroSectionProps) {
 	return (
@@ -175,6 +155,26 @@ type MediaProps = MediaSource & {
 };
 
 type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
+
+function CodeBlock({
+	code,
+	language,
+	alt,
+	filename,
+	fill,
+}: CodeMedia & { fill: boolean }) {
+	return (
+		<figure
+			className={fill ? "code-block code-block-fill" : "code-block"}
+			aria-label={alt}
+		>
+			{filename && <figcaption>{filename}</figcaption>}
+			<pre>
+				<code className={`language-${language}`}>{code}</code>
+			</pre>
+		</figure>
+	);
+}
 
 function LinkInline({ url, ...rest }: LinkProps) {
 	return (

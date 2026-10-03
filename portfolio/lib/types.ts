@@ -1,6 +1,17 @@
 export type MonthAndYear = `${Year}-${Month}`; /** "MM/YYYY" */
 export type ExternalURL = `https://${string}`;
 
+/** A source snippet shown as text, e.g. what a UI language looks like to write. */
+export type CodeMedia = {
+	kind: "code";
+	code: string;
+	language: string;
+	alt: string;
+	filename?: string;
+};
+
+export type MediaSource = VisualMedia | CodeMedia;
+
 /**
  * width/height are the file's intrinsic pixels: remote files carry no
  * build-time size, and knowing the ratio up front reserves the box before load.
@@ -13,17 +24,6 @@ type VisualMedia = {
 	height: number;
 	mockup?: MediaMockup;
 };
-
-/** A source snippet shown as text, e.g. what a UI language looks like to write. */
-export type CodeMedia = {
-	kind: "code";
-	code: string;
-	language: string;
-	alt: string;
-	filename?: string;
-};
-
-export type MediaSource = VisualMedia | CodeMedia;
 
 type Month =
 	| "01"
