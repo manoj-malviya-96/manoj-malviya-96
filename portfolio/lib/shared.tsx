@@ -9,9 +9,11 @@ import {
 	Video,
 	withDefaults,
 } from "@manoj-malviya-96/atom";
+import { Code } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import { CodeSvg, highlightCode } from "@/lib/code";
 import type { CodeMedia, MediaSource } from "@/lib/types";
 
 /**
@@ -21,7 +23,11 @@ import type { CodeMedia, MediaSource } from "@/lib/types";
 export function Media(props: MediaProps) {
 	const { sizes = "(min-width: 768px) 50vw, 100vw", fill = false } = props;
 	if (props.kind === "code") {
-		return <CodeBlock {...props} fill={fill} />;
+		return fill ? (
+			<CodeSvg code={props.code} language={props.language} alt={props.alt} />
+		) : (
+			<CodeBlock {...props} />
+		);
 	}
 	const { kind, src, alt, width, height } = props;
 	const ratio: CSSProperties & Record<`--${string}`, number> = {
@@ -156,23 +162,19 @@ type MediaProps = MediaSource & {
 
 type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
 
-function CodeBlock({
-	code,
-	language,
-	alt,
-	filename,
-	fill,
-}: CodeMedia & { fill: boolean }) {
+function CodeBlock({ code, language, alt, filename }: CodeMedia) {
 	return (
-		<figure
-			className={fill ? "code-block code-block-fill" : "code-block"}
-			aria-label={alt}
-		>
-			{filename && <figcaption>{filename}</figcaption>}
-			<pre>
-				<code className={`language-${language}`}>{code}</code>
-			</pre>
-		</figure>
+		<Flex direction="col" gap="xs" width="full" hAlign="start">
+			{filename && <Text.Caption ink="muted">{filename}</Text.Caption>}
+			<Code
+				language={language}
+				highlight={highlightCode}
+				aria-label={alt}
+				style={{ width: "100%" }}
+			>
+				{code}
+			</Code>
+		</Flex>
 	);
 }
 
