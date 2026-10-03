@@ -471,8 +471,8 @@ const nameWeaveProject: Project = {
 			leave no usable solid, and the app names the pair instead of faking one.
 		</>
 	),
-	startsAt: new Date("2026-09-01"),
-	endsAt: new Date("2026-09-03"),
+	startsAt: new Date("2024-07-01"),
+	endsAt: new Date("2024-07-03"),
 	tags: [
 		"web",
 		"react",
