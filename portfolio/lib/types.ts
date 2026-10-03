@@ -5,7 +5,7 @@ export type ExternalURL = `https://${string}`;
  * width/height are the file's intrinsic pixels: remote files carry no
  * build-time size, and knowing the ratio up front reserves the box before load.
  */
-export type VisualMedia = {
+type VisualMedia = {
 	kind: "image" | "video";
 	src: string;
 	alt: string;
