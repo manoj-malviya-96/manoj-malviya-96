@@ -602,16 +602,11 @@ function showProject(id: ProjectId) {
 	}
 }
 
+/** Highest effort first; within the same effort, the most recently started. */
 function rankProjects(): readonly ProjectSummary[] {
-	const latestStartedAt = Math.max(
-		...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-	);
-	const isLatest = (project: Project) =>
-		project.startsAt.getTime() === latestStartedAt;
 	return VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort(
-		(a, b) => {
-			if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
-			return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
-		},
+		(a, b) =>
+			EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort] ||
+			b.startsAt.getTime() - a.startsAt.getTime(),
 	);
 }
