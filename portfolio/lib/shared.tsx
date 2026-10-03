@@ -9,24 +9,27 @@ import {
 	Video,
 	withDefaults,
 } from "@manoj-malviya-96/atom";
+import { Code } from "@manoj-malviya-96/atom/system";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import type { MediaSource } from "@/lib/types";
+import { CodeSvg, highlightCode } from "@/lib/code";
+import type { CodeMedia, MediaSource } from "@/lib/types";
 
 /**
  * Sized entirely by `.media-fit` in globals.css: full parent width, capped by
  * the parent's `--media-max-h`, always at the file's own ratio — never cropped.
  */
-export function Media({
-	kind,
-	src,
-	alt,
-	width,
-	height,
-	sizes = "(min-width: 768px) 50vw, 100vw",
-	fill = false,
-}: MediaProps) {
+export function Media(props: MediaProps) {
+	const { sizes = "(min-width: 768px) 50vw, 100vw", fill = false } = props;
+	if (props.kind === "code") {
+		return fill ? (
+			<CodeSvg code={props.code} language={props.language} alt={props.alt} />
+		) : (
+			<CodeBlock {...props} />
+		);
+	}
+	const { kind, src, alt, width, height } = props;
 	const ratio: CSSProperties & Record<`--${string}`, number> = {
 		"--media-w": width,
 		"--media-h": height,
@@ -158,6 +161,22 @@ type MediaProps = MediaSource & {
 };
 
 type PageHeroSectionProps = Omit<ComponentProps<typeof Flex>, "title">;
+
+function CodeBlock({ code, language, alt, filename }: CodeMedia) {
+	return (
+		<Flex direction="col" gap="xs" width="full" hAlign="start">
+			{filename && <Text.Caption ink="muted">{filename}</Text.Caption>}
+			<Code
+				language={language}
+				highlight={highlightCode}
+				aria-label={alt}
+				style={{ width: "100%" }}
+			>
+				{code}
+			</Code>
+		</Flex>
+	);
+}
 
 function LinkInline({ url, ...rest }: LinkProps) {
 	return (
