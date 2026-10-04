@@ -20,6 +20,52 @@ img {
 	border-radius: var(--radius-md);
 }
 
+/* Prism tokens, shared by Atom's <Code> and the generated <CodeSvg>. */
+.token.comment {
+	color: #6e7781;
+	fill: #8b949e;
+	font-style: italic;
+}
+
+.token.keyword,
+.token.boolean {
+	color: #cf222e;
+	fill: #ff7b72;
+}
+
+.token.string,
+.token.template-string,
+.token.template-punctuation {
+	color: #0a3069;
+	fill: #a5d6ff;
+}
+
+.token.function {
+	color: #8250df;
+	fill: #d2a8ff;
+}
+
+.token.number {
+	color: #0550ae;
+	fill: #79c0ff;
+}
+
+.token.class-name,
+.token.builtin {
+	color: #953800;
+	fill: #ffa657;
+}
+
+/* Fills its parent (<Backdrop.Media>); the whole snippet stays visible, letterboxed in the same dark. */
+.code-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	fill: #e6edf3;
+	background: #0d1117;
+}
+
 /* A fixed-shape slot that <Media> fits inside, centered, e.g. a mockup's
    screen or a uniform card thumbnail. Size containment makes cqh resolve
    against this box. */

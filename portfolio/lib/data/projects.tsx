@@ -64,6 +64,7 @@ const AllProjectIds = [
 	"mesha",
 	"suction_cup",
 	"name_weave",
+	"mosby",
 ] as const;
 
 const wrappedProject: Project = {
@@ -109,6 +110,55 @@ const wrappedProject: Project = {
 	],
 };
 
+const mosbyProject: Project = {
+	title: "Mosby",
+	summary: (
+		<>
+			Building a web interface means learning a UI library, a styling system and
+			a build pipeline, then keeping all three in sync. I wanted one language
+			instead, so I'm building{" "}
+			<Text.Italic ink="blue" family="serif">
+				Mosby
+			</Text.Italic>
+			: a TypeScript-first UI language and compiler. You describe the interface
+			once with typed builders, themes and reactive state, and a Rust compiler
+			turns it into semantic HTML, CSS in cascade layers and minimal JavaScript.
+			A bad token or variant is a type error, never a runtime surprise.
+		</>
+	),
+	startsAt: new Date("2026-09-01"),
+	tags: ["typescript", "rust", "web", "ui-development", "open-source"],
+	effort: "high",
+	links: {
+		primary: {
+			kind: "github",
+			href: "https://github.com/manoj-malviya-96/mosby",
+		},
+		others: [],
+	},
+	media: [
+		{
+			kind: "code",
+			language: "typescript",
+			filename: "app.ts",
+			alt: "A Mosby counter screen written with typed builders.",
+			code: `import { App, Button, Screen, Text, VStack, brandTheme } from "@mosby/ui";
+import { state } from "@mosby/runtime";
+
+export default App({ theme: brandTheme }, () =>
+  Screen("Counter", () => {
+    const count = state(0);
+
+    return VStack(
+      Text(() => \`Count: \${count.value}\`).style("heading"),
+      Button("Add", () => count.value++).variant("primary"),
+    ).spacing("md");
+  }),
+);`,
+		},
+	],
+};
+
 const suctionCupProject: Project = {
 	title: "Suction Cup Simulation",
 	summary: (
@@ -125,6 +175,7 @@ const suctionCupProject: Project = {
 		</>
 	),
 	startsAt: new Date("2023-05-01"),
+	endsAt: new Date("2023-05-04"),
 	tags: ["simulation", "optimization", "web"],
 	effort: "low",
 	links: {
@@ -206,6 +257,7 @@ const muvizProject: Project = {
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
+	endsAt: new Date("2026-09-01"),
 	tags: ["web", "wasm", "c++", "typescript", "react", "ui/ux", "threejs"],
 	effort: "high",
 	media: [
@@ -419,7 +471,8 @@ const nameWeaveProject: Project = {
 			leave no usable solid, and the app names the pair instead of faking one.
 		</>
 	),
-	startsAt: new Date("2026-09-01"),
+	startsAt: new Date("2024-07-01"),
+	endsAt: new Date("2024-07-03"),
 	tags: [
 		"web",
 		"react",
@@ -459,6 +512,7 @@ export const Projects: Record<ProjectId, Project> = {
 	mesha: meshaProject,
 	suction_cup: suctionCupProject,
 	name_weave: nameWeaveProject,
+	mosby: mosbyProject,
 };
 
 const SOFTWARE_CONCEPTS = [
@@ -539,6 +593,7 @@ function showProject(id: ProjectId) {
 		case "suction_cup":
 		case "ev_sim":
 		case "name_weave":
+		case "mosby":
 			return true;
 		case "mesha":
 			return false;
@@ -547,16 +602,11 @@ function showProject(id: ProjectId) {
 	}
 }
 
+/** Highest effort first; within the same effort, the most recently started. */
 function rankProjects(): readonly ProjectSummary[] {
-	const latestStartedAt = Math.max(
-		...VISIBLE_PROJECT_IDS.map((id) => Projects[id].startsAt.getTime()),
-	);
-	const isLatest = (project: Project) =>
-		project.startsAt.getTime() === latestStartedAt;
 	return VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort(
-		(a, b) => {
-			if (isLatest(a) !== isLatest(b)) return isLatest(a) ? -1 : 1;
-			return EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort];
-		},
+		(a, b) =>
+			EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort] ||
+			b.startsAt.getTime() - a.startsAt.getTime(),
 	);
 }
