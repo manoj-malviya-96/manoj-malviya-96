@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="389" viewBox="0 0 840 389" font-family="Consolas, Menlo, monospace" font-size="13px">
-<rect x="0.5" y="0.5" width="839" height="388" rx="10" fill="#ffffff" stroke="#d0d7de"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="410" viewBox="0 0 840 410" font-family="Consolas, Menlo, monospace" font-size="13px">
+<rect x="0.5" y="0.5" width="839" height="409" rx="10" fill="#ffffff" stroke="#d0d7de"/>
 <text x="25" y="40" fill="#57606a" xml:space="preserve">....            .....    ...              </text>
 <text x="25" y="55" fill="#57606a" xml:space="preserve">       .....    ....:........             </text>
 <text x="25" y="70" fill="#57606a" xml:space="preserve">       ......... .::-::............  .    </text>
@@ -36,13 +36,15 @@
 <rect x="799.20" y="184" width="13.20" height="10" fill="#DA3434" stroke="#ffffff" stroke-width="1"/>
 <rect x="812.40" y="184" width="4.40" height="10" fill="#F05138" stroke="#ffffff" stroke-width="1"/>
 <rect x="816.80" y="184" width="4.40" height="10" fill="#DA5B0B" stroke="#ffffff" stroke-width="1"/>
+<rect x="821.20" y="184" width="4.40" height="10" fill="#dea584" stroke="#ffffff" stroke-width="1"/>
 </g>
 <text x="390" y="206" xml:space="preserve"><tspan fill="#6e7681">● C++ 73%   </tspan><tspan fill="#44a51c">● QML 9%   </tspan><tspan fill="#3178c6">● TypeScript 6%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan></text>
 <text x="390" y="227" xml:space="preserve"><tspan fill="#DA3434">● CMake 3%   </tspan><tspan fill="#F05138">● Swift 1%   </tspan><tspan fill="#DA5B0B">● Jupyter Notebook 1%   </tspan></text>
-<text x="390" y="248" xml:space="preserve"><tspan fill="#0969da">Repos: </tspan><tspan fill="#afb8c1">...... </tspan><tspan fill="#24292f">23 {Contrib: 6}</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">PRs: </tspan><tspan fill="#afb8c1">............. </tspan><tspan fill="#24292f">868</tspan></text>
-<text x="390" y="269" xml:space="preserve"><tspan fill="#0969da">Commits: </tspan><tspan fill="#afb8c1">.............. </tspan><tspan fill="#24292f">5,480</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Reviews: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">447</tspan></text>
-<text x="390" y="290" xml:space="preserve"><tspan fill="#0969da">Comments: </tspan><tspan fill="#afb8c1">................ </tspan><tspan fill="#24292f">61</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Streak: </tspan><tspan fill="#afb8c1">.......... </tspan><tspan fill="#24292f">30d</tspan></text>
-<text x="390" y="311" xml:space="preserve"><tspan fill="#0969da">Longest: </tspan><tspan fill="#afb8c1">......................................... </tspan><tspan fill="#24292f">30d</tspan></text>
-<text x="390" y="332" xml:space="preserve"><tspan fill="#0969da">Lines of Code: </tspan><tspan fill="#24292f">1,648,153</tspan><tspan fill="#afb8c1"> ( </tspan><tspan fill="#1a7f37">1,856,932++</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">208,779--</tspan><tspan fill="#afb8c1"> )</tspan></text>
-<text x="390" y="353" xml:space="preserve"><tspan fill="#0969da">Largest PR: </tspan><tspan fill="#1a7f37">+17,175</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">-44,996</tspan></text>
+<text x="390" y="248" xml:space="preserve"><tspan fill="#dea584">● Rust 1%   </tspan></text>
+<text x="390" y="269" xml:space="preserve"><tspan fill="#0969da">Repos: </tspan><tspan fill="#afb8c1">...... </tspan><tspan fill="#24292f">23 {Contrib: 6}</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">PRs: </tspan><tspan fill="#afb8c1">............. </tspan><tspan fill="#24292f">872</tspan></text>
+<text x="390" y="290" xml:space="preserve"><tspan fill="#0969da">Commits: </tspan><tspan fill="#afb8c1">.............. </tspan><tspan fill="#24292f">5,495</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Reviews: </tspan><tspan fill="#afb8c1">......... </tspan><tspan fill="#24292f">453</tspan></text>
+<text x="390" y="311" xml:space="preserve"><tspan fill="#0969da">Comments: </tspan><tspan fill="#afb8c1">................ </tspan><tspan fill="#24292f">61</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#0969da">Streak: </tspan><tspan fill="#afb8c1">.......... </tspan><tspan fill="#24292f">31d</tspan></text>
+<text x="390" y="332" xml:space="preserve"><tspan fill="#0969da">Longest: </tspan><tspan fill="#afb8c1">......................................... </tspan><tspan fill="#24292f">31d</tspan></text>
+<text x="390" y="353" xml:space="preserve"><tspan fill="#0969da">Lines of Code: </tspan><tspan fill="#24292f">1,651,037</tspan><tspan fill="#afb8c1"> ( </tspan><tspan fill="#1a7f37">1,860,256++</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">209,219--</tspan><tspan fill="#afb8c1"> )</tspan></text>
+<text x="390" y="374" xml:space="preserve"><tspan fill="#0969da">Largest PR: </tspan><tspan fill="#1a7f37">+17,175</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">-44,996</tspan></text>
 </svg>
