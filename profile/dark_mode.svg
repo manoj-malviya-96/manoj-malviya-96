@@ -30,21 +30,21 @@
 <clipPath id="langbar-184"><rect x="390" y="184" width="440" height="10" rx="5"/></clipPath>
 <g clip-path="url(#langbar-184)">
 <rect x="390.00" y="184" width="308.00" height="10" fill="#6e7681" stroke="#0d1117" stroke-width="1"/>
-<rect x="698.00" y="184" width="35.20" height="10" fill="#3178c6" stroke="#0d1117" stroke-width="1"/>
-<rect x="733.20" y="184" width="35.20" height="10" fill="#44a51c" stroke="#0d1117" stroke-width="1"/>
-<rect x="768.40" y="184" width="22.00" height="10" fill="#e3b341" stroke="#0d1117" stroke-width="1"/>
-<rect x="790.40" y="184" width="13.20" height="10" fill="#DA3434" stroke="#0d1117" stroke-width="1"/>
+<rect x="698.00" y="184" width="39.60" height="10" fill="#3178c6" stroke="#0d1117" stroke-width="1"/>
+<rect x="737.60" y="184" width="35.20" height="10" fill="#44a51c" stroke="#0d1117" stroke-width="1"/>
+<rect x="772.80" y="184" width="22.00" height="10" fill="#e3b341" stroke="#0d1117" stroke-width="1"/>
+<rect x="794.80" y="184" width="8.80" height="10" fill="#DA3434" stroke="#0d1117" stroke-width="1"/>
 <rect x="803.60" y="184" width="8.80" height="10" fill="#F05138" stroke="#0d1117" stroke-width="1"/>
 <rect x="812.40" y="184" width="4.40" height="10" fill="#DA5B0B" stroke="#0d1117" stroke-width="1"/>
 <rect x="816.80" y="184" width="4.40" height="10" fill="#dea584" stroke="#0d1117" stroke-width="1"/>
 </g>
-<text x="390" y="206" xml:space="preserve"><tspan fill="#6e7681">● C++ 70%   </tspan><tspan fill="#3178c6">● TypeScript 8%   </tspan><tspan fill="#44a51c">● QML 8%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan></text>
-<text x="390" y="227" xml:space="preserve"><tspan fill="#DA3434">● CMake 3%   </tspan><tspan fill="#F05138">● Swift 2%   </tspan><tspan fill="#DA5B0B">● Jupyter Notebook 1%   </tspan></text>
+<text x="390" y="206" xml:space="preserve"><tspan fill="#6e7681">● C++ 70%   </tspan><tspan fill="#3178c6">● TypeScript 9%   </tspan><tspan fill="#44a51c">● QML 8%   </tspan><tspan fill="#e3b341">● Python 5%   </tspan></text>
+<text x="390" y="227" xml:space="preserve"><tspan fill="#DA3434">● CMake 2%   </tspan><tspan fill="#F05138">● Swift 2%   </tspan><tspan fill="#DA5B0B">● Jupyter Notebook 1%   </tspan></text>
 <text x="390" y="248" xml:space="preserve"><tspan fill="#dea584">● Rust 1%   </tspan></text>
-<text x="390" y="269" xml:space="preserve"><tspan fill="#58a6ff">Repos: </tspan><tspan fill="#484f58">...... </tspan><tspan fill="#c9d1d9">24 {Contrib: 7}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">PRs: </tspan><tspan fill="#484f58">............. </tspan><tspan fill="#c9d1d9">961</tspan></text>
-<text x="390" y="290" xml:space="preserve"><tspan fill="#58a6ff">Commits: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">5,700</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Reviews: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">476</tspan></text>
-<text x="390" y="311" xml:space="preserve"><tspan fill="#58a6ff">Comments: </tspan><tspan fill="#484f58">................ </tspan><tspan fill="#c9d1d9">63</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Streak: </tspan><tspan fill="#484f58">.......... </tspan><tspan fill="#c9d1d9">41d</tspan></text>
-<text x="390" y="332" xml:space="preserve"><tspan fill="#58a6ff">Longest: </tspan><tspan fill="#484f58">......................................... </tspan><tspan fill="#c9d1d9">41d</tspan></text>
-<text x="390" y="353" xml:space="preserve"><tspan fill="#58a6ff">Lines of Code: </tspan><tspan fill="#c9d1d9">1,686,544</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">1,921,923++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">235,379--</tspan><tspan fill="#484f58"> )</tspan></text>
+<text x="390" y="269" xml:space="preserve"><tspan fill="#58a6ff">Repos: </tspan><tspan fill="#484f58">...... </tspan><tspan fill="#c9d1d9">24 {Contrib: 7}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">PRs: </tspan><tspan fill="#484f58">............. </tspan><tspan fill="#c9d1d9">979</tspan></text>
+<text x="390" y="290" xml:space="preserve"><tspan fill="#58a6ff">Commits: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">5,742</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Reviews: </tspan><tspan fill="#484f58">......... </tspan><tspan fill="#c9d1d9">476</tspan></text>
+<text x="390" y="311" xml:space="preserve"><tspan fill="#58a6ff">Comments: </tspan><tspan fill="#484f58">................ </tspan><tspan fill="#c9d1d9">63</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#58a6ff">Streak: </tspan><tspan fill="#484f58">.......... </tspan><tspan fill="#c9d1d9">42d</tspan></text>
+<text x="390" y="332" xml:space="preserve"><tspan fill="#58a6ff">Longest: </tspan><tspan fill="#484f58">......................................... </tspan><tspan fill="#c9d1d9">42d</tspan></text>
+<text x="390" y="353" xml:space="preserve"><tspan fill="#58a6ff">Lines of Code: </tspan><tspan fill="#c9d1d9">1,690,618</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">1,930,340++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">239,722--</tspan><tspan fill="#484f58"> )</tspan></text>
 <text x="390" y="374" xml:space="preserve"><tspan fill="#58a6ff">Largest PR: </tspan><tspan fill="#3fb950">+17,175</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">-44,996</tspan></text>
 </svg>
