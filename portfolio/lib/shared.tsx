@@ -114,7 +114,7 @@ export const PageSection = withDefaults(AtomSection)({
 });
 export const PageSectionCard = withDefaults(PageSection)({
 	gap: "md",
-	bg: "surface",
+	layer: "overlay",
 	padding: "xl",
 	radius: "lg",
 	hAlign: "center",
