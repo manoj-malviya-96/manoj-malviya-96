@@ -24,8 +24,8 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 			id={item.id}
 			direction="col"
 			width="full"
-			bg="surface"
-			radius="md"
+			layer="overlay"
+			radius="lg"
 			overflow="clip"
 			gap="lg"
 			padding="lg"
@@ -34,9 +34,9 @@ export default function WorkCard({ item }: { item: WorkItem }) {
 				<Flex direction="row" gap="sm" vAlign="center">
 					<Text.Title>{item.title}</Text.Title>
 					<Text.Caption ink="muted">{formatDates(item)}</Text.Caption>
-					{attributes.includes("new") && <Badge ink="green">New</Badge>}
+					{attributes.includes("new") && <Badge ink="result">New</Badge>}
 					{attributes.includes("in_progress") && (
-						<Badge ink="orange">In progress</Badge>
+						<Badge ink="warn">In progress</Badge>
 					)}
 				</Flex>
 				<CardTags item={item} />

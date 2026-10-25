@@ -58,7 +58,7 @@ function TrackRow({ group }: { group: ExperienceGroup }) {
 	const { end } = Experiences[experiences[0]];
 
 	return (
-		<Grid columns={2} className="track-row" padding="lg" bg="surface" blur>
+		<Grid columns={2} className="track-row" padding="lg" layer="overlay">
 			<Flex direction="col" gap="xs" vAlign="start" hAlign="start">
 				<div className="track-logo">
 					<NextImage
