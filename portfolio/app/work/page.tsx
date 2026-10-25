@@ -1,6 +1,6 @@
 "use client";
 
-import { FilterBar, Flex, Text } from "@manoj-malviya-96/atom";
+import { Flex, Tab, TabBar, Text } from "@manoj-malviya-96/atom";
 import { useScrollBar } from "@manoj-malviya-96/atom/system";
 import { useState } from "react";
 import { type ProjectTag, WorkItems } from "@/lib/data";
@@ -29,6 +29,11 @@ export default function WorkPage() {
 	useScrollBar({ sections: WORK_SECTIONS });
 	const [activeTags, setActiveTags] = useState<readonly ProjectTag[]>([]);
 
+	const toggleTag = (tag: ProjectTag) =>
+		setActiveTags((tags) =>
+			tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag],
+		);
+
 	const visibleItems =
 		activeTags.length === 0
 			? WorkItems
@@ -44,13 +49,17 @@ export default function WorkPage() {
 					Things I've <br /> <EmText>built</EmText>
 				</Text.Heading>
 			</PageHeroHeader>
-			<FilterBar
-				mode="multiple"
-				aria-label="Filter by tag"
-				value={activeTags}
-				onChange={setActiveTags}
-				options={TOP_TAGS.map((tag) => ({ value: tag, label: tag }))}
-			/>
+			<TabBar aria-label="Filter by tag">
+				{TOP_TAGS.map((tag) => (
+					<Tab
+						key={tag}
+						pressed={activeTags.includes(tag)}
+						onClick={() => toggleTag(tag)}
+					>
+						{tag}
+					</Tab>
+				))}
+			</TabBar>
 			<Flex as="article" direction="col" gap="lg" width="full">
 				{visibleItems.map((item) => (
 					<WorkCard key={item.id} item={item} />

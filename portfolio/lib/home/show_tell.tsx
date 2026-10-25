@@ -30,7 +30,7 @@ export default function ShowAndTell() {
 	];
 
 	return (
-		<Flex direction="col" radius="lg" bg="surface" padding={{ y: "md" }}>
+		<Flex direction="col" radius="lg" layer="overlay" padding={{ y: "md" }}>
 			<Grid
 				columns={stats.length}
 				className="stat-grid"
@@ -46,11 +46,11 @@ export default function ShowAndTell() {
 								aria-label="Loading"
 							/>
 						) : stat.isError ? (
-							<Text.Heading align="center" ink="red">
+							<Text.Heading align="center" ink="fault">
 								N/A
 							</Text.Heading>
 						) : (
-							<Text.Heading align="center" family="sans">
+							<Text.Heading align="center">
 								{stat.value === undefined ? "–" : stat.value.toLocaleString()}
 							</Text.Heading>
 						)}

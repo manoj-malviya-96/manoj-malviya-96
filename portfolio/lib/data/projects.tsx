@@ -74,11 +74,8 @@ const wrappedProject: Project = {
 			Life happens in photos, steps, sleep, and moments scattered across a dozen
 			apps, and nobody actually looks back at it honestly. I wanted a recap that
 			felt real instead of curated for Instagram, so I'm building{" "}
-			<Text.Italic ink="blue" family="serif">
-				Wrapped
-			</Text.Italic>
-			. Mainly build on SwiftUI, and Core Foundational Models with a postgressql
-			based database.
+			<Text.Italic>Wrapped</Text.Italic>. Mainly build on SwiftUI, and Core
+			Foundational Models with a postgressql based database.
 		</>
 	),
 	startsAt: new Date("2026-08-01"),
@@ -116,14 +113,11 @@ const mosbyProject: Project = {
 		<>
 			Building a web interface means learning a UI library, a styling system and
 			a build pipeline, then keeping all three in sync. I wanted one language
-			instead, so I'm building{" "}
-			<Text.Italic ink="blue" family="serif">
-				Mosby
-			</Text.Italic>
-			: a TypeScript-first UI language and compiler. You describe the interface
-			once with typed builders, themes and reactive state, and a Rust compiler
-			turns it into semantic HTML, CSS in cascade layers and minimal JavaScript.
-			A bad token or variant is a type error, never a runtime surprise.
+			instead, so I'm building <Text.Italic>Mosby</Text.Italic>: a
+			TypeScript-first UI language and compiler. You describe the interface once
+			with typed builders, themes and reactive state, and a Rust compiler turns
+			it into semantic HTML, CSS in cascade layers and minimal JavaScript. A bad
+			token or variant is a type error, never a runtime surprise.
 		</>
 	),
 	startsAt: new Date("2026-09-01"),
