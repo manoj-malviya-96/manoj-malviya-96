@@ -17,7 +17,7 @@ img {
 	aspect-ratio: var(--media-w) / var(--media-h);
 	width: min(100%, var(--media-max-h, 70svh) * var(--media-w) / var(--media-h));
 	height: auto;
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-sm);
 }
 
 /* Prism tokens, shared by Atom's <Code> and the generated <CodeSvg>. */
@@ -86,7 +86,7 @@ img {
 	max-width: 100%;
 	aspect-ratio: 4 / 3;
 	overflow: hidden;
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-sm);
 }
 
 .hero-media img {
@@ -114,7 +114,7 @@ img {
 	width: 3rem;
 	aspect-ratio: 1;
 	overflow: hidden;
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-sm);
 }
 
 @media (max-width: 920px) {
