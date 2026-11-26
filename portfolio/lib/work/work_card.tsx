@@ -1,9 +1,5 @@
 import { Atom, assertNever, Badge, Flex, Text } from "@manoj-malviya-96/atom";
-import {
-	IconGithub,
-	IconMedium,
-	IconPlay,
-} from "@manoj-malviya-96/atom/icons";
+import { IconGithub, IconMedium, IconPlay } from "@manoj-malviya-96/atom/icons";
 import {
 	formatDates,
 	getAttributes,

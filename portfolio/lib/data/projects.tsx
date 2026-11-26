@@ -183,8 +183,8 @@ const atomProject: Project = {
 			runtime, or plain CSS that throws away type safety. So I built{" "}
 			<Text.Bold>Atom</Text.Bold>:{" "}
 			<Text.Italic>
-				one primitive, one stylesheet, and a type system generated straight
-				from that stylesheet
+				one primitive, one stylesheet, and a type system generated straight from
+				that stylesheet
 			</Text.Italic>
 			. An invalid token can't compile. This site is built with it.
 		</>
@@ -214,8 +214,9 @@ const muvizProject: Project = {
 			wanting that feeling back. Muviz is a music visualizer built on a{" "}
 			<Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>. It
 			analyzes each track once in a Web Worker and caches the result, so the
-			Three.js scene reacts to <Text.Italic>real extracted features</Text.Italic>{" "}
-			instead of an AI's guess.
+			Three.js scene reacts to{" "}
+			<Text.Italic>real extracted features</Text.Italic> instead of an AI's
+			guess.
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
@@ -231,7 +232,9 @@ const muvizProject: Project = {
 			alt: "Muviz reacting to a track in real time.",
 		},
 	],
-	links: [{ kind: "demo", label: "Live demo", href: "https://muviz.vercel.app" }],
+	links: [
+		{ kind: "demo", label: "Live demo", href: "https://muviz.vercel.app" },
+	],
 };
 
 const honeycombProject: Project = {
@@ -361,7 +364,9 @@ const evSimProject: Project = {
 			alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
 		},
 	],
-	links: [{ kind: "github", href: "https://github.com/manoj-malviya-96/ev-sim" }],
+	links: [
+		{ kind: "github", href: "https://github.com/manoj-malviya-96/ev-sim" },
+	],
 };
 
 const nameWeaveProject: Project = {
