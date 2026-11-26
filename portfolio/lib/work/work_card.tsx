@@ -1,7 +1,6 @@
 import { Atom, assertNever, Badge, Flex, Text } from "@manoj-malviya-96/atom";
 import {
 	IconGithub,
-	IconLink,
 	IconMedium,
 	IconPlay,
 } from "@manoj-malviya-96/atom/icons";
@@ -128,12 +127,15 @@ function WorkLinks({ item }: { item: WorkItem }) {
 				</Flex>
 			);
 		case "project": {
-			const { primary, others } = item.links;
+			if (item.links.length === 0) return null;
 			return (
 				<Flex direction="row" gap="sm">
-					<ProjectLinkButton link={primary} color="primary" />
-					{others.map((link) => (
-						<ProjectLinkButton key={link.href} link={link} />
+					{item.links.map((link, i) => (
+						<ProjectLinkButton
+							key={link.href}
+							link={link}
+							{...(i === 0 && { color: "primary" as const })}
+						/>
 					))}
 				</Flex>
 			);
@@ -173,8 +175,6 @@ function linkLabel(link: ProjectLink) {
 			return "Blog";
 		case "demo":
 			return link.label ?? "Demo";
-		case "external":
-			return link.label;
 		default:
 			return assertNever(link);
 	}
@@ -188,8 +188,6 @@ function linkIcon(link: ProjectLink) {
 			return IconMedium;
 		case "demo":
 			return IconPlay;
-		case "external":
-			return IconLink;
 		default:
 			return assertNever(link);
 	}

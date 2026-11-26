@@ -1,4 +1,4 @@
-import { assertNever, Text } from "@manoj-malviya-96/atom";
+import { Text } from "@manoj-malviya-96/atom";
 import type { ReactNode } from "react";
 import { getBlob, type ValuesOf } from "@/lib/helper";
 import type { ExternalURL, MediaSource } from "@/lib/types";
@@ -11,11 +11,14 @@ export type ProjectTag =
 	| SoftwareConcepts
 	| SoftSkills;
 
+/**
+ * Only list links that resolve. A GitHub link belongs here only if the repo is
+ * public; a demo only if the deployment is live.
+ */
 export type ProjectLink =
 	| { kind: "github"; href: GithubRepo }
 	| { kind: "medium"; href: MediumPost }
-	| { kind: "demo"; label?: string; href: ExternalURL | InternalPath }
-	| { kind: "external"; label: string; href: ExternalURL };
+	| { kind: "demo"; label?: string; href: ExternalURL };
 
 export type Project = {
 	title: string;
@@ -26,7 +29,8 @@ export type Project = {
 	tags: readonly ProjectTag[];
 	effort: ProjectEffort;
 	media?: ProjectMedia;
-	links: ProjectLinks;
+	/** The first link is the primary action; may be empty for unreleased work. */
+	links: readonly ProjectLink[];
 };
 
 export type ProjectSummary = Project & { id: ProjectId };
@@ -44,12 +48,6 @@ type ProjectEffort = "low" | "medium" | "high";
 
 type GithubRepo = `https://github.com/${string}/${string}`;
 type MediumPost = `https://medium.com/@${string}/${string}`;
-type InternalPath = `/${string}`;
-
-type ProjectLinks = {
-	primary: ProjectLink;
-	others: readonly ProjectLink[];
-};
 
 type ProjectMedia = readonly MediaSource[];
 
@@ -61,7 +59,6 @@ const AllProjectIds = [
 	"topopt_py",
 	"blackhole",
 	"ev_sim",
-	"mesha",
 	"suction_cup",
 	"name_weave",
 	"mosby",
@@ -71,31 +68,25 @@ const wrappedProject: Project = {
 	title: "Wrapped",
 	summary: (
 		<>
-			Life happens in photos, steps, sleep, and moments scattered across a dozen
-			apps, and nobody actually looks back at it honestly. I wanted a recap that
-			felt real instead of curated for Instagram, so I'm building{" "}
-			<Text.Italic>Wrapped</Text.Italic>. Mainly build on SwiftUI, and Core
-			Foundational Models with a postgressql based database.
+			Life is scattered across photos, steps, sleep and a dozen other apps, and
+			nobody looks back at it honestly. <Text.Italic>Wrapped</Text.Italic> is a
+			year-in-review that feels real instead of curated for Instagram. It is a{" "}
+			<Text.Bold>native SwiftUI app</Text.Bold> that uses on-device Apple
+			Foundation Models to turn your own data into recap slides, backed by a
+			PostgreSQL database.
 		</>
 	),
 	startsAt: new Date("2026-08-01"),
 	tags: ["mobile", "swift", "ai", "ui/ux"],
 	effort: "medium",
-	links: {
-		primary: {
-			kind: "demo",
-			label: "Preview",
-			href: "https://wrapped.vercel.app",
-		},
-		others: [],
-	},
+	links: [],
 	media: [
 		{
 			mockup: "iphone",
 			kind: "video",
 			src: getBlob("wrapped.webm"),
 			...mobileSize,
-			alt: "An example video.",
+			alt: "Wrapped's recap flow running on an iPhone.",
 		},
 		{
 			mockup: "iphone",
@@ -111,25 +102,21 @@ const mosbyProject: Project = {
 	title: "Mosby",
 	summary: (
 		<>
-			Building a web interface means learning a UI library, a styling system and
-			a build pipeline, then keeping all three in sync. I wanted one language
-			instead, so I'm building <Text.Italic>Mosby</Text.Italic>: a
-			TypeScript-first UI language and compiler. You describe the interface once
-			with typed builders, themes and reactive state, and a Rust compiler turns
-			it into semantic HTML, CSS in cascade layers and minimal JavaScript. A bad
-			token or variant is a type error, never a runtime surprise.
+			A web interface means learning a UI library, a styling system and a build
+			pipeline, then keeping all three in sync. <Text.Italic>Mosby</Text.Italic>{" "}
+			replaces them with one <Text.Bold>TypeScript-first UI language</Text.Bold>
+			: describe the interface once with typed builders, themes and reactive
+			state, and a Rust compiler emits semantic HTML, CSS in cascade layers and
+			minimal JavaScript. A bad token or variant is a type error, never a
+			runtime surprise.
 		</>
 	),
 	startsAt: new Date("2026-09-01"),
-	tags: ["typescript", "rust", "web", "ui-development", "open-source"],
+	tags: ["typescript", "rust", "web", "ui-development"],
 	effort: "high",
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/mosby",
-		},
-		others: [],
-	},
+	links: [
+		{ kind: "demo", label: "Live site", href: "https://mosby-fw.vercel.app" },
+	],
 	media: [
 		{
 			kind: "code",
@@ -157,34 +144,26 @@ const suctionCupProject: Project = {
 	title: "Suction Cup Simulation",
 	summary: (
 		<>
-			Simulating suction cups is a challenging engineering problem—one that
-			first caught my interest. In SLA 3D printing, a cured layer can adhere to
-			the bottom of the resin tank and behave like a suction cup during the peel
-			motion. Without a sharp edge to break the seal, this suction can increase
-			peel forces and lead to print failures.
-			<br /> <br /> While optimizing for 3D Printing, out of curosity i made
-			this tool to explore the underlying mechanics and demonstrate how a
-			seemingly simple suction cup can produce complex behavior and surprisingly
-			powerful forces.
+			In SLA 3D printing, a freshly cured layer can seal against the bottom of
+			the resin tank and act like a suction cup during the peel motion. With no
+			sharp edge to break the seal, peel force climbs and prints fail.
+			<br /> <br />
+			While optimizing a printer, I built this interactive tool out of
+			curiosity, to show how a simple suction cup produces surprisingly complex
+			behavior and powerful forces.
 		</>
 	),
 	startsAt: new Date("2023-05-01"),
 	endsAt: new Date("2023-05-04"),
 	tags: ["simulation", "optimization", "web"],
 	effort: "low",
-	links: {
-		primary: {
+	links: [
+		{
 			kind: "demo",
-			label: "Preview",
-			href: "https://suction-cup.vercel.app/",
+			label: "Try it",
+			href: "https://suction-cup.vercel.app",
 		},
-		others: [
-			{
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/suction-cup",
-			},
-		],
-	},
+	],
 	media: [
 		{
 			kind: "video",
@@ -200,32 +179,22 @@ const atomProject: Project = {
 	summary: (
 		<>
 			I wanted Apple-grade design discipline: one visual language, everywhere.
-			Every option out there made me choose between a CSS-in-JS styling library
-			dragging its own runtime and CSS that throws out type safety. I got tired
-			of choosing, so I built <Text.Bold>Atom</Text.Bold>:{" "}
+			Every option made me choose between a CSS-in-JS library that drags its own
+			runtime, or plain CSS that throws away type safety. So I built{" "}
+			<Text.Bold>Atom</Text.Bold>:{" "}
 			<Text.Italic>
-				one primitive, one stylesheet, and a type system that generates straight
+				one primitive, one stylesheet, and a type system generated straight
 				from that stylesheet
 			</Text.Italic>
-			, so an invalid token can't compile.
+			. An invalid token can't compile. This site is built with it.
 		</>
 	),
 	startsAt: new Date("2025-01-01"),
-	tags: ["react", "typescript", "web", "open-source", "ui/ux"],
+	tags: ["react", "typescript", "web", "ui/ux"],
 	effort: "high",
-	links: {
-		primary: {
-			kind: "demo",
-			label: "Playground",
-			href: "https://atom-two-tan.vercel.app",
-		},
-		others: [
-			{
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/atom",
-			},
-		],
-	},
+	links: [
+		{ kind: "demo", label: "Playground", href: "https://atorn.vercel.app" },
+	],
 	media: [
 		{
 			kind: "video",
@@ -241,13 +210,12 @@ const muvizProject: Project = {
 	title: "Muviz",
 	summary: (
 		<>
-			I grew up watching Winamp react to whatever was playing, and I never
-			stopped wanting that feeling back. So I'm building the real thing myself:
-			a <Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>,
-			analyzing each track once in a Web Worker and caching the result, so the
-			Three.js scene reacts to{" "}
-			<Text.Italic>real extracted features</Text.Italic> instead of an AI's
-			guess.
+			I grew up watching Winamp react to whatever was playing and never stopped
+			wanting that feeling back. Muviz is a music visualizer built on a{" "}
+			<Text.Bold>C++ DSP pipeline compiled to WebAssembly</Text.Bold>. It
+			analyzes each track once in a Web Worker and caches the result, so the
+			Three.js scene reacts to <Text.Italic>real extracted features</Text.Italic>{" "}
+			instead of an AI's guess.
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
@@ -263,14 +231,7 @@ const muvizProject: Project = {
 			alt: "Muviz reacting to a track in real time.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "demo",
-			label: "Demo",
-			href: "https://muviz.vercel.app/",
-		},
-		others: [],
-	},
+	links: [{ kind: "demo", label: "Live demo", href: "https://muviz.vercel.app" }],
 };
 
 const honeycombProject: Project = {
@@ -278,12 +239,12 @@ const honeycombProject: Project = {
 	summary: (
 		<>
 			I kept needing hexagonal lattices for CAD work and got tired of
-			triangulating them by hand, so I wrote a generator:{" "}
+			triangulating them by hand. HoneyMesh is a generator that builds{" "}
 			<Text.Bold>
-				a 2D skeleton graph in C++, extruded into a real VTK mesh
+				a 2D skeleton graph in C++ and extrudes it into a real VTK mesh
 			</Text.Bold>
 			. The part that kept breaking was{" "}
-			<Text.Italic>staggering the hexagon centers</Text.Italic> — get that wrong
+			<Text.Italic>staggering the hexagon centers</Text.Italic>: get that wrong
 			and the whole grid drifts.
 		</>
 	),
@@ -300,28 +261,23 @@ const honeycombProject: Project = {
 			alt: "A honeycomb lattice generated and rendered in VTK.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/honeycomb/tree/master",
-		},
-		others: [],
-	},
+	links: [
+		{ kind: "github", href: "https://github.com/manoj-malviya-96/honeycomb" },
+	],
 };
 
 const topoptPyProject: Project = {
 	title: "topopt-py",
 	summary: (
 		<>
-			I found DTU's 99-line topology-optimization script and loved how compact
-			it was, but the inner loop was nested Python. I rewrote the stiffness
-			assembly and filtering as <Text.Bold>vectorized NumPy</Text.Bold>, keeping
-			the same SIMP algorithm and accuracy but running faster on the same
-			problem —{" "}
+			DTU's 99-line topology-optimization script is wonderfully compact, but its
+			inner loop is nested Python. I rewrote the stiffness assembly and
+			filtering as <Text.Bold>vectorized NumPy</Text.Bold>, keeping the same
+			SIMP algorithm and accuracy.{" "}
 			<Text.Italic>
-				caching the sparsity pattern instead of rebuilding it every iteration
+				Caching the sparsity pattern instead of rebuilding it every iteration
 			</Text.Italic>{" "}
-			drops a 5,000-element run from 4.8s to 2.6s.
+			cuts a 5,000-element run from 4.8s to 2.6s.
 		</>
 	),
 	startsAt: new Date("2021-01-01"),
@@ -337,31 +293,26 @@ const topoptPyProject: Project = {
 			alt: "A topology optimization converging on a solution.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/topopt-py/tree/master",
+	links: [
+		{ kind: "demo", label: "Live demo", href: "https://topopt-py.vercel.app" },
+		{ kind: "github", href: "https://github.com/manoj-malviya-96/topopt-py" },
+		{
+			kind: "medium",
+			href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
 		},
-		others: [
-			{
-				kind: "medium",
-				href: "https://medium.com/@manoj-malviya/vectorized-python-a-step-towards-speed-305f8aa708a2",
-			},
-		],
-	},
+	],
 };
 
 const blackholeProject: Project = {
 	title: "Blackhole",
 	summary: (
 		<>
-			Gravity, rendered <Text.Italic>in real time</Text.Italic>, because I
-			couldn't wait for the movie. A compute shader integrates each pixel's
-			light-ray geodesic against a mass modeled on{" "}
-			<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, while a
-			lensing fragment shader bends the background grid around it — running as a
-			Qt/OpenGL widget so it rotates live instead of playing back a rendered
-			clip.
+			Gravity, rendered <Text.Italic>in real time</Text.Italic>. A compute
+			shader integrates each pixel's light-ray geodesic around a mass modeled on{" "}
+			<Text.Bold>Sagittarius A* (4.3 million solar masses)</Text.Bold>, and a
+			lensing fragment shader bends the background grid around it. It runs as a
+			Qt/OpenGL widget, so you can rotate the view live instead of watching a
+			pre-rendered clip.
 		</>
 	),
 	startsAt: new Date("2026-01-01"),
@@ -374,31 +325,27 @@ const blackholeProject: Project = {
 			src: getBlob("blackhole.webm"),
 			width: 640,
 			height: 480,
-			alt: "Cover art for the black hole renderer.",
+			alt: "The black hole renderer bending a background grid.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/blackhole/tree/master",
-		},
-		others: [],
-	},
+	links: [
+		{ kind: "github", href: "https://github.com/manoj-malviya-96/blackhole" },
+	],
 };
 
 const evSimProject: Project = {
 	title: "EV Charging Simulator",
 	summary: (
 		<>
-			I wanted to know how many chargers a lot actually needs before buying
-			them, so I simulated a year of demand first:{" "}
+			How many chargers does a lot actually need? Before buying any, I simulated
+			a year of demand:{" "}
 			<Text.Bold>
-				15-minute intervals with car arrivals drawn from a Poisson distribution
+				15-minute intervals, with car arrivals drawn from a Poisson distribution
 				per charge point
 			</Text.Bold>
-			, <Text.Italic>no queueing</Text.Italic> — a car that arrives to a busy
-			point just leaves. Concurrency turned out to decay roughly exponentially
-			as charger count grows.
+			, and <Text.Italic>no queueing</Text.Italic>, so a car that finds a busy
+			point just leaves. Concurrency decays roughly exponentially as charger
+			count grows.
 		</>
 	),
 	startsAt: new Date("2024-01-01"),
@@ -414,40 +361,7 @@ const evSimProject: Project = {
 			alt: "The EV charging simulator's request/response UI, showing simulation results as charts.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/ev-sim",
-		},
-		others: [],
-	},
-};
-
-const meshaProject: Project = {
-	title: "Mesha",
-	summary: (
-		<>
-			Mesh repair, <Text.Italic>from the command line</Text.Italic> to a{" "}
-			<Text.Bold>real editor</Text.Bold>.
-		</>
-	),
-	startsAt: new Date("2025-01-01"),
-	endsAt: new Date("2025-06-01"),
-	tags: ["cad", "c++", "qt/qml", "rendering", "open-source"],
-	effort: "low",
-	links: {
-		primary: {
-			kind: "demo",
-			label: "Preview",
-			href: "https://mesha3.vercel.app",
-		},
-		others: [
-			{
-				kind: "github",
-				href: "https://github.com/manoj-malviya-96/mesha",
-			},
-		],
-	},
+	links: [{ kind: "github", href: "https://github.com/manoj-malviya-96/ev-sim" }],
 };
 
 const nameWeaveProject: Project = {
@@ -461,22 +375,13 @@ const nameWeaveProject: Project = {
 			each side.
 			<br /> <br /> It all runs in the browser: a Web Worker builds the mesh,
 			Three.js previews it, and a binary STL comes out ready to print.{" "}
-			<Text.Italic>Not every pair works</Text.Italic> — some letter combinations
+			<Text.Italic>Not every pair works</Text.Italic>. Some letter combinations
 			leave no usable solid, and the app names the pair instead of faking one.
 		</>
 	),
 	startsAt: new Date("2024-07-01"),
 	endsAt: new Date("2024-07-03"),
-	tags: [
-		"web",
-		"react",
-		"typescript",
-		"threejs",
-		"wasm",
-		"rendering",
-		"cad",
-		"open-source",
-	],
+	tags: ["web", "react", "typescript", "threejs", "wasm", "rendering", "cad"],
 	effort: "medium",
 	media: [
 		{
@@ -486,13 +391,9 @@ const nameWeaveProject: Project = {
 			alt: "NameWeave previewing a nameplate that reads a different name from each diagonal.",
 		},
 	],
-	links: {
-		primary: {
-			kind: "github",
-			href: "https://github.com/manoj-malviya-96/name-weave",
-		},
-		others: [],
-	},
+	links: [
+		{ kind: "demo", label: "Try it", href: "https://name-weave.vercel.app" },
+	],
 };
 
 export const Projects: Record<ProjectId, Project> = {
@@ -503,7 +404,6 @@ export const Projects: Record<ProjectId, Project> = {
 	topopt_py: topoptPyProject,
 	blackhole: blackholeProject,
 	ev_sim: evSimProject,
-	mesha: meshaProject,
 	suction_cup: suctionCupProject,
 	name_weave: nameWeaveProject,
 	mosby: mosbyProject,
@@ -572,33 +472,11 @@ const EFFORT_RANK: Record<ProjectEffort, number> = {
 	low: 1,
 };
 
-const VISIBLE_PROJECT_IDS = AllProjectIds.filter((id) => showProject(id));
-
 export const RankedProjects: readonly ProjectSummary[] = rankProjects();
-
-function showProject(id: ProjectId) {
-	switch (id) {
-		case "wrapped":
-		case "atom":
-		case "topopt_py":
-		case "honeycomb":
-		case "muviz":
-		case "blackhole":
-		case "suction_cup":
-		case "ev_sim":
-		case "name_weave":
-		case "mosby":
-			return true;
-		case "mesha":
-			return false;
-		default:
-			assertNever(id);
-	}
-}
 
 /** Highest effort first; within the same effort, the most recently started. */
 function rankProjects(): readonly ProjectSummary[] {
-	return VISIBLE_PROJECT_IDS.map((id) => ({ id, ...Projects[id] })).sort(
+	return AllProjectIds.map((id) => ({ id, ...Projects[id] })).sort(
 		(a, b) =>
 			EFFORT_RANK[b.effort] - EFFORT_RANK[a.effort] ||
 			b.startsAt.getTime() - a.startsAt.getTime(),
